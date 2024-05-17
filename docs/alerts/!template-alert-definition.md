@@ -15,7 +15,9 @@ Each tag should follow "key:value" format.
 |Alert Group|Group||
 |Alert Navigation Type|PageType|Dashboard/SavedSearch/RelativityTab|
 |Alert Navigation param|PageID|GUID of Kibana object(Dashboard/SavedSearch)|
-|Created By|CreatedBy|Relativity| 
+|Created By|CreatedBy|Relativity|
+|Resolution Text|ResoltionText||1-2 sentences of supplemental text to provide more context for the user on the alert|
+|Resolution URL|ResolutionURL||[Link](!template-alert-resolution-sop.md)|
 |...|...|...|
 
 ## Metric/Log/Trace Details:
@@ -23,9 +25,9 @@ Each tag should follow "key:value" format.
 
 **Metric Attributes:**
 
-|Attribute Name| Description|
-|-------|---
-|...||
+|Attribute Name| Description| Value|
+|-------|---|--|
+|...|||
 
 ## Rule details
 **Alert Condition Description:** <br/><br/>
