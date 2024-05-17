@@ -23,9 +23,9 @@ Each tag should follow "key:value" format.
 
 **Metric Attributes:**
 
-|Attribute Name| Description|
-|-------|---
-|...||
+|Attribute Name| Description| Value|
+|-------|---|--|
+|...|||
 
 ## Rule details
 **Alert Condition Description:** <br/><br/>
