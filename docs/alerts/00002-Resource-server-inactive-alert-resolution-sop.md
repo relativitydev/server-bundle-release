@@ -1,10 +1,8 @@
 # Alert: Resource Server Inactive
+| Content Owner | Team             | Status  | Last Reviewed Date | Rollout Date |
+|---------------|------------------|---------|---------------------|--------------|
+|               | server-architects| Pending |                     |              |
 
-- Content owner: 
-- Team: server-architects
-- Status: Pending
-- Last reviewed date: 
-- Rollout date: 
 ## When to Use
 *When should this procedure be followed?*
 

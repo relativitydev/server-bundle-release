@@ -47,6 +47,6 @@ Group| Count|greater than 0|
 |Time Window| 5 min| Verified data for last 5 minutes|
 |Frequency| 1 min|Checks for each 1 min|
 
-## Kibana Visualization (If applicable)
-Not applicable, as it deals with Relativity Agent Tab
+## Visualization link
+Relativity link to Server Tab
 
