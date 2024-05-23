@@ -1,10 +1,12 @@
 # Alert: One or more agents are disabled
 
-- Content owner: 
-- Team: server-architects
-- Status: Pending
-- Last reviewed date: 
-- Rollout date: 
+|||
+|-|-|
+|Content owner||
+|Team|server-architects|
+|Status|Pending|
+|Last reviewed date||
+|Rollout date||
 ## When to Use
 *When should this procedure be followed?*
 

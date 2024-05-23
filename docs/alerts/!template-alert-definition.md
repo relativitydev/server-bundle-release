@@ -42,6 +42,6 @@ Group| Count/sum/average|
 |Time Window| Last n sec/min/hour/day data to be considered|
 |Frequency| How frequent it should check for alert condition|
 
-## Kibana Visualization (If applicable)
-Breif description on visualization to verify
+## Visualization link
+(e.g. a Kibana link to a dashboard, a Relativity link to a tab, etc.)
 
