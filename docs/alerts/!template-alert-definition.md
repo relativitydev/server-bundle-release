@@ -9,15 +9,15 @@ Brief description of alert.
 **Tags:**
 Each tag should follow "key:value" format.
 
-|Tag Name|Tag Key|Tag Value|Description|
-|--|--|--|--|
+|Tag Name|Tag Key|Tag Value|
+|--|--|--|
 |Alert Type|Type|Platform/Infrastructure/Application|
 |Alert Group|Group||
 |Alert Navigation Type|PageType|Dashboard/SavedSearch/RelativityTab|
 |Alert Navigation param|PageID|GUID of Kibana object(Dashboard/SavedSearch)|
 |Created By|CreatedBy|Relativity|
-|Resolution Text|ResoltionText||1-2 sentences of supplemental text to provide more context for the user on the alert|
-|Resolution URL|ResolutionURL||[Link](!template-alert-resolution-sop.md)|
+|Resolution Text|ResolutionText|1-2 sentences of supplemental text to provide more context for the user on the alert|
+|Resolution URL|ResolutionURL|[Link](!template-alert-resolution-sop.md)|
 |...|...|...|
 
 ## Metric/Log/Trace Details:

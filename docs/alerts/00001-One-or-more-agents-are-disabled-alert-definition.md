@@ -1,8 +1,7 @@
 # One or more agents are disabled
 
 ## Description: 
-One or more agents are disabled.<br/>
-*Note: Excluding Billing Agents.*
+The alert is true if the 'Enabled' field = "No" for any Agents.
 
 ## Alert Details:
 **Alert ID:** dae7d8e9-c33d-470c-b36a-5b6e380e0a25
@@ -10,15 +9,15 @@ One or more agents are disabled.<br/>
 **Tags:**
 Each tag should follow "key:value" format.
 
-|Tag Name|Tag Key|Tag Value|Description|
-|--|--|--|--|
+|Tag Name|Tag Key|Tag Value|
+|--|--|--|
 |Alert Type|Type|Platform|
 |Alert Group|Group|Agents|
 |Alert Navigation Type|PageType|RelativityTab|
 |Alert Navigation param|PageID||
 |Created By|CreatedBy|Relativity|
-|Resolution Text|ResoltionText||Future sprint|
-|Resolution URL|ResolutionURL||[Link](00001-One-or-more-agents-are-disabled-alert-resolution-sop.md)|
+|Resolution Text|ResolutionText|Go to the Agents tab and identify any agents for which the Enabled value is No. Enable them, if necessary|
+|Resolution URL|ResolutionURL|/docs/alerts/00001-One-or-more-agents-are-disabled-alert-resolution-sop.md|
 
 ## Metric/Log/Trace Details:
 **Metric Name:** relsvr.agent.disabled
@@ -38,17 +37,17 @@ Each tag should follow "key:value" format.
 |labels.relsvr_system|System name|Agents|
 
 ## Rule details
-**Alert Condition Description:** Alert triggers on disabled alerts count greater than 0 for last 5 minutes. Excluding "Billing Agent" type. <br/><br/>
+**Alert Condition Description:** Alert triggers on disabled agents count greater than 0 for last 30 seconds.
 
 |Name|Value|Description|
 |-|-|-|
 |Rule Type| Elastic Query||
 |Data View| metrics-*||
-|Filter Query|relsvr.agent.disabled : 1 and NOT labels.agent_type_name : "Billing Agent" |Agent should be disabled and should not be "Billing Agent" type|
-Group| Count|number of agent disabled|
+|Filter Query|relsvr.agent.disabled : 1|Agent should be disabled|
+|Group| Count|number of agent disabled|
 |Threshold| > 0| Count greter than 0, alert triggers|
-|Time Window| 5 min| Verified data for last 5 minutes|
-|Frequency| 1 min|Checks for each 1 min|
+|Time Window| 31 sec| Verified data for last 31 seconds|
+|Frequency| 30 sec|Checks for each 30 seconds|
 
 ## Visualization link
 Relativity link to Agents Tab
