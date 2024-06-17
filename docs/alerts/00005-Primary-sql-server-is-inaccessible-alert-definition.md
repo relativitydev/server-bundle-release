@@ -9,15 +9,13 @@ Alert is true if primary SQL Server is inaccessible.
 **Tags:**
 Each tag should follow "key:value" format.
 
-|Tag Name|Tag Key|Tag Value|
-|--|--|--|
-|Alert Type|Type|Platform|
-|Alert Group|Group|Access|
-|Alert Navigation Type|PageType||
-|Alert Navigation param|PageID||
-|Created By|CreatedBy|Relativity|
-|Resolution Text|ResolutionText||
-|Resolution URL|ResolutionURL|/docs/alerts/00005-Primary-sql-server-is-inaccessible-alert-resolution-sop.md|
+- Type:Infrastructure
+- Group:Access
+- PageType:
+- PageID:
+- CreatedBy:Relativity
+- ResolutionText:
+- ResolutionURL:/docs/alerts/00005-Primary-sql-server-is-inaccessible-alert-resolution-sop.md
 
 ## Metric/Log/Trace Details:
 **Metric Name:** relsvr.sqlserver.running
@@ -42,6 +40,12 @@ Each tag should follow "key:value" format.
 |Time Window| 90 sec| Verified data for last 90 sec|
 |Frequency| 30 sec|Checks for each 30 seconds|
 
+## Requires User Intervention
+- Yes: alert immediately
+  - Min time before the alert is active/inactive: 90 seconds
+
 ## Visualization link
 No link
 
+## Related Alerts
+Host Heartbeat alert should not be in active state.

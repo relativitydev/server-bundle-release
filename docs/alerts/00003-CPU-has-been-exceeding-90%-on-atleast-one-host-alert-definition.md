@@ -9,15 +9,13 @@ Alert will be true if CPU has exceeded 90% for at least 15 minutes on at least o
 **Tags:**
 Each tag should follow "key:value" format.
 
-|Tag Name|Tag Key|Tag Value|
-|--|--|--|
-|Alert Type|Type|Infrastructure|
-|Alert Group|Group|Server Health|
-|Alert Navigation Type|PageType|Dashboard|
-|Alert Navigation param|PageID|ee8a7dab-7422-499e-94e0-7b5449468a94|
-|Created By|CreatedBy|Relativity|
-|Resolution Text|ResolutionText||
-|Resolution URL|ResolutionURL|/docs/alerts/00003-CPU-has-been-exceeding-90%-on-atleast-one-host-alert-resolution-sop.md|
+- Type:Infrastructure
+- Group:System Health
+- PageType:Dashboard
+- PageID:ee8a7dab-7422-499e-94e0-7b5449468a94
+- CreatedBy:Relativity
+- ResolutionText:
+- ResolutionURL:/docs/alerts/00003-CPU-has-been-exceeding-90%-on-atleast-one-host-alert-resolution-sop.md
 
 ## Metric Details:
 **Metric Name:** system.cpu.utilization
@@ -41,6 +39,13 @@ Each tag should follow "key:value" format.
 |Frequency| 1 min|Checks for each 1 minute|
 |Group alerts by| host.name| Group by host|
 
+## Requires User Intervention
+- No
+  - Min time before the alert is active: 15 minutes
+  - Min time before the alert is inactive: 2 - 5 minutes
+
 ## Visualization link
 Kibana dashboard link
 
+## Related Alerts
+Host Heartbeat alert should not be in active state.

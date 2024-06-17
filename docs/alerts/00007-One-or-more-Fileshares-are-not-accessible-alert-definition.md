@@ -9,15 +9,13 @@ Alert is true if the one or more resource server network share is inaccessible.
 **Tags:**
 Each tag should follow "key:value" format.
 
-|Tag Name|Tag Key|Tag Value|
-|--|--|--|
-|Alert Type|Type|Infrastructure|
-|Alert Group|Group|Network Connectivity|
-|Alert Navigation Type|PageType|Dashboard|
-|Alert Navigation param|PageID|5564a18f-f27e-4dfb-a296-d41e83f53ae8|
-|Created By|CreatedBy|Relativity|
-|Resolution Text|ResolutionText||
-|Resolution URL|ResolutionURL|/docs/alerts//docs/alerts/00007-One-or-more-Fileshares-are-not-accessible-alert-resolution-sop.md|
+- Type:Infrastructure
+- Group:Network Connectivity
+- PageType:Dashboard
+- PageID:5564a18f-f27e-4dfb-a296-d41e83f53ae8
+- CreatedBy:Relativity
+- ResolutionText:
+- ResolutionURL:/docs/alerts/00007-One-or-more-Fileshares-are-not-accessible-alert-resolution-sop.md
 
 ## Metric Details:
 **Metric Name:** relsvr.resourceserver_networkshare.accessible
@@ -43,6 +41,13 @@ Each tag should follow "key:value" format.
 |Time Window| 90 sec| Verified data for last 90 sec|
 |Frequency| 30 sec |Checks for each 30 seconds|
 
+## Requires User Intervention
+- Yes: alert immediately
+  - Min time before the alert is active/inactive: 90 seconds
+
 ## Visualization link
 Kibana dashboard link
+
+## Related Alerts
+Host Heartbeat alert should not be in active state.
 

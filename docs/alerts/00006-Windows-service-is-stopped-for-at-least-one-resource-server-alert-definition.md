@@ -9,15 +9,13 @@ Alert is true if the Windows Service is stopped for at least one agent server, w
 **Tags:**
 Each tag should follow "key:value" format.
 
-|Tag Name|Tag Key|Tag Value|
-|--|--|--|
-|Alert Type|Type|Infrastructure|
-|Alert Group|Group|Server Health|
-|Alert Navigation Type|PageType|Dashboard|
-|Alert Navigation param|PageID|cd200ee0-1e61-4645-8220-83ce82914a71|
-|Created By|CreatedBy|Relativity|
-|Resolution Text|ResolutionText||
-|Resolution URL|ResolutionURL|/docs/alerts/00006-Windows-service-is-stopped-for-at-least-one-resource-server-alert-resolution-sop.md|
+- Type:Infrastructure
+- Group:System Health
+- PageType:Dashboard
+- PageID:cd200ee0-1e61-4645-8220-83ce82914a71
+- CreatedBy:Relativity
+- ResolutionText:For any Resource Server where the Windows Service is stopped, go to that Server page and click 'Restart Service'
+- ResolutionURL:/docs/alerts/00006-Windows-service-is-stopped-for-at-least-one-resource-server-alert-resolution-sop.md
 
 ## Metric Details:
 **Metric Name:** relsvr.windows_service.running
@@ -43,6 +41,13 @@ Each tag should follow "key:value" format.
 |Time Window| 90 sec| Verified data for last 90 sec|
 |Frequency| 30 sec |Checks for each 30 seconds|
 
+## Requires User Intervention
+- Yes: alert immediately
+  - Min time before the alert is active/inactive: 90 seconds
+
 ## Visualization link
 Kibana dashboard link
 
+## Related Alerts
+- Host Heartbeat alert should not be in active state.
+- If windows service is associated with any resource server, then "One or more Resource Servers are inactive" alert should fire.

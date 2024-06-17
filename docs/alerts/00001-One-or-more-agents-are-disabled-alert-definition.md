@@ -9,15 +9,12 @@ The alert is true if the 'Enabled' field = "No" for any Agents.
 **Tags:**
 Each tag should follow "key:value" format.
 
-|Tag Name|Tag Key|Tag Value|
-|--|--|--|
-|Alert Type|Type|Platform|
-|Alert Group|Group|Agents|
-|Alert Navigation Type|PageType|RelativityTab|
-|Alert Navigation param|PageID||
-|Created By|CreatedBy|Relativity|
-|Resolution Text|ResolutionText|Go to the Agents tab and identify any agents for which the Enabled value is No. Enable them, if necessary|
-|Resolution URL|ResolutionURL|/docs/alerts/00001-One-or-more-agents-are-disabled-alert-resolution-sop.md|
+- Group:Agents
+- PageType:RelativityTab
+- PageID:
+- CreatedBy:Relativity
+- ResolutionText:Go to the Agents tab and identify any agents for which the Enabled value is No. Enable them, if necessary
+- ResolutionURL:/docs/alerts/00001-One-or-more-agents-are-disabled-alert-resolution-sop.md
 
 ## Metric/Log/Trace Details:
 **Metric Name:** relsvr.agent.disabled
@@ -46,9 +43,16 @@ Each tag should follow "key:value" format.
 |Filter Query|relsvr.agent.disabled : 1|Agent should be disabled|
 |Group| Count|number of agent disabled|
 |Threshold| > 0| Count greter than 0, alert triggers|
-|Time Window| 31 sec| Verified data for last 31 seconds|
+|Time Window| 1 min| Verified data for last 1 minute|
 |Frequency| 30 sec|Checks for each 30 seconds|
+
+## Requires User Intervention
+- Yes: alert immediately
+  - Min time before the alert is active/inactive: 90 seconds
 
 ## Visualization link
 Relativity link to Agents Tab
+
+## Related Alerts
+Host Heartbeat alert should not be in active state.
 
