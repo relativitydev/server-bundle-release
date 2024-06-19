@@ -8,13 +8,17 @@
 |Last reviewed date||
 |Rollout date||
 ## When to Use
-*When should this procedure be followed?*
+Use this procedure when responding to a "One or more agents are disabled" alert notification.
+
+This alert indicates that one or more relativity agent is disabled.
 
 ## Audience
-*Who is expected to execute or follow with procedure?*
+Site services, Server support.
 
 ## Prerequisites
-*What is needed to complete the procedure (e.g., software, permission, configuration)?*
+Relativity System Admin access to view and enable agents.
 
 ## Procedures
-*Step-by-step (numbered) instructions on how to resolve*
+- Go to the Relativity Agents tab 
+- Identify any agents for which the Enabled value is No
+- Enable them, if necessary
