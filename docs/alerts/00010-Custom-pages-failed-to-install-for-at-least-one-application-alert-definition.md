@@ -45,7 +45,7 @@ Each tag should follow "key:value" format.
 |Frequency| 30 sec|Checks for every 30 seconds|
 
 ## Requires User Intervention
-- No
+- Yes
   - Min time before the alert is active: 5 minutes
   - Min time before the alert is inactive: 1 - 3 minutes
 
@@ -53,5 +53,5 @@ Each tag should follow "key:value" format.
 Kibana saved search link
 
 ## Related Alerts
-One or more agents are disabled.
+Windows Service stopped alert
 
