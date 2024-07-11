@@ -15,10 +15,10 @@ Each tag should follow "key:value" format.
 - PageID:1bd86ef8-3b9d-4aa8-819d-2cc6a7ca8f3b
 - CreatedBy:Relativity
 - ResolutionText:
-- ResolutionURL:/docs/alerts/00010-Custom-pages-failed-to-install-for-at-least-one-application-sop.md
+- ResolutionURL:/docs/alerts/00010-Custom-pages-failed-to-install-for-at-least-one-application-alert-resolution-sop.md
 
 ## Metric Details:
-**Metric Name:** relsvr.custom.page.install.failed
+**Metric Name:** relsvr.ads.custom_page.deployment.failed
 
 **Metric Attributes:**
 
@@ -38,16 +38,15 @@ Each tag should follow "key:value" format.
 |-|-|-|
 |Rule Type| Elastic Query||
 |Data View| metrics-*||
-|Filter Query|relsvr.custom.page.install.failed : 1||
+|Filter Query|relsvr.ads.custom_page.deployment.failed : 1||
 |Group| Count|number of custom page fail to install|
 |Threshold| > 0| Count greter than 0, alert triggers|
 |Time Window| 1 min| Verified data for last 1 minute|
 |Frequency| 30 sec|Checks for every 30 seconds|
 
 ## Requires User Intervention
-- Yes
-  - Min time before the alert is active: 5 minutes
-  - Min time before the alert is inactive: 1 - 3 minutes
+- Yes: alert immediately
+  - Min time before the alert is active/inactive: 90 seconds
 
 ## Visualization link
 Kibana saved search link

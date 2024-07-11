@@ -9,6 +9,7 @@ The alert is true if the 'Enabled' field = "No" for any Agents.
 **Tags:**
 Each tag should follow "key:value" format.
 
+- Type:Platform
 - Group:Agents
 - PageType:RelativityTab
 - PageID:
