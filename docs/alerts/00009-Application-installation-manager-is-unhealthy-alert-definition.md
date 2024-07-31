@@ -40,7 +40,6 @@ Each tag should follow "key:value" format.
 |Threshold| > 0| Count > 0, alert triggers|
 |Time Window| 1 hour| Verified data for last 1 hour|
 |Frequency| 1 min|Checks for each 1 minute|
-|Group alerts by| host.name| Group by host |
 
 ## Requires User Intervention
 - Yes: alert immediately
