@@ -12,7 +12,7 @@ Each tag should follow "key:value" format.
 - Type:Platform
 - Group:Server Health
 - PageType:RelativityTab
-- PageID:
+- PageID:Servers::Inactive Servers
 - CreatedBy:Relativity
 - ResolutionText:Go to the Servers tab, locate any server that has a status of Inactive, open it, and edit the Status field to be Active.
 - ResolutionURL:/docs/alerts/00002-One-or-more-resource-servers-are-inactive-alert-resolution-sop.md
