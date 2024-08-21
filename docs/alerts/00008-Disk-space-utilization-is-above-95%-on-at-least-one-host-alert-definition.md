@@ -1,7 +1,7 @@
 # Disk space utilization is above 95% on at least one host
 
 ## Description: 
-Alert will be true when Disk space utilization exceeds 95% on at least one host for at least 5 minutes.
+The alert is active when the disk space utilization exceeds 95% on at least one host for at least 5 minutes.
 
 ## Alert Details:
 **Alert ID:** 3adc059d-d2a0-4706-8ceb-eeeac29f6337
@@ -24,10 +24,10 @@ Each tag should follow "key:value" format.
 
 |Attribute Name|Description|Value|
 |-------|---|--|
-|labels.device|Identifier of the filesystem.||
+|labels.device|The filesystem device name. For Windows based OS's, this is normally the primary OS drive letter. ||
 |labels.mode|Mountpoint mode such "ro", "rw", etc.||
 |labels.mountpoint|Mountpoint path.||
-|labels.type|Filesystem type, such as, "ext4", "tmpfs", etc.||
+|labels.type|Filesystem type, such as, "NTFS", "CDFS", etc.||
 
 ## Rule details
 **Alert Condition Description:** Alert triggers on Disk space utilization exceeds 95% on at least one host for at least 5 minutes.

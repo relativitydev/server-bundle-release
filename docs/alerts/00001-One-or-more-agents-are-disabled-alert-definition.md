@@ -1,7 +1,7 @@
 # One or more agents are disabled
 
 ## Description: 
-The alert is true if the 'Enabled' field = "No" for any Agents.
+The alert is active when at least 1 disabled Agent exists within an active Resource Pool.
 
 ## Alert Details:
 **Alert ID:** dae7d8e9-c33d-470c-b36a-5b6e380e0a25
@@ -26,7 +26,7 @@ Each tag should follow "key:value" format.
 |-------|---|--|
 |labels.agent_name|Relativity Agent Name||
 |labels.agent_type_name|Relativity Agent Type|
-|labels.application_name||Environment Administration & Operations|
+|labels.application_name|Application Name|Environment Administration & Operations|
 |labels.exception_message|Any exception message on Agent||
 |labels.message|Message describes the issue|Agent [Agent Name placeholder] is disabled.|
 |labels.name|Name of metric|Agent Disabled|

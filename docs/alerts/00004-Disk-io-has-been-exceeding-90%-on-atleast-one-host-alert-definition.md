@@ -24,10 +24,10 @@ Each tag should follow "key:value" format.
 
 |Attribute Name|Description|Value|
 |-------|---|--|
-|labels.device|Identifier of the filesystem.||
+|labels.device|The filesystem device name. For Windows based OS's, this is normally the primary OS drive letter.||
 |labels.mode|Mountpoint mode such "ro", "rw", etc.||
 |labels.mountpoint|Mountpoint path.||
-|labels.type|Filesystem type, such as, "ext4", "tmpfs", etc.||
+|labels.type|Filesystem type, such as, "NTFS", "CDFS", etc.||
 
 ## Rule details
 **Alert Condition Description:** Alert triggers on Disk IO has exceeded 90% for at least 15 minutes on at least one host.

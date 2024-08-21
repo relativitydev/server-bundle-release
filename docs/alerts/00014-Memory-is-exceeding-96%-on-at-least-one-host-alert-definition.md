@@ -18,7 +18,7 @@ Each tag should follow "key:value" format.
 - ResolutionURL:/docs/alerts/00014-Memory-is-exceeding-96%-on-at-least-one-host-alert-resolution-sop.md
 
 ## Metric Details:
-**Metric Name:** system.cpu.utilization
+**Metric Name:** system.memory.utilization
 
 **Metric Attributes:**
 

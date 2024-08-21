@@ -24,7 +24,7 @@ Each tag should follow "key:value" format.
 
 |Attribute Name|Description|Value|
 |-------|---|--|
-|labels.application_name||Environment Administration & Operations|
+|labels.application_name|Application Name|Environment Administration & Operations|
 |labels.message|Message describes the issue|The [Resource server type] Resource Server (ArtifactID: [Resource Server Artifact Id]) [Resource Server Name] is inactive.|
 |labels.name|Name of metric|Server Inactive|
 |labels.relsvr_artifact_id|Resource Server Artifact Id||
