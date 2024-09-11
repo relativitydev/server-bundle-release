@@ -53,5 +53,5 @@ Each tag should follow "key:value" format.
 Relativity link to License Tab
 
 ## Related Alerts
-Host Heartbeat alert should not be in active state. 
+Host Heartbeat alert should not be in active state.
 
