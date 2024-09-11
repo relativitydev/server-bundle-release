@@ -28,6 +28,6 @@ Updating an Existing License
 - Take a Backup of License Table 
 - Delete the Existing License that is to be replaced (from SQL primary database)
 - Generate and Apply New Licenses
-- Backout Procedure (if necessary)
+- Backout Procedure (if necessary) 
 
 
