@@ -18,11 +18,11 @@
 
 [Hardware Recommendations by Instance Tier](#hardware-recommendations-by-instance-tier)
 
-[Tier 1 – Small](#tier1-small)
+[Tier 1 – Small](#tier-1-small)
 
-[Tier 2 – Medium](#tier2-medium)
+[Tier 2 – Medium](#tier-2-medium)
 
-[Tier 3 – Large](#tier3-large)
+[Tier 3 – Large](#tier-3-large)
 
 [Licensing](#licensing)
 
@@ -32,17 +32,17 @@
 
 [Installation steps](#installation-steps)
 
-[Step 1: Download and Install Elasticsearch on All Three Nodes](#step1:-download-and-install-elasticsearch-on-all-three-nodes)
+[Step 1: Download and Install Elasticsearch on All Three Nodes](#step-1-download-and-install-elasticsearch-on-all-three-nodes)
 
-[Step 2: Secure Elasticsearch Communications](#step2:-secure-elasticsearch-communications)
+[Step 2: Secure Elasticsearch Communications](#step-2-secure-elasticsearch-communications)
 
-[Step 3: Install and Configure Kibana](#step3:-install-and-configure-kibana)
+[Step 3: Install and Configure Kibana](#step-3-install-and-configure-kibana)
 
-[Step 4: Secure Kibana Communications](#step4:-secure-kibana-communications)
+[Step 4: Secure Kibana Communications](#step-4-secure-kibana-communications)
 
-[Step 5: Install and Configure APM Server](#step5:-install-and-configure-apm-server)
+[Step 5: Install and Configure APM Server](#step-5-install-and-configure-apm-server)
 
-[Step 6: Verify Deployment](#step6:-verify-deployment)
+[Step 6: Verify Deployment](#step-6-verify-deployment)
 
 [Next](#next)
 
