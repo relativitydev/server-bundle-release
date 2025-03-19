@@ -1,6 +1,6 @@
-﻿[Installing Elasticsearch, Kibana, and APM Server 1](#_Toc876716573)
+﻿[Installing Elasticsearch, Kibana, and APM Server 1](#installing-elasticsearch-kibana-and-apm-server)
 
-[Elastic Key Concepts 2](#_Toc512276290)
+[Elastic Key Concepts](#elastic-key-concepts)
 
 [Elasticsearch 2](#_Toc440889389)
 
