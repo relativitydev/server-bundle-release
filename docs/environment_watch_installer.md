@@ -1,22 +1,23 @@
 # Relativity Environment Watch installation
+![](/resources/Installer_current_step.png)
 
 ## Summary
 The Relativity Environment Watch installer package contains a monitoring agent (rel-infrawatch-agent.exe) that collects and transmits telemetry data to Elastic and a Windows service (rel-envwatch-service.exe) that is responsible for launching the monitoring agent process and enables monitoring agent auto-upgrade process. You will install this package on all hosts in your environment that you want to monitor.
 
 ## Prerequisites
 
-- The telemetry backend software ([Elasticsearch, Kibana, and APM Server](/docs/elasticsearch_setup.md)) is installed and Environment Watch has been set up using the [Relativity Server CLI](/docs/cli_environmentwatch_setup.md).
+- Elasticsearch, Kibana, and APM Server have been fully set up in accordance with [stage 1](/docs/elasticsearch_setup.md) of the Environment Watch installation guide.
+- Environment Watch has been set up using the Relativity Server CLI and Elastic certificates are installed on all Relativity servers in accordance with [stage 2](/docs/cli_environmentwatch_setup.md) of the Environment Watch installation guide.
 - Windows Server must be installed on any host where the Environment Watch monitoring agent and Windows service will be installed. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
 - Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting
 - SQL Primary and Distributed access
 - Relativity access
-- The minimum Relativity major version and patch is installed on all servers in the environment. See the [release bundle](https://github.com/relativityone/server-environment-watch-releases/releases) requirements for the minimum version required.
-- [Elasticsearch certificates](/docs/elasticsearch_certificates_setup.md) must be installed
+- The minimum Relativity major version and patch is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
 
 ## Setup
 
 ### Downloading the Environment Watch installer
-Download the Relativity.EnvironmentWatch.Installer from [here](https://github.com/relativityone/server-environment-watch-releases/releases).
+Download the Relativity.EnvironmentWatch.Installer from [here](https://github.com/relativitydev/server-bundle-release/releases).
 
 
 ### Install the Environment Watch monitoring agent and Windows service on each host
@@ -129,7 +130,7 @@ During the installation process, two log files are created in the `%TEMP%` direc
     ![](/resources/Installer_logfiles.png)
 
 ## Handling errors
-If any errors are encountered during the installation process, please refer to the [troubleshooting guide](/docs/troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
+If any errors are encountered during the installation process, please refer to the [troubleshooting guide](/docs/environment_watch_troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
 
 ## Next steps
 Click [here](/docs/relativity_alerts_installation.md) to Install Relativity Alerts Application
