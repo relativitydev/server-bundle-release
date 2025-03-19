@@ -11,7 +11,7 @@ This guide will help you resolve common issues that may arise during the install
 ### Issue 1: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch." error is displayed.
 ![ew-toggle-disabled-exception.png](../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-exception.png)
 
-    This error occurs for the following reason:
+#### This error occurs for the following reason:
     1. Relativity Server CLI First-Time Setup not executed properly.
 
 #### Steps to troubleshoot:
@@ -100,8 +100,8 @@ This guide will help you resolve common issues that may arise during the install
 ### Issue 7: "The user does not have permission to perform this action." error is displayed.
 ![admin-permission-error.png](../resources/relativity-alerts-troubleshooting-images/admin-permission-error.png)
 
-    This error occurs for the following reason:
-        1. User doesn't have System Administrator permissions.
+#### This error occurs for the following reason:
+    1. User doesn't have System Administrator permissions.
 
 #### Steps to troubleshoot:
     1. Please verify that user has the System Administrator permissions to perform the required actions.
@@ -109,8 +109,8 @@ This guide will help you resolve common issues that may arise during the install
 ### Issue 8: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch" error is displayed.
 ![ew-toggle-disabled-error.png](../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-error.png)
 
-    This error occurs for the following reason:
-        1. Relativity Server CLI First-Time Setup not executed properly.
+#### This error occurs for the following reason:
+    1. Relativity Server CLI First-Time Setup not executed properly.
 
 #### Steps to troubleshoot:
     1. Please execute the Relativity Server CLI first time setup again to resolve this issue.
