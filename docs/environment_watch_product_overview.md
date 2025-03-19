@@ -62,7 +62,7 @@ This instrument is used to show detailed records of events that occur within the
 - Warning logs that describe potential issues while executing a request or job
 - Error logs that describe unexpected issues while executing a request or job
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_002.png)
 
 ### Open Telemetry
 
@@ -124,7 +124,7 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 
 #### High-Level Architecture
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_003.png)
 
 #### Relativity Environment Watch Windows Service
 
@@ -142,7 +142,7 @@ Microsoft Installer (MSI) technology provides Relativity administrators a soluti
 
 The appsettings.json file located within the Relativity Environment Watch installation directory can also be used to customize the OTEL collector and tweak the custom scrapers.
 
-![A diagram of a software application
+![](/resources/environment_watch_product_overview_004.png)
 
 #### Relativity Platform
 
@@ -177,7 +177,7 @@ Environment Watch is enabled by the technology components:
 | Monitoring Agent | Windows service and OpenTelemetry collector (known as the “InfraWatch Agent”) | Collects and transmits metrics from all hosts to the telemetry backend. | Environment Watch installer run on all servers in Relativity Server environment |
 | Relativity Server CLI |     | Configures the integration between Relativity and Elastic and imports Relativity-created Kibana objects that are packaged with the Environment Watch solution. | Relativity Server CLI run on Primary SQL Server |
 
-![A diagram of a computer
+![](/resources/environment_watch_product_overview_005.png)
 
 ## Alerts, Dashboards, and Searching in Kibana
 
@@ -194,7 +194,7 @@ All Kibana objects packaged in Environment Watch include a set of tags that Rela
 - **CreatedBy:Relativity** – Enables the dashboard link to be visible on the ‘Logs & Dashboards’ tab in Relativity Alerts.
 - **FeatureDomain** – Enables the dashboard to be grouped with the correct feature domain on the ‘Logs & Dashboards’ tab in Relativity Alerts.
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_006.png)
 
 #### Alert tags
 
@@ -205,7 +205,7 @@ All Kibana objects packaged in Environment Watch include a set of tags that Rela
 - **ResolutionText**– Defines the pop-up text when you hover over the resolution guidance link on the Relativity Alert notification card.
 - **ResolutionURL** – Defines the resolution guidance documentation page associated with the Relativity Alert.
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_007.png)
 
 ### Dashboards in Kibana
 
@@ -213,19 +213,19 @@ Relativity has created and packaged dashboards in Kibana that help you explore s
 
 On the left side of all Relativity-created dashboards you will see links to other dashboards and saved searches that help you easily jump into logs, additional details, or related dashboards from the respective feature domain.
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_008.png)
 
 ### Alerts in Kibana
 
 When you run the Environment Watch setup using the Relativity Server CLI
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_009.png)
 
 ### Saved Searches in Kibana
 
 Many of
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_010.png)
 
 ## Relativity Alerts application
 
@@ -235,7 +235,7 @@ Each Kibana alert that Relativity has packaged in Environment Watch has a corres
 
 The Alert Manager Agent retrieves alert data from Kibana. This agent is automatically created upon installation of the Alerts application and queries Kibana for updated alert state every 30 seconds.
 
-![](data:image/png
+![](/resources/environment_watch_product_overview_011.png)
 
 ### Relativity Alerts Tab and RDO
 
@@ -252,7 +252,7 @@ Note: Users will need Elastic credentials to log in to Kibana to see dashboards.
     - **Feature Domain** – Alerts are grouped by feature domain. You can see a list of all feature domains [here](https://github.com/relativityone/server-relativity-docs/blob/main/environment-watch/feature-domains.md).
     - **Alert Notes** – Users in your environment can capture notes on any action or investigation related to an alert.
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_012.png)
 
 ### Relativity Alert Notifications
 
@@ -262,13 +262,13 @@ Relativity Alerts provides you with in-app notifications when an alert is active
 
 The alert notification bell in the top right corner of the screen will show you how many alerts are currently active, and when they became active. For each active alert, you can open a link to resolution guidance or the Relativity tab or Kibana dashboard jump link for the alert.
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_013.png)
 
 #### User Notification Preferences
 
 Individual users can pause or turn off alert notifications for themselves. Changing the notification preference does not impact notification visibility for other users in the environment. When you pause or turn off notifications, updates to alert state will still be reflected on the Alerts tab but you will not see notifications on the bell until notifications. When you pause notifications, they will automatically resume after 24 hours. You can pause an alert from the notification card, or pause or turn off from the ‘My Alert Notification Preferences’ modal.
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_014.png)
 
 ### Relativity Alert Permissions and Configuration Settings
 
@@ -292,4 +292,4 @@ Any user can pause or turn off in-app notifications for individual alerts that t
 
 The Logs & Dashboards tab provides links to all Kibana dashboards and saved searches that Relativity has created and packaged as part of Environment Watch.
 
-![A screenshot of a computer
+![](/resources/environment_watch_product_overview_015.png)
