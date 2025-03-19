@@ -2,49 +2,49 @@
 
 [Elastic Key Concepts](#elastic-key-concepts)
 
-[Elasticsearch 2](#_Toc440889389)
+[Elasticsearch](#elasticsearch)
 
-[Elasticsearch Cluster 2](#_Toc2053176120)
+[Elasticsearch Cluster](#elasticsearch-cluster)
 
-[Elasticsearch Nodes 2](#_Toc562389439)
+[Elasticsearch Nodes](#elasticsearch-nodes)
 
-[Kibana 3](#_Toc967172607)
+[Kibana](#kibana)
 
-[APM Server 3](#_Toc282757962)
+[APM Server](#apm-server)
 
-[System Requirements and Licensing 3](#_Toc1760709500)
+[System Requirements and Licensing](#system-requirements-and-licensing)
 
-[Software Requirements 4](#_Toc1271155050)
+[Software Requirements](#software-requirements)
 
-[Hardware Recommendations by Instance Tier 4](#_Toc1576225206)
+[Hardware Recommendations by Instance Tier](#hardware-recommendations-by-instance-tier)
 
-[Tier 1 – Small 5](#_Toc460872373)
+[Tier 1 – Small](#tier1-small)
 
-[Tier 2 – Medium 5](#_Toc1323434373)
+[Tier 2 – Medium](#tier2-medium)
 
-[Tier 3 – Large 6](#_Toc1958549512)
+[Tier 3 – Large](#tier3-large)
 
-[Licensing 6](#_Toc103425390)
+[Licensing](#licensing)
 
-[Installing the Elastic stack components 7](#_Toc2130922243)
+[Installing the Elastic stack components](#installing-the-elastic-stack-components)
 
-[Before you start 7](#_Toc1471439525)
+[Before you start](#before-you-start)
 
-[Installation steps 7](#_Toc384892935)
+[Installation steps](#installation-steps)
 
-[Step 1: Download and Install Elasticsearch on All Three Nodes 7](#_Toc1071757716)
+[Step 1: Download and Install Elasticsearch on All Three Nodes](#step1:-download-and-install-elasticsearch-on-all-three-nodes)
 
-[Step 2: Secure Elasticsearch Communications 8](#_Toc2062816271)
+[Step 2: Secure Elasticsearch Communications](#step2:-secure-elasticsearch-communications)
 
-[Step 3: Install and Configure Kibana 9](#_Toc1910117182)
+[Step 3: Install and Configure Kibana](#step3:-install-and-configure-kibana)
 
-[Step 4: Secure Kibana Communications 10](#_Toc6476853)
+[Step 4: Secure Kibana Communications](#step4:-secure-kibana-communications)
 
-[Step 5: Install and Configure APM Server 10](#_Toc619531071)
+[Step 5: Install and Configure APM Server](#step5:-install-and-configure-apm-server)
 
-[Step 6: Verify Deployment 11](#_Toc1106540858)
+[Step 6: Verify Deployment](#step6:-verify-deployment)
 
-[Next 12](#_Toc2031516030)
+[Next](#next)
 
 ![](/resources/elasticsearch_setup_001.png)
 
