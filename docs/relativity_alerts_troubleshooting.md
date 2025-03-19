@@ -8,7 +8,7 @@ This guide will help you resolve common issues that may arise during the install
 
 ### During Installation
 
-### Issue: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch." error is displayed.
+### Issue 1: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch." error is displayed.
 ![ew-toggle-disabled-exception.png](../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-exception.png)
 
     This error occurs for the following reason:
@@ -17,12 +17,12 @@ This guide will help you resolve common issues that may arise during the install
 #### Steps to troubleshoot:
     1. Please execute the Relativity Server CLI first time setup again to resolve this issue.
 
-### Issue: "This operation cannot be completed because an HTTP request to the Elasticsearch server failed. Please try again. If the issue persists, ensure that the Elasticsearch server is accessible and the configuration is correct." error is displayed.
+### Issue 2: "This operation cannot be completed because an HTTP request to the Elasticsearch server failed. Please try again. If the issue persists, ensure that the Elasticsearch server is accessible and the configuration is correct." error is displayed.
 ![elastic-setup-not-started-error.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-not-started-error.png)
 
-    This error occurs for the following reasons:
-        1. Missing Setup of Elastic/Kibana/APM Servers.
-        2. Relativity Server CLI First-Time Setup not executed properly.
+#### This error occurs for the following reasons:
+    1. Missing Setup of Elastic/Kibana/APM Servers.
+    2. Relativity Server CLI First-Time Setup not executed properly.
 
 #### Steps to troubleshoot:
     1. Please verify Elastic/Kibana/APM Servers are up and running.
@@ -30,7 +30,7 @@ This guide will help you resolve common issues that may arise during the install
 
 ### After Installation
 
-### Issue: "Agent information doesn't exist." error is displayed.
+### Issue 3: "Agent information doesn't exist." error is displayed.
 ![alert-agent-doesnot-exist1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist1.png)
 ![alert-agent-doesnot-exist2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist2.png)
 
@@ -52,7 +52,7 @@ This guide will help you resolve common issues that may arise during the install
 ![verifyfields.png](../resources/relativity-alerts-troubleshooting-images/verifyfields.png)
     Once these steps are completed, the "Alert Manager" agent should now be active and functioning correctly.
 
-### Issue: "The Alert Manager agent is unable to retrieve current alert state information from Kibana. Please ensure that the Alert Manager agent is enabled. To see accurate alert state information please navigate to Kibana." error is displayed.
+### Issue 4: "The Alert Manager agent is unable to retrieve current alert state information from Kibana. Please ensure that the Alert Manager agent is enabled. To see accurate alert state information please navigate to Kibana." error is displayed.
 ![alert-agent-disabled1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled1.png)
 ![alert-agent-disabled2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled2.png)
 
@@ -69,7 +69,7 @@ This guide will help you resolve common issues that may arise during the install
 ![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png)
     Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
 
-### Issue: "The Alert Manager agent interval is currently set to more than 15 minutes. If you want alert state information to be retrieved from Kibana more frequently, please update the agent interval." warning is displayed.
+### Issue 5: "The Alert Manager agent interval is currently set to more than 15 minutes. If you want alert state information to be retrieved from Kibana more frequently, please update the agent interval." warning is displayed.
 ![alert-agent-interval-exceeds1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds1.png)
 ![alert-agent-interval-exceeds2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds2.png)
 
@@ -85,19 +85,19 @@ This guide will help you resolve common issues that may arise during the install
             b. Click on 'Alert Manager' agent and Update Agent interval to a value less then 900 seconds (15 minutes). Recomended value is 30 (default).
 ![verify-alert-agent-interval.png](../resources/relativity-alerts-troubleshooting-images/verify-alert-agent-interval.png)
 
-### Issue: "Unable to retrieve alert state information from Kibana. Please ensure that Elasticsearch and Kibana are functional." error is displayed.
+### Issue 6: "Unable to retrieve alert state information from Kibana. Please ensure that Elasticsearch and Kibana are functional." error is displayed.
 ![elastic-kibana-down1.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down1.png)
 ![elastic-kibana-down2.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down2.png)
 
-    This error occurs for the following reasons:
-        1. Missing Setup of Elastic/Kibana/APM Servers.
-        2. Relativity Server CLI First-Time Setup not executed properly.
+#### This error occurs for the following reasons:
+    1. Missing Setup of Elastic/Kibana/APM Servers.
+    2. Relativity Server CLI First-Time Setup not executed properly.
 
 #### Steps to troubleshoot:
     1. Ensure that the ElasticSearch, Kibana, and APM Servers are up and running. Verify that these services are properly started and accessible.
     2. Re-run the Relativity Server CLI first-time setup. It may be necessary to execute the setup again to resolve any configuration issues or missing components related to the integration.
 
-### Issue: "The user does not have permission to perform this action." error is displayed.
+### Issue 7: "The user does not have permission to perform this action." error is displayed.
 ![admin-permission-error.png](../resources/relativity-alerts-troubleshooting-images/admin-permission-error.png)
 
     This error occurs for the following reason:
@@ -106,7 +106,7 @@ This guide will help you resolve common issues that may arise during the install
 #### Steps to troubleshoot:
     1. Please verify that user has the System Administrator permissions to perform the required actions.
 
-### Issue: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch" error is displayed.
+### Issue 8: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch" error is displayed.
 ![ew-toggle-disabled-error.png](../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-error.png)
 
     This error occurs for the following reason:
