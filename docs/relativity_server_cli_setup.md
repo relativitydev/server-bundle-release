@@ -22,7 +22,7 @@
 
 Now that you have installed the required Elastic components for Environment Watch and/or Data Grid Audit, you will configure the integration between Elastic and Relativity by running the Relativity Server CLI on your Primary SQL Server. For Environment Watch, the Relativity Server CLI will also import all of the indexes, alerts, and dashboards that Relativity has developed and shipped as part of the Environment Watch product.
 
-For customers already using Data Grid Audit prior to upgrading to Relativity Server 2024, please see the **_Important information for existing Data Grid Audit customers section_** below for additional context on what will happen when you run the �Set up Data Grid� workflow using the Relativity Server CLI for the first time.
+For customers already using Data Grid Audit prior to upgrading to Relativity Server 2024, please see the **_Important information for existing Data Grid Audit customers section_** below for additional context on what will happen when you run the ‘Set up Data Grid’ workflow using the Relativity Server CLI for the first time.
 
 ### Before you start
 
@@ -173,11 +173,11 @@ Refer to the [Troubleshooting Guide](/docs/environment_watch_troubleshooting.md)
 
 ### Elastic relativity_dashboard_user role
 
-After you complete all five steps of this installation guide and have Environment Watch fully set up in your environment, you need to provide any user that should have access to the alerts and dashboards in Kibana with Elastic access credentials. You will do this by creating users in Kibana. When you create users in Kibana, you will need to assign them a �role�. When you run the Environment Watch or Data Grid setup workflow, the Relativity Server CLI will create a security role called �relativity_dashboard_user�. We recommend using this role for any users in your organization that should be able to access alerts and dashboards. The role has least privileges to ensure they can see all dashboards and alerts but with permissions restrictions to prevent them from creating or editing alerts, dashboards, and indexes.
+After you complete all five steps of this installation guide and have Environment Watch fully set up in your environment, you need to provide any user that should have access to the alerts and dashboards in Kibana with Elastic access credentials. You will do this by creating users in Kibana. When you create users in Kibana, you will need to assign them a ‘role’. When you run the Environment Watch or Data Grid setup workflow, the Relativity Server CLI will create a security role called ‘relativity_dashboard_user’. We recommend using this role for any users in your organization that should be able to access alerts and dashboards. The role has least privileges to ensure they can see all dashboards and alerts but with permissions restrictions to prevent them from creating or editing alerts, dashboards, and indexes.
 
 You can see the privileges associated with the relativity_dashboard_user role by navigating to Stack Management > Roles > relativity_dashboard_user in Kibana.
 
-**Important**: In order to extend the ability to export saved searches, go to the kibana.yml file on the server where Kibana is installed, update �xpack.reporting.roles.enabled� to �false�, and then restart the Kibana service.
+**Important**: In order to extend the ability to export saved searches, go to the kibana.yml file on the server where Kibana is installed, update ‘xpack.reporting.roles.enabled’ to “false”, and then restart the Kibana service.
 
 ![](/resources/relativity_server_cli_setup_002.png)
 
