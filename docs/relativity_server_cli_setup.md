@@ -1,4 +1,4 @@
-Table of Contents
+## Table of Contents
 
 - [Set up Environment Watch and/or Data Grid Audit using the Relativity Server CLI](#set-up-environment-watch-andor-data-grid-audit-using-the-relativity-server-cli)
 
@@ -45,25 +45,25 @@ While 7.17 is the minimum supported version for the initial release of the Relat
 
 ### Set up Environment Watch
 
-Follow these steps to configure Environment Watch using the Relativity Server CLI. If you do not need to set up Environment Watch, proceed to the �Set up Data Grid Audit� section below.
+Follow these steps to configure Environment Watch using the Relativity Server CLI. If you do not need to set up Environment Watch, proceed to the ‘Set up Data Grid Audit’ section below.
 
 This only needs to be done on your SQL Primary Server.
 
 1. **Install Elastic certificates on your SQL Primary Server**
-2. **Download the CLI �** From [here](https://github.com/relativityone/server-environment-watch-releases), download the release bundle.
+2. **Download the CLI –** From [here](https://github.com/relativityone/server-environment-watch-releases), download the release bundle.
 3. **Open Command Terminal -** Launch Command Prompt v7 from the Start menu.
 4. **Extract the CLI** - Navigate to the directory where the gold release bundle was downloaded to and extract the bundle and then extract Relativity.Server.Cli.YY.x.xxxx.zip.
-5. **Run the Setup Command �** From Command Prompt, execute the following command to enter the setup workflow:
+5. **Run the Setup Command –** From Command Prompt, execute the following command to enter the setup workflow:
 
 ./relsvr.exe setup
 
 1. **Select Environment Watch**  
-2. **\[Only applicable if Environment Watch has been set up previously\] Choose setup type �** If Environment Watch has been set up on this host previously, you will be prompted to select �Upgrade� or �Rerun Setup�. If you are setting up Environment Watch for the first time, you will not be prompted to make this selection and the setup process will continue to the next step.
-3. **Provide Relativity parameters �** Enter the Relativity admin username and password and Relativity URL.
+2. **\[Only applicable if Environment Watch has been set up previously\] Choose setup type –** If Environment Watch has been set up on this host previously, you will be prompted to select “Upgrade” or “Rerun Setup”. If you are setting up Environment Watch for the first time, you will not be prompted to make this selection and the setup process will continue to the next step.
+3. **Provide Relativity parameters –** Enter the Relativity admin username and password and Relativity URL.
 4. **Provide Elasticsearch parameters -** Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).
-5. **Provide APM Server parameters �** Enter your Elasticsearch APM Server Endpoint URL.
-6. **Provide Kibana parameters** � Enter your Elasticsearch Kibana server Endpoint URL.
-7. **Verify the generated API keys** � To verify that the API keys used for authenticating Elastic to Relativity were generated:
+5. **Provide APM Server parameters –** Enter your Elasticsearch APM Server Endpoint URL.
+6. **Provide Kibana parameters** – Enter your Elasticsearch Kibana server Endpoint URL.
+7. **Verify the generated API keys** – To verify that the API keys used for authenticating Elastic to Relativity were generated:
     1. Open Kibana
     2. Navigate to the path: /app/management/security/api_keys
     3. Verify that API keys for rel-alerts and rel-infrawatch are present. Note: these API keys will need to be refreshed every six months.
@@ -85,7 +85,7 @@ The following toggles are configured during the Environment Watch setup, which i
 - Relativity.EnvironmentWatch.Toggles.EnableOtelProvidersForCustomPagesToggle
 - Relativity.EnvironmentWatch.Toggles.EnableOtelProvidersForServiceHostToggle
 - Relativity.EnvironmentWatch.Toggles.EnableOtelSqlClientDbStatementForTextToggle
-
+- 
 **Invariant Toggles:**
 
 - Invariant.EnvironmentWatch.Toggles.EnableEnvironmentWatchToggle
@@ -97,7 +97,7 @@ The following toggles are configured during the Environment Watch setup, which i
 
 - Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle"
 
-Refer to the [Troubleshooting Guide](/docs/troubleshooting.md) if you encounter any issues.
+Refer to the [Troubleshooting Guide](/docs/environment_watch_troubleshooting.md) if you encounter any issues.
 
 ### Set up Data Grid Audit
 
@@ -107,9 +107,9 @@ If you are setting up Data Grid Audit for the first time, you will also need to 
 
 #### Important information for existing Data Grid Audit customers
 
-If you have been using Data Grid Audit prior to upgrading to Relativity Server 2024 Patch 1 or later, running the Relativity Server CLI�s �Set up Data Grid� workflow will update how your Elasticsearch cluster authenticates into Relativity. Prior to Server 2024 Patch 1, Data Grid Audit relied on a Elastic plug-in called Custom Realms for authentication. Starting with Server 2024 Patch 1, authentication no longer requires Custom Realms and is now based on an API key-based OAuth2 authentication method.
+If you have been using Data Grid Audit prior to upgrading to Relativity Server 2024 Patch 1 or later, running the Relativity Server CLI’s ‘Set up Data Grid’ workflow will update how your Elasticsearch cluster authenticates into Relativity. Prior to Server 2024 Patch 1, Data Grid Audit relied on a Elastic plug-in called Custom Realms for authentication. Starting with Server 2024 Patch 1, authentication no longer requires Custom Realms and is now based on an API key-based OAuth2 authentication method.
 
-Once you have cut over to the new API key-based authentication using the Relativity Server CLI, you no longer need to use the Elastic Platinum license key that Relativity previously provided as part of our Elasticsearch installation package (�DataTron�) to use Data Grid Audit. Moving forward, you will use the free/open Elastic license, or optionally apply a Platinum or Enterprise license key held by your organization if you are interested in utilizing Elasticsearch features that are not supported under the free/open license. No core Data Grid Audit functionality is impacted when you downgrade to the free/open license.
+Once you have cut over to the new API key-based authentication using the Relativity Server CLI, you no longer need to use the Elastic Platinum license key that Relativity previously provided as part of our Elasticsearch installation package (“DataTron”) to use Data Grid Audit. Moving forward, you will use the free/open Elastic license, or optionally apply a Platinum or Enterprise license key held by your organization if you are interested in utilizing Elasticsearch features that are not supported under the free/open license. No core Data Grid Audit functionality is impacted when you downgrade to the free/open license.
 
 All Relativity Server customers that use Data Grid Audit will be required to upgrade to at least Server 2024 Patch 1, cut over to the new API key-based authentication using the Relativity Server CLI, and swap out the Relativity-provided license key for a free/open license or a Platinum/Enterprise license held by your organization by early 2026 in order for Data Grid Audit to continue working.
 
@@ -123,21 +123,21 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI.
 
 **All setup will occur on the SQL Primary server.**
 
-Note: If you have already run the �Set up Environment Watch� workflow on this host, you do not need to repeat steps 1-2 below.
+Note: If you have already run the ‘Set up Environment Watch’ workflow on this host, you do not need to repeat steps 1-2 below.
 
 1. **Install Elastic certificate on SQL Primary Server**
-2. **Download the CLI �** From [here](https://github.com/relativityone/server-environment-watch-releases), download the release bundle.
+2. **Download the CLI –** From [here](https://github.com/relativityone/server-environment-watch-releases), download the release bundle.
 3. **Open Command Terminal -** Launch Command Terminal v7 from the Start menu.
 4. **Extract the CLI** - Navigate to the directory where the release bundle was downloaded to and extract the Relativity.Server.Cli.YY.x.xxxx.zip.
-5. **Run the Setup Command �** From Command Prompt, execute the following command to enter the setup workflow:
+5. **Run the Setup Command –** From Command Prompt, execute the following command to enter the setup workflow:
 
 ./relsvr.exe setup
 
 1. **Select DataGrid**  
-2. **\[Only applicable if Data Grid Audit has been set up previously using the Relativity Server CLI\] Choose setup type �** If Data Grid Audit has been set up on this host previously, you will be prompted to select �Rerun Setup� or �Exit�. If you are using the Relativity Server CLI to set up Data Grid Audit on this host for the first time (even if you began adopting Data Grid Audit before the Relativity Server CLI was initially released), you will not be prompted to make this selection and the setup process will continue to the next step.
-3. **Provide Relativity parameters �** Enter the Relativity admin username and password and Relativity URL.
+2. **\[Only applicable if Data Grid Audit has been set up previously using the Relativity Server CLI\] Choose setup type –** If Data Grid Audit has been set up on this host previously, you will be prompted to select “Rerun Setup” or “Exit”. If you are using the Relativity Server CLI to set up Data Grid Audit on this host for the first time (even if you began adopting Data Grid Audit before the Relativity Server CLI was initially released), you will not be prompted to make this selection and the setup process will continue to the next step.
+3. **Provide Relativity parameters –** Enter the Relativity admin username and password and Relativity URL.
 4. **Provide Elasticsearch parameters -** Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).
-5. **Verify the generated API keys** � To verify that the API keys used for authenticating Elastic to Relativity were generated:
+5. **Verify the generated API keys** – To verify that the API keys used for authenticating Elastic to Relativity were generated:
     1. Open Kibana
     2. Navigate to the path: /app/management/security/api_keys
     3. Verify that API keys for rel-datagrid is present. Note: This API key will need to be refreshed every six months.
@@ -145,7 +145,7 @@ Note: If you have already run the �Set up Environment Watch� workflow on thi
 
 Note: Steps 12 -15 are only applicable if you are running the CLI setup workflow to cut over from the legacy custom realms-based authentication to API key-based authentication.
 
-1. **Verify that API key authentication is being used** � Execute the below query at the EDDS database level to verify that Elastic API key authentication is enabled.
+1. **Verify that API key authentication is being used** – Execute the below query at the EDDS database level to verify that Elastic API key authentication is enabled.
 
 Select TOP(50) \* from \[EDDSLogging\].\[eddsdbo\].\[RelativityLogs\] where message like '%elastic api key authentication%' ORDER by 1 desc
 
@@ -154,7 +154,7 @@ SELECT \*  FROM \[EDDS\].\[eddsdbo\].\[Toggle\]  where name ='ElasticAPIKeyAuthe
 1. **Verify that the Audit dashboard is functional**
     1. Navigate to the Audit tab in your Relativity environment.
     2. Verify that the Audit dashboard graphs and data is loading.
-2. **Update license key** � After successfully running the Data Grid setup and verifying that API key authentication is now being used, you need to update your license to free/open or a different Platinum or Enterprise license that is not the one previously provided by Relativity.
+2. **Update license key** – After successfully running the Data Grid setup and verifying that API key authentication is now being used, you need to update your license to free/open or a different Platinum or Enterprise license that is not the one previously provided by Relativity.
     1. Open Kibana and navigate to Stack Management -> License management
     2. Update your license
 
@@ -169,7 +169,7 @@ Note: Step 18 is only applicable if you are doing a first-time setup of Audit in
 
 If the setup completes successfully, the integration between Elasticsearch and Relativity for Data Grid Audit is now configured for your environment. If you encountered any errors while entering Relativity or Elasticsearch parameters, you will have three retry attempts before the CLI forces an exit and you must restart the setup process.
 
-Refer to the [Troubleshooting Guide](/docs/troubleshooting.md) if you encounter any issues.
+Refer to the [Troubleshooting Guide](/docs/environment_watch_troubleshooting.md) if you encounter any issues.
 
 ### Elastic relativity_dashboard_user role
 
