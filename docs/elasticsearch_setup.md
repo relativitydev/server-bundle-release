@@ -187,7 +187,8 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 Modify config\\elasticsearch.yml on each node:
 
-- cluster.name: my-cluster  
+```
+    cluster.name: my-cluster  
     node.name: node-1 # Change for each node (node-2, node-3)  
     node.roles: \[master, data\]  
     path.data: C:\\Elasticsearch\\Node1\\data  
@@ -196,20 +197,25 @@ Modify config\\elasticsearch.yml on each node:
     http.port: 9200  
     discovery.seed_hosts: \["192.168.1.101", "192.168.1.102", "192.168.1.103"\]  
     cluster.initial_master_nodes: \["node-1", "node-2", "node-3"\]
+```
 
 1. **Set JVM Heap Size**  
 
 Edit config\\jvm.options and set:
 
-- \-Xms8g  
-    \-Xmx10g
+```
+-Xms8g
+-Xmx10g
+```
 
 1. **Run Elasticsearch as a Windows Service**
 
 Open PowerShell (as Administrator) and navigate to the Elasticsearch folder:
 
-- .\\bin\\elasticsearch-service.bat install  
-    .\\bin\\elasticsearch-service.bat start
+```
+.\bin\elasticsearch-service.bat install
+.\bin\elasticsearch-service.bat start
+```
 
 #### Step 2: Secure Elasticsearch Communications
 
@@ -217,7 +223,9 @@ Open PowerShell (as Administrator) and navigate to the Elasticsearch folder:
 
 Run the following command to generate certificates:
 
-.\\bin\\elasticsearch-certutil.bat http
+```
+.\bin\elasticsearch-certutil.bat http
+```
 
 Follow the prompts and distribute certificates to all nodes.
 
@@ -225,21 +233,27 @@ Follow the prompts and distribute certificates to all nodes.
 
 Edit config\\elasticsearch.yml:
 
-- xpack.security.enabled: true  
-    xpack.security.http.ssl.enabled: true  
-    xpack.security.http.ssl.keystore.path: certs/http.p12  
-    xpack.security.transport.ssl.enabled: true  
-    xpack.security.transport.ssl.verification_mode: certificate  
-    xpack.security.transport.ssl.keystore.path: certs/transport.p12  
-    xpack.security.transport.ssl.truststore.path: certs/transport.p12
+```
+xpack.security.enabled: true  
+xpack.security.http.ssl.enabled: true  
+xpack.security.http.ssl.keystore.path: certs/http.p12  
+xpack.security.transport.ssl.enabled: true  
+xpack.security.transport.ssl.verification_mode: certificate  
+xpack.security.transport.ssl.keystore.path: certs/transport.p12  
+xpack.security.transport.ssl.truststore.path: certs/transport.p12
+```
 
 1. **Restart Elasticsearch Services on All Nodes**
 
-- .\\bin\\elasticsearch-service.bat restart
+```
+.\bin\elasticsearch-service.bat restart
+```
 
 1. **Create Elastic User Passwords**
 
-- .\\bin\\elasticsearch-reset-password -u elastic
+```
+.\bin\elasticsearch-reset-password -u elastic
+```
 
 #### Step 3: Install and Configure Kibana
 
@@ -247,7 +261,9 @@ Edit config\\elasticsearch.yml:
     - Download and extract the Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
 2. **Start Kibana from the command line**
 
-.\\bin\\kibana.bat
+```
+.\bin\kibana.bat
+```
 
 1. **Enroll Kibana**
 
@@ -259,7 +275,9 @@ Edit config\\elasticsearch.yml:
 
 1. **Generate Kibana encryption keys**
 
-.\\bin\\ kibana-encryption-keys generate.bat
+```
+.\bin\kibana-encryption-keys generate.bat
+```
 
 1. **Create Kibana Windows Service**
 
@@ -289,8 +307,10 @@ If the service name is not what you want (e.g., kibana), you can rename it using
         server.ssl.key: certs/kibana.key
 2. **Encrypt Traffic Between Kibana and Elasticsearch**
 
-- elasticsearch.ssl.verificationMode: certificate  
+```
+    elasticsearch.ssl.verificationMode: certificate  
     elasticsearch.ssl.certificateAuthorities: certs/ca.crt
+```
 
 1. **Restart the Kibana service from Windows Services**
 
@@ -301,13 +321,15 @@ If the service name is not what you want (e.g., kibana), you can rename it using
     - Download and extract the Windows .zip file.
 2. **Configure APM Server (config\\apm-server.yml)**
 
-- apm-server:  
+```
+    apm-server:  
     host: "0.0.0.0:8200"  
     output.elasticsearch:  
     hosts: \["<https://192.168.1.101:9200>", "<https://192.168.1.102:9200>", "<https://192.168.1.103:9200"\>]  
     username: "apm_system" “elastic_username”  
     password: "your_apm_password" “elastic_password”  
     ssl.certificate_authorities: certs/ca.crt
+```
 
 1. **Run APM Server as a Windows Service**
 
@@ -320,14 +342,18 @@ If the service name is not what you want (e.g., kibana), you can rename it using
 
 1. **Check Elasticsearch Cluster Health**
 
-- curl -k -u elastic:your_password <https://192.168.1.101:9200/_cluster/health?pretty>
+```
+  curl -k -u elastic:your_password <https://192.168.1.101:9200/_cluster/health?pretty>
+```
 
 1. **Check Kibana Status**
     - Open a browser and go to <https://192.168.1.101:5601>.
     - Log in using elastic or kibana_system credentials.
 2. **Test APM Server**
 
-- curl -k -X GET "<https://192.168.1.101:8200>"
+```
+  curl -k -X GET "<https://192.168.1.101:8200>"
+```
 
 ## Next
 

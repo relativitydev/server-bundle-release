@@ -56,7 +56,10 @@ This only needs to be done on your SQL Primary Server.
 4. **Extract the CLI** - Navigate to the directory where the gold release bundle was downloaded to and extract the bundle and then extract Relativity.Server.Cli.YY.x.xxxx.zip.
 5. **Run the Setup Command –** From Command Prompt, execute the following command to enter the setup workflow:
 
+```
 ./relsvr.exe setup
+
+```
 
 6. **Select Environment Watch**  
 7. **\[Only applicable if Environment Watch has been set up previously\] Choose setup type –** If Environment Watch has been set up on this host previously, you will be prompted to select “Upgrade” or “Rerun Setup”. If you are setting up Environment Watch for the first time, you will not be prompted to make this selection and the setup process will continue to the next step.
@@ -134,7 +137,10 @@ Note: If you have already run the ‘Set up Environment Watch’ workflow on thi
 4. **Extract the CLI** - Navigate to the directory where the release bundle was downloaded to and extract the Relativity.Server.Cli.YY.x.xxxx.zip.
 5. **Run the Setup Command –** From Command Prompt, execute the following command to enter the setup workflow:
 
+```
 ./relsvr.exe setup
+
+```
 
 6. **Select DataGrid**  
 7. **\[Only applicable if Data Grid Audit has been set up previously using the Relativity Server CLI\] Choose setup type –** If Data Grid Audit has been set up on this host previously, you will be prompted to select “Rerun Setup” or “Exit”. If you are using the Relativity Server CLI to set up Data Grid Audit on this host for the first time (even if you began adopting Data Grid Audit before the Relativity Server CLI was initially released), you will not be prompted to make this selection and the setup process will continue to the next step.
