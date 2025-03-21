@@ -30,18 +30,19 @@ Before entering the Environment Watch or Data Grid Audit setup workflows, perfor
 
 1. Confirm that all Elastic components are installed and verified from stages 1 and 2 of this installation guide. This includes ensuring that the minimum versions of Elasticsearch, Kibana, and APM Server that are specified in the Environment Watch release bundle that you are using are installed and that Elastic certificates have been installed on all Elastic hosts.
 
-Note: Ensuring that you are on the minimum supported version of Elasticsearch for Data Grid Audit as specified in the release bundle is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. **If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.**
+> [!NOTE]
+> Ensuring that you are on the minimum supported version of Elasticsearch for Data Grid Audit as specified in the release bundle is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. **If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.**
 
 While 7.17 is the minimum supported version for the initial release of the Relativity Server CLI in Server 2024 Patch 1, you should always check the minimum version requirements in the specific Environment Watch release bundle that you are using.
 
-1. Be prepared to enter admin usernames, passwords, and URLs for Relativity and Elastic components.
-2. \[Data Grid Audit only\] Install the mapper-size plugin on all nodes in your Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). You also must restart the Elasticsearch service after installing the plugin.
-3. \[Data Grid Audit only\] Before upgrading to Elasticsearch 8.17, the ESIndexCreationSetting may need to be updated. For further details, please refer to the [Instance settings' descriptions - Server2024](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
-4. At least the minimum Relativity major version and patch specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativityone/server-environment-watch-releases/releases) requirements for the minimum version required.
-5. Verify that the InfraWatch Services application is installed in your Relativity instance (this RAP is delivered as part of the base Relativity Server 2024 installation package).
-6. Follow [these instructions](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) to whitelist all hosts with Elastic installed for Secret Store access.
-7. Ensure that you have access to Relativity, as well as the Primary and Distributed SQL Servers
-8. The user must have Command Prompt installed to run the CLI executable.
+2. Be prepared to enter admin usernames, passwords, and URLs for Relativity and Elastic components.
+3. \[Data Grid Audit only\] Install the mapper-size plugin on all nodes in your Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). You also must restart the Elasticsearch service after installing the plugin.
+4. \[Data Grid Audit only\] Before upgrading to Elasticsearch 8.17, the ESIndexCreationSetting may need to be updated. For further details, please refer to the [Instance settings' descriptions - Server2024](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
+5. At least the minimum Relativity major version and patch specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativityone/server-environment-watch-releases/releases) requirements for the minimum version required.
+6. Verify that the InfraWatch Services application is installed in your Relativity instance (this RAP is delivered as part of the base Relativity Server 2024 installation package).
+7. Follow [these instructions](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) to whitelist all hosts with Elastic installed for Secret Store access.
+8. Ensure that you have access to Relativity, as well as the Primary and Distributed SQL Servers
+9. The user must have Command Prompt installed to run the CLI executable.
 
 ### Set up Environment Watch
 
@@ -57,18 +58,18 @@ This only needs to be done on your SQL Primary Server.
 
 ./relsvr.exe setup
 
-1. **Select Environment Watch**  
-2. **\[Only applicable if Environment Watch has been set up previously\] Choose setup type –** If Environment Watch has been set up on this host previously, you will be prompted to select “Upgrade” or “Rerun Setup”. If you are setting up Environment Watch for the first time, you will not be prompted to make this selection and the setup process will continue to the next step.
-3. **Provide Relativity parameters –** Enter the Relativity admin username and password and Relativity URL.
-4. **Provide Elasticsearch parameters -** Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).
-5. **Provide APM Server parameters –** Enter your Elasticsearch APM Server Endpoint URL.
-6. **Provide Kibana parameters** – Enter your Elasticsearch Kibana server Endpoint URL.
-7. **Verify the generated API keys** – To verify that the API keys used for authenticating Elastic to Relativity were generated:
+6. **Select Environment Watch**  
+7. **\[Only applicable if Environment Watch has been set up previously\] Choose setup type –** If Environment Watch has been set up on this host previously, you will be prompted to select “Upgrade” or “Rerun Setup”. If you are setting up Environment Watch for the first time, you will not be prompted to make this selection and the setup process will continue to the next step.
+8. **Provide Relativity parameters –** Enter the Relativity admin username and password and Relativity URL.
+9. **Provide Elasticsearch parameters -** Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).
+10. **Provide APM Server parameters –** Enter your Elasticsearch APM Server Endpoint URL.
+11. **Provide Kibana parameters** – Enter your Elasticsearch Kibana server Endpoint URL.
+12. **Verify the generated API keys** – To verify that the API keys used for authenticating Elastic to Relativity were generated:
     1. Open Kibana
     2. Navigate to the path: /app/management/security/api_keys
     3. Verify that API keys for rel-alerts and rel-infrawatch are present. Note: these API keys will need to be refreshed every six months.
-8. Install Elastic certificates on all Web Servers in your environment. Restart services on each host after installing the certificates
-9. Install Elastic certificates on all Agent Servers in your environment. Restart services on each host after installing the certificates
+13. Install Elastic certificates on all Web Servers in your environment. Restart services on each host after installing the certificates
+14. Install Elastic certificates on all Agent Servers in your environment. Restart services on each host after installing the certificates
 
 If the setup completes successfully, Environment Watch is now configured for your environment. If you encountered any errors while entering Relativity or Elastic parameters, you will have three retry attempts before the CLI forces an exit and you must restart the setup process.
 
@@ -115,6 +116,8 @@ All Relativity Server customers that use Data Grid Audit will be required to upg
 
 **Steps 12-15 below include important instructions for any existing Audit users that are setting up Data Grid using the Relativity Server CLI for the fist time.**
 
+| :point_up:    |
+|---------------|
 **REMINDER**: If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.
 
 #### Set up instructions
@@ -133,39 +136,42 @@ Note: If you have already run the ‘Set up Environment Watch’ workflow on thi
 
 ./relsvr.exe setup
 
-1. **Select DataGrid**  
-2. **\[Only applicable if Data Grid Audit has been set up previously using the Relativity Server CLI\] Choose setup type –** If Data Grid Audit has been set up on this host previously, you will be prompted to select “Rerun Setup” or “Exit”. If you are using the Relativity Server CLI to set up Data Grid Audit on this host for the first time (even if you began adopting Data Grid Audit before the Relativity Server CLI was initially released), you will not be prompted to make this selection and the setup process will continue to the next step.
-3. **Provide Relativity parameters –** Enter the Relativity admin username and password and Relativity URL.
-4. **Provide Elasticsearch parameters -** Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).
-5. **Verify the generated API keys** – To verify that the API keys used for authenticating Elastic to Relativity were generated:
+6. **Select DataGrid**  
+7. **\[Only applicable if Data Grid Audit has been set up previously using the Relativity Server CLI\] Choose setup type –** If Data Grid Audit has been set up on this host previously, you will be prompted to select “Rerun Setup” or “Exit”. If you are using the Relativity Server CLI to set up Data Grid Audit on this host for the first time (even if you began adopting Data Grid Audit before the Relativity Server CLI was initially released), you will not be prompted to make this selection and the setup process will continue to the next step.
+8. **Provide Relativity parameters –** Enter the Relativity admin username and password and Relativity URL.
+9. **Provide Elasticsearch parameters -** Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).
+10. **Verify the generated API keys** – To verify that the API keys used for authenticating Elastic to Relativity were generated:
     1. Open Kibana
     2. Navigate to the path: /app/management/security/api_keys
     3. Verify that API keys for rel-datagrid is present. Note: This API key will need to be refreshed every six months.
-6. **Restart Relativity services**
+11. **Restart Relativity services**
 
-Note: Steps 12 -15 are only applicable if you are running the CLI setup workflow to cut over from the legacy custom realms-based authentication to API key-based authentication.
+> [!NOTE]
+> Steps 12 -15 are only applicable if you are running the CLI setup workflow to cut over from the legacy custom realms-based authentication to API key-based authentication.
 
-1. **Verify that API key authentication is being used** – Execute the below query at the EDDS database level to verify that Elastic API key authentication is enabled.
+12. **Verify that API key authentication is being used** – Execute the below query at the EDDS database level to verify that Elastic API key authentication is enabled.
 
 Select TOP(50) \* from \[EDDSLogging\].\[eddsdbo\].\[RelativityLogs\] where message like '%elastic api key authentication%' ORDER by 1 desc
 
 SELECT \*  FROM \[EDDS\].\[eddsdbo\].\[Toggle\]  where name ='ElasticAPIKeyAuthenticationToggle'
 
-1. **Verify that the Audit dashboard is functional**
+13. **Verify that the Audit dashboard is functional**
     1. Navigate to the Audit tab in your Relativity environment.
     2. Verify that the Audit dashboard graphs and data is loading.
-2. **Update license key** – After successfully running the Data Grid setup and verifying that API key authentication is now being used, you need to update your license to free/open or a different Platinum or Enterprise license that is not the one previously provided by Relativity.
+14. **Update license key** – After successfully running the Data Grid setup and verifying that API key authentication is now being used, you need to update your license to free/open or a different Platinum or Enterprise license that is not the one previously provided by Relativity.
     1. Open Kibana and navigate to Stack Management -> License management
     2. Update your license
 
-Note: Steps 16-17 are only applicable if you have not already installed Elastic certificates on Web and Agent Servers during Environment Watch setup or a previous Data Grid Audit setup.
+> [!NOTE]
+> Steps 16-17 are only applicable if you have not already installed Elastic certificates on Web and Agent Servers during Environment Watch setup or a previous Data Grid Audit setup.
 
-1. **Install Elastic certificates on all Web Servers** in your environment. Restart services on each host after installing the certificates.
-2. **Install Elastic certificates on all Agent Servers** in your environment. Restart services on each host after installing the certificates.
+15. **Install Elastic certificates on all Web Servers** in your environment. Restart services on each host after installing the certificates.
+16. **Install Elastic certificates on all Agent Servers** in your environment. Restart services on each host after installing the certificates.
 
-Note: Step 18 is only applicable if you are doing a first-time setup of Audit in your Relativity instance.
+> [!NOTE]
+> Step 18 is only applicable if you are doing a first-time setup of Audit in your Relativity instance.
 
-1. **Install Audit application and agents** - If you are setting up Data Grid Audit for the first time, you will also need to install the Audit application to workspaces and add the Audit agents. See [here](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit) for more information about the Audit agents.
+17. **Install Audit application and agents** - If you are setting up Data Grid Audit for the first time, you will also need to install the Audit application to workspaces and add the Audit agents. See [here](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit) for more information about the Audit agents.
 
 If the setup completes successfully, the integration between Elasticsearch and Relativity for Data Grid Audit is now configured for your environment. If you encountered any errors while entering Relativity or Elasticsearch parameters, you will have three retry attempts before the CLI forces an exit and you must restart the setup process.
 
@@ -177,7 +183,8 @@ After you complete all five steps of this installation guide and have Environmen
 
 You can see the privileges associated with the relativity_dashboard_user role by navigating to Stack Management > Roles > relativity_dashboard_user in Kibana.
 
-**Important**: In order to extend the ability to export saved searches, go to the kibana.yml file on the server where Kibana is installed, update ‘xpack.reporting.roles.enabled’ to “false”, and then restart the Kibana service.
+> [!IMPORTANT] 
+> In order to extend the ability to export saved searches, go to the kibana.yml file on the server where Kibana is installed, update ‘xpack.reporting.roles.enabled’ to “false”, and then restart the Kibana service.
 
 ![](/resources/relativity_server_cli_setup_002.png)
 
