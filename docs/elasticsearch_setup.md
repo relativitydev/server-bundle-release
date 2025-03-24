@@ -1,5 +1,4 @@
-﻿
-![](/resources/elasticsearch_setup_001.png)
+﻿![](/resources/elasticsearch_setup_001.png)
 
 # Installing Elasticsearch, Kibana, and APM Server
 
@@ -357,4 +356,4 @@ If the service name is not what you want (e.g., kibana), you can rename it using
 
 ## Next
 
-After setting up Elastic proceed to stage 2: [Use the Relativity Server CLI to setup Environment Watch and/or Data Grid](/docs/cli_environmentwatch_setup.md)
+After setting up Elastic proceed to stage 2: [Use the Relativity Server CLI to setup Environment Watch and/or Data Grid](/docs/relativity_server_cli_setup.md)

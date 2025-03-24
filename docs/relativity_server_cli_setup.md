@@ -1,21 +1,3 @@
-## Table of Contents
-
-- [Set up Environment Watch and/or Data Grid Audit using the Relativity Server CLI](#set-up-environment-watch-andor-data-grid-audit-using-the-relativity-server-cli)
-
-    * [Before you start](#before-you-start)
-
-    * [Set up Environment Watch](#set-up-environment-watch)
-
-    * [Set up Data Grid Audit](#set-up-data-grid-audit)
-
-        + [Important information for existing Data Grid Audit customers](#important-information-for-existing-data-grid-audit-customers)
-
-        + [Set up instructions](#set-up-instructions)
-
-    * [Elastic relativity_dashboard_user role](#elastic-relativity_dashboard_user-role)
-
-- [Next](#next)
-
 ![](/resources/relativity_server_cli_setup_001.png)
 
 # Set up Environment Watch and/or Data Grid Audit using the Relativity Server CLI
