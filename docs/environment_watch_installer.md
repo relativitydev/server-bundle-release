@@ -104,7 +104,6 @@ After successful verification, proceed with the same installation steps for the 
 
 The following sequence is suggested:
 
-- SQL Primary
 - SQL Distributed
 - Web Servers
 - Agent servers
