@@ -8,7 +8,7 @@ The Relativity Environment Watch installer package contains a monitoring agent (
 
 - Elasticsearch, Kibana, and APM Server have been fully set up in accordance with [stage 1](/docs/elasticsearch_setup.md) of the Environment Watch installation guide.
 - Environment Watch has been set up using the Relativity Server CLI and Elastic certificates are installed on all Relativity servers in accordance with [stage 2](/docs/cli_environmentwatch_setup.md) of the Environment Watch installation guide.
-- Windows Server must be installed on any host where the Environment Watch monitoring agent and Windows service will be installed. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
+- The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
 - Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting
 - SQL Primary and Distributed access
 - Relativity access
@@ -17,21 +17,11 @@ The Relativity Environment Watch installer package contains a monitoring agent (
 ## Setup
 
 ### Downloading the Environment Watch installer
-Download the Relativity.EnvironmentWatch.Installer from [here](https://github.com/relativitydev/server-bundle-release/releases).
+Download the [Server.Bundle.v20xx.yy.zz.gold.zip](https://github.com/relativitydev/server-bundle-release/releases) and extract the ZIP contents to a local directory if this hasn't been done already.
 
 
 ### Install the Environment Watch monitoring agent and Windows service on each host
 The objective is to first ensure that SQL Primary monitoring is working and confirming metrics are being transmitted to the telemetry backend. After verifying, proceed with installing on all hosts within your Relativity environment that needs to be monitored.
-
-The following sequence is suggested:
-
-- SQL Primary
-- SQL Distributed
-- Web Servers
-- Agent servers
-- Other (Fileshare, Analytics, Message Broker, Worker, etc.)
-
-Note: Any Windows-based OS can be monitored, regardless of whether a Relativity product is installed, as long as the prerequisites have been met.
 
 ### Steps to install Environment Watch
 
@@ -112,6 +102,14 @@ Upon successful installation, it will create a Relativity Environment Watch wind
 
 After successful verification, proceed with the same installation steps for the next server and continue until all servers to be monitored are available with metrics in the above dashboard
 
+The following sequence is suggested:
+
+- SQL Distributed
+- Web Servers
+- Agent servers
+- Other (Fileshare, Analytics, Message Broker, Worker, etc.)
+
+Note: Any Windows-based OS can be monitored, regardless of whether a Relativity product is installed, as long as the prerequisites have been met.
 
 ## Repairing or removing Environment Watch installation
 The installer can also be run to repair or remove an existing installation of Environment Watch. Run the installer on a machine where the application is installed. Select one of the following options:
