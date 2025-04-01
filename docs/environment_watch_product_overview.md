@@ -1,18 +1,4 @@
-﻿# **Environment Watch**
-
-This read.me contains 1) important information about this release bundle and 2) an overview of Environment Watch.
-
-# Getting started with this release bundle
-
-- For installation instructions, see [here](https://github.com/relativityone/server-environment-watch-releases/blob/main/docs/installation.md)
-- Full system requirements are covered in the installation guide above, but please note the following minimum version requirements for this release bundle:
-  - **Minimum required Relativity Server version**: Server 2024 Patch 1 (24.0.375.2-update.1.0)
-  - **Minimum required Elasticsearch version**:
-    - Environment Watch-only cluster: 8.17
-    - Data Grid Audit-only cluster: 7.17
-    - Shared Environment Watch and Data Grid Audit cluster: 8.17
-
-# Environment Watch Overview
+﻿# Environment Watch Overview
 
 Environment Watch is a turnkey monitoring solution that provides Relativity Server customers with enhanced insights into the state of their environment.
 
