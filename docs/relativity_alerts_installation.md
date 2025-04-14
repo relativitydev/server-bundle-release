@@ -1,4 +1,5 @@
 # Relativity Alerts Application Installation
+
 ![](../resources/relativity_alerts_installation_step.png)
 
 ## Summary
@@ -14,9 +15,9 @@ The Relativity Alerts application is a new application as part of the Relativity
 ## Prerequisites
 Requirements for installation of the Relativity Alerts Application:  
 • Relativity Server 2024 Patch 1 release.  
-• Configure [Elasticsearch, Kibana, and APM server](https://github.com/relativitydev/server-bundle-release/blob/main/docs/elasticsearch_setup.md) in an environment.  
-• Run the one-time [CLI setup](https://github.com/relativitydev/server-bundle-release/blob/main/docs/cli_environmentwatch_setup.md) for Environment Watch.  
-• Install [Relativity Environment Watch Agent](https://github.com/relativitydev/server-bundle-release/blob/main/docs/environment_watch_installer.md) in an environment.
+• Configure [Elasticsearch, Kibana, and APM server](elasticsearch_setup.md) in an environment.  
+• Run the one-time [CLI setup](relativity_server_cli_setup.md) for Environment Watch.  
+• Install [Relativity Environment Watch Agent](environment_watch_installer.md) in an environment.
 
 ## Permissions
 * To install the application, access it, and receive alerts, the user must be part of the Relativity System Administrators Group.
@@ -48,7 +49,7 @@ A list of common install issues and their resolutions are available at the [trou
 
 ![relativity_alerts_verification_002](../resources/relativity_alerts_verification_002.png)
 
-3. When on "Logs & Dashboards" tab, find "Alerts Overview" dashboard and click the link. A new web browser tab will be created and you should be redirected to "Alerts Overview" dashboard in Kibana. If you have not loged in into Kibana yet, you will be prompted with a Kibana login page. Please login with your Kibana user account with [relativity_dashboard_user](<put a link here>) privileges.
+3. When on "Logs & Dashboards" tab, find "Alerts Overview" dashboard and click the link. A new web browser tab will be created and you should be redirected to "Alerts Overview" dashboard in Kibana. If you have not loged in into Kibana yet, you will be prompted with a Kibana login page. Please login with your Kibana user account with privileges.
 
 ![relativity_alerts_verification_003_001](../resources/relativity_alerts_verification_003_001.png)
 ![relativity_alerts_verification_003_002](../resources/relativity_alerts_verification_003_002.png)

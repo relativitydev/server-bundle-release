@@ -1,13 +1,14 @@
 # Relativity Environment Watch installation
-![](/resources/Installer_current_step.png)
+
+![](../resources/Installer_current_step.png)
 
 ## Summary
 The Relativity Environment Watch installer package contains a monitoring agent (rel-infrawatch-agent.exe) that collects and transmits telemetry data to Elastic and a Windows service (rel-envwatch-service.exe) that is responsible for launching the monitoring agent process and enables monitoring agent auto-upgrade process. You will install this package on all hosts in your environment that you want to monitor.
 
 ## Prerequisites
 
-- Elasticsearch, Kibana, and APM Server have been fully set up in accordance with [stage 1](/docs/elasticsearch_setup.md) of the Environment Watch installation guide.
-- Environment Watch has been set up using the Relativity Server CLI and Elastic certificates are installed on all Relativity servers in accordance with [stage 2](/docs/cli_environmentwatch_setup.md) of the Environment Watch installation guide.
+- Elasticsearch, Kibana, and APM Server have been fully set up in accordance with [stage 1](elasticsearch_setup.md) of the Environment Watch installation guide.
+- Environment Watch has been set up using the Relativity Server CLI and Elastic certificates are installed on all Relativity servers in accordance with [stage 2](relativity_server_cli_setup.md) of the Environment Watch installation guide.
 - The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
 - Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting
 - SQL Primary and Distributed access
@@ -32,7 +33,7 @@ The objective is to first ensure that SQL Primary monitoring is working and conf
     ```
 
 
-    ![](/resources/Installer_welcome.png)
+    ![](../resources/Installer_welcome.png)
 
 2. Provide Relativity Service Account details 
     
@@ -46,7 +47,7 @@ The objective is to first ensure that SQL Primary monitoring is working and conf
 3. To specify an installation location, follow the below steps
 
     1. Click on **Options**
-    <br>![](/resources/Installer_diff_location.png)
+    <br/>![](../resources/Installer_diff_location.png)
 
     2. Click **Browse** to select a directory for the application installation
 
@@ -85,7 +86,7 @@ Upon successful installation, it will create a Relativity Environment Watch wind
 - The service status should be Running.
 - The service runs using the supplied Relativity Service Account. 
 
-![](/resources/Installer_service.png)
+![](../resources/Installer_service.png)
 
 - The following processes should be running:
     - rel-envwatch-service.exe
@@ -97,7 +98,7 @@ Upon successful installation, it will create a Relativity Environment Watch wind
 - Go to Kibana --> Dashboards
 - Open [Relativity] Host Infrastructure Overview dashboard
 - Verify CPU/RAM/Disk metrics are visible for this host
-![](/resources/Installer_hostmetric.png)
+![](../resources/Installer_hostmetric.png)
 
 
 After successful verification, proceed with the same installation steps for the next server and continue until all servers to be monitored are available with metrics in the above dashboard
@@ -125,10 +126,10 @@ During the installation process, two log files are created in the `%TEMP%` direc
 - MSI logfile (Relativity_Environment_Watch_{timestamp}_000_Relativity.EnvironmentWatch.Setup.msi.log)
     - This log file records detailed information about the Windows Installer (MSI) execution. It is typically the most useful log for diagnosing issues, as it provides granular details about the installation process, including any errors or failures. 
 
-    ![](/resources/Installer_logfiles.png)
+    ![](../resources/Installer_logfiles.png)
 
 ## Handling errors
-If any errors are encountered during the installation process, please refer to the [troubleshooting guide](/docs/environment_watch_troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
+If any errors are encountered during the installation process, please refer to the [troubleshooting guide](environment_watch_troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
 
 ## Next steps
-Click [here](/docs/relativity_alerts_installation.md) to Install Relativity Alerts Application
+Click [here](relativity_alerts_installation.md) to Install Relativity Alerts Application

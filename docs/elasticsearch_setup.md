@@ -1,6 +1,6 @@
-﻿![](/resources/elasticsearch_setup_001.png)
+﻿# Installing Elasticsearch, Kibana, and APM Server
 
-# Installing Elasticsearch, Kibana, and APM Server
+![](../resources/elasticsearch_setup_001.png)
 
 This first stage of the Environment Watch and/or Data Grid Audit setup involves installing required third-party software from the Elastic stack. There are three Elastic components used for these two products:
 
@@ -65,7 +65,7 @@ Note: The documentation below includes several links to instructions in Elastic�
 
 Setting up your Elastic stack components will require you to install Elastic software on one or more servers. This installation guide is based on a scenario where you are configuring a single shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit in a Tier 1 (Small) Relativity Server environment. In this scenario you will be installing Elastic on five separate servers as pictured below. The **_Hardware Requirements by Instance Tier_** section below provides hardware guidance based on the size of your Relativity Server environment and whether you are setting up Environment Watch, Data Grid Audit, or both.
 
-![](/resources/elasticsearch_setup_002.png)
+![](../resources/elasticsearch_setup_002.png)
 
 **_Tier 1 environment used for Environment Watch and Data Grid Audit_**
 
@@ -270,7 +270,7 @@ xpack.security.transport.ssl.truststore.path: certs/transport.p12
 - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, and then click the button to connect your Kibana instance with Elasticsearch.
 - Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch.
 
-![](/resources/elasticsearch_setup_003.png)
+![](../resources/elasticsearch_setup_003.png)
 
 1. **Generate Kibana encryption keys**
 
@@ -356,4 +356,4 @@ If the service name is not what you want (e.g., kibana), you can rename it using
 
 ## Next
 
-After setting up Elastic proceed to stage 2: [Use the Relativity Server CLI to setup Environment Watch and/or Data Grid](/docs/relativity_server_cli_setup.md)
+After setting up Elastic proceed to stage 2: [Use the Relativity Server CLI to setup Environment Watch and/or Data Grid](relativity_server_cli_setup.md)

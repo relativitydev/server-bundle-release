@@ -6,7 +6,7 @@ This guide will help you resolve common issues that may arise during the install
 
 * [After Installation](#after-installation)
 
-### During Installation
+## During Installation
 
 ### Issue 1: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch." error is displayed.
 ![ew-toggle-disabled-exception.png](../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-exception.png)
@@ -14,7 +14,7 @@ This guide will help you resolve common issues that may arise during the install
 #### This error occurs for the following reason:
     1. Relativity Server CLI First-Time Setup not executed properly.
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     1. Please execute the Relativity Server CLI first time setup again to resolve this issue.
 
 ### Issue 2: "This operation cannot be completed because an HTTP request to the Elasticsearch server failed. Please try again. If the issue persists, ensure that the Elasticsearch server is accessible and the configuration is correct." error is displayed.
@@ -24,17 +24,17 @@ This guide will help you resolve common issues that may arise during the install
     1. Missing Setup of Elastic/Kibana/APM Servers.
     2. Relativity Server CLI First-Time Setup not executed properly.
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     1. Please verify Elastic/Kibana/APM Servers are up and running.
     2. You might need to execute the Relativity Server CLI first time setup again to resolve this issue.
 
-### After Installation
+## After Installation
 
 ### Issue 3: "Agent information doesn't exist." error is displayed.
 ![alert-agent-doesnot-exist1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist1.png)
 ![alert-agent-doesnot-exist2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist2.png)
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     You might be missing the "Alert Manager" agent. Please follow below steps to verify and create a new agent if needed:
     Step 1: Verify the "Alert Manager" Agent
             a. Navigate to the Agents tab in Relativity.
@@ -56,7 +56,7 @@ This guide will help you resolve common issues that may arise during the install
 ![alert-agent-disabled1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled1.png)
 ![alert-agent-disabled2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled2.png)
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     Your "Alert Manager" agent might be disabled. Please follow below steps to verify and enable the agent if needed:
     Step 1: Verify the "Alert Manager" Agent
             a. Navigate to the Agents tab in Relativity.
@@ -73,7 +73,7 @@ This guide will help you resolve common issues that may arise during the install
 ![alert-agent-interval-exceeds1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds1.png)
 ![alert-agent-interval-exceeds2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds2.png)
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     Your "Alert Manager" agent might have exceeded the interval. Please follow below steps to verify and to update interval value if needed:
     Step 1: Verify the "Alert Manager" Agent
             a. Navigate to the Agents tab in Relativity.
@@ -93,7 +93,7 @@ This guide will help you resolve common issues that may arise during the install
     1. Missing Setup of Elastic/Kibana/APM Servers.
     2. Relativity Server CLI First-Time Setup not executed properly.
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     1. Ensure that the ElasticSearch, Kibana, and APM Servers are up and running. Verify that these services are properly started and accessible.
     2. Re-run the Relativity Server CLI first-time setup. It may be necessary to execute the setup again to resolve any configuration issues or missing components related to the integration.
 
@@ -103,7 +103,7 @@ This guide will help you resolve common issues that may arise during the install
 #### This error occurs for the following reason:
     1. User doesn't have System Administrator permissions.
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     1. Please verify that user has the System Administrator permissions to perform the required actions.
 
 ### Issue 8: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch" error is displayed.
@@ -112,5 +112,5 @@ This guide will help you resolve common issues that may arise during the install
 #### This error occurs for the following reason:
     1. Relativity Server CLI First-Time Setup not executed properly.
 
-#### Steps to troubleshoot:
+#### Steps to troubleshoot
     1. Please execute the Relativity Server CLI first time setup again to resolve this issue.

@@ -1,6 +1,6 @@
-![](/resources/relativity_server_cli_setup_001.png)
-
 # Set up Environment Watch and/or Data Grid Audit using the Relativity Server CLI
+
+![](../resources/relativity_server_cli_setup_001.png)
 
 Now that you have installed the required Elastic components for Environment Watch and/or Data Grid Audit, you will configure the integration between Elastic and Relativity by running the Relativity Server CLI on your Primary SQL Server. For Environment Watch, the Relativity Server CLI will also import all of the indexes, alerts, and dashboards that Relativity has developed and shipped as part of the Environment Watch product.
 
@@ -83,7 +83,7 @@ The following toggles are configured during the Environment Watch setup, which i
 
 - Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle"
 
-Refer to the [Troubleshooting Guide](/docs/environment_watch_troubleshooting.md) if you encounter any issues.
+Refer to the [Troubleshooting Guide](environment_watch_troubleshooting.md) if you encounter any issues.
 
 ### Set up Data Grid Audit
 
@@ -163,7 +163,7 @@ SELECT \*  FROM \[EDDS\].\[eddsdbo\].\[Toggle\]  where name ='ElasticAPIKeyAuthe
 
 If the setup completes successfully, the integration between Elasticsearch and Relativity for Data Grid Audit is now configured for your environment. If you encountered any errors while entering Relativity or Elasticsearch parameters, you will have three retry attempts before the CLI forces an exit and you must restart the setup process.
 
-Refer to the [Troubleshooting Guide](/docs/environment_watch_troubleshooting.md) if you encounter any issues.
+Refer to the [Troubleshooting Guide](environment_watch_troubleshooting.md) if you encounter any issues.
 
 ### Elastic relativity_dashboard_user role
 
@@ -174,8 +174,8 @@ You can see the privileges associated with the relativity_dashboard_user role by
 > [!IMPORTANT] 
 > In order to extend the ability to export saved searches, go to the kibana.yml file on the server where Kibana is installed, update ‘xpack.reporting.roles.enabled’ to “false”, and then restart the Kibana service.
 
-![](/resources/relativity_server_cli_setup_002.png)
+![](../resources/relativity_server_cli_setup_002.png)
 
 ## Next
 
-If you are setting up Environment Watch proceed to stage 3: [Install Environment Watch on all hosts](/docs/environment_watch_installer.md)
+If you are setting up Environment Watch proceed to stage 3: [Install Environment Watch on all hosts](environment_watch_installer.md)
