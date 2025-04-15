@@ -14,7 +14,7 @@ Requirements for installation of the Relativity Alerts Application:
 
 ## Permissions
 * To install the application, access it, and receive alerts, the user must be part of the Relativity System Administrators Group.
-* To access Kibana dashboards and saved searches a new account must be created for each user and be assigned to the custom Kibana role ([relativity_dashboard_user](<put a link here>)) which is installed during the Environment Watch CLI setup.
+* To access Kibana dashboards and saved searches a new account must be created for each user and be assigned to the custom Kibana role which is installed during the Environment Watch CLI setup.
 
 ## Installation
 To install the Relativity Alerts application on your Relativity instance:
@@ -40,7 +40,7 @@ A list of common install issues and their resolutions are available at the [trou
 2. Navigate to "Logs & Dashboards" tab, you should see all Environment Watch dashboards and saved searches available in Kibana.
     ![relativity_alerts_verification_002](../resources/relativity_alerts_verification_002.png)
 
-3. When on "Logs & Dashboards" tab, find "Alerts Overview" dashboard and click the link. A new web browser tab will be created and you should be redirected to "Alerts Overview" dashboard in Kibana. If you have not loged in into Kibana yet, you will be prompted with a Kibana login page. Please login with your Kibana user account with [relativity_dashboard_user](<put a link here>) privileges.
+3. When on "Logs & Dashboards" tab, find "Alerts Overview" dashboard and click the link. A new web browser tab will be created and you should be redirected to "Alerts Overview" dashboard in Kibana. If you have not loged in into Kibana yet, you will be prompted with a Kibana login page. Please login with your Kibana user account with privileges.
     ![relativity_alerts_verification_003_001](../resources/relativity_alerts_verification_003_001.png)
     ![relativity_alerts_verification_003_002](../resources/relativity_alerts_verification_003_002.png)
     ![relativity_alerts_verification_003_003](../resources/relativity_alerts_verification_003_003.png)
