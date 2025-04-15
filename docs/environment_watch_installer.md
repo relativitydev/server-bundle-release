@@ -7,8 +7,8 @@ The Relativity Environment Watch installer package contains a monitoring agent (
 
 ## Prerequisites
 
-- Elasticsearch, Kibana, and APM Server have been fully set up in accordance with [stage 1](elasticsearch_setup.md) of the Environment Watch installation guide.
-- Environment Watch has been set up using the Relativity Server CLI and Elastic certificates are installed on all Relativity servers in accordance with [stage 2](relativity_server_cli_setup.md) of the Environment Watch installation guide.
+- Elasticsearch, Kibana, and APM Server have been fully set up in accordance with [stage 1](/docs/elasticsearch_setup.md) of the Environment Watch installation guide.
+- Environment Watch has been set up using the Relativity Server CLI and Elastic certificates are installed on all Relativity servers in accordance with [stage 2](/docs/cli_environmentwatch_setup.md) of the Environment Watch installation guide.
 - The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
 - Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting
 - SQL Primary and Distributed access
@@ -41,7 +41,7 @@ The objective is to first ensure that SQL Primary monitoring is working and conf
 
     Otherwise, to configure this service with a different account, please check **Configure this Windows service to authenticate with a different user account** checkbox and provide Relativity Service Account details
 
-    > :warning: **Important note: The Relativity Service Account must be provided when Relativity product is not installed on the host**.
+    <div class="note">The Relativity Service Account must be provided when Relativity product is not installed on the host.</div>
 
 
 3. To specify an installation location, follow the below steps
@@ -76,7 +76,7 @@ use below command to provide Relativity Service Account in silent mode
 
 ```
 
-> :warning: **Important note: The Relativity Service Account must be provided when Relativity product is not installed on the host**.
+<div class="note">The Relativity Service Account must be provided when Relativity product is not installed on the host.</div>
 
 
 
@@ -110,7 +110,7 @@ The following sequence is suggested:
 - Agent servers
 - Other (Fileshare, Analytics, Message Broker, Worker, etc.)
 
-Note: Any Windows-based OS can be monitored, regardless of whether a Relativity product is installed, as long as the prerequisites have been met.
+<div class="note">Any Windows-based OS can be monitored, regardless of whether a Relativity product is installed, as long as the prerequisites have been met.</div>
 
 ## Repairing or removing Environment Watch installation
 The installer can also be run to repair or remove an existing installation of Environment Watch. Run the installer on a machine where the application is installed. Select one of the following options:
@@ -129,7 +129,7 @@ During the installation process, two log files are created in the `%TEMP%` direc
     ![](../resources/Installer_logfiles.png)
 
 ## Handling errors
-If any errors are encountered during the installation process, please refer to the [troubleshooting guide](environment_watch_troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
+If any errors are encountered during the installation process, please refer to the [troubleshooting guide](/docs/environment_watch_troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
 
 ## Next steps
 Click [here](relativity_alerts_installation.md) to Install Relativity Alerts Application

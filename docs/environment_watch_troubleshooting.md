@@ -1,14 +1,5 @@
 # Environment Watch Troubleshooting
 
-[Elastic Search ](#elastic-search)
-
-[Relativity Server CLI - Environment Watch Setup](#relativity-server-cli-environment-watch-setup)
-
-[Relativity Server CLI - DataGrid/Audi Setup](#relativity-server-cli-datagrid-audit-setup)
-
-[Environment Watch installer](#troubleshooting-environment-watch-installer-on-windows)
-
-
 ## Elastic Search
 
 ### Issue 1: Insufficient Memory
@@ -284,7 +275,7 @@ completed as required.
 
 (#issue-2-elastic-search-service-issues)
 
-**Steps to troubleshoot :** 
+**Steps to troubleshoot** 
 
 Verify elasticsearch is running or not by following steps under [Elastic search service]
 
@@ -292,7 +283,7 @@ Verify elasticsearch is running or not by following steps under [Elastic search 
 
 ![](../resources/troubleshooting-images/kibana-service-stopped.png)
 
-**Steps to troubleshoot :** 
+**Steps to troubleshoot** 
 
 Verify kibana is running or not by following steps under [kibana service](#issue-5-kibana-service-issues)
 
