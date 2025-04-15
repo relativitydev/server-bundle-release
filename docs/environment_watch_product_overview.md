@@ -203,13 +203,13 @@ On the left side of all Relativity-created dashboards you will see links to othe
 
 ### Alerts in Kibana
 
-When you run the Environment Watch setup using the Relativity Server CLI
+When you run the Environment Watch setup using the Relativity Server CLI, all Kibana Alerts that have been created by Relativity will be imported into your instance. Alerting enables you to define rules, which detect complex conditions within different Kibana apps and trigger actions when those conditions are met. The Relativity Alert RDOs interface with a corresponding Kibana Alert that defines the actual rules. You can also create your own Kibana Alerts, but they will not interface with a corresponding Relativity Alert RDO. 
 
 ![](/resources/environment_watch_product_overview_009.png)
 
 ### Saved Searches in Kibana
 
-Many of
+Running the Relativity Server CLI will also import Kibana Saved Searches created by Relativity into your instance. Saved Searches expose relevant pre-filtered log and metric data on dashboards or for searching, and are sometimes used as the “jump link” destination for a Relativity Alert that requires further investigation. Users most commonly interact with Saves Searches via the Kibana Discover feature which lets you quickly search and filter data, get information about the structure of the fields, and display findings in a visualization.
 
 ![](/resources/environment_watch_product_overview_010.png)
 
