@@ -287,8 +287,8 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 2. **Encrypt Traffic Between Kibana and Elasticsearch**
 
     ```
-        elasticsearch.ssl.verificationMode: certificate  
-        elasticsearch.ssl.certificateAuthorities: certs/ca.crt
+    elasticsearch.ssl.verificationMode: certificate  
+    elasticsearch.ssl.certificateAuthorities: certs/ca.crt
     ```
 
 3. **Restart the Kibana service from Windows Services**
@@ -310,16 +310,16 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     ```
 
 3. **Run APM Server as a Windows Service**
-- nssm install apm-server
-  - Set Application path to C:\\APM\\bin\\apm-server.exe.
-  - Start the service:
-  - powershellCopyEditnet start apm-server
+    - nssm install apm-server
+      - Set Application path to C:\\APM\\bin\\apm-server.exe.
+      - Start the service:
+      - powershellCopyEditnet start apm-server
 
 #### Step 6: Verify Deployment
 
 1. **Check Elasticsearch Cluster Health**
     ```
-  curl -k -u elastic:your_password <https://192.168.1.101:9200/_cluster/health?pretty>
+    curl -k -u elastic:your_password <https://192.168.1.101:9200/_cluster/health?pretty>
     ```
 
 2. **Check Kibana Status**
@@ -328,7 +328,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 3. **Test APM Server**
 
     ```
-  curl -k -X GET "<https://192.168.1.101:8200>"
+    curl -k -X GET "<https://192.168.1.101:8200>"
     ```
 
 ## Next

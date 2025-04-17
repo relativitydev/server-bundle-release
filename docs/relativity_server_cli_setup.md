@@ -12,10 +12,10 @@ Before entering the Environment Watch or Data Grid Audit setup workflows, perfor
 
 1. Confirm that all Elastic components are installed and verified from stages 1 and 2 of this installation guide. This includes ensuring that the minimum versions of Elasticsearch, Kibana, and APM Server that are specified in the Environment Watch release bundle that you are using are installed and that Elastic certificates have been installed on all Elastic hosts.
 
-<div class="notes">Ensuring that you are on the minimum supported version of Elasticsearch for Data Grid Audit as specified in the release bundle is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.
+    <div class="notes">Ensuring that you are on the minimum supported version of Elasticsearch for Data Grid Audit as specified in the release bundle is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.
 
-While 7.17 is the minimum supported version for the initial release of the Relativity Server CLI in Server 2024 Patch 1, you should always check the minimum version requirements in the specific Environment Watch release bundle that you are using.
-</div>
+    While 7.17 is the minimum supported version for the initial release of the Relativity Server CLI in Server 2024 Patch 1, you should always check the minimum version requirements in the specific Environment Watch release bundle that you are using.
+    </div>
 
 2. Be prepared to enter admin usernames, passwords, and URLs for Relativity and Elastic components.
 3. \[Data Grid Audit only\] Install the mapper-size plugin on all nodes in your Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). You also must restart the Elasticsearch service after installing the plugin.
@@ -142,12 +142,12 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI.
     1. Open Kibana and navigate to Stack Management -> License management
     2. Update your license
 
-<div class="note">Steps 16-17 are only applicable if you have not already installed Elastic certificates on Web and Agent Servers during Environment Watch setup or a previous Data Grid Audit setup.</div>
+<div class="note">Steps 15-16 are only applicable if you have not already installed Elastic certificates on Web and Agent Servers during Environment Watch setup or a previous Data Grid Audit setup.</div>
 
 15. **Install Elastic certificates on all Web Servers** in your environment. Restart services on each host after installing the certificates.
 16. **Install Elastic certificates on all Agent Servers** in your environment. Restart services on each host after installing the certificates.
 
-<div class="note">Step 18 is only applicable if you are doing a first-time setup of Audit in your Relativity instance.</div>
+<div class="note">Step 17 is only applicable if you are doing a first-time setup of Audit in your Relativity instance.</div>
 
 17. **Install Audit application and agents** - If you are setting up Data Grid Audit for the first time, you will also need to install the Audit application to workspaces and add the Audit agents. See [here](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit) for more information about the Audit agents.
 
