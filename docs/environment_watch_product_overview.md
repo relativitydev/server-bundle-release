@@ -68,7 +68,7 @@ This instrument is used to show detailed records of events that occur within the
 
 [Open Telemetry](https://opentelemetry.io/) is an open source solution that defines industry standard APIs/SDKs/Tools to instrument virtually any software to help analyze performance and behavior​. It was developed by the Cloud Native Computing Foundation, the same outfit that developed Kubernetes/Prometheus.
 
-The term OTEL is an abbreviation for Open Telemetry and will be used within this and other documentation. Relativity Server selected OTEL for 3 key reasons:
+The term OTEL is an abbreviation for Open Telemetry and will be used within this and other documentation. Relativity Server selected OTEL for three key reasons:
 
 - No vendor lock-in; single set of APIs and conventions​
 - Proven industry standard for observability​
@@ -92,19 +92,19 @@ The OTEL distribution includes the OTEL collector EXE and is designed to run wit
 Relativity Server auto-configures the OTEL collector to not only simplify configuration but collect from standard infrastructure and Relativity specific sources including:
 
 - Host metrics (e.g. CPU/Memory/Disk/Network/Process)
-    - IIS/SQL Server
-    - Windows services (e.g. Agent/Web Manager/Invariant/Service Host)
-    - Kepler service endpoints and Relativity/BCP fileshares
-    - X509 certificates
+	- IIS/SQL Server
+	- Windows services (e.g. Agent/Web Manager/Invariant/Service Host)
+	- Kepler service endpoints and Relativity/BCP fileshares
+	- X509 certificates
 
 The OTEL SDK is used to submit metrics to the OTEL collector from different Relativity processes including:
 
 - Agents
-    - Service Host
-    - Kepler services
-    - Custom Pages
-    - Invariant Queue Manager
-    - Invariant Worker
+	- Service Host
+	- Kepler services
+	- Custom Pages
+	- Invariant Queue Manager
+	- Invariant Worker
 
 #### Visualization Frontend
 
@@ -128,7 +128,7 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 
 #### Relativity Environment Watch Windows Service
 
-The OTEL Collector provides many "out of the box" receivers to collect metrics; however each server must be carefully configured using 1 or more YAML files, depending on which "receivers" are required. In some cases, credentials must be exposed to the receivers in order to fetch metrics. Although the OTEL distribution provides many commonly used receivers, there are many Relativity specific use-cases that OTEL simply doesn't support. In these cases, an alternative mechanism is required use both Relativity and non-Relativity APIs to gather metrics and use the OTEL SDK to publish the results.
+The OTEL Collector provides many "out of the box" receivers to collect metrics; however each server must be carefully configured using one or more YAML files, depending on which "receivers" are required. In some cases, credentials must be exposed to the receivers in order to fetch metrics. Although the OTEL distribution provides many commonly used receivers, there are many Relativity specific use-cases that OTEL simply doesn't support. In these cases, an alternative mechanism is required use both Relativity and non-Relativity APIs to gather metrics and use the OTEL SDK to publish the results.
 
 The Relativity Environment Watch Windows Service is responsible for scheduling supported processes that perform different tasks. The Relativity InfraWatch Agent is arguably the most important process scheduled by the Environment Watch architecture as it provides the following key responsibilities:
 
@@ -149,10 +149,10 @@ The appsettings.json file located within the Relativity Environment Watch instal
 The Relativity platform has been updated to expose low-level details using the OTEL SDK from any extensibility point. Key platform enhancements include:
 
 - **Relativity Logging**: the existing Relativity.Logging.ILog API sends all logs to the OTEL backend
-    - **Relativity Agents**: a trace is created for each agent execution
-    - **Kepler Services**: a trace is created for each HTTP request
-    - **Service Host**: health checks are periodically executed to ensure hosted services are working correctly
-    - **Invariant**: a trace is created for each operational Invariant Queue Manager/Worker
+	- **Relativity Agents**: a trace is created for each agent execution
+	- **Kepler Services**: a trace is created for each HTTP request
+	- **Service Host**: health checks are periodically executed to ensure hosted services are working correctly
+	- **Invariant**: a trace is created for each operational Invariant Queue Manager/Worker
 
 #### Kibana Alert Manager
 
@@ -245,8 +245,8 @@ When you have Relativity Alerts installed and Environment Watch is fully configu
   - **Alert State** – is the alert currently active or inactive?
   - **Alert State Updated** – When did the alert last change from inactive to active or active to inactive?
   - **Dashboard or Tab Jump Link** – Alerts are "generalized" in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
-
-<div class="note">Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.</div>
+	
+	<div class="note">Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.</div>
 
 - **Alert Enabled for Instance** – If set to No, Relativity will stop querying Kibana for updated alert state information
     - **Feature Domain** – Alerts are grouped by feature domain. You can see a list of all feature domains [here](https://github.com/relativityone/server-relativity-docs/blob/main/environment-watch/feature-domains.md).

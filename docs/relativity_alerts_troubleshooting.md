@@ -71,35 +71,40 @@ Please follow below steps to verify and create a new agent if needed:
 
 Please follow below steps to verify and enable the agent if needed:
 1. Verify the "Alert Manager" Agent
-   a. Navigate to the Agents tab in Relativity.
-   b. Filter the Name field to check 'Alert Manager' agent is present.
-   c. CLick on 'Alert Manager' agent and check if the agent is disabled, if so, proceed to enable the agent by following the step2 below.
+	a. Navigate to the Agents tab in Relativity.
+	b. Filter the Name field to check 'Alert Manager' agent is present.
+	c. Click on 'Alert Manager' agent and check if the agent is disabled, if so, proceed to enable the agent by following step 2 below.
 2. Enable the 'Alert Manager' agent
-   a. Navigate to the Agents tab in Relativity.
-   b. Filter the Name field to check 'Alert Manager' agent is present.
-   b. Click on 'Alert Manager' agent and click on 'Enable Agent'
-![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png)
-    Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
+	a. Navigate to the Agents tab in Relativity.
+	b. Filter the Name field to check 'Alert Manager' agent is present.
+	c. Click on 'Alert Manager' agent and click on 'Enable Agent'<br/>
+	![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png)
+
+Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
 
 #### Issue 5: "The Alert Manager agent interval is currently set to more than 15 minutes. If you want alert state information to be retrieved from Kibana more frequently, please update the agent interval." warning is displayed.
+
 ![alert-agent-interval-exceeds1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds1.png)
+
 ![alert-agent-interval-exceeds2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds2.png)
 
 **Troubleshooting Steps:**
 
 Your "Alert Manager" agent might have exceeded the interval. Please follow below steps to verify and to update interval value if needed:
 1. Verify the "Alert Manager" Agent
-   a. Navigate to the Agents tab in Relativity.
-   b. Filter the Name field to check 'Alert Manager' agent is present.
-   c. CLick on 'Alert Manager' agent and check if the agent interval exceeds 900 seconds (15 minutes), if so, proceed to update agent interval value by following the step2 below.
+	a. Navigate to the Agents tab in Relativity.
+	b. Filter the Name field to check 'Alert Manager' agent is present.
+	c. Click on 'Alert Manager' agent and check if the agent interval exceeds 900 seconds (15 minutes), if so, proceed to update agent interval value by following the step2 below.
 2. Update Agent interval to a value less then 900 seconds (15 minutes)
-   a. Navigate to the Agents tab in Relativity.
-   b. Filter the Name field to check 'Alert Manager' agent is present.
-   b. Click on 'Alert Manager' agent and Update Agent interval to a value less then 900 seconds (15 minutes). Recomended value is 30 (default).
-![verify-alert-agent-interval.png](../resources/relativity-alerts-troubleshooting-images/verify-alert-agent-interval.png)
+	a. Navigate to the Agents tab in Relativity.
+	b. Filter the Name field to check 'Alert Manager' agent is present.
+	c. Click on 'Alert Manager' agent and Update Agent interval to a value less then 900 seconds (15 minutes). Recommended value is 30 (default).<br/>
+	![verify-alert-agent-interval.png](../resources/relativity-alerts-troubleshooting-images/verify-alert-agent-interval.png)
 
 #### Issue 6: "Unable to retrieve alert state information from Kibana. Please ensure that Elasticsearch and Kibana are functional." error is displayed.
+
 ![elastic-kibana-down1.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down1.png)
+
 ![elastic-kibana-down2.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down2.png)
 
 **Causes:**
