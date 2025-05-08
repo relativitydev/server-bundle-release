@@ -19,8 +19,7 @@ This release bundle contains packages that are required to set up or upgrade two
   - Minimum required Relativity Server version: Server 2024 Patch 1 (24.0.375.2-update.1.0) 
   - If DataGrid/Audit Only:
     - Elasticsearch version: 7.17.x
-  - If Environment is set to "Watch Only" or "Both":
-    - Supported versions for Elasticsearch, Kibana, and APM Server are 8.17.1, 8.17.2, and 8.17.3.
-    - Please note that version 8.17.4 and above are currently not compatible.
+  - If Environment Watch Only or Both:
+    - Elasticsearch/Kibana/APM Server: 8.17.1, 8.17.2, 8.17.3 (versions 8.17.4 and above, including 9.0, have not been tested and certified by        Relativity for this release)
 
-A list of common install issues and their resolutions are available at [Environment Watch troubleshooting guide](docs/environment_watch_troubleshooting.md).
+A list of common installation issues and their resolutions are available at [Environment Watch troubleshooting guide](docs/environment_watch_troubleshooting.md).
