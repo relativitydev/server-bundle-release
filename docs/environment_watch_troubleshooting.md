@@ -15,22 +15,27 @@
 **Troubleshooting Steps:**
 
 1. Verify if Elasticsearch running
-	a. Open powershell and use the command '**Get-Service -Name elasticsearch'** to check the status of the Elasticsearch service.
-		```
-		Get-Service -Name elasticsearch
-		```
-		| Status  | Name         | DisplayName                         |
-		|-------- |--------------|-------------------------------------|
-		| Running | elasticsearch| Elasticsearch (Elasticsearch)|
+	a.\- Open powershell and use the command '**Get-Service -Name elasticsearch'** to check the status of the Elasticsearch service.
+
+      > Get-Service -Name elasticsearch 
+	  
+	  | Status  | Name         | DisplayName                   |
+      |-------- |--------------|-------------------------------|
+      | Running | elasticsearch| Elasticsearch (Elasticsearch) |
+ 
 2. Verify if Elasticsearch accessible from a given host:
+	
 	a. Check if elasticsearch is accessible by accessing https://emttest:9200/<br/>
 		![](../resources/troubleshooting-images/verifiyelasticsearchinbrowser.png)
+
     b. If the service is not running, elasticsearch can be started using
-		```
+	
 		.\\elasticsearch-service.bat start Elasticsearch
-		```
+		
 3. Verify the SSL/TLS URL
-    a. Check if the URL is correct for accessing Elasticsearch with SSL enabled. The URL should start with https:// if SSL is configured.
+    
+	a. Check if the URL is correct for accessing Elasticsearch with SSL enabled. The URL should start with https:// if SSL is configured.
+   
     b. Check Elasticsearch elasticsearch.yml configuration and verify that SSL/TLS settings are correctly defined.<br/>
         ![alt text](../resources/troubleshooting-images/elasticsslconfig.png)
 
@@ -41,28 +46,28 @@
 **Troubleshooting Steps:**
 
 1. While logging into ElasticSearch URL, if it shows not secure. Export that certificate of the highest hierarchy and save to your local directory.
-2. Go to that directory where you saved the certificate. Double click on the certificate and then click Install Certificate<br/>
+2. Go to that directory where you saved the certificate. Double click on the certificate and then click Install Certificate<br>
 	![alt text](../resources/troubleshooting-images/installcertificate.png)
-3. Select Local Machine<br/>
+3. Select Local Machine<br>
 	![alt text](../resources/troubleshooting-images/localmachine.png)
 4. Select Next, Click yes
 5. Select Place all the certificates in the following store
 6. Click on Browse, select Enterprise Trust
 7. Select Next, It should get imported
-8. Open MMC, go to files and click on Add/Remove Snap-IN<br/>
+8. Open MMC, go to files and click on Add/Remove Snap-IN<br>
 	![alt text](../resources/troubleshooting-images/Add-removesnipin.png)
-9.  Add Certificates<br/>
+9.  Add Certificates<br>
 	![alt text](../resources/troubleshooting-images/addcerts.png)
-10. Click Computer Account<br/>
+10. Click Computer Account<br>
 	![alt text](../resources/troubleshooting-images/clickcomputeraccount.png)
 11. Click Next -> Finish
 12. On the left side bar click the dropdown under Certificates
-13. Right Click on Trusted Root Certification Authorities, All Task → Import<br/>
+13. Right Click on Trusted Root Certification Authorities, All Task → Import<br>
 	![alt text](../resources/troubleshooting-images/alltask-import.png)
 14. Select the Certificate which being saved few steps earlier under browse and click on Finish
-15. Import certificate for all the selected folders below.<br/>
+15. Import certificate for all the selected folders below.<br>
 	![alt text](../resources/troubleshooting-images/importcerts.png)
-16.  Close all search engine and re-login to ElasticSearch URL<br/>
+16.  Close all search engine and re-login to ElasticSearch URL<br>
 	![alt text](../resources/troubleshooting-images/sslenabled.png)
 
 #### Issue 4: Issues while extracting the `kibana-8.xx.x-windows-x86_64.zip`
@@ -70,11 +75,14 @@
 **Troubleshooting Steps:**
 
 1. Windows must be updated to support Long Paths to enable the Local Group Policy Editor
-	a. Run the "gpedit.msc" to navigate into Local Group Policy Editor<br/>
+	
+	a. Run the "gpedit.msc" to navigate into Local Group Policy Editor<br>
 	![alt text](../resources/troubleshooting-images/gpedit.png)
-	b. Select Computer Configuration → Administrative Template → System → Filesystem.<br/>
+
+	b. Select Computer Configuration → Administrative Template → System → Filesystem.<br>
 	![alt text](../resources/troubleshooting-images/administrativetemplate.png)
-	c. Double click on enable the Long path.<br/>
+
+	c. Double click on enable the Long path.<br>
    ![](../resources/troubleshooting-images/kibanaextract.png)
 
 #### Issue 5: Kibana service issues
@@ -82,9 +90,12 @@
 **Troubleshooting Steps:**
 
 1. Verify Kibana Service Status:
-    a. Run the service and verify if service is up and running<br/>
+   
+    a. Run the service and verify if service is up and running<br>
 	![alt text](../resources/troubleshooting-images/kibanaservice.png)
+
     b. If Windows service fails to start is likely due to a configuration or environmental problem. Verify kibana configuration by following [ElasticSearch setup](elasticsearch_setup.md)
+
     c. Check if Kibana is running by navigating to Kibana URL
 
 #### Issue 6: Kibana authentication issue
@@ -96,7 +107,7 @@ Update your Kibana config file with below steps:
    ```
    ./kibana-encryption-keys generate
    ```
-2. In the kibana.yml configuration file, add the xpack.encryptedSavedObjects.encryptionKey setting.<br/>
+2. In the kibana.yml configuration file, add the xpack.encryptedSavedObjects.encryptionKey setting.<br>
 	![alt text](../resources/troubleshooting-images/kibanaencryption.png)
 3. Restart Kibana
 
@@ -104,27 +115,32 @@ Update your Kibana config file with below steps:
 
 **Troubleshooting Steps:**
 1. Verify APM Service Status
+   
 	a. Check if APM server is running using the PowerShell command
 	```
 	Get-Service -Name apm-server
 	```
 	| Status  | Name       | DisplayName  |
 	| ------- | ---------- | ------------ |
-	| Running | apm-server | {.BeatName \ |
+	| Running | apm-server | {.BeatName}  |
+
     b. If the service is not running, start service using 
     ```
 	Start-Service -Name apm-server
 	```
-    c. Check if APM is running by navigating to APM URL http://emttest:8200/ in any supported Web browser.<br/>
+
+    c. Check if APM is running by navigating to APM URL http://emttest:8200/ in any supported Web browser.<br>
 	![](../resources/troubleshooting-images/verifyapminbrowser.png)
-2. If Windows service fails to start is likely due to a configuration or environmental problem
-   a. Verify APM configuration by following [ElasticSearch setup](elasticsearch_setup.md)
-   b. Verify the "publish_ready" property is true/false.
-   c. If the value of publish_ready is still false and elasticsearch is configured to use https, perform the below changes under "Elasticsearch output"
-      i. Update protocol to https and uncomment the line
-      ii. Update ssl.enabled to true and uncomment the line
-      iii. Update ssl.verification_mode to none and uncomment the line
-      iv. Restart the apm service ({.BeatName | title})
+
+2. If Windows service fails to start is likely due to a configuration or environmental problem<br>
+   
+   a. Verify APM configuration by following [ElasticSearch setup](elasticsearch_setup.md)<br>
+   b. Verify the "publish_ready" property is true/false.<br>
+   c. If the value of publish_ready is still false and elasticsearch is configured to use https, perform the below changes under "Elasticsearch output"<br>
+      i. Update protocol to https and uncomment the line<br>
+      ii. Update ssl.enabled to true and uncomment the line<br>
+      iii. Update ssl.verification_mode to none and uncomment the line<br>
+      iv. Restart the apm service ({.BeatName | title})<br>
 
 ## Relativity Server CLI - Environment Watch Setup
 

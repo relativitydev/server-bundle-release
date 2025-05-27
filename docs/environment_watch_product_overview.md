@@ -217,13 +217,13 @@ On the left side of all Relativity-created dashboards you will see links to othe
 
 ### Alerts in Kibana
 
-When you run the Environment Watch setup using the Relativity Server CLI
+When you run the Environment Watch setup using the Relativity Server CLI, all Kibana Alerts that have been created by Relativity will be imported into your instance. Alerting enables you to define rules, which detect complex conditions within different Kibana apps and trigger actions when those conditions are met. The Relativity Alert RDOs interface with a corresponding Kibana Alert that defines the actual rules. You can also create your own Kibana Alerts, but they will not interface with a corresponding Relativity Alert RDO.
 
 ![](../resources/environment_watch_product_overview_009.png)
 
 ### Saved Searches in Kibana
 
-Many of
+Running the Relativity Server CLI will also import Kibana Saved Searches created by Relativity into your instance. Saved Searches expose relevant pre-filtered log and metric data on dashboards or for searching, and are sometimes used as the “jump link” destination for a Relativity Alert that requires further investigation. Users most commonly interact with Saves Searches via the Kibana Discover feature which lets you quickly search and filter data, get information about the structure of the fields, and display findings in a visualization.
 
 ![](../resources/environment_watch_product_overview_010.png)
 
@@ -246,7 +246,7 @@ When you have Relativity Alerts installed and Environment Watch is fully configu
   - **Alert State Updated** – When did the alert last change from inactive to active or active to inactive?
   - **Dashboard or Tab Jump Link** – Alerts are "generalized" in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
 	
-	<div class="note">Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.</div>
+**Note** - Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
 
 - **Alert Enabled for Instance** – If set to No, Relativity will stop querying Kibana for updated alert state information
     - **Feature Domain** – Alerts are grouped by feature domain. You can see a list of all feature domains [here](https://github.com/relativityone/server-relativity-docs/blob/main/environment-watch/feature-domains.md).
@@ -278,7 +278,7 @@ The following permissions and configuration settings are available for Relativit
 
 All Instance-level System Administrators can see all Alerts, the Alerts tab, and Alert notifications. There is currently no way to extend any Alert permissions to non-System Administrators, and no way to remove or adjust permissions for System Administrators.
 
-<div class="note">Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.</div>
+**Note** Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
 
 #### Alert Enabled for Instance
 
