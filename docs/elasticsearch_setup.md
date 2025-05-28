@@ -174,51 +174,75 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 1: Download and Install Elasticsearch on All Three Nodes
 
 1. **Download Elasticsearch**
-	a. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
-	b. Download the Windows .zip version.
-	c. Extract it to a directory (e.g., C:\\Elasticsearch\\Node1, C:\\Elasticsearch\\Node2, C:\\Elasticsearch\\Node3).
-	d. Run bin\\elasticsearch.bat from the command line to start Elasticsearch
-		- When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically:
-			- Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser.
+   
+	a. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).<br/>
+	b. Download the Windows .zip version.<br/>
+	c. Extract it to a directory (e.g., C:\\Elasticsearch\\Node1, C:\\Elasticsearch\\Node2, C:\\Elasticsearch\\Node3).<br/>
+	d. Run bin\\elasticsearch.bat from the command line to start Elasticsearch<br/>
+		- When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
+			- Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser. 
 			- Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
 			- An enrollment token is generated for Kibana, which is valid for 30 minutes.
+    e. Run **.\bin\elasticsearch-service.bat install ** from elastic search folder in powershell admin mode to install elasticsearch.<br/>
+
 2. **Configure elasticsearch.yml on Each Node**  
-	a. Modify config\\elasticsearch.yml on each node:
-    ```
-    cluster.name: my-cluster  
-    node.name: node-1 # Change for each node (node-2, node-3)  
-    node.roles: \[master, data\]  
-    path.data: C:\\Elasticsearch\\Node1\\data  
-    path.logs: C:\\Elasticsearch\\Node1\\logs  
-    network.host: 0.0.0.0  
-    http.port: 9200  
-    discovery.seed_hosts: \["192.168.1.101", "192.168.1.102", "192.168.1.103"\]  
-    cluster.initial_master_nodes: \["node-1", "node-2", "node-3"\]
-    ```
-3. **Set JVM Heap Size**  
+
+    The cluster name must be the same across all node servers.
+    The value of the cluster.initial_master_nodes parameter should be the domain name of the master node server.
+    The discovery.seed_hosts parameter should include the domain names of all servers where Elasticsearch will be set up.
+    
+   **Configuration in elasticsearch.yml file of master node**
+    Add the following parameter in the elasticsearch.yml file
+
+    node.roles: [ master ] <br/>
+    discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"] <br/>
+    cluster.initial_master_nodes: ["domain name of master node server"] <br/>
+    http.host: 0.0.0.0 <br/>
+    transport.host: 0.0.0.0 <br/>
+    network.host: 0.0.0.0 <br/>
+
+    **Configuration in elasticsearch.yml file of data node**
+    Add the following parameter in the elasticsearch.yml file
+
+
+    node.roles: [ data ] <br/>
+    discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"] <br/>
+    cluster.initial_master_nodes: ["domain name of master node server"] <br/>
+    http.host: 0.0.0.0 <br/>
+    transport.host: 0.0.0.0 <br/>
+    network.host: 0.0.0.0 <br/>
+    
+   -  path.data: X:/ElasticData  (Note: Where X shouldn't be C Drive or Temporary Storage Drive)
+   -  path.logs: X:/ElasticLogs  (Note: Where X shouldn't be C Drive or Temporary Storage Drive)
+
+3. **Set JVM Heap Size**  <br/>
+   
 	a. Edit config\\jvm.options and set:
     ```
     -Xms8g
     -Xmx10g
     ```
 4. **Run Elasticsearch as a Windows Service**
+   
 	a. Open PowerShell (as Administrator) and navigate to the Elasticsearch folder:
     ```
-    .\bin\elasticsearch-service.bat install
     .\bin\elasticsearch-service.bat start
     ```
 
 #### Step 2: Secure Elasticsearch Communications
 
 1. **Generate SSL Certificates (Self-Signed or CA-Signed)**
+   
 	a. Run the following command to generate certificates:
     ```
     .\bin\elasticsearch-certutil.bat http
     ```
-	b. Follow the prompts and distribute certificates to all nodes.
+	
+    b. Follow the prompts and distribute certificates to all nodes.
 
 2. **Enable HTTPS for Elasticsearch**
-	a. Edit config\\elasticsearch.yml:
+	
+    a. Edit config\\elasticsearch.yml:
     ```
     xpack.security.enabled: true  
     xpack.security.http.ssl.enabled: true  
@@ -240,27 +264,40 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 3: Install and Configure Kibana
 
 1. **Download Kibana**
-	a. Download and extract the Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
+	
+    a. Download and extract the Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana). <br/>
 2. **Start Kibana from the command line**
+    
+    a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
+    b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
     ```
-    .\bin\kibana.bat
+    .\kibana.bat
     ```
 3. **Enroll Kibana**
-	a. In your terminal, click the generated link to open Kibana in your browser.
-	b. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, and then click the button to connect your Kibana instance with Elasticsearch.
+	
+    a. In your terminal, click the generated link to open Kibana in your browser. <br/>
+	b. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, and then click the button to connect your Kibana instance with Elasticsearch. <br/>
 	c. Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch.<br/>
 	![](/resources/elasticsearch_setup_003.png)
+
 4. **Generate Kibana encryption keys**
+   
+    a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
+    b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
 	```
-	.\bin\kibana-encryption-keys generate.bat
+	.\kibana-encryption-keys generate.bat
 	```
+    c. Copy the encryption keys generated and paste it in kibana.yml file <br/>
+    d. Restart kibana service using **./kibana.bat** navigating to bin folder in powershell admin mode. <br/>
+
 5. **Create Kibana Windows Service**
-	a. Download latest nssm exe file version from <https://nssm.cc/download>
-	b. Run:
+	
+    a. Download latest nssm exe file version from <https://nssm.cc/download> <br/>
+	b. Run: <br/>
 		- nssm install kibana
 		- Set Application path to C:\\Kibana\\bin\\kibana.bat.
-		- In the **Service Name** field, provide a custom name (e.g., kibana-service).
-	c. Click **Install Service**.
+		- In the **Service Name** field, provide a custom name (e.g., kibana-service). 
+	c. Click **Install Service**. <br/>
 6. **Rename Kibana Service Using NSSM**
     - If the service name is not what you want (e.g., kibana), you can rename it using NSSM:
     - Run the following to rename the service:
@@ -271,9 +308,12 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 4: Secure Kibana Communications
 
 1. **Enable HTTPS for Kibana**
-	a. Place SSL certificates in config\\certs\\.
-	b. Modify config\\kibana.yml:
-	c. yamlCopyEditserver.ssl.enabled: true  
+    
+    a. Navigate to Elastic search bin in PS/CMD (Ex: C:\elasticsearch\elasticsearch-8.14.3\bin)<br/>
+    b. Execute command  .\elasticsearch-certutil ca -pem   to generate CA certificate and key <br/>
+	c. Place SSL certificates in config\\certs\\.<br/>
+	d. Modify config\\kibana.yml:<br/>
+	e. yamlCopyEditserver.ssl.enabled: true  <br/>
 		- server.ssl.certificate: certs/kibana.crt  
 		- server.ssl.key: certs/kibana.key
 2. **Encrypt Traffic Between Kibana and Elasticsearch**
@@ -286,24 +326,57 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 5: Install and Configure APM Server
 
 1. **Download APM Server**
-	a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
-	b. Download and extract the Windows .zip file.
+   
+	a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm). <br/>
+	b. Download and extract the Windows .zip file. <br/>
+
 2. **Configure APM Server (config\\apm-server.yml)**
+   In the "Elasticsearch output" section, perform the below changes:
+
+    - Uncomment the output.elasticsearch
+    - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
+    - Update hosts
+    - Update protocol: https
+    - This setting is needed because elasticsearch is running under https
+
     ```
     apm-server:  
     host: "0.0.0.0:8200"  
     output.elasticsearch:  
-    hosts: \["<https://192.168.1.101:9200>", "<https://192.168.1.102:9200>", "<https://192.168.1.103:9200"\>]  
-    username: "apm_system" "elastic_username"  
-    password: "your_apm_password" "elastic_password"  
+    hosts: ["<https://192.168.1.101:9200>"]  
+    username: "elastic_username"  
+    password: "elastic_password"  
     ssl.certificate_authorities: certs/ca.crt
     ```
-3. **Run APM Server as a Windows Service**
-	a. nssm install apm-server
-		- Set Application path to C:\\APM\\bin\\apm-server.exe.
-		- Start the service:
-		- powershellCopyEditnet start apm-server
+3. **Execute required scripts to install APM service**
+   
+	 <br/>a. Navigate inside the downloaded apm-server.
 
+     b. Open the PowerShell or Command prompt in administrator mode.<br/>
+
+     c. Execute **PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1** to install the APM_Server.<br/>
+     
+
+4. **Start the APM Server service**
+    Navigate to apm-server folder and execute "Start-Service apm-server" command in PowerShell/Command prompt using admin rights.
+
+5. **Add Elastic APM Integration**
+   
+   a. Login to Kibana and select the Elastic APM under the Integration or in search bar type Elastic APM and select under Integration.<br/>
+
+   b. In the Right top select Add Elastic APM button.  <br/>
+
+   c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
+       Ex: Host:192.168.1.101:8200
+           URL: http://192.168.1.101:8200 <br/>
+
+   d. Click on Save and Continue. <br/>
+   
+   e. Select "Add Elastic Agent later" button as Agent is not required for the initial setups. <br/>
+   
+   f. Refresh and Verify the "publish_ready" property is true <br/>
+
+   
 #### Step 6: Verify Deployment
 
 1. **Check Elasticsearch Cluster Health**
@@ -315,7 +388,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 		- Log in using elastic or kibana_system credentials.
 3. **Test APM Server**
     ```
-    curl -k -X GET "<https://192.168.1.101:8200>"
+    curl -k -X GET "<http://192.168.1.101:8200>"
     ```
 
 ## Next
