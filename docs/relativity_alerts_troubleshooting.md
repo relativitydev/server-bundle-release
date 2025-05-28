@@ -72,7 +72,7 @@ Please follow below steps to verify and create a new agent if needed:
 ![testvm-hopper-instance.png](../resources/relativity-alerts-troubleshooting-images/testvm-hopper-instance.png)
 ![verifyfields.png](../resources/relativity-alerts-troubleshooting-images/verifyfields.png)
     
-<br> Once these steps are completed, the "Alert Manager" agent should now be active and functioning correctly.
+<br/> Once these steps are completed, the "Alert Manager" agent should now be active and functioning correctly.
 
 #### Issue 4: "The Alert Manager agent is unable to retrieve current alert state information from Kibana. Please ensure that the Alert Manager agent is enabled. To see accurate alert state information please navigate to Kibana." error is displayed.
 
@@ -101,12 +101,12 @@ Please follow below steps to verify and enable the agent if needed:
 
 	b. Filter the Name field to check 'Alert Manager' agent is present.
 
-	c. Click on 'Alert Manager' agent and click on 'Enable Agent'<br>
+	c. Click on 'Alert Manager' agent and click on 'Enable Agent'<br/>
 
-	![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png) <br>
+	![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png) <br/>
 
 
-<br> Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
+<br/> Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
 
 #### Issue 5: "The Alert Manager agent interval is currently set to more than 15 minutes. If you want alert state information to be retrieved from Kibana more frequently, please update the agent interval." warning is displayed.
 
@@ -132,7 +132,7 @@ Your "Alert Manager" agent might have exceeded the interval. Please follow below
 
 	b. Filter the Name field to check 'Alert Manager' agent is present.
 
-	c. Click on 'Alert Manager' agent and Update Agent interval to a value less then 900 seconds (15 minutes). Recommended value is 30 (default).<br>
+	c. Click on 'Alert Manager' agent and Update Agent interval to a value less then 900 seconds (15 minutes). Recommended value is 30 (default).<br/>
 	![verify-alert-agent-interval.png](../resources/relativity-alerts-troubleshooting-images/verify-alert-agent-interval.png)
 
 #### Issue 6: "Unable to retrieve alert state information from Kibana. Please ensure that Elasticsearch and Kibana are functional." error is displayed.

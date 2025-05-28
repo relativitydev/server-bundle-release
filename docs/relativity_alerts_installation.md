@@ -20,13 +20,13 @@ Requirements for installation of the Relativity Alerts Application:
 To install the Relativity Alerts application on your Relativity instance:
 1. Log in to Relativity as a System Administrator.
 2. Navigate to the Application Library tab.
-3. Click Upload Application.<br>
+3. Click Upload Application.<br/>
 	![relativity_alerts_installation_001](../resources/relativity_alerts_installation_001.png)
-4. Click Select File.<br>
+4. Click Select File.<br/>
 	![relativity_alerts_installation_002](../resources/relativity_alerts_installation_002.png)
-5. Navigate to and select your local copy of Relativity Alerts RAP file which was downloaded from the latest [Environment Watch Bundle](https://github.com/relativitydev/server-bundle-release/releases), and then click Open.<br>
+5. Navigate to and select your local copy of Relativity Alerts RAP file which was downloaded from the latest [Environment Watch Bundle](https://github.com/relativitydev/server-bundle-release/releases), and then click Open.<br/>
 	![relativity_alerts_installation_003](../resources/relativity_alerts_installation_003.png)
-6. Click Save to upload the file to the Application Library.<br>
+6. Click Save to upload the file to the Application Library.<br/>
 	![relativity_alerts_installation_004](../resources/relativity_alerts_installation_004.png)
 
 ![relativity_alerts_installation_005](../resources/relativity_alerts_installation_005.png)
@@ -35,32 +35,32 @@ To install the Relativity Alerts application on your Relativity instance:
 A list of common install issues and their resolutions are available at the [troubleshooting guide](relativity_alerts_troubleshooting.md).
 
 ## Verification
-1. Navigate to the Alerts tab, you should see all alerts available in Kibana.<br>
+1. Navigate to the Alerts tab, you should see all alerts available in Kibana.<br/>
     ![relativity_alerts_verification_001](../resources/relativity_alerts_verification_001.png)
-2. Navigate to "Logs & Dashboards" tab, you should see all Environment Watch dashboards and saved searches available in Kibana.<br>
+2. Navigate to "Logs & Dashboards" tab, you should see all Environment Watch dashboards and saved searches available in Kibana.<br/>
     ![relativity_alerts_verification_002](../resources/relativity_alerts_verification_002.png)
-3. When on "Logs & Dashboards" tab, find "Alerts Overview" dashboard and click the link. A new web browser tab will be created and you should be redirected to "Alerts Overview" dashboard in Kibana. If you have not logged in into Kibana yet, you will be prompted with a Kibana login page. Please login with your Kibana user account with privileges.<br>
+3. When on "Logs & Dashboards" tab, find "Alerts Overview" dashboard and click the link. A new web browser tab will be created and you should be redirected to "Alerts Overview" dashboard in Kibana. If you have not logged in into Kibana yet, you will be prompted with a Kibana login page. Please login with your Kibana user account with privileges.<br/>
     ![relativity_alerts_verification_003_001](../resources/relativity_alerts_verification_003_001.png)
     ![relativity_alerts_verification_003_002](../resources/relativity_alerts_verification_003_002.png)
     ![relativity_alerts_verification_003_003](../resources/relativity_alerts_verification_003_003.png)
 4. To confirm that the alerting functionality is operational, please do the following:
    
-	a. Go to the Agents tab<br>
+	a. Go to the Agents tab<br/>
 
-	b. Select "File Deletion Manager" agent and disable it.<br>
+	b. Select "File Deletion Manager" agent and disable it.<br/>
 	![relativity_alerts_verification_004_001](../resources/relativity_alerts_verification_004_001.png)
 
-	c. Within the next 30-60 seconds, the bell icon, in the top-right corner, will indicate that there is a new Alert.<br>
+	c. Within the next 30-60 seconds, the bell icon, in the top-right corner, will indicate that there is a new Alert.<br/>
 	![relativity_alerts_verification_004_002](../resources/relativity_alerts_verification_004_002.png)
 
-    d. Click on the bell icon, and you should be able to see the active 'One or more agents are disabled' alert in the alert flyout.<br>
+    d. Click on the bell icon, and you should be able to see the active 'One or more agents are disabled' alert in the alert flyout.<br/>
 	![relativity_alerts_verification_004_003](../resources/relativity_alerts_verification_004_003.png)
 
-	e. Click on the question mark icon next to the 'One or more agents are disabled' alert, and you will be redirected to the resolution guidance for this alert in a new tab of your web browser.<br>
-    ![relativity_alerts_verification_004_004](../resources/relativity_alerts_verification_004_004.png)<br>
+	e. Click on the question mark icon next to the 'One or more agents are disabled' alert, and you will be redirected to the resolution guidance for this alert in a new tab of your web browser.<br/>
+    ![relativity_alerts_verification_004_004](../resources/relativity_alerts_verification_004_004.png)<br/>
     ![relativity_alerts_verification_004_005](../resources/relativity_alerts_verification_004_005.png)
 	
-	f. Return to the previous tab in Relativity, then click on the bell icon in the top-right corner. When the alert flyout opens, click on the 'One or more agents are disabled' alert, and you will be redirected to a filtered list of disabled agents in the Agents tab within Relativity.<br>
+	f. Return to the previous tab in Relativity, then click on the bell icon in the top-right corner. When the alert flyout opens, click on the 'One or more agents are disabled' alert, and you will be redirected to a filtered list of disabled agents in the Agents tab within Relativity.<br/>
 	![relativity_alerts_verification_004_006](../resources/relativity_alerts_verification_004_006.png)
 	
 	g. While on Agents tab, please remember to enable the "File Deletion Manager" agent.

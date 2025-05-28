@@ -12,7 +12,7 @@ Before entering the Environment Watch or Data Grid Audit setup workflows, perfor
 
 1. Confirm that all Elastic components are installed and verified from stages 1 and 2 of this installation guide. This includes ensuring that the minimum versions of Elasticsearch, Kibana, and APM Server that are specified in the Environment Watch release bundle that you are using are installed and that Elastic certificates have been installed on all Elastic hosts.
 
-   **Note:**  Ensuring that you are on the minimum supported version of Elasticsearch for Data Grid Audit as specified in the release bundle is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.<br><br>
+   **Note:**  Ensuring that you are on the minimum supported version of Elasticsearch for Data Grid Audit as specified in the release bundle is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.<br/>
 
     While 7.17 is the minimum supported version for the initial release of the Relativity Server CLI in Server 2024 Patch 1, you should always check the minimum version requirements in the specific Environment Watch release bundle that you are using.
    
@@ -20,7 +20,7 @@ Before entering the Environment Watch or Data Grid Audit setup workflows, perfor
 2. Be prepared to enter admin usernames, passwords, and URLs for Relativity and Elastic components.
 3. \[Data Grid Audit only\] Install the mapper-size plugin on all nodes in your Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). You also must restart the Elasticsearch service after installing the plugin.
 4. \[Data Grid Audit only\] Before upgrading to Elasticsearch 8.17, the ESIndexCreationSetting may need to be updated. For further details, please refer to the [Instance settings' descriptions - Server2024](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
-5. At least the minimum Relativity major version and patch specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativityone/server-environment-watch-releases/releases) requirements for the minimum version required.
+5. At least the minimum Relativity major version and patch specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
 6. Verify that the InfraWatch Services application is installed in your Relativity instance (this RAP is delivered as part of the base Relativity Server 2024 installation package).
 7. Follow [these instructions](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) to whitelist all hosts with Elastic installed for Secret Store access.
 8. Ensure that you have access to Relativity, as well as the Primary and Distributed SQL Servers
@@ -33,7 +33,7 @@ Follow these steps to configure Environment Watch using the Relativity Server CL
 This only needs to be done on your SQL Primary Server.
 
 1. Install Elastic certificates on your SQL Primary Server
-2. Download the CLI from [here](https://github.com/relativityone/server-bundle-release/releases), download the release bundle.
+2. Download the CLI from [here](https://github.com/relativitydev/server-bundle-release/releases), download the release bundle.
 3. Open Command Terminal by launching Command Prompt v7 from the Start menu.
 4. Extract the CLI by navigating to the directory where the gold release bundle was downloaded to, extract the bundle and then extract Relativity.Server.Cli.YY.x.xxxx.zip.
 5. Run the Setup Command from Command Prompt, execute the following command to enter the setup workflow:
@@ -102,7 +102,7 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI.
 **Note:** If you have already run the ‘Set up Environment Watch’ workflow on this host, you do not need to repeat steps 1-2 below.
 
 1. Install Elastic certificate on SQL Primary Server
-2. Download the CLI – From [here](https://github.com/relativityone/server-environment-watch-releases), download the release bundle.
+2. Download the CLI – From [here](https://github.com/relativitydev/server-bundle-release/releases), download the release bundle.
 3. Open Command Terminal - Launch Command Terminal v7 from the Start menu.
 4. Extract the CLI - Navigate to the directory where the release bundle was downloaded to and extract the Relativity.Server.Cli.YY.x.xxxx.zip.
 5. Run the Setup Command – From Command Prompt, execute the following command to enter the setup workflow:
