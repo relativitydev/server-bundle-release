@@ -178,7 +178,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 	a. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).<br/>
 	b. Download the Windows .zip version.<br/>
 	c. Extract it to a directory (e.g., C:\\Elasticsearch\\Node1, C:\\Elasticsearch\\Node2, C:\\Elasticsearch\\Node3).<br/>
-	d. Run the below command elastic search folder from the command prompt with administrator mode to start Elasticsearch<br/>
+	d. Run the below command from elastic search folder in command prompt with administrator mode to start Elasticsearch<br/>
 
     ```
     bin\elasticsearch.bat
