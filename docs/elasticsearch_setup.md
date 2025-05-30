@@ -178,43 +178,58 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 	a. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).<br/>
 	b. Download the Windows .zip version.<br/>
 	c. Extract it to a directory (e.g., C:\\Elasticsearch\\Node1, C:\\Elasticsearch\\Node2, C:\\Elasticsearch\\Node3).<br/>
-	d. Run bin\\elasticsearch.bat from the command line to start Elasticsearch<br/>
-		- When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
-			- Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser. 
-			- Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
-			- An enrollment token is generated for Kibana, which is valid for 30 minutes.
-    e. Run **.\bin\elasticsearch-service.bat install ** from elastic search folder in powershell admin mode to install elasticsearch.<br/>
+	d. Run the below command elastic search folder from the command prompt with administrator mode to start Elasticsearch<br/>
 
+    ```
+    bin\elasticsearch.bat
+    ```
+
+      - When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
+      - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser. 
+	  - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
+	  - An enrollment token is generated for Kibana, which is valid for 30 minutes.
+  
+    e. Run below command from elastic search folder in powershell admin mode to install elasticsearch.<br/>
+    
+    ```
+    .\bin\elasticsearch-service.bat install
+    ```
 2. **Configure elasticsearch.yml on Each Node**  
 
     The cluster name must be the same across all node servers.
     The value of the cluster.initial_master_nodes parameter should be the domain name of the master node server.
     The discovery.seed_hosts parameter should include the domain names of all servers where Elasticsearch will be set up.
     
-   **Configuration in elasticsearch.yml file of master node**
-    Add the following parameter in the elasticsearch.yml file
-
-    node.roles: [ master ] <br/>
-    discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"] <br/>
-    cluster.initial_master_nodes: ["domain name of master node server"] <br/>
-    http.host: 0.0.0.0 <br/>
-    transport.host: 0.0.0.0 <br/>
-    network.host: 0.0.0.0 <br/>
-
-    **Configuration in elasticsearch.yml file of data node**
-    Add the following parameter in the elasticsearch.yml file
-
-
-    node.roles: [ data ] <br/>
-    discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"] <br/>
-    cluster.initial_master_nodes: ["domain name of master node server"] <br/>
-    http.host: 0.0.0.0 <br/>
-    transport.host: 0.0.0.0 <br/>
-    network.host: 0.0.0.0 <br/>
+    **a. Configuration in elasticsearch.yml file of master node**
     
-   -  path.data: X:/ElasticData  (Note: Where X shouldn't be C Drive or Temporary Storage Drive)
-   -  path.logs: X:/ElasticLogs  (Note: Where X shouldn't be C Drive or Temporary Storage Drive)
+    Add the following parameter in the elasticsearch.yml file
+       
+    ```
+        node.roles: [ master ]
+        discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"]
+        cluster.initial_master_nodes: ["domain name of master node server"]
+        http.host: 0.0.0.0 
+        transport.host: 0.0.0.0
+        network.host: 0.0.0.0
+    ```
+        
 
+    **b. Configuration in elasticsearch.yml file of data node**
+    
+    Add the following parameter in the elasticsearch.yml file
+
+    ```
+        node.roles: [ data ] 
+        discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"]
+        cluster.initial_master_nodes: ["domain name of master node server"]
+        http.host: 0.0.0.0
+        transport.host: 0.0.0.0 
+        network.host: 0.0.0.0 
+        path.data: X:/ElasticData
+        path.logs: X:/ElasticLogs
+
+    ```
+    **Note:** Where X shouldn't be C Drive or Temporary Storage Drive
 3. **Set JVM Heap Size**  <br/>
    
 	a. Edit config\\jvm.options and set:
