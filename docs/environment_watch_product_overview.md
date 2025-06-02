@@ -1,4 +1,18 @@
-﻿# Environment Watch Overview
+﻿# Environment Watch
+
+This read.me contains 1) important information about this release bundle and 2) an overview of Environment Watch.
+
+# Getting started with this release bundle
+
+- For installation instructions, see [here](environment_watch_installation.md)
+- Full system requirements are covered in the installation guide above, but please note the following minimum version requirements for this release bundle:
+  - **Minimum required Relativity Server version**: Server 2024 Patch 1 (24.0.375.2-update.1.0)
+  - **Minimum required Elasticsearch version**:
+    - Environment Watch-only cluster: 8.17
+    - Data Grid Audit-only cluster: 7.17
+    - Shared Environment Watch and Data Grid Audit cluster: 8.17
+
+# Environment Watch Overview
 
 Environment Watch is a turnkey monitoring solution that provides Relativity Server customers with enhanced insights into the state of their environment.
 
@@ -30,7 +44,7 @@ This instrument is used to show quantitative data points that measure various as
 - Memory consumption​
 - Free disk space
 
-![](/resources/environment_watch_product_overview_001.png)
+![](../resources/environment_watch_product_overview_001.png)
 
 #### Traces
 
@@ -48,13 +62,13 @@ This instrument is used to show detailed records of events that occur within the
 - Warning logs that describe potential issues while executing a request or job
 - Error logs that describe unexpected issues while executing a request or job
 
-![](/resources/environment_watch_product_overview_002.png)
+![](../resources/environment_watch_product_overview_002.png)
 
 ### Open Telemetry
 
 [Open Telemetry](https://opentelemetry.io/) is an open source solution that defines industry standard APIs/SDKs/Tools to instrument virtually any software to help analyze performance and behavior​. It was developed by the Cloud Native Computing Foundation, the same outfit that developed Kubernetes/Prometheus.
 
-The term OTEL is an abbreviation for Open Telemetry and will be used within this and other documentation. Relativity Server selected OTEL for 3 key reasons:
+The term OTEL is an abbreviation for Open Telemetry and will be used within this and other documentation. Relativity Server selected OTEL for three key reasons:
 
 - No vendor lock-in; single set of APIs and conventions​
 - Proven industry standard for observability​
@@ -77,20 +91,20 @@ The OTEL distribution includes the OTEL collector EXE and is designed to run wit
 
 Relativity Server auto-configures the OTEL collector to not only simplify configuration but collect from standard infrastructure and Relativity specific sources including:
 
-- - Host metrics (e.g. CPU/Memory/Disk/Network/Process)
-    - IIS/SQL Server
-    - Windows services (e.g. Agent/Web Manager/Invariant/Service Host)
-    - Kepler service endpoints and Relativity/BCP fileshares
-    - X509 certificates
+- Host metrics (e.g. CPU/Memory/Disk/Network/Process)
+	- IIS/SQL Server
+	- Windows services (e.g. Agent/Web Manager/Invariant/Service Host)
+	- Kepler service endpoints and Relativity/BCP fileshares
+	- X509 certificates
 
 The OTEL SDK is used to submit metrics to the OTEL collector from different Relativity processes including:
 
-- - Agents
-    - Service Host
-    - Kepler services
-    - Custom Pages
-    - Invariant Queue Manager
-    - Invariant Worker
+- Agents
+	- Service Host
+	- Kepler services
+	- Custom Pages
+	- Invariant Queue Manager
+	- Invariant Worker
 
 #### Visualization Frontend
 
@@ -100,7 +114,7 @@ In a highly distributed environment, millions of JSON records are generated each
 
 Given the large amount of metrics/traces/logs, alerts define rules to detect both simple and complex conditions that trigger actions when those conditions have been met. Examples include:
 
-- - CPU exceeds threshold
+- CPU exceeds threshold
     - Insufficient disk space
     - Expired X509 certificate
 
@@ -110,15 +124,15 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 
 #### High-Level Architecture
 
-![](/resources/environment_watch_product_overview_003.png)
+![](../resources/environment_watch_product_overview_003.png)
 
 #### Relativity Environment Watch Windows Service
 
-The OTEL Collector provides many "out of the box" receivers to collect metrics; however each server must be carefully configured using 1 or more YAML files, depending on which "receivers" are required. In some cases, credentials must be exposed to the receivers in order to fetch metrics. Although the OTEL distribution provides many commonly used receivers, there are many Relativity specific use-cases that OTEL simply doesn't support. In these cases, an alternative mechanism is required use both Relativity and non-Relativity APIs to gather metrics and use the OTEL SDK to publish the results.
+The OTEL Collector provides many "out of the box" receivers to collect metrics; however each server must be carefully configured using one or more YAML files, depending on which "receivers" are required. In some cases, credentials must be exposed to the receivers in order to fetch metrics. Although the OTEL distribution provides many commonly used receivers, there are many Relativity specific use-cases that OTEL simply doesn't support. In these cases, an alternative mechanism is required use both Relativity and non-Relativity APIs to gather metrics and use the OTEL SDK to publish the results.
 
 The Relativity Environment Watch Windows Service is responsible for scheduling supported processes that perform different tasks. The Relativity InfraWatch Agent is arguably the most important process scheduled by the Environment Watch architecture as it provides the following key responsibilities:
 
-- - Autoconfigures the OTEL collector
+- Autoconfigures the OTEL collector
     - Infrastructure/Relativity secrets exposed to the OTEL collector via process environment variables
     - Manages the OTEL collector process
     - Supports custom "scrapers" to publish metrics via OTEL SDK using Windows/Relativity APIs
@@ -128,17 +142,17 @@ Microsoft Installer (MSI) technology provides Relativity administrators a soluti
 
 The appsettings.json file located within the Relativity Environment Watch installation directory can also be used to customize the OTEL collector and tweak the custom scrapers.
 
-![](/resources/environment_watch_product_overview_004.png)
+![](../resources/environment_watch_product_overview_004.png)
 
 #### Relativity Platform
 
 The Relativity platform has been updated to expose low-level details using the OTEL SDK from any extensibility point. Key platform enhancements include:
 
-- - **Relativity Logging**: the existing Relativity.Logging.ILog API sends all logs to the OTEL backend
-    - **Relativity Agents**: a trace is created for each agent execution
-    - **Kepler Services**: a trace is created for each HTTP request
-    - **Service Host**: health checks are periodically executed to ensure hosted services are working correctly
-    - **Invariant**: a trace is created for each operational Invariant Queue Manager/Worker
+- **Relativity Logging**: the existing Relativity.Logging.ILog API sends all logs to the OTEL backend
+	- **Relativity Agents**: a trace is created for each agent execution
+	- **Kepler Services**: a trace is created for each HTTP request
+	- **Service Host**: health checks are periodically executed to ensure hosted services are working correctly
+	- **Invariant**: a trace is created for each operational Invariant Queue Manager/Worker
 
 #### Kibana Alert Manager
 
@@ -154,16 +168,16 @@ Although alerts can be viewed within Kibana, Environment Watch uses a new Relati
 
 Environment Watch is enabled by the technology components:
 
-| **Component** | **Type** | **Used for** | **Setup** |
+| Component | Type | Used for | Setup |
 | --- | --- | --- | --- |
 | Elasticsearch | Third-party software (Elastic) | NoSQL document storage | Installed and configured by customer on own infrastructure |
 | Kibana | Third-party software (Elastic) | Alert and dashboard creation and management. | Installed and configured by customer on own infrastructure |
 | APM Server | Third-party software (Elastic) | Receives telemetry data from monitored hosts. | Installed and configured by customer on own infrastructure |
 | Relativity Alerts | Relativity application (RAP) | Provides the Relativity in-app alert experience. | Standard RAP install |
-| Monitoring Agent | Windows service and OpenTelemetry collector (known as the “InfraWatch Agent”) | Collects and transmits metrics from all hosts to the telemetry backend. | Environment Watch installer run on all servers in Relativity Server environment |
+| Monitoring Agent | Windows service and OpenTelemetry collector (known as the "InfraWatch Agent") | Collects and transmits metrics from all hosts to the telemetry backend. | Environment Watch installer run on all servers in Relativity Server environment |
 | Relativity Server CLI |     | Configures the integration between Relativity and Elastic and imports Relativity-created Kibana objects that are packaged with the Environment Watch solution. | Relativity Server CLI run on Primary SQL Server |
 
-![](/resources/environment_watch_product_overview_005.png)
+![](../resources/environment_watch_product_overview_005.png)
 
 ## Alerts, Dashboards, and Searching in Kibana
 
@@ -180,7 +194,7 @@ All Kibana objects packaged in Environment Watch include a set of tags that Rela
 - **CreatedBy:Relativity** – Enables the dashboard link to be visible on the ‘Logs & Dashboards’ tab in Relativity Alerts.
 - **FeatureDomain** – Enables the dashboard to be grouped with the correct feature domain on the ‘Logs & Dashboards’ tab in Relativity Alerts.
 
-![](/resources/environment_watch_product_overview_006.png)
+![](../resources/environment_watch_product_overview_006.png)
 
 #### Alert tags
 
@@ -191,7 +205,7 @@ All Kibana objects packaged in Environment Watch include a set of tags that Rela
 - **ResolutionText**– Defines the pop-up text when you hover over the resolution guidance link on the Relativity Alert notification card.
 - **ResolutionURL** – Defines the resolution guidance documentation page associated with the Relativity Alert.
 
-![](/resources/environment_watch_product_overview_007.png)
+![](../resources/environment_watch_product_overview_007.png)
 
 ### Dashboards in Kibana
 
@@ -199,29 +213,29 @@ Relativity has created and packaged dashboards in Kibana that help you explore s
 
 On the left side of all Relativity-created dashboards you will see links to other dashboards and saved searches that help you easily jump into logs, additional details, or related dashboards from the respective feature domain.
 
-![](/resources/environment_watch_product_overview_008.png)
+![](../resources/environment_watch_product_overview_008.png)
 
 ### Alerts in Kibana
 
-When you run the Environment Watch setup using the Relativity Server CLI, all Kibana Alerts that have been created by Relativity will be imported into your instance. Alerting enables you to define rules, which detect complex conditions within different Kibana apps and trigger actions when those conditions are met. The Relativity Alert RDOs interface with a corresponding Kibana Alert that defines the actual rules. You can also create your own Kibana Alerts, but they will not interface with a corresponding Relativity Alert RDO. 
+When you run the Environment Watch setup using the Relativity Server CLI, all Kibana Alerts that have been created by Relativity will be imported into your instance. Alerting enables you to define rules, which detect complex conditions within different Kibana apps and trigger actions when those conditions are met. The Relativity Alert RDOs interface with a corresponding Kibana Alert that defines the actual rules. You can also create your own Kibana Alerts, but they will not interface with a corresponding Relativity Alert RDO.
 
-![](/resources/environment_watch_product_overview_009.png)
+![](../resources/environment_watch_product_overview_009.png)
 
 ### Saved Searches in Kibana
 
 Running the Relativity Server CLI will also import Kibana Saved Searches created by Relativity into your instance. Saved Searches expose relevant pre-filtered log and metric data on dashboards or for searching, and are sometimes used as the “jump link” destination for a Relativity Alert that requires further investigation. Users most commonly interact with Saves Searches via the Kibana Discover feature which lets you quickly search and filter data, get information about the structure of the fields, and display findings in a visualization.
 
-![](/resources/environment_watch_product_overview_010.png)
+![](../resources/environment_watch_product_overview_010.png)
 
 ## Relativity Alerts application
 
 The Relativity Alerts application enables system administrators to monitor their environment within Relativity, providing real-time notifications and resolution guidance for system issues. By integrating with Kibana, the application retrieves alert information and displays it within the Relativity user interface, allowing users to quickly identify and address potential problems.
 
-Each Kibana alert that Relativity has packaged in Environment Watch has a corresponding Relativity Alert Relativity Dynamic Object (RDO) that stores key information about the alert including current state, feature domain, resolution guidance, relevant Relativity tab or Kibana dashboard, and more. Alert RDOs are only created for Kibana alerts that are created and packaged into Environment Watch by Relativity. These alerts are stamped with a “CreatedBy:Relativity” tag in Kibana.
+Each Kibana alert that Relativity has packaged in Environment Watch has a corresponding Relativity Alert Relativity Dynamic Object (RDO) that stores key information about the alert including current state, feature domain, resolution guidance, relevant Relativity tab or Kibana dashboard, and more. Alert RDOs are only created for Kibana alerts that are created and packaged into Environment Watch by Relativity. These alerts are stamped with a "CreatedBy:Relativity" tag in Kibana.
 
 The Alert Manager Agent retrieves alert data from Kibana. This agent is automatically created upon installation of the Alerts application and queries Kibana for updated alert state every 30 seconds.
 
-![](/resources/environment_watch_product_overview_011.png)
+![](../resources/environment_watch_product_overview_011.png)
 
 ### Relativity Alerts Tab and RDO
 
@@ -230,15 +244,15 @@ When you have Relativity Alerts installed and Environment Watch is fully configu
 - **Alerts tab** **and key fields** - The Alerts tab includes a list of all Alert RDOs that are mapped to a corresponding Kibana alert. Each Alert includes the following key fields:
   - **Alert State** – is the alert currently active or inactive?
   - **Alert State Updated** – When did the alert last change from inactive to active or active to inactive?
-  - **Dashboard or Tab Jump Link** – Alerts are “generalized” in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
+  - **Dashboard or Tab Jump Link** – Alerts are "generalized" in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
+	
+**Note** - Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
 
-Note: Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
-
-- - **Alert Enabled for Instance** – If set to No, Relativity will stop querying Kibana for updated alert state information
+- **Alert Enabled for Instance** – If set to No, Relativity will stop querying Kibana for updated alert state information
     - **Feature Domain** – Alerts are grouped by feature domain. You can see a list of all feature domains [here](https://github.com/relativityone/server-relativity-docs/blob/main/environment-watch/feature-domains.md).
     - **Alert Notes** – Users in your environment can capture notes on any action or investigation related to an alert.
 
-![](/resources/environment_watch_product_overview_012.png)
+![](../resources/environment_watch_product_overview_012.png)
 
 ### Relativity Alert Notifications
 
@@ -248,13 +262,13 @@ Relativity Alerts provides you with in-app notifications when an alert is active
 
 The alert notification bell in the top right corner of the screen will show you how many alerts are currently active, and when they became active. For each active alert, you can open a link to resolution guidance or the Relativity tab or Kibana dashboard jump link for the alert.
 
-![](/resources/environment_watch_product_overview_013.png)
+![](../resources/environment_watch_product_overview_013.png)
 
 #### User Notification Preferences
 
 Individual users can pause or turn off alert notifications for themselves. Changing the notification preference does not impact notification visibility for other users in the environment. When you pause or turn off notifications, updates to alert state will still be reflected on the Alerts tab but you will not see notifications on the bell until notifications. When you pause notifications, they will automatically resume after 24 hours. You can pause an alert from the notification card, or pause or turn off from the ‘My Alert Notification Preferences’ modal.
 
-![](/resources/environment_watch_product_overview_014.png)
+![](../resources/environment_watch_product_overview_014.png)
 
 ### Relativity Alert Permissions and Configuration Settings
 
@@ -264,7 +278,7 @@ The following permissions and configuration settings are available for Relativit
 
 All Instance-level System Administrators can see all Alerts, the Alerts tab, and Alert notifications. There is currently no way to extend any Alert permissions to non-System Administrators, and no way to remove or adjust permissions for System Administrators.
 
-**Note:** Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
+**Note** Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
 
 #### Alert Enabled for Instance
 
@@ -278,4 +292,4 @@ Any user can pause or turn off in-app notifications for individual alerts that t
 
 The Logs & Dashboards tab provides links to all Kibana dashboards and saved searches that Relativity has created and packaged as part of Environment Watch.
 
-![](/resources/environment_watch_product_overview_015.png)
+![](../resources/environment_watch_product_overview_015.png)
