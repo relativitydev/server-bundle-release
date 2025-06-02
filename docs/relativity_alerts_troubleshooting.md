@@ -34,53 +34,79 @@ This guide will help you resolve common issues that may arise during the install
 
 #### Issue 3: "Agent information doesn't exist." error is displayed.
 
+![alert-agent-doesnot-exist1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist1.png)
+![alert-agent-doesnot-exist2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist2.png)
+
 **Causes:**
 1. You might be missing the "Alert Manager" agent. 
 
-![alert-agent-doesnot-exist1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist1.png)
-![alert-agent-doesnot-exist2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist2.png)
+
 
 **Troubleshooting Steps:**
 
 Please follow below steps to verify and create a new agent if needed:
+
 1. Verify the "Alert Manager" Agent
+   
    a. Navigate to the Agents tab in Relativity.
+
    b. Filter the Name field to check if the 'Alert Manager' agent is present..
+
    c. If the agent is missing, proceed to create a new one by following the step2 below.
+
 2. Create a New "Alert Manager" agent
+   
    a. Navigate to the Agents tab in relativity.
+
    b. Click on the "New Agent" button.
+
    c. In the Agent Type dropdown, choose "Alert Manager".
+
    d. Enter 30 as the Run Interval (in seconds).
+
    e. Choose an active Agent Server that is assigned to one of the existing Resource Pools.
+
    f. Click on Save
+
 ![alert-agent-type.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-type.png)
 ![testvm-hopper-instance.png](../resources/relativity-alerts-troubleshooting-images/testvm-hopper-instance.png)
 ![verifyfields.png](../resources/relativity-alerts-troubleshooting-images/verifyfields.png)
-    Once these steps are completed, the "Alert Manager" agent should now be active and functioning correctly.
+    
+<br/> Once these steps are completed, the "Alert Manager" agent should now be active and functioning correctly.
 
 #### Issue 4: "The Alert Manager agent is unable to retrieve current alert state information from Kibana. Please ensure that the Alert Manager agent is enabled. To see accurate alert state information please navigate to Kibana." error is displayed.
-
-**Causes:**
-1. Your "Alert Manager" agent might be disabled.
 
 ![alert-agent-disabled1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled1.png)
 ![alert-agent-disabled2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled2.png)
 
+**Causes:**
+1. Your "Alert Manager" agent might be disabled.
+
+
 **Troubleshooting Steps:**
 
 Please follow below steps to verify and enable the agent if needed:
-1. Verify the "Alert Manager" Agent
-	a. Navigate to the Agents tab in Relativity.
-	b. Filter the Name field to check 'Alert Manager' agent is present.
-	c. Click on 'Alert Manager' agent and check if the agent is disabled, if so, proceed to enable the agent by following step 2 below.
-2. Enable the 'Alert Manager' agent
-	a. Navigate to the Agents tab in Relativity.
-	b. Filter the Name field to check 'Alert Manager' agent is present.
-	c. Click on 'Alert Manager' agent and click on 'Enable Agent'<br/>
-	![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png)
 
-Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
+1. Verify the "Alert Manager" Agent
+   
+	a. Navigate to the Agents tab in Relativity.
+
+	b. Filter the Name field to check 'Alert Manager' agent is present.
+
+	c. Click on 'Alert Manager' agent and check if the agent is disabled, if so, proceed to enable the agent by following step 2 below.
+
+2. Enable the 'Alert Manager' agent
+   
+	a. Navigate to the Agents tab in Relativity.
+
+	b. Filter the Name field to check 'Alert Manager' agent is present.
+
+	c. Click on 'Alert Manager' agent and click on 'Enable Agent'<br/>
+
+	![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png) <br/>
+
+
+<br/> Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
 
 #### Issue 5: "The Alert Manager agent interval is currently set to more than 15 minutes. If you want alert state information to be retrieved from Kibana more frequently, please update the agent interval." warning is displayed.
 
@@ -91,13 +117,21 @@ Once these steps are completed, the "Alert Manager" agent should now be Enabled 
 **Troubleshooting Steps:**
 
 Your "Alert Manager" agent might have exceeded the interval. Please follow below steps to verify and to update interval value if needed:
+
 1. Verify the "Alert Manager" Agent
+   
 	a. Navigate to the Agents tab in Relativity.
+
 	b. Filter the Name field to check 'Alert Manager' agent is present.
+
 	c. Click on 'Alert Manager' agent and check if the agent interval exceeds 900 seconds (15 minutes), if so, proceed to update agent interval value by following the step2 below.
+
 2. Update Agent interval to a value less then 900 seconds (15 minutes)
+   
 	a. Navigate to the Agents tab in Relativity.
+
 	b. Filter the Name field to check 'Alert Manager' agent is present.
+
 	c. Click on 'Alert Manager' agent and Update Agent interval to a value less then 900 seconds (15 minutes). Recommended value is 30 (default).<br/>
 	![verify-alert-agent-interval.png](../resources/relativity-alerts-troubleshooting-images/verify-alert-agent-interval.png)
 

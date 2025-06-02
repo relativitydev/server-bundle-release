@@ -44,18 +44,25 @@ A list of common install issues and their resolutions are available at the [trou
     ![relativity_alerts_verification_003_002](../resources/relativity_alerts_verification_003_002.png)
     ![relativity_alerts_verification_003_003](../resources/relativity_alerts_verification_003_003.png)
 4. To confirm that the alerting functionality is operational, please do the following:
-	a. Go to the Agents tab
+   
+	a. Go to the Agents tab<br/>
+
 	b. Select "File Deletion Manager" agent and disable it.<br/>
 	![relativity_alerts_verification_004_001](../resources/relativity_alerts_verification_004_001.png)
+
 	c. Within the next 30-60 seconds, the bell icon, in the top-right corner, will indicate that there is a new Alert.<br/>
 	![relativity_alerts_verification_004_002](../resources/relativity_alerts_verification_004_002.png)
+
     d. Click on the bell icon, and you should be able to see the active 'One or more agents are disabled' alert in the alert flyout.<br/>
 	![relativity_alerts_verification_004_003](../resources/relativity_alerts_verification_004_003.png)
+
 	e. Click on the question mark icon next to the 'One or more agents are disabled' alert, and you will be redirected to the resolution guidance for this alert in a new tab of your web browser.<br/>
     ![relativity_alerts_verification_004_004](../resources/relativity_alerts_verification_004_004.png)<br/>
     ![relativity_alerts_verification_004_005](../resources/relativity_alerts_verification_004_005.png)
+	
 	f. Return to the previous tab in Relativity, then click on the bell icon in the top-right corner. When the alert flyout opens, click on the 'One or more agents are disabled' alert, and you will be redirected to a filtered list of disabled agents in the Agents tab within Relativity.<br/>
 	![relativity_alerts_verification_004_006](../resources/relativity_alerts_verification_004_006.png)
+	
 	g. While on Agents tab, please remember to enable the "File Deletion Manager" agent.
 
 
