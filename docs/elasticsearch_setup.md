@@ -300,7 +300,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
     b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
 	```
-	.\kibana-encryption-keys generate.bat
+	.\kibana-encryption-keys generate
 	```
     c. Copy the encryption keys generated and paste it in kibana.yml file <br/>
     d. Restart kibana service using **./kibana.bat** navigating to bin folder in powershell admin mode. <br/>
