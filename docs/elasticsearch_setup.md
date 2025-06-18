@@ -160,6 +160,8 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 ## Installing the Elastic stack components
 
+### Below set up is for a three-node Elasticsearch cluster
+
 ### Before you start
 
 1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster.
@@ -304,6 +306,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 	```
     c. Copy the encryption keys generated and paste it in kibana.yml file <br/>
     d. Restart kibana service using **./kibana.bat** navigating to bin folder in powershell admin mode. <br/>
+    e. Refer https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
 5. **Create Kibana Windows Service**
 	
@@ -340,29 +343,62 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 #### Step 5: Install and Configure APM Server
 
-1. **Download APM Server**
+1. **Prerequisites to setup APM Server**
+
+    a. Elastic and Kibana should be configured and Services should be up and running.
+
+2. **Download APM Server**
    
 	a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm). <br/>
 	b. Download and extract the Windows .zip file. <br/>
 
 2. **Configure APM Server (config\\apm-server.yml)**
-   In the "Elasticsearch output" section, perform the below changes:
+    
+    Either Username / Password or API Key is required to login into Kibana APM. If you used Username and Password, can ignore using API key inside apm-server.yml file and for API Key usage check below step(a).
+
+    a. Create new API key from kibana. Navigate to StackManagement->API Keys→Create. And create one by providing API Key name. Keep the other default settings as it is. 
+
+    ![alt text](../resources/troubleshooting-images/apm_apikey.png)
+
+    b. Once the API key is generated, keep a note of the key.
+
+    c. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
+
+    d. Update host of apm-server to "insert-hostname:8200". Uncomment the line, if it is commented
+    ![alt text](../resources//troubleshooting-images/apm-conf1.png)
+
+    e. In the "Elasticsearch output" section, perform the below changes:
 
     - Uncomment the output.elasticsearch
     - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
-    - Update hosts
+    - Update hosts: ["insert-hostname:9200"]
     - Update protocol: https
     - This setting is needed because elasticsearch is running under https
 
-    ```
-    apm-server:  
-    host: "0.0.0.0:8200"  
-    output.elasticsearch:  
-    hosts: ["<https://192.168.1.101:9200>"]  
-    username: "elastic_username"  
-    password: "elastic_password"  
-    ssl.certificate_authorities: certs/ca.crt
-    ```
+    f. Either Username and Password / API Key required for APM Services. The same is highlighted below
+    ![alt text](../resources/troubleshooting-images/apm-conf2.png)
+
+    g. Also within output.elasticsearch, modify ssl settings
+
+    These changes are needed because elasticsearch is running under ssl
+
+    - Update ssl.enabled: true
+    - Update ssl.verification_mode: none
+
+    ![alt text](../resources/troubleshooting-images/apm-ssl.png)
+
+    h. Update Instrumentation section as below:
+
+    - Uncomment Instrumentation section to enable apm-server instrumentation.
+    - Update enabled: true, environment: production
+    - hosts: - "http://insert-hostname:8200"
+  
+    ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
+
+    i. Once the instrumentation is set, we can verify it in Kibana as shown below:
+    ![alt text](../resources/troubleshooting-images/verify-instrumentation.png)
+
+
 3. **Execute required scripts to install APM service**
    
 	 <br/>a. Navigate inside the downloaded apm-server.
@@ -377,6 +413,8 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 5. **Add Elastic APM Integration**
    
+   ⚠️**WARNING**: Skipping below steps will cause the Relativity Server CLI to fail
+
    a. Login to Kibana and select the Elastic APM under the Integration or in search bar type Elastic APM and select under Integration.<br/>
 
    b. In the Right top select Add Elastic APM button.  <br/>
@@ -396,14 +434,14 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 1. **Check Elasticsearch Cluster Health**
     ```
-    curl -k -u elastic:your_password <https://192.168.1.101:9200/_cluster/health?pretty>
+    curl -k -u elastic:your_password <https://<your-ip/hostname>:9200/_cluster/health?pretty>
     ```
 2. **Check Kibana Status**
-		- Open a browser and go to <https://192.168.1.101:5601>.
+		- Open a browser and go to <https://<your-ip/hostname:5601>.
 		- Log in using elastic or kibana_system credentials.
 3. **Test APM Server**
     ```
-    curl -k -X GET "<http://192.168.1.101:8200>"
+    curl -k -X GET "<http://<your-ip/hostname:8200>"
     ```
 
 ## Next
