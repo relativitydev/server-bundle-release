@@ -186,7 +186,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     bin\elasticsearch.bat
     ```
 
-      - When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
+    **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
       - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser. 
 	  - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
 	  - An enrollment token is generated for Kibana, which is valid for 30 minutes.
@@ -196,7 +196,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     ```
     .\bin\elasticsearch-service.bat install
     ```
-2. **Configure elasticsearch.yml on Each Node**  
+1. **Configure elasticsearch.yml on Each Node**  
 
     The cluster name must be the same across all node servers.
     The value of the cluster.initial_master_nodes parameter should be the domain name of the master node server.
@@ -306,34 +306,53 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 	```
     c. Copy the encryption keys generated and paste it in kibana.yml file <br/>
     d. Restart kibana service using **./kibana.bat** navigating to bin folder in powershell admin mode. <br/>
-    e. Refer https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
+    e. Refer https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html for more details
 
 5. **Create Kibana Windows Service**
 	
-    a. Download latest nssm exe file version from <https://nssm.cc/download> <br/>
-	b. Run: <br/>
-		- nssm install kibana
-		- Set Application path to C:\\Kibana\\bin\\kibana.bat.
-		- In the **Service Name** field, provide a custom name (e.g., kibana-service). 
-	c. Click **Install Service**. <br/>
-6. **Rename Kibana Service Using NSSM**
-    - If the service name is not what you want (e.g., kibana), you can rename it using NSSM:
-    - Run the following to rename the service:
-    - nssm set kibana-service DisplayName "Kibana Service"  
-        nssm set kibana-service Start "SERVICE_DEMAND_START"
-    <div class="note">Replace kibana-service with the actual service name you chose in the previous step.</div>
+    a. Download latest nssm exe file version from https://nssm.cc/download and place it in C drive (Example: C:\nssm\nssm.exe)<br/>
+    
+    b. Open a command line with administrative privilege in the folder with nssm.exe and run the command nssm install kibana_service. A popup will open to create a windows service.<br/>
+
+    c. In the Application tab, Enter the path of kibana.bat and the folder of kibana.bat as shown below <br/>
+    ![alt text](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
+
+    **Note:** If you accidentally press Return, that will cause the service to be installed before your configuration is complete. In that case, you can use this command, to continue to edit the service properties:
+    
+    ```
+    .\nssm.exe edit kibana_service
+    ```
+    
+    d. In the I/O tab, enter the path of a log file where the service logs will be stored. For this purpose, create a folder in kibana folder (like service_logs) and create a blank log file (say kibana_service.log), Copy the path of the log file created and paste in stdout and stderr section <br/>
+
+    ![alt text](../resources//troubleshooting-images/kibanaservice-io-tab.png)
+
+    e. In the File rotation tab, check all the boxes and enter 10485760 bytes, so that a new log file will be generated for every 5 MB of logs.
+    
+    ![alt text](../resources/troubleshooting-images/kibanaservice-filerotationtab.png)
+
+
+    f. Finally click the Install service button to create a windows service for kibana
+
+    g. Go to the Services app in windows, search for kibana_service service, right click and start the service
+
+    h. Right click on the service and open the properties to change the startup type as Automatic to make the Kibana service run automatically upon system startup
+
+    i. Verify if Kibana is running in the browser
 
 #### Step 4: Secure Kibana Communications
 
 1. **Enable HTTPS for Kibana**
     
     a. Navigate to Elastic search bin in PS/CMD (Ex: C:\elasticsearch\elasticsearch-8.14.3\bin)<br/>
-    b. Execute command  .\elasticsearch-certutil ca -pem   to generate CA certificate and key <br/>
+    b. Execute command  **.\elasticsearch-certutil ca -pem**   to generate CA certificate and key <br/>
 	c. Place SSL certificates in config\\certs\\.<br/>
-	d. Modify config\\kibana.yml:<br/>
-	e. yamlCopyEditserver.ssl.enabled: true  <br/>
-		- server.ssl.certificate: certs/kibana.crt  
-		- server.ssl.key: certs/kibana.key
+	d. Update the paths in kibana.yml file under **System: Kibana Server (Optional)** section as below
+
+          server.ssl.enabled: true
+          server.ssl.certificate: certs/kibana.crt 
+          server.ssl.key: certs/kibana.key
+
 2. **Encrypt Traffic Between Kibana and Elasticsearch**
     ```
     elasticsearch.ssl.verificationMode: certificate  
