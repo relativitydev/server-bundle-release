@@ -354,7 +354,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 2. **Configure APM Server (config\\apm-server.yml)**
     
-    Either Username / Password or API Key is required to login into Kibana APM. If you used Username and Password, can ignore using API key inside apm-server.yml file and for API Key usage check below step(a).
+    Either Username / Password or API Key is required for configuring APM. If Username and Password is used, can ignore using API key inside apm-server.yml file and for API Key usage check below step(a).
 
     a. Create new API key from kibana. Navigate to StackManagement->API Keys→Create. And create one by providing API Key name. Keep the other default settings as it is. 
 
