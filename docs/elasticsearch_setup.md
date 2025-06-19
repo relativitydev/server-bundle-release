@@ -165,7 +165,9 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 ### Before you start
 
 1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster.
-2. **Windows must be updated to support long paths to enable the Local Group Policy Editor** - Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on enable the Long path.
+2. **Windows must be updated to support long paths to enable the Local Group Policy Editor** - <br/>
+        - Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. <br/>
+        - Double click on enable the Long path.<br/>
 3. **Verify the minimum supported version of Elastic**
     <div class="note">Data Grid Audit may require a lower minimum version of Elasticsearch than Environment Watch. If you intend to use a cluster for both, you must install the same version of Elasticsearch on all nodes in the cluster, and that version must be the higher of the minimum versions for Environment Watch and Data Grid Audit, if different.</div>
 4. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
@@ -298,7 +300,9 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 	![](/resources/elasticsearch_setup_003.png)
 
 4. **Generate Kibana encryption keys**
-   
+    
+    ⚠️WARNING: Skipping below steps will cause the Relativity Server CLI to fail
+
     a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
     b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
 	```
@@ -383,14 +387,14 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
     c. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
 
-    d. Update host of apm-server to "insert-hostname:8200". Uncomment the line, if it is commented
+    d. Update host of apm-server to "((insert-hostname) or (insert-IP address-here)/:8200". Uncomment the line, if it is commented
     ![alt text](../resources//troubleshooting-images/apm-conf1.png)
 
     e. In the "Elasticsearch output" section, perform the below changes:
 
     - Uncomment the output.elasticsearch
     - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
-    - Update hosts: ["insert-hostname:9200"]
+    - Update hosts: ["(insert-hostname) or (insert-IP address-here)>:9200"]
     - Update protocol: https
     - This setting is needed because elasticsearch is running under https
 
@@ -410,7 +414,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
     - Uncomment Instrumentation section to enable apm-server instrumentation.
     - Update enabled: true, environment: production
-    - hosts: - "http://insert-hostname:8200"
+    - hosts: - "http://(insert-hostname/ip-address):8200"
   
     ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
 
@@ -439,8 +443,8 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
    b. In the Right top select Add Elastic APM button.  <br/>
 
    c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
-       Ex: Host:192.168.1.101:8200
-           URL: http://192.168.1.101:8200 <br/>
+       Ex: Host:(insert-hostname) or (insert-IP address-here):8200
+           URL: http://(insert-hostname) or (insert-IP address-here):8200 <br/>
 
    d. Click on Save and Continue. <br/>
    
@@ -452,16 +456,12 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 6: Verify Deployment
 
 1. **Check Elasticsearch Cluster Health**
-    ```
-    curl -k -u elastic:your_password <https://<your-ip/hostname>:9200/_cluster/health?pretty>
-    ```
+        - Open a browser and navigate to https://(insert-hostname) or (insert-IP address-here):9200.
 2. **Check Kibana Status**
-		- Open a browser and go to <https://<your-ip/hostname:5601>.
+		- Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
 		- Log in using elastic or kibana_system credentials.
 3. **Test APM Server**
-    ```
-    curl -k -X GET "<http://<your-ip/hostname:8200>"
-    ```
+        - Open a browser and navigate to http://(insert-hostname) or (insert-IP address-here):8200. Verify reponse and publish ready should be "true".
 
 ## Next
 
