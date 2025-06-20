@@ -12,7 +12,7 @@ This first stage of the Environment Watch and/or Data Grid Audit setup involves 
 
 When you complete stage 1, there will be no integration between any of the Elastic components and Relativity when you complete this step. The integration will be set up during stage 2. Within stage 1, you will first set up and verify your Elasticsearch cluster and then proceed to set up Kibana and/or APM Server depending on whether you are configuring Environment Watch, Data Grid Audit, or both.
 
-Stage 1 of this installation guide is based on a scenario where you are configuring a single shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit in a Tier 1 (Small) Relativity Server environment. The System Requirements section below includes additional details on software and hardware requirements based on the size of your Relativity Server environment and whether you are setting up Environment Watch, Data Grid Audit, or both.
+Stage 1 of this installation guide is based on a scenario where you are configuring a single shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit in a Small Relativity Server environment. The System Requirements section below includes additional details on software and hardware requirements based on the size of your Relativity Server environment and whether you are setting up Environment Watch, Data Grid Audit, or both.
 
 Before you start, we will cover some key Elastic stack concepts.
 
@@ -63,11 +63,11 @@ See [here](https://www.elastic.co/guide/en/observability/current/apm.html) for m
 
 <div class="note">The documentation below includes several links to instructions in Elastic’s official documentation. Whenever you are jumping into Elastic documentation, ensure the proper Elasticsearch, Kibana, or APM Server documentation version is selected.</div>
 
-Setting up your Elastic stack components will require you to install Elastic software on one or more servers. This installation guide is based on a scenario where you are configuring a single shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit in a Tier 1 (Small) Relativity Server environment. In this scenario you will be installing Elastic on five separate servers as pictured below. The **_Hardware Requirements by Instance Tier_** section below provides hardware guidance based on the size of your Relativity Server environment and whether you are setting up Environment Watch, Data Grid Audit, or both.
+Setting up your Elastic stack components will require you to install Elastic software on one or more servers. This installation guide is based on a scenario where you are configuring a single shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit in a Small Relativity Server environment. In this scenario you will be installing Elastic on five separate servers as pictured below. The **_Hardware Recommendations by Environment Size_** section below provides hardware guidance based on the size of your Relativity Server environment and whether you are setting up Environment Watch, Data Grid Audit, or both.
 
 ![](../resources/elasticsearch_setup_002.png)
 
-**_Tier 1 environment used for Environment Watch and Data Grid Audit_**
+**Small environment size used for Environment Watch and Data Grid Audit_**
 
 ### Software Requirements
 
@@ -75,82 +75,105 @@ Any server being used to host Elastic components requires:
 
 - **Operating System** – See [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm) for supported operating systems.
 
-### Hardware Recommendations by Instance Tier
+### Hardware Recommendations by Environment Size
 
-The number of servers and hardware specifications that you need to host the Elastic components will vary depending on the size of your Relativity instance and whether you intend to use the cluster for Environment Watch, Data Grid Audit, or both. Below you will find recommendations based on four Relativity Server instance tiers. These are only recommendations. You can adjust the node counts and role blends for your environment based on observed and desired performance and reliability needs.
+The number of servers and hardware specifications that you need to host the Elastic components will vary depending on the size of your Relativity instance and whether you intend to use the cluster for Environment Watch, Data Grid Audit, or both. Below you will find recommendations based on four Relativity Server environment sizes. These are only recommendations. You can adjust the node counts and role blends for your environment based on observed and desired performance and reliability needs.
 
 A few other key notes and reminders:
 
 - **Tuning for speed** - Review Elastic’s guidance on how to tune your environment for speed [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html).
-- **Hosting Elastic –** While the guidance below recommends installing the Elastic components on many dedicated servers, there are no hard requirements to isolate Elasticsearch, Kibana, or APM Server on dedicated hosts. As evident with the Tier 0 – Test environment specifications, you can deploy the full Elastic stack on a single host if that server can meet your storage needs.
+- **Hosting Elastic –** While the guidance below recommends installing the Elastic components on many dedicated servers, there are no hard requirements to isolate Elasticsearch, Kibana, or APM Server on dedicated hosts. As evident with the Development environment specifications, you can deploy the full Elastic stack on a single host if that server can meet your storage needs.
   - **Kibana and APM Server hosting** –
-    - For Tier 1 instances we recommend dedicated servers for Kibana and APM Server, but on the smaller end of the tier you can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node.
-    - For Tier 2 and 3 environments, we strongly recommend installing Kibana and APM Server on dedicated servers for each.
-- **Nodes in a shared Environment Watch/Data Grid cluster** - In a cluster being used for both Environment Watch and Data Grid Audit, you do not designate any given data node as being for one or the other. Any node in the cluster can support operations for either product.
+    - For Small environments, we recommend dedicated servers for Kibana and APM Server, but can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node for development and very small environments.
+    - For Medium environments and above, we strongly recommend installing Kibana and APM Server each on dedicated servers.
+- **Nodes in a shared Environment Watch/Data Grid cluster** - In a cluster being used for both Environment Watch and Data Grid Audit, you are not required to designate data nodes for one or the other. Any node in the cluster can support operations for either product, though dedicated node assignments may be needed for certain workloads.
 
-**Tier Definitions**
+**Environment Size**
 
-The instance tiers are defined by the number of Web, Agent, and Worker servers in the instance.
+The environment size is defined by the number of Web, Agent, and Worker servers within the instance.
 
-| Tier | Web Servers | Agent Servers | Workers |
-| --- | --- | --- | --- |
-| 0 - Test | Single device |     |     |
-| 1 - Small | 1   | 4   | 1   |
-| 2 - Medium | 2-4 | 5-9 | 2-9 |
-| 3 - Large | 5+  | 10+ | 10+ |
+| Environment Size| Web Servers   | Agent Servers | Workers |
+| --------------- | ------------- | ------------- | ------- |
+| Development     | 1             | 1             | 1       |
+| Small           | 1             | 4             | 1       |
+| Medium          | 2-4           | 5-9           | 2-9     |
+| Large           | 5+            | 10+           | 10+     |
 
-#### Tier 1 – Small
+#### Environment Size – Development
 
-<div class="note">For Tier 1 instances we recommend dedicated servers for Kibana and APM Server, but on the smaller end of the tier you can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node.</div>
+<div class="note">For a development environment, all Elasticsearch components are installed within a single server to minimize complexity and get up and running as quickly as possible. <b>There are no data upgrades performed for this environment.</b></div>
+<br />
 
-| Elastic component | Server Count | CPU | RAM (GB) | Disk (TB) |
-| --- | --- | --- | --- | --- |
-| **Environment Watch Only** |     |     |     |     |
-| Elasticsearch nodes | 2   | 4   | 32  | 1   |
-| Kibana | 1   | 4   | 32  | 1   |
-| APM Server | 1   | 4   | 32  | 1   |
-| **Data Grid Audit Only** |     |     |     |     |
-| Elasticsearch nodes | 2   | 4   | 32  | 1   |
-| Kibana (optional) | 1   | 4   | 32  | 1   |
-| APM Server | N/A | \-  | \-  | \-  |
-| **Environment Watch and Data Grid Audit** |     |     |     |     |
-| Elasticsearch nodes | 3   | 4   | 32  | 1   |
-| Kibana | 1   | 4   | 32  | 1   |
-| APM Server | 1   | 4   | 32  | 1   |
+| Elastic Stack Component                   | Server Count | CPU | RAM (GB) | Disk (TB) |
+| ----------------------------------------- | ------------ | --- | -------- | --------- |
+| **Environment Watch Only**                |              |     |          |           |
+| Elasticsearch/Kibana/APM Server           | 1            | 4   | 32       | 1         |
+| **Data Grid Audit Only**                  |              |     |          |           |
+| Elasticsearch/Kibana (optional)           | 1            | 4   | 32       | 1         |
+| **Environment Watch and Data Grid Audit** |              |     |          |           |
+| Elasticsearch/Kibana/APM Server           | 1            | 4   | 32       | 1         |
 
-#### Tier 2 – Medium
+#### Environment Size – Small
 
-| Elastic component | Server Count | CPU | RAM (GB) | Disk (TB) |
-| --- | --- | --- | --- | --- |
-| **Environment Watch Only** |     |     |     |     |
-| Elasticsearch nodes | 3   | 4   | 32  | 2   |
-| Kibana | 1   | 4   | 32  | 2   |
-| APM Server | 1   | 4   | 32  | 2   |
-| **Data Grid Audit Only** |     |     |     |     |
-| Elasticsearch nodes | 3   | 4   | 32  | 2   |
-| Kibana (optional) | 1   | 4   | 32  | 2   |
-| APM Server | N/A | \-  | \-  | \-  |
-| **Environment Watch and Data Grid Audit** |     |     |     |     |
-| Elasticsearch nodes | 6   | 4   | 32  | 2   |
-| Kibana | 1   | 4   | 32  | 2   |
-| APM Server | 1   | 4   | 32  | 2   |
+<div class="note">For a small environment, we recommend dedicated Kibana and APM Server server, but can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node.</div>
+<br />
 
-#### Tier 3 – Large
+| Elastic Stack Component                   | Server Count | CPU | RAM (GB) | Disk (TB) |
+| ----------------------------------------- | ------------ | --- | -------- | --------- |
+| **Environment Watch Only**                |              |     |          |           |
+| Elasticsearch nodes                       | 2            | 4   | 32       | 1         |
+| Kibana                                    | 1            | 4   | 32       | 1         |
+| APM Server                                | 1            | 4   | 32       | 1         |
+| **Data Grid Audit Only**                  |              |     |          |           |
+| Elasticsearch nodes                       | 2            | 4   | 32       | 1         |
+| Kibana (optional)                         | 1            | 4   | 32       | 1         |
+| APM Server                                | N/A          | -   | -        | -         |
+| **Environment Watch and Data Grid Audit** |              |     |          |           |
+| Elasticsearch nodes                       | 3            | 4   | 32       | 1         |
+| Kibana                                    | 1            | 4   | 32       | 1         |
+| APM Server                                | 1            | 4   | 32       | 1         |
 
-| Elastic component | Server Count | CPU | RAM (GB) | Disk (TB) |
-| --- | --- | --- | --- | --- |
-| **Environment Watch Only** |     |     |     |     |
-| Elasticsearch nodes | 4   | 4   | 32  | 4   |
-| Kibana | 1   | 4   | 32  | 4   |
-| APM Server | 1   | 4   | 32  | 4   |
-| **Data Grid Audit Only** |     |     |     |     |
-| Elasticsearch nodes | 1-15 (scale on demand) | 4   | 32  | 2   |
-| Kibana (optional) | 1   | 4   | 32  | 2   |
-| APM Server | N/A | \-  | \-  | \-  |
-| **Environment Watch and Data Grid Audit** |     |     |     |     |
-| Elasticsearch nodes | 4 -18 (scale on demand) | 4   | 32  | 4   |
-| Kibana | 1   | 4   | 32  | 4   |
-| APM Server | 1   | 4   | 32  | 4   |
+#### Environment Size – Medium
+
+<div class="note">For a medium environment, a few additional nodes are added to the Elasticsearch cluster(s).</div>
+<br />
+
+| Elastic Stack Component                   | Server Count | CPU | RAM (GB) | Disk (TB) |
+| ----------------------------------------- | ------------ | --- | -------- | --------- |
+| **Environment Watch Only**                |              |     |          |           |
+| Elasticsearch nodes                       | 3            | 4   | 32       | 1         |
+| Kibana                                    | 1            | 4   | 32       | 1         |
+| APM Server                                | 1            | 4   | 32       | 1         |
+| **Data Grid Audit Only**                  |              |     |          |           |
+| Elasticsearch nodes                       | 3            | 4   | 32       | 1         |
+| Kibana (optional)                         | 1            | 4   | 32       | 1         |
+| APM Server                                | N/A          | -   | -        | -         |
+| **Environment Watch and Data Grid Audit** |              |     |          |           |
+| Elasticsearch nodes                       | 6            | 4   | 32       | 1         |
+| Kibana                                    | 1            | 4   | 32       | 1         |
+| APM Server                                | 1            | 4   | 32       | 1         |
+
+
+#### Environment Size – Large
+
+<div class="note">For a large environment, Elasticsearch is scaled horizontally by adding more nodes to the cluster(s).</div>
+<br />
+
+| Elastic Stack Component                   | Server Count           | CPU | RAM (GB) | Disk (TB) |
+| ----------------------------------------- | ---------------------- | --- | -------- | --------- |
+| **Environment Watch Only**                |                        |     |          |           |
+| Elasticsearch nodes                       | 4                      | 4   | 32       | 1         |
+| Kibana                                    | 1                      | 4   | 32       | 1         |
+| APM Server                                | 1                      | 4   | 32       | 1         |
+| **Data Grid Audit Only**                  |                        |     |          |           |
+| Elasticsearch nodes                       | 1-15 (scale on demand) | 4   | 32       | 1         |
+| Kibana (optional)                         | 1                      | 4   | 32       | 1         |
+| APM Server                                | N/A                    | -   | -        | -         |
+| **Environment Watch and Data Grid Audit** |                        |     |          |           |
+| Elasticsearch nodes                       | 4-18 (scale on demand) | 4   | 32       | 1         |
+| Kibana                                    | 1                      | 4   | 32       | 1         |
+| APM Server                                | 1                      | 4   | 32       | 1         |
+
 
 ### Licensing
 
@@ -160,367 +183,28 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 ## Installing the Elastic stack components
 
-### Below set up is for a three-node Elasticsearch cluster
-
 ### Before you start
 
-1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster. <br/>
-2. **Verify the minimum supported version of Elastic**
-    <div class="note">Data Grid Audit may require a lower minimum version of Elasticsearch than Environment Watch. If you intend to use a cluster for both, you must install the same version of Elasticsearch on all nodes in the cluster, and that version must be the higher of the minimum versions for Environment Watch and Data Grid Audit, if different.</div>
-3. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
-4. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
+1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster. We recommend using a Development environment to test drive Environment Watch in order to get up and running as quickly as possible.
+
+2. **Windows *should* be updated to support long paths** - This is recommended because the Elastic Stack components have dense file paths when fully extracted. In many cases, the product apppears to function properly but certain features may fail because files may be missing or cannot be accessed because the path exceeds the max Windows character length. Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on enable the Long path.
+
+TODO: Kibana is built on Node and includes several files that can easily exceeed the max path length in Windows. This problem is well known within the Elastic community and MUST be addressed. You have 2 choices: extract Kibana to intentionally short paths (e.g. C:\elastic\kibana) or enable long paths in Windows. This section and Kibana extraction specifically must be better explained.
+
+
+TODO: Add a screenshot + incorporate the link below.
+
+    https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
+
+
+3. **Verify the minimum supported version of Elastic** -  All Relativity products have been certified with Elastic Stack 8.17.x, though Data Grid Audit alone is supported on 7.17.x. If you intend to use a single cluster for both, you must install the same version of Elasticsearch on all nodes in the cluster, and that version must be the higher of the minimum versions for Environment Watch and Data Grid Audit, if different. 
+
+4. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
+
+5. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
 
 ### Installation steps
 
-#### Step 1: Download and Install Elasticsearch on All Three Nodes
+[Click here to setup an Elastic Stack for a development environment](./elasticsearch_setup_development.md)
 
-1. **Download Elasticsearch**
-   
-	a. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).<br/>
-	b. Download the Windows .zip version.<br/>
-	c. Extract it to a directory (e.g., C:\\Elasticsearch\\Node1, C:\\Elasticsearch\\Node2, C:\\Elasticsearch\\Node3).<br/>
-	d. Run the below command from elastic search folder in command prompt with administrator mode to start Elasticsearch<br/>
-
-    ```
-    bin\elasticsearch.bat
-    ```
-
-    **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
-      - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser. 
-	  - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
-	  - An enrollment token is generated for Kibana, which is valid for 30 minutes.
-  
-    e. Run below command from elastic search folder in powershell admin mode to install elasticsearch.<br/>
-    
-    ```
-    .\bin\elasticsearch-service.bat install
-    ```
-1. **Configure elasticsearch.yml on Each Node**  
-
-    The cluster name must be the same across all node servers.
-    The value of the cluster.initial_master_nodes parameter should be the domain name of the master node server.
-    The discovery.seed_hosts parameter should include the domain names of all servers where Elasticsearch will be set up.
-    
-    **a. Configuration in elasticsearch.yml file of master node**
-    
-    Add the following parameter in the elasticsearch.yml file
-       
-    ```
-        node.roles: [ master ]
-        discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"]
-        cluster.initial_master_nodes: ["domain name of master node server"]
-        http.host: 0.0.0.0 
-        transport.host: 0.0.0.0
-        network.host: 0.0.0.0
-    ```
-        
-
-    **b. Configuration in elasticsearch.yml file of data node**
-    
-    Add the following parameter in the elasticsearch.yml file
-
-    ```
-        node.roles: [ data ] 
-        discovery.seed_hosts: ["domain name of master node server", "domain name of data node server", "domain name of data node server"]
-        cluster.initial_master_nodes: ["domain name of master node server"]
-        http.host: 0.0.0.0
-        transport.host: 0.0.0.0 
-        network.host: 0.0.0.0 
-        path.data: X:/ElasticData
-        path.logs: X:/ElasticLogs
-
-    ```
-    **Note:** Where X shouldn't be C Drive or Temporary Storage Drive
-3. **Set JVM Heap Size**  <br/>
-   
-	a. Edit config\\jvm.options and set:
-    ```
-    -Xms8g
-    -Xmx10g
-    ```
-4. **Run Elasticsearch as a Windows Service**
-   
-	a. Open PowerShell (as Administrator) and navigate to the Elasticsearch folder:
-    ```
-    .\bin\elasticsearch-service.bat start
-    ```
-
-#### Step 2: Secure Elasticsearch Communications
-
-1. **Generate SSL Certificates (Self-Signed or CA-Signed)**
-   
-	a. Run the following command to generate certificates:
-    ```
-    .\bin\elasticsearch-certutil.bat http
-    ```
-	
-    b. Follow the prompts and distribute certificates to all nodes.
-
-2. **Enable HTTPS for Elasticsearch**
-	
-    a. Edit config\\elasticsearch.yml:
-    ```
-    xpack.security.enabled: true  
-    xpack.security.http.ssl.enabled: true  
-    xpack.security.http.ssl.keystore.path: certs/http.p12  
-    xpack.security.transport.ssl.enabled: true  
-    xpack.security.transport.ssl.verification_mode: certificate  
-    xpack.security.transport.ssl.keystore.path: certs/transport.p12  
-    xpack.security.transport.ssl.truststore.path: certs/transport.p12
-    ```
-
-3. **Enable  "Stack Monitoring" built-in dashboard**
-   
-   a. To enable "Stack Monitoring" built-in dashboard add following line to elasticsearch.yml 
-
-    ```
-    xpack.monitoring.collection.enabled: true
-    ```
-
-   b. Save the changes and restart Elasticsearch service.
-
-
-4. **Restart Elasticsearch Services on All Nodes**
-    ```
-    .\bin\elasticsearch-service.bat restart
-    ```
-5. **Create Elastic User Passwords**
-    ```
-    .\bin\elasticsearch-reset-password -u elastic
-    ```
-
-#### Step 3: Install and Configure Kibana
-
-⚠️WARNING : **Windows must be updated to support long paths to enable the Local Group Policy Editor** - <br/>
-- Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. 
-- Double click on enable the Long path. 
-
-1. **Download Kibana**
-	
-    a. Download and extract the Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana). <br/>
-  
-2. **Start Kibana from the command line**
-    
-    a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
-    b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
-    ```
-    .\kibana.bat
-    ```
-3. **Enroll Kibana**
-	
-    a. In your terminal, click the generated link to open Kibana in your browser. <br/>
-	b. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, and then click the button to connect your Kibana instance with Elasticsearch. <br/>
-	c. Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch.<br/>
-	![](/resources/elasticsearch_setup_003.png)
-
-4. **Generate Kibana encryption keys**
-    
-    ⚠️WARNING: Skipping below steps will cause the Relativity Server CLI to fail
-
-    a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
-    b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
-	```
-	.\kibana-encryption-keys generate
-	```
-    c. Copy the encryption keys generated and paste it in kibana.yml file <br/>
-    d. Restart kibana service using **./kibana.bat** navigating to bin folder in powershell admin mode. <br/>
-    e. Refer https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html for more details
-
-5. **Create Kibana Windows Service**
-	
-    a. Download latest nssm exe file version from https://nssm.cc/download and place it in C drive (Example: C:\nssm\nssm.exe)<br/>
-    
-    b. Open a command line with administrative privilege in the folder with nssm.exe and run the command nssm install kibana_service. A popup will open to create a windows service.<br/>
-
-    c. In the Application tab, Enter the path of kibana.bat and the folder of kibana.bat as shown below <br/>
-    ![alt text](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
-
-    **Note:** If you accidentally press Return, that will cause the service to be installed before your configuration is complete. In that case, you can use this command, to continue to edit the service properties:
-    
-    ```
-    .\nssm.exe edit kibana_service
-    ```
-    
-    d. In the I/O tab, enter the path of a log file where the service logs will be stored. For this purpose, create a folder in kibana folder (like service_logs) and create a blank log file (say kibana_service.log), Copy the path of the log file created and paste in stdout and stderr section <br/>
-
-    ![alt text](../resources//troubleshooting-images/kibanaservice-io-tab.png)
-
-    e. In the File rotation tab, check all the boxes and enter 10485760 bytes, so that a new log file will be generated for every 5 MB of logs.
-    
-    ![alt text](../resources/troubleshooting-images/kibanaservice-filerotationtab.png)
-
-
-    f. Finally click the Install service button to create a windows service for kibana
-
-    g. Go to the Services app in windows, search for kibana_service service, right click and start the service
-
-    h. Right click on the service and open the properties to change the startup type as Automatic to make the Kibana service run automatically upon system startup
-
-    i. Verify if Kibana is running in the browser
-
-#### Step 4: Secure Kibana Communications
-
-1. **Enable HTTPS for Kibana**
-    
-    a. Navigate to Elastic search bin in PS/CMD (Ex: C:\elasticsearch\elasticsearch-8.14.3\bin)<br/>
-    b. Execute command  **.\elasticsearch-certutil ca -pem**   to generate CA certificate and key <br/>
-	c. Place SSL certificates in config\\certs\\.<br/>
-	d. Update the paths in kibana.yml file under **System: Kibana Server (Optional)** section as below
-
-          server.ssl.enabled: true
-          server.ssl.certificate: certs/kibana.crt 
-          server.ssl.key: certs/kibana.key
-
-2. **Encrypt Traffic Between Kibana and Elasticsearch**
-    ```
-    elasticsearch.ssl.verificationMode: certificate  
-    elasticsearch.ssl.certificateAuthorities: certs/ca.crt
-    ```
-3. **Restart the Kibana service from Windows Services**
-
-#### Step 5: Install and Configure APM Server
-
-1. **Prerequisites to setup APM Server**
-
-    a. Elastic and Kibana should be configured and Services should be up and running.
-
-2. **Download APM Server**
-   
-	a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm). <br/>
-	b. Download and extract the Windows .zip file. <br/>
-
-2. **Configure APM Server (config\\apm-server.yml)**
-    
-    Either Username / Password or API Key is required for configuring APM. If Username and Password is used, can ignore using API key inside apm-server.yml file and for API Key usage check below step(a).
-
-    a. Create new API key from kibana. Navigate to StackManagement  → API Keys  → Create. And create one by providing API Key name. Keep the other default settings as it is. 
-
-    ![alt text](../resources/troubleshooting-images/apm_apikey.png)
-
-    b. Once the API key is generated, keep a note of the key.
-
-    c. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
-
-    d. Update host of apm-server to "(insert-hostname-here) or (insert-IP-address-here)/:8200". Uncomment the line, if it is commented
-    ![alt text](../resources//troubleshooting-images/apm-conf1.png)
-
-    e. In the "Elasticsearch output" section, perform the below changes:
-
-    - Uncomment the output.elasticsearch
-    - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
-    - Update hosts: ["(insert-hostname-here) or (insert-IP-address-here):9200"]
-    - Update protocol: https
-    - This setting is needed because elasticsearch is running under https
-
-    f. Either Username and Password / API Key required for APM Services. The same is highlighted below
-    ![alt text](../resources/troubleshooting-images/apm-conf2.png)
-
-    g. Also within output.elasticsearch, modify ssl settings
-
-    These changes are needed because elasticsearch is running under ssl
-
-    - Update ssl.enabled: true
-    - Update ssl.verification_mode: none
-
-    ![alt text](../resources/troubleshooting-images/apm-ssl.png)
-
-    h. Update Instrumentation section as below:
-
-    - Uncomment Instrumentation section to enable apm-server instrumentation.
-    - Update enabled: true, environment: production
-    - hosts: - "http://(insert-hostname-here) or (insert-IP-address-here):8200"
-  
-    ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
-
-    i. Once the instrumentation is set, we can verify it in Kibana as shown below:
-    ![alt text](../resources/troubleshooting-images/verify-instrumentation.png)
-
-
-3. **Execute required scripts to install APM service**
-   
-	 <br/>a. Navigate inside the downloaded apm-server.
-
-     b. Open the PowerShell or Command prompt in administrator mode.<br/>
-
-     c. Execute **PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1** to install the APM_Server.<br/>
-     
-
-4. **Start the APM Server service**
-    Navigate to apm-server folder and execute "Start-Service apm-server" command in PowerShell/Command prompt using admin rights.
-
-5. **Add Elastic APM Integration**
-   
-   ⚠️**WARNING**: Skipping below steps will cause the Relativity Server CLI to fail
-
-   a. Login to Kibana and select the Elastic APM under the Integration or in search bar type Elastic APM and select under Integration.<br/>
-
-   b. In the Right top select Add Elastic APM button.  <br/>
-
-   c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
-       Ex: Host:(insert-hostname-here) or (insert-IP-address-here):8200
-           URL: http://(insert-hostname-here) or (insert-IP-address-here):8200 <br/>
-
-   d. Click on Save and Continue. <br/>
-   
-   e. Select "Add Elastic Agent later" button as Agent is not required for the initial setups. <br/>
-   
-   f. Refresh and Verify the "publish_ready" property is true <br/>
-
-   
-#### Step 6: Verify Deployment
-
-1. **Check Elasticsearch Cluster Health**
-     - Open a browser and navigate to https://(insert-hostname-here) or (insert-IP-address-here):9200.
-  
-2. **Check Kibana Status**
-	- Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601
-	- Log in using elastic or kibana_system credentials.
-
-3. **Test APM Server**
-    - Open a browser and navigate to http://(insert-hostname-here) or (insert-IP-address-here):8200. Verify reponse and publish ready should be "true".
-  
-4. **Verify APM Dataview**
-     
-    a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
-
-
-    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601.
-  
-	- Log in using elastic or kibana_system credentials. 
-  
-	- Search for Data View and Select Kibana\Data View
-  
-    ![alt text](../resources/troubleshooting-images/selectdataview.png)
-
-	- Verify APM data view exist:
-  
-    ![alt text](../resources/troubleshooting-images/APM-Dataview.png)
-
-    - If the Data view exist, proceed with EW CLI as normal. 
-  
-5. **Verify APM Integration package exist**
-   
-    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601.
-  
-	- Log in using elastic or kibana_system credentials.  
-  
-	- Click Add Integrations
-  
-    ![alt text](../resources/troubleshooting-images/add-integration.png)
-
-	- Select APM
-  
-    ![alt text](../resources/troubleshooting-images/select-apm.png)
-
-    - Click Manage APM integration in fleet
-  
-    ![alt text](../resources/troubleshooting-images/manage-apm.png)
-
-    - Verify Integration Package exists
-  
-    ![alt text](../resources/troubleshooting-images/verify-integrationpackage.png)
-
-
-## Next
-
-After setting up Elastic proceed to stage 2: [Use the Relativity Server CLI to setup Environment Watch and/or Data Grid](relativity_server_cli_setup.md)
+[Click here to setup an Elastic Stack for a production environment](./elasticsearch_setup_production.md)
