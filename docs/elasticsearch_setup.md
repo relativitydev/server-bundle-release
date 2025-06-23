@@ -164,14 +164,11 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 ### Before you start
 
-1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster.
-2. **Windows must be updated to support long paths to enable the Local Group Policy Editor** - <br/>
-        - Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. <br/>
-        - Double click on enable the Long path.<br/>
-3. **Verify the minimum supported version of Elastic**
+1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster. <br/>
+2. **Verify the minimum supported version of Elastic**
     <div class="note">Data Grid Audit may require a lower minimum version of Elasticsearch than Environment Watch. If you intend to use a cluster for both, you must install the same version of Elasticsearch on all nodes in the cluster, and that version must be the higher of the minimum versions for Environment Watch and Data Grid Audit, if different.</div>
-4. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
-5. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
+3. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
+4. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
 
 ### Installation steps
 
@@ -294,9 +291,15 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 #### Step 3: Install and Configure Kibana
 
+⚠️WARNING : **Windows must be updated to support long paths to enable the Local Group Policy Editor** - <br/>
+        
+        - Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. 
+        - Double click on enable the Long path.
+
 1. **Download Kibana**
 	
     a. Download and extract the Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana). <br/>
+  
 2. **Start Kibana from the command line**
     
     a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
