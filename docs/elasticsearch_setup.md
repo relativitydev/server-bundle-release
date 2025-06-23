@@ -271,11 +271,23 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     xpack.security.transport.ssl.keystore.path: certs/transport.p12  
     xpack.security.transport.ssl.truststore.path: certs/transport.p12
     ```
-3. **Restart Elasticsearch Services on All Nodes**
+
+3. **Enable  "Stack Monitoring" built-in dashboard**
+   
+   a. To enable "Stack Monitoring" built-in dashboard add following line to elasticsearch.yml 
+
+    ```
+    xpack.monitoring.collection.enabled: true
+    ```
+
+   b. Save the changes and restart Elasticsearch service.
+
+
+4. **Restart Elasticsearch Services on All Nodes**
     ```
     .\bin\elasticsearch-service.bat restart
     ```
-4. **Create Elastic User Passwords**
+5. **Create Elastic User Passwords**
     ```
     .\bin\elasticsearch-reset-password -u elastic
     ```
@@ -456,12 +468,70 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 6: Verify Deployment
 
 1. **Check Elasticsearch Cluster Health**
-        - Open a browser and navigate to https://(insert-hostname) or (insert-IP address-here):9200.
+     - Open a browser and navigate to https://(insert-hostname) or (insert-IP address-here):9200.
+  
 2. **Check Kibana Status**
-		- Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
-		- Log in using elastic or kibana_system credentials.
+	- Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
+	- Log in using elastic or kibana_system credentials.
+
 3. **Test APM Server**
-        - Open a browser and navigate to http://(insert-hostname) or (insert-IP address-here):8200. Verify reponse and publish ready should be "true".
+    - Open a browser and navigate to http://(insert-hostname) or (insert-IP address-here):8200. Verify reponse and publish ready should be "true".
+  
+4. **Verify APM Dataview**
+     
+    a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
+
+
+    - Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
+  
+	- Log in using elastic or kibana_system credentials. 
+  
+	- Search for Data View and Select Kibana\Data View
+  
+    ![alt text](../resources/troubleshooting-images/selectdataview.png)
+
+	- Verify APM data view exist:
+  
+    ![alt text](../resources/troubleshooting-images/APM-Dataview.png)
+
+    - If the Data view exist, proceed with EW CLI as normal. 
+  
+    b. If APM Data View is missing, create APM data view in Kibana.
+
+    - In data view window, click Create data view
+  
+    ![alt text](../resources/troubleshooting-images/create-data-view.png)
+
+    -  Enter Name : APM
+  
+    -  Add Index Pattern: traces-apm* ,apm-* ,traces-*.otel-*,logs-apm*,apm-*,logs-*.otel-*,metrics-apm*,apm-*,metrics-*.otel-*
+  
+    ![alt text](../resources/troubleshooting-images/add-index-pattern.png)
+
+    -  Click Save data view to kibana
+  
+5. **Verify APM Integration package exist**
+   
+    - Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
+  
+	- Log in using elastic or kibana_system credentials.  
+  
+	- Click Add Integrations
+  
+    ![alt text](../resources/troubleshooting-images/add-integration.png)
+
+	- Select APM
+  
+    ![alt text](../resources/troubleshooting-images/select-apm.png)
+
+    - Click Manage APM integration in fleet
+  
+    ![alt text](../resources/troubleshooting-images/manage-apm.png)
+
+    - Verify Integration Package exists
+  
+    ![alt text](../resources/troubleshooting-images/verify-integrationpackage.png)
+
 
 ## Next
 
