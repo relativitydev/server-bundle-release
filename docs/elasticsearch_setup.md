@@ -160,14 +160,15 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 ## Installing the Elastic stack components
 
+### Below set up is for a three-node Elasticsearch cluster
+
 ### Before you start
 
-1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster.
-2. **Windows must be updated to support long paths to enable the Local Group Policy Editor** - Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on enable the Long path.
-3. **Verify the minimum supported version of Elastic**
+1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster. <br/>
+2. **Verify the minimum supported version of Elastic**
     <div class="note">Data Grid Audit may require a lower minimum version of Elasticsearch than Environment Watch. If you intend to use a cluster for both, you must install the same version of Elasticsearch on all nodes in the cluster, and that version must be the higher of the minimum versions for Environment Watch and Data Grid Audit, if different.</div>
-4. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
-5. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
+3. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
+4. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
 
 ### Installation steps
 
@@ -184,7 +185,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     bin\elasticsearch.bat
     ```
 
-      - When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
+    **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
       - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser. 
 	  - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
 	  - An enrollment token is generated for Kibana, which is valid for 30 minutes.
@@ -194,7 +195,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     ```
     .\bin\elasticsearch-service.bat install
     ```
-2. **Configure elasticsearch.yml on Each Node**  
+1. **Configure elasticsearch.yml on Each Node**  
 
     The cluster name must be the same across all node servers.
     The value of the cluster.initial_master_nodes parameter should be the domain name of the master node server.
@@ -267,20 +268,37 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     xpack.security.transport.ssl.keystore.path: certs/transport.p12  
     xpack.security.transport.ssl.truststore.path: certs/transport.p12
     ```
-3. **Restart Elasticsearch Services on All Nodes**
+
+3. **Enable  "Stack Monitoring" built-in dashboard**
+   
+   a. To enable "Stack Monitoring" built-in dashboard add following line to elasticsearch.yml 
+
+    ```
+    xpack.monitoring.collection.enabled: true
+    ```
+
+   b. Save the changes and restart Elasticsearch service.
+
+
+4. **Restart Elasticsearch Services on All Nodes**
     ```
     .\bin\elasticsearch-service.bat restart
     ```
-4. **Create Elastic User Passwords**
+5. **Create Elastic User Passwords**
     ```
     .\bin\elasticsearch-reset-password -u elastic
     ```
 
 #### Step 3: Install and Configure Kibana
 
+⚠️WARNING : **Windows must be updated to support long paths to enable the Local Group Policy Editor** - <br/>
+- Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. 
+- Double click on enable the Long path. 
+
 1. **Download Kibana**
 	
     a. Download and extract the Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana). <br/>
+  
 2. **Start Kibana from the command line**
     
     a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
@@ -296,7 +314,9 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 	![](/resources/elasticsearch_setup_003.png)
 
 4. **Generate Kibana encryption keys**
-   
+    
+    ⚠️WARNING: Skipping below steps will cause the Relativity Server CLI to fail
+
     a. Navigate to Kibana's bin folder Ex: “C:\elasticsearch\kibana-8.17.0\bin” <br/>
     b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
 	```
@@ -304,33 +324,53 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 	```
     c. Copy the encryption keys generated and paste it in kibana.yml file <br/>
     d. Restart kibana service using **./kibana.bat** navigating to bin folder in powershell admin mode. <br/>
+    e. Refer https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html for more details
 
 5. **Create Kibana Windows Service**
 	
-    a. Download latest nssm exe file version from <https://nssm.cc/download> <br/>
-	b. Run: <br/>
-		- nssm install kibana
-		- Set Application path to C:\\Kibana\\bin\\kibana.bat.
-		- In the **Service Name** field, provide a custom name (e.g., kibana-service). 
-	c. Click **Install Service**. <br/>
-6. **Rename Kibana Service Using NSSM**
-    - If the service name is not what you want (e.g., kibana), you can rename it using NSSM:
-    - Run the following to rename the service:
-    - nssm set kibana-service DisplayName "Kibana Service"  
-        nssm set kibana-service Start "SERVICE_DEMAND_START"
-    <div class="note">Replace kibana-service with the actual service name you chose in the previous step.</div>
+    a. Download latest nssm exe file version from https://nssm.cc/download and place it in C drive (Example: C:\nssm\nssm.exe)<br/>
+    
+    b. Open a command line with administrative privilege in the folder with nssm.exe and run the command nssm install kibana_service. A popup will open to create a windows service.<br/>
+
+    c. In the Application tab, Enter the path of kibana.bat and the folder of kibana.bat as shown below <br/>
+    ![alt text](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
+
+    **Note:** If you accidentally press Return, that will cause the service to be installed before your configuration is complete. In that case, you can use this command, to continue to edit the service properties:
+    
+    ```
+    .\nssm.exe edit kibana_service
+    ```
+    
+    d. In the I/O tab, enter the path of a log file where the service logs will be stored. For this purpose, create a folder in kibana folder (like service_logs) and create a blank log file (say kibana_service.log), Copy the path of the log file created and paste in stdout and stderr section <br/>
+
+    ![alt text](../resources//troubleshooting-images/kibanaservice-io-tab.png)
+
+    e. In the File rotation tab, check all the boxes and enter 10485760 bytes, so that a new log file will be generated for every 5 MB of logs.
+    
+    ![alt text](../resources/troubleshooting-images/kibanaservice-filerotationtab.png)
+
+
+    f. Finally click the Install service button to create a windows service for kibana
+
+    g. Go to the Services app in windows, search for kibana_service service, right click and start the service
+
+    h. Right click on the service and open the properties to change the startup type as Automatic to make the Kibana service run automatically upon system startup
+
+    i. Verify if Kibana is running in the browser
 
 #### Step 4: Secure Kibana Communications
 
 1. **Enable HTTPS for Kibana**
     
     a. Navigate to Elastic search bin in PS/CMD (Ex: C:\elasticsearch\elasticsearch-8.14.3\bin)<br/>
-    b. Execute command  .\elasticsearch-certutil ca -pem   to generate CA certificate and key <br/>
+    b. Execute command  **.\elasticsearch-certutil ca -pem**   to generate CA certificate and key <br/>
 	c. Place SSL certificates in config\\certs\\.<br/>
-	d. Modify config\\kibana.yml:<br/>
-	e. yamlCopyEditserver.ssl.enabled: true  <br/>
-		- server.ssl.certificate: certs/kibana.crt  
-		- server.ssl.key: certs/kibana.key
+	d. Update the paths in kibana.yml file under **System: Kibana Server (Optional)** section as below
+
+          server.ssl.enabled: true
+          server.ssl.certificate: certs/kibana.crt 
+          server.ssl.key: certs/kibana.key
+
 2. **Encrypt Traffic Between Kibana and Elasticsearch**
     ```
     elasticsearch.ssl.verificationMode: certificate  
@@ -340,29 +380,62 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 #### Step 5: Install and Configure APM Server
 
-1. **Download APM Server**
+1. **Prerequisites to setup APM Server**
+
+    a. Elastic and Kibana should be configured and Services should be up and running.
+
+2. **Download APM Server**
    
 	a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm). <br/>
 	b. Download and extract the Windows .zip file. <br/>
 
 2. **Configure APM Server (config\\apm-server.yml)**
-   In the "Elasticsearch output" section, perform the below changes:
+    
+    Either Username / Password or API Key is required for configuring APM. If Username and Password is used, can ignore using API key inside apm-server.yml file and for API Key usage check below step(a).
+
+    a. Create new API key from kibana. Navigate to StackManagement  → API Keys  → Create. And create one by providing API Key name. Keep the other default settings as it is. 
+
+    ![alt text](../resources/troubleshooting-images/apm_apikey.png)
+
+    b. Once the API key is generated, keep a note of the key.
+
+    c. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
+
+    d. Update host of apm-server to "(insert-hostname-here) or (insert-IP-address-here)/:8200". Uncomment the line, if it is commented
+    ![alt text](../resources//troubleshooting-images/apm-conf1.png)
+
+    e. In the "Elasticsearch output" section, perform the below changes:
 
     - Uncomment the output.elasticsearch
     - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
-    - Update hosts
+    - Update hosts: ["(insert-hostname-here) or (insert-IP-address-here):9200"]
     - Update protocol: https
     - This setting is needed because elasticsearch is running under https
 
-    ```
-    apm-server:  
-    host: "0.0.0.0:8200"  
-    output.elasticsearch:  
-    hosts: ["<https://192.168.1.101:9200>"]  
-    username: "elastic_username"  
-    password: "elastic_password"  
-    ssl.certificate_authorities: certs/ca.crt
-    ```
+    f. Either Username and Password / API Key required for APM Services. The same is highlighted below
+    ![alt text](../resources/troubleshooting-images/apm-conf2.png)
+
+    g. Also within output.elasticsearch, modify ssl settings
+
+    These changes are needed because elasticsearch is running under ssl
+
+    - Update ssl.enabled: true
+    - Update ssl.verification_mode: none
+
+    ![alt text](../resources/troubleshooting-images/apm-ssl.png)
+
+    h. Update Instrumentation section as below:
+
+    - Uncomment Instrumentation section to enable apm-server instrumentation.
+    - Update enabled: true, environment: production
+    - hosts: - "http://(insert-hostname-here) or (insert-IP-address-here):8200"
+  
+    ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
+
+    i. Once the instrumentation is set, we can verify it in Kibana as shown below:
+    ![alt text](../resources/troubleshooting-images/verify-instrumentation.png)
+
+
 3. **Execute required scripts to install APM service**
    
 	 <br/>a. Navigate inside the downloaded apm-server.
@@ -377,13 +450,15 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 5. **Add Elastic APM Integration**
    
+   ⚠️**WARNING**: Skipping below steps will cause the Relativity Server CLI to fail
+
    a. Login to Kibana and select the Elastic APM under the Integration or in search bar type Elastic APM and select under Integration.<br/>
 
    b. In the Right top select Add Elastic APM button.  <br/>
 
    c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
-       Ex: Host:192.168.1.101:8200
-           URL: http://192.168.1.101:8200 <br/>
+       Ex: Host:(insert-hostname-here) or (insert-IP-address-here):8200
+           URL: http://(insert-hostname-here) or (insert-IP-address-here):8200 <br/>
 
    d. Click on Save and Continue. <br/>
    
@@ -395,16 +470,56 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 6: Verify Deployment
 
 1. **Check Elasticsearch Cluster Health**
-    ```
-    curl -k -u elastic:your_password <https://192.168.1.101:9200/_cluster/health?pretty>
-    ```
+     - Open a browser and navigate to https://(insert-hostname-here) or (insert-IP-address-here):9200.
+  
 2. **Check Kibana Status**
-		- Open a browser and go to <https://192.168.1.101:5601>.
-		- Log in using elastic or kibana_system credentials.
+	- Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601
+	- Log in using elastic or kibana_system credentials.
+
 3. **Test APM Server**
-    ```
-    curl -k -X GET "<http://192.168.1.101:8200>"
-    ```
+    - Open a browser and navigate to http://(insert-hostname-here) or (insert-IP-address-here):8200. Verify reponse and publish ready should be "true".
+  
+4. **Verify APM Dataview**
+     
+    a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
+
+
+    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601.
+  
+	- Log in using elastic or kibana_system credentials. 
+  
+	- Search for Data View and Select Kibana\Data View
+  
+    ![alt text](../resources/troubleshooting-images/selectdataview.png)
+
+	- Verify APM data view exist:
+  
+    ![alt text](../resources/troubleshooting-images/APM-Dataview.png)
+
+    - If the Data view exist, proceed with EW CLI as normal. 
+  
+5. **Verify APM Integration package exist**
+   
+    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601.
+  
+	- Log in using elastic or kibana_system credentials.  
+  
+	- Click Add Integrations
+  
+    ![alt text](../resources/troubleshooting-images/add-integration.png)
+
+	- Select APM
+  
+    ![alt text](../resources/troubleshooting-images/select-apm.png)
+
+    - Click Manage APM integration in fleet
+  
+    ![alt text](../resources/troubleshooting-images/manage-apm.png)
+
+    - Verify Integration Package exists
+  
+    ![alt text](../resources/troubleshooting-images/verify-integrationpackage.png)
+
 
 ## Next
 

@@ -28,9 +28,8 @@ To install the Relativity Alerts application on your Relativity instance:
 	![relativity_alerts_installation_003](../resources/relativity_alerts_installation_003.png)
 6. Click Save to upload the file to the Application Library.<br/>
 	![relativity_alerts_installation_004](../resources/relativity_alerts_installation_004.png)
-
-![relativity_alerts_installation_005](../resources/relativity_alerts_installation_005.png)
-![relativity_alerts_installation_006](../resources/relativity_alerts_installation_006.png)
+	![relativity_alerts_installation_005](../resources/relativity_alerts_installation_005.png)
+	![relativity_alerts_installation_006](../resources/relativity_alerts_installation_006.png)
 
 A list of common install issues and their resolutions are available at the [troubleshooting guide](relativity_alerts_troubleshooting.md).
 
