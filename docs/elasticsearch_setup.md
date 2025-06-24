@@ -292,9 +292,8 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 3: Install and Configure Kibana
 
 ⚠️WARNING : **Windows must be updated to support long paths to enable the Local Group Policy Editor** - <br/>
-        
-        - Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. 
-        - Double click on enable the Long path.
+- Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. 
+- Double click on enable the Long path. 
 
 1. **Download Kibana**
 	
@@ -394,7 +393,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
     
     Either Username / Password or API Key is required for configuring APM. If Username and Password is used, can ignore using API key inside apm-server.yml file and for API Key usage check below step(a).
 
-    a. Create new API key from kibana. Navigate to StackManagement->API Keys→Create. And create one by providing API Key name. Keep the other default settings as it is. 
+    a. Create new API key from kibana. Navigate to StackManagement  → API Keys  → Create. And create one by providing API Key name. Keep the other default settings as it is. 
 
     ![alt text](../resources/troubleshooting-images/apm_apikey.png)
 
@@ -402,14 +401,14 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
     c. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
 
-    d. Update host of apm-server to "((insert-hostname) or (insert-IP address-here)/:8200". Uncomment the line, if it is commented
+    d. Update host of apm-server to "(insert-hostname-here) or (insert-IP-address-here)/:8200". Uncomment the line, if it is commented
     ![alt text](../resources//troubleshooting-images/apm-conf1.png)
 
     e. In the "Elasticsearch output" section, perform the below changes:
 
     - Uncomment the output.elasticsearch
     - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
-    - Update hosts: ["(insert-hostname) or (insert-IP address-here)>:9200"]
+    - Update hosts: ["(insert-hostname-here) or (insert-IP-address-here):9200"]
     - Update protocol: https
     - This setting is needed because elasticsearch is running under https
 
@@ -429,7 +428,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
     - Uncomment Instrumentation section to enable apm-server instrumentation.
     - Update enabled: true, environment: production
-    - hosts: - "http://(insert-hostname/ip-address):8200"
+    - hosts: - "http://(insert-hostname-here) or (insert-IP-address-here):8200"
   
     ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
 
@@ -458,8 +457,8 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
    b. In the Right top select Add Elastic APM button.  <br/>
 
    c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
-       Ex: Host:(insert-hostname) or (insert-IP address-here):8200
-           URL: http://(insert-hostname) or (insert-IP address-here):8200 <br/>
+       Ex: Host:(insert-hostname-here) or (insert-IP-address-here):8200
+           URL: http://(insert-hostname-here) or (insert-IP-address-here):8200 <br/>
 
    d. Click on Save and Continue. <br/>
    
@@ -471,21 +470,21 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 #### Step 6: Verify Deployment
 
 1. **Check Elasticsearch Cluster Health**
-     - Open a browser and navigate to https://(insert-hostname) or (insert-IP address-here):9200.
+     - Open a browser and navigate to https://(insert-hostname-here) or (insert-IP-address-here):9200.
   
 2. **Check Kibana Status**
-	- Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
+	- Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601
 	- Log in using elastic or kibana_system credentials.
 
 3. **Test APM Server**
-    - Open a browser and navigate to http://(insert-hostname) or (insert-IP address-here):8200. Verify reponse and publish ready should be "true".
+    - Open a browser and navigate to http://(insert-hostname-here) or (insert-IP-address-here):8200. Verify reponse and publish ready should be "true".
   
 4. **Verify APM Dataview**
      
     a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
 
 
-    - Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
+    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601.
   
 	- Log in using elastic or kibana_system credentials. 
   
@@ -499,23 +498,9 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
     - If the Data view exist, proceed with EW CLI as normal. 
   
-    b. If APM Data View is missing, create APM data view in Kibana.
-
-    - In data view window, click Create data view
-  
-    ![alt text](../resources/troubleshooting-images/create-data-view.png)
-
-    -  Enter Name : APM
-  
-    -  Add Index Pattern: traces-apm* ,apm-* ,traces-*.otel-*,logs-apm*,apm-*,logs-*.otel-*,metrics-apm*,apm-*,metrics-*.otel-*
-  
-    ![alt text](../resources/troubleshooting-images/add-index-pattern.png)
-
-    -  Click Save data view to kibana
-  
 5. **Verify APM Integration package exist**
    
-    - Open a browser and go to https://(insert-hostname) or (insert-IP address-here):5601.
+    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601.
   
 	- Log in using elastic or kibana_system credentials.  
   
