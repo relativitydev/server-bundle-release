@@ -8,6 +8,7 @@
 	b. Download the 8.17.x Windows .zip version.<br/>    
 
     TODO: Ensure the file is unblocked (include screenshot)
+    ![alt text](..//resources/troubleshooting-images/unblocked.png)
 
 	c. Extract the files to C:\\elastic<br/>
 
@@ -71,6 +72,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     - Verify the response is valid.
 
     TODO: ADD SCREENSHOT SHOWING THE EXPECTED RESPONSE.
+    ![alt text](..//resources/troubleshooting-images/ESResponse.png)
 
 ## Step 2: Install and Configure Kibana
 
@@ -83,6 +85,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     a. Download and extract the 8.17.x Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana). <br/>    
 
     TODO: Ensure the file is unblocked (include screenshot).
+    ![alt text](..//resources/troubleshooting-images/kibanafolder.png)
     
     TODO: This is also where you should remind the reader on the issue of exceeding the max Windows path.
 
@@ -96,6 +99,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     ```
 
     TODO: What should they see? How do you know if this was successful?
+    ![alt text](..//resources/troubleshooting-images/kibanabatchresponse.png)
 
 3. **Enroll Kibana**
 	
@@ -115,14 +119,18 @@ TBD - Verify this is necessary because I think this is started automatically whe
 	```
     
     TODO: What should they see? How do you know if this was successful?
+    ![alt text](..//resources/troubleshooting-images/encryptionkeyresponse.png)
 
     c. Copy the encryption keys generated and paste it in kibana.yml file <br/>
 
     TODO: Show a complete picture on what the key YAML configuration should look like at this point in time.
+    ![alt text](..//resources/troubleshooting-images/kibanayml.png)
 
     d. Restart kibana service using **./kibana.bat** navigating to bin folder in powershell admin mode. <br/>
 
     TODO: How is this verified?
+    ![alt text](..//resources/troubleshooting-images/kibanarerun.png)
+    ![alt text](..//resources/troubleshooting-images/kibanarerun02.png)
 
     e. Refer https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html for more details
 
@@ -170,6 +178,8 @@ TBD - Verify this is necessary because I think this is started automatically whe
     - Verify the elastic or kibana_system credential can be used to successfully login
 
     TODO: ADD SCREENSHOT.
+    ![alt text](../resources/troubleshooting-images/kibanalogin.png)
+    ![alt text](..//resources/troubleshooting-images/kibanarerun02.png)
 
 ## Step 5: Install and Configure APM Server
 
@@ -185,6 +195,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     TODO: This must specify the latest supported version.
 
     TODO: Ensure the file is unblocked (include screenshot)
+    ![alt text](..//resources/troubleshooting-images/apmunblocked.png)
 
     c. Extract the files to C:\\elastic<br/>
 
