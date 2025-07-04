@@ -12,7 +12,13 @@
 
 	c. Extract the files to C:\\elastic<br/>
 
-2. **Install and Configure Elasticsearch 8.17.x**
+2. **Set Up Environment Variable for JAVA**
+    a. Go to Control Panel
+    b. Search for Environment Variables in search box
+    c. Click on Edit the system environment variables
+    ![alt text](..//resources/troubleshooting-images/environmentvariables.png)
+
+3. **Install and Configure Elasticsearch 8.17.x**
 	a. Run the below command from a terminal using an elevated command prompt to start Elasticsearch and perform the auto installation steps.<br/>
 
       **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
@@ -24,13 +30,16 @@
     bin\elasticsearch.bat
     ```
   
-    b. Run the below command from an elevated Command Prompt to install elasticsearch as a Windows service.<br/>
+    b. Save the token for future reference. Terminate the process once token is generated
+    ![alt text](..//resources/troubleshooting-images/terminateesprocess.png)
+
+    c. Run the below command from an elevated Command Prompt to install elasticsearch as a Windows service.<br/>
     
     ```
     .\bin\elasticsearch-service.bat install
     ```
 
-2. **Set JVM Heap Size**  <br/>
+4. **Set JVM Heap Size**  <br/>
    
 	a. Edit config\\jvm.options and set:
     ```
@@ -38,7 +47,10 @@
     -Xmx10g
     ```
 
-3. **Run Elasticsearch as a Windows Service**
+    There should be no space while uncommenting and setting the line for heap size
+    ![alt text](heapsize.png)
+
+5. **Run Elasticsearch as a Windows Service**
 TBD - Verify this is necessary because I think this is started automatically when running the ".bat install" command above.   
 
     TODO: Every single command must be explicitly defined and use common terminology.
@@ -48,7 +60,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     .\bin\elasticsearch-service.bat start
     ```
 
-4. **Enable  "Stack Monitoring" built-in dashboard**
+6. **Enable  "Stack Monitoring" built-in dashboard**
    
    a. To enable "Stack Monitoring" built-in dashboard add following line to elasticsearch.yml 
 
@@ -57,17 +69,24 @@ TBD - Verify this is necessary because I think this is started automatically whe
     ```
 
    b. Save the changes and restart Elasticsearch service.
+    --Press Win + R, type services.msc, and press Enter 
+    --Look for service name starting with ElasticSearch
+    --Right and click on the service and select Restart
 
-
-5. **Create Elastic User Passwords**
+7. **Create Elastic User Passwords**
 
     TODO: What are they supposed to do with this? We tell them to run this command but make no mention at all why this is done and what should b done with the output. In fact, it doesn't even explain the fact that the command OUTPUT displays the new elastic account password. This should provide some basic display on what the user will see and recommendation for them to write this password down for sake keeping.
+
+    The following command generates a new password for the elastic user, which is the default superuser account in Elasticsearch. This account has full administrative privileges and is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
 
     ```
     .\bin\elasticsearch-reset-password -u elastic
     ```
+    a. The password will be displayed only once in the console output and cannot be retrieved afterward.
+    b. It is strongly recommended that you immediately record and securely store the password in accordance with your organization’s credential management and security policies.
+    c. This password will be required for future authentication to Elasticsearch and Kibana.
 
-6. **Verify Elasticsearch Server**
+8. **Verify Elasticsearch Server**
     - Open a browser and navigate to https://(insert-hostname-here) or (insert-IP-address-here):9200.
     - Verify the response is valid.
 
