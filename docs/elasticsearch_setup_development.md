@@ -87,7 +87,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     c. This password will be required for future authentication to Elasticsearch and Kibana.
 
 8. **Verify Elasticsearch Server**
-    - Open a browser and navigate to https://(insert-hostname-here) or (insert-IP-address-here):9200.
+    - Open a browser and navigate to https://{insert-hostname-here} or {insert-IP-address-here}:9200.
     - Verify the response is valid.
 
     TODO: ADD SCREENSHOT SHOWING THE EXPECTED RESPONSE.
@@ -193,7 +193,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     <div class="note">Replace kibana-service with the actual service name you chose in the previous step.</div>
 
 7. **Verify Kibana Server**
-    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601
+    - Open a browser and go to https://{insert-hostname-here} or {insert-IP-address-here}:5601
     - Verify the elastic or kibana_system credential can be used to successfully login
 
     TODO: ADD SCREENSHOT.
@@ -229,14 +229,14 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
     c. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
 
-    d. Update host of apm-server to "(insert-hostname-here) or (insert-IP-address-here)/:8200". Uncomment the line, if it is commented
+    d. Update host of apm-server to "{insert-hostname-here} or {insert-IP-address-here}/:8200". Uncomment the line, if it is commented
     ![alt text](../resources//troubleshooting-images/apm-conf1.png)
 
     e. In the "Elasticsearch output" section, perform the below changes:
 
     - Uncomment the output.elasticsearch
     - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
-    - Update hosts: ["(insert-hostname-here) or (insert-IP-address-here):9200"]
+    - Update hosts: ["{insert-hostname-here} or {insert-IP-address-here}:9200"]
     - Update protocol: https
     - This setting is needed because elasticsearch is running under https
 
@@ -256,7 +256,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
     - Uncomment Instrumentation section to enable apm-server instrumentation.
     - Update enabled: true, environment: production
-    - hosts: - "http://(insert-hostname-here) or (insert-IP-address-here):8200"
+    - hosts: - "http://{insert-hostname-here} or {insert-IP-address-here}:8200"
   
     ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
 
@@ -276,7 +276,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     TODO: JUST USE WINDOWS SERVICES UI AND SHOW THIS IN A SCREENSHOT.
 
 6. **Verify APM Server**
-    - Open a browser and navigate to http://(insert-hostname-here) or (insert-IP-address-here):8200
+    - Open a browser and navigate to http://{insert-hostname-here} or {insert-IP-address-here}:8200
     - Verify the response and publish ready should be "true".
 
     TODO: ADD SCREENSHOT SHOWING THE EXPECTED RESPONSE.
@@ -296,8 +296,8 @@ TBD - Verify this is necessary because I think this is started automatically whe
    TODO: ADD SCREENSHOT.
 
    c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
-       Ex: Host:(insert-hostname-here) or (insert-IP-address-here):8200
-           URL: http://(insert-hostname-here) or (insert-IP-address-here):8200 <br/>   
+       Ex: Host:{insert-hostname-here} or {insert-IP-address-here}:8200
+           URL: http://{insert-hostname-here} or {insert-IP-address-here}:8200 <br/>   
 
    d. Click on Save and Continue. <br/>
 
@@ -311,27 +311,15 @@ TBD - Verify this is necessary because I think this is started automatically whe
    
    a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
 
-    - Open a browser and go to https://(insert-hostname-here) or (insert-IP-address-here):5601.
+    - Open a browser and go to https://{insert-hostname-here} or {insert-IP-address-here}:5601.
   
 	- Log in using elastic or kibana_system credentials.
 
     TODO: WE HAVE CONFIRMED VIA ELASTIC SUPPORT THAT YOU MUST LITERALLY VISIT THE OBSERVABILITY->APM DASHBOARD FOR KIBANA TO TRIGGER THE CREATION OF THIS DATAVIEW. THIS INSTRUCTION SHOULD NOT DISCLOSE ANY OF THESE DETAILS; RATHER, IT SHOULD FORCE THE USER TO SIMPLY GO TO THE APM PAGE (INCLUDE SCREENSHOTS) AND CONFIRM THERE ARE TRACES PRESENT. ONCE YOU CLICK ON A TRACE, THIS WILL TRIGGER THE CREATION. THIS STEP SHOULD BE PLACED RIGHT HERE BECAUSE IT SHOULD YIELD SUCCESS BELOW.
-  
-	- Search for Data View and Select Kibana\Data View
-  
-    ![alt text](../resources/troubleshooting-images/selectdataview.png)
-
-	- Verify APM data view exist:
-  
-    ![alt text](../resources/troubleshooting-images/APM-Dataview.png)
-
-    - If the Data view exist, proceed with EW CLI as normal.
-
-    TODO: WHAT ARE THEY SUPPOSED TO DO IF IT DOES NOT EXIST? IT CLEARLY POINTS IN THE DIRECTION THAT THE ELASTIC APM PACKAGE WAS NOT INSTALLED OR THERE WERE NO TRACES, WHICH KIBANA REQUIRES IN ORDER TO TRIGGER THE CREATION OF THE APM DATAVIEW.
 
 3. **Verify Cluster Health in Kibana**
     
-   Open a browser and navigate to https://(insert-hostname-here) or (insert-IP-address-here):9200.    
+   Open a browser and navigate to https://{insert-hostname-here} or {insert-IP-address-here}:9200.    
 
    TODO: ADD INSTRUCTIONS AND SCREENSHOT.
 
