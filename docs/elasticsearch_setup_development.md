@@ -8,6 +8,7 @@
 	b. Download the 8.17.x Windows .zip version.<br/>    
 
     TODO: Ensure the file is unblocked (include screenshot)
+
     ![alt text](..//resources/troubleshooting-images/unblocked.png)
 
 	c. Extract the files to C:\\elastic<br/>
@@ -16,6 +17,7 @@
     a. Go to Control Panel
     b. Search for Environment Variables in search box
     c. Click on Edit the system environment variables
+
     ![alt text](..//resources/troubleshooting-images/environmentvariables.png)
 
 3. **Install and Configure Elasticsearch 8.17.x**
@@ -31,6 +33,7 @@
     ```
   
     b. Save the token for future reference. Terminate the process once token is generated
+
     ![alt text](..//resources/troubleshooting-images/terminateesprocess.png)
 
     c. Run the below command from an elevated Command Prompt to install elasticsearch as a Windows service.<br/>
@@ -48,7 +51,8 @@
     ```
 
     There should be no space while uncommenting and setting the line for heap size
-    ![alt text](heapsize.png)
+
+    ![alt text](..//resources/troubleshooting-images/heapsize.png)
 
 5. **Run Elasticsearch as a Windows Service**
 TBD - Verify this is necessary because I think this is started automatically when running the ".bat install" command above.   
@@ -71,7 +75,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
    b. Save the changes and restart Elasticsearch service.
     --Press Win + R, type services.msc, and press Enter 
     --Look for service name starting with ElasticSearch
-    --Right and click on the service and select Restart
+    --Right click on the service and select Restart
 
 7. **Create Elastic User Passwords**
 
@@ -91,6 +95,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     - Verify the response is valid.
 
     TODO: ADD SCREENSHOT SHOWING THE EXPECTED RESPONSE.
+
     ![alt text](..//resources/troubleshooting-images/ESResponse.png)
 
 ## Step 2: Install and Configure Kibana
@@ -104,6 +109,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     a. Download and extract the 8.17.x Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana). <br/>    
 
     TODO: Ensure the file is unblocked (include screenshot).
+
     ![alt text](..//resources/troubleshooting-images/kibanafolder.png)
     
     TODO: This is also where you should remind the reader on the issue of exceeding the max Windows path.
@@ -118,6 +124,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     ```
 
     TODO: What should they see? How do you know if this was successful?
+
     ![alt text](..//resources/troubleshooting-images/kibanabatchresponse.png)
 
 3. **Enroll Kibana**
@@ -157,7 +164,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
 	
     a. Download latest nssm exe file version from https://nssm.cc/download and place it in C drive (Example: C:\nssm\nssm.exe)<br/>
     
-    b. Open a command line with administrative privilege in the folder with nssm.exe and run the command nssm install kibana_service. A popup will open to create a windows service.<br/>
+    b. Open a command line with administrative privilege in the folder with nssm.exe and run the command .\nssm.exe install kibana_service. A popup will open to create a windows service.<br/>
 
     c. In the Application tab, Enter the path of kibana.bat and the folder of kibana.bat as shown below <br/>
     ![alt text](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
@@ -200,6 +207,70 @@ TBD - Verify this is necessary because I think this is started automatically whe
     ![alt text](../resources/troubleshooting-images/kibanalogin.png)
     ![alt text](..//resources/troubleshooting-images/kibanarerun02.png)
 
+## Step 3: SetUp of API Key Authentication
+
+1. **Generate ApiKey in Elastic Search**
+
+    a. Log in to Kibana
+        --Open the Stack Management Panel
+        --From the Kibana sidebar, go to: Management → Stack Management.
+        --Navigate to API Keys
+        --Under Security, select API Keys.
+        --Create a New API Key
+            Click the Create API key button.
+        --Provide the following details:
+            Name: A descriptive name for the API key.
+
+    b. Copy and Store the API Key
+
+    Important: This is the only time the API key value will be shown. Copy and securely store it in a safe location.
+
+    ![alt text](..//resources/troubleshooting-images/createapikey.png)
+
+2. **Configure SecretStore keys**
+    a. Navigate to any Relativity Agent or Web server and find local "Relativity Secret Store\Client" folder
+    b. Open PowerShell window under Admin and Navigate to "Relativity Secret Store\Client" folder. 
+        E.g. CD "C:\Program Files\Relativity Secret Store\Client"
+
+    ![alt text](..//resources/troubleshooting-images/secretstoredir.png)
+
+    c. Execute the following script:
+
+    ```
+    do {
+    $urlServer = Read-Host -Prompt "Please enter url for your Elasticsearch Server"
+    } until ($urlServer -ne '')
+
+    do {
+        $apiKey = Read-Host -Prompt "Please enter API key to access your Elasticsearch Server"
+    } until ($urlServer -ne '')
+ 
+    #Replace 'ElasticSearchServer' with a real Server Host name
+    .\secretstore.exe secret write /database/elasticsearch/clusters/rel-cluster-datagrid primary-node-url=$urlServer kibana-server-url=$urlServer apm-server-url=$urlServer primary-node-tls-skip-certificate-validation=true apm-server-tls-skip-certificate-validation=true kibana-server-tls-skip-certificate-validation=true
+    
+    #Replace 'NewlyGeneratedApiKey' with a real newly created ApiKey value
+    .\secretstore.exe secret write database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid api-key=$apiKey min-version=7.17.0
+    ```
+
+3. **Execute below command in elastic bin folder and check mapper-size plugin installed**
+    ```
+    ./elasticsearch-plugin list
+    ```
+    If mapper-size plugin not installed, please install using below cmd
+    ```
+    .\elasticsearch-plugin install mapper-size
+    ```
+
+    Re-Start the ElasticSearch Service
+    --Press Win + R, type services.msc, and press Enter 
+    --Look for service name starting with ElasticSearch
+    --Right click on the service and select Restart
+
+4. **Set "Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle" Toggle**
+    ```
+    EXEC EDDS.eddsdbo.pr_SetToggle 'Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle', 1
+    ```
+--
 ## Step 5: Install and Configure APM Server
 
 1. **Prerequisites to setup APM Server**
