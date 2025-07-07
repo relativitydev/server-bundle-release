@@ -90,7 +90,21 @@ TBD - Verify this is necessary because I think this is started automatically whe
     b. It is strongly recommended that you immediately record and securely store the password in accordance with your organization’s credential management and security policies.
     c. This password will be required for future authentication to Elasticsearch and Kibana.
 
-8. **Verify Elasticsearch Server**
+8. **Check mapper-size plugin**
+    ```
+    ./elasticsearch-plugin list
+    ```
+    If mapper-size plugin not installed, please install using below cmd
+    ```
+    .\elasticsearch-plugin install mapper-size
+    ```
+
+    Re-Start the ElasticSearch Service
+    - Press Win + R, type services.msc, and press Enter
+    - Look for service name starting with ElasticSearch
+    - Right click on the service and select Restart
+
+9. **Verify Elasticsearch Server**
     - Open a browser and navigate to https://{insert-hostname-here} or {insert-IP-address-here}:9200.
     - Verify the response is valid.
 
@@ -207,71 +221,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     ![alt text](../resources/troubleshooting-images/kibanalogin.png)
     ![alt text](..//resources/troubleshooting-images/kibanarerun02.png)
 
-## Step 3: SetUp of API Key Authentication
-
-1. **Generate ApiKey in Elastic Search**
-
-    a. Log in to Kibana
-        --Open the Stack Management Panel
-        --From the Kibana sidebar, go to: Management → Stack Management.
-        --Navigate to API Keys
-        --Under Security, select API Keys.
-        --Create a New API Key
-            Click the Create API key button.
-        --Provide the following details:
-            Name: A descriptive name for the API key.
-
-    b. Copy and Store the API Key
-
-    Important: This is the only time the API key value will be shown. Copy and securely store it in a safe location.
-
-    ![alt text](..//resources/troubleshooting-images/createapikey.png)
-
-2. **Configure SecretStore keys**
-    a. Navigate to any Relativity Agent or Web server and find local "Relativity Secret Store\Client" folder
-    b. Open PowerShell window under Admin and Navigate to "Relativity Secret Store\Client" folder. 
-        E.g. CD "C:\Program Files\Relativity Secret Store\Client"
-
-    ![alt text](..//resources/troubleshooting-images/secretstoredir.png)
-
-    c. Execute the following script:
-
-    ```
-    do {
-    $urlServer = Read-Host -Prompt "Please enter url for your Elasticsearch Server"
-    } until ($urlServer -ne '')
-
-    do {
-        $apiKey = Read-Host -Prompt "Please enter API key to access your Elasticsearch Server"
-    } until ($urlServer -ne '')
- 
-    #Replace 'ElasticSearchServer' with a real Server Host name
-    .\secretstore.exe secret write /database/elasticsearch/clusters/rel-cluster-datagrid primary-node-url=$urlServer kibana-server-url=$urlServer apm-server-url=$urlServer primary-node-tls-skip-certificate-validation=true apm-server-tls-skip-certificate-validation=true kibana-server-tls-skip-certificate-validation=true
-    
-    #Replace 'NewlyGeneratedApiKey' with a real newly created ApiKey value
-    .\secretstore.exe secret write database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid api-key=$apiKey min-version=7.17.0
-    ```
-
-3. **Execute below command in elastic bin folder and check mapper-size plugin installed**
-    ```
-    ./elasticsearch-plugin list
-    ```
-    If mapper-size plugin not installed, please install using below cmd
-    ```
-    .\elasticsearch-plugin install mapper-size
-    ```
-
-    Re-Start the ElasticSearch Service
-    --Press Win + R, type services.msc, and press Enter 
-    --Look for service name starting with ElasticSearch
-    --Right click on the service and select Restart
-
-4. **Set "Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle" Toggle**
-    ```
-    EXEC EDDS.eddsdbo.pr_SetToggle 'Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle', 1
-    ```
---
-## Step 5: Install and Configure APM Server
+## Step 3: Install and Configure APM Server
 
 1. **Prerequisites to setup APM Server**
 
@@ -298,12 +248,38 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
     b. Once the API key is generated, keep a note of the key.
 
-    c. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
+    c. Open PowerShell window under Admin and Navigate to "Relativity Secret Store\Client" folder. 
+        E.g. CD "C:\Program Files\Relativity Secret Store\Client"
 
-    d. Update host of apm-server to "{insert-hostname-here} or {insert-IP-address-here}/:8200". Uncomment the line, if it is commented
+    d. Execute the following script:
+
+    ```
+    do {
+    $urlServer = Read-Host -Prompt "Please enter url for your Elasticsearch Server"
+    } until ($urlServer -ne '')
+
+    do {
+        $apiKey = Read-Host -Prompt "Please enter API key to access your Elasticsearch Server"
+    } until ($urlServer -ne '')
+ 
+    #Replace 'ElasticSearchServer' with a real Server Host name
+    .\secretstore.exe secret write /database/elasticsearch/clusters/rel-cluster-datagrid primary-node-url=$urlServer kibana-server-url=$urlServer apm-server-url=$urlServer primary-node-tls-skip-certificate-validation=true apm-server-tls-skip-certificate-validation=true kibana-server-tls-skip-certificate-validation=true
+    
+    #Replace 'NewlyGeneratedApiKey' with a real newly created ApiKey value
+    .\secretstore.exe secret write database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid api-key=$apiKey min-version=7.17.0
+    ```
+
+    e. Set "Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle" Toggle
+    ```
+    EXEC EDDS.eddsdbo.pr_SetToggle 'Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle', 1
+    ```
+
+    f. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
+
+    g. Update host of apm-server to "{insert-hostname-here} or {insert-IP-address-here}/:8200". Uncomment the line, if it is commented
     ![alt text](../resources//troubleshooting-images/apm-conf1.png)
 
-    e. In the "Elasticsearch output" section, perform the below changes:
+    h. In the "Elasticsearch output" section, perform the below changes:
 
     - Uncomment the output.elasticsearch
     - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
@@ -311,10 +287,10 @@ TBD - Verify this is necessary because I think this is started automatically whe
     - Update protocol: https
     - This setting is needed because elasticsearch is running under https
 
-    f. Either Username and Password / API Key required for APM Services. The same is highlighted below
+    i. Either Username and Password / API Key required for APM Services. The same is highlighted below
     ![alt text](../resources/troubleshooting-images/apm-conf2.png)
 
-    g. Also within output.elasticsearch, modify ssl settings
+    j. Also within output.elasticsearch, modify ssl settings
 
     These changes are needed because elasticsearch is running under ssl
 
@@ -323,7 +299,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
     ![alt text](../resources/troubleshooting-images/apm-ssl.png)
 
-    h. Update Instrumentation section as below:
+    k. Update Instrumentation section as below:
 
     - Uncomment Instrumentation section to enable apm-server instrumentation.
     - Update enabled: true, environment: production
@@ -331,7 +307,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
   
     ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
 
-    i. Once the instrumentation is set, we can verify it in Kibana as shown below:
+    l. Once the instrumentation is set, we can verify it in Kibana as shown below:
     ![alt text](../resources/troubleshooting-images/verify-instrumentation.png)
     
 4. **Execute required scripts to install APM Server as a Windows service**
@@ -352,7 +328,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
     TODO: ADD SCREENSHOT SHOWING THE EXPECTED RESPONSE.
 
-## Step 6: Post Installation and Verification
+## Step 4: Post Installation and Verification
 
 1. **Add Elastic APM Integration Package**
 
