@@ -145,7 +145,12 @@ TBD - Verify this is necessary because I think this is started automatically whe
 	
     a. In your terminal, click the generated link to open Kibana in your browser. <br/>
 	b. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, and then click the button to connect your Kibana instance with Elasticsearch. <br/>
-	c. Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch.<br/>
+    c. In case token got expired, execute the following command in Elastic bin folder <br/> 
+    ```
+	.\elasticsearch-create-enrollment-token -- scope kibana
+	```
+    
+	d. Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch.<br/>
 	![](/resources/elasticsearch_setup_003.png)
 
 4. **Generate Kibana encryption keys**
