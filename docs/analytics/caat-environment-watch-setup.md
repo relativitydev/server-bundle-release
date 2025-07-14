@@ -14,15 +14,13 @@ This guide provides step-by-step instructions for installing/updating Relativity
 
 ## 2. How to install/update CAAT
 
-    1.  Uninstall CAAT 
-    2.  Delete CAAT Folder
-    3.  Copy CAAT Bundle to your server/TestVM
-    4.  Unzip the folder
-    5.  Open Powershell as an administrator
-    6.  Update response-file.properties with passwords for “caat.http-password” and “caat.ssl-password” and other information
-    7.  Run .\Install.cmd
-    8.  Once the installation is done, make sure that CAAT is running
-    9.  Open ElasticSearch and search for service.name: “relsvr_caat”
+    1.  Copy CAAT Bundle to your server
+    2.  Unzip the folder
+    3.  Replace response-file.properties with master copy
+    4.  Open Powershell as an administrator
+    5.  Run .\Install.cmd
+    6.  Once the installation is done, start “Relativity Analytics Engine” and check if the page is loading.
+    7.  Open ElasticSearch and search for service.name: “relsvr_caat” in metrics-* data view
 
 
 ---
