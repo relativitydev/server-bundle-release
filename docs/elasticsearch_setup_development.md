@@ -326,12 +326,14 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
 5. **Start the APM Server service**
     TODO: JUST USE WINDOWS SERVICES UI AND SHOW THIS IN A SCREENSHOT.
+    ![alt text](../resources/troubleshooting-images/APM-Service.png)
 
 6. **Verify APM Server**
     - Open a browser and navigate to http://{insert-hostname-here} or {insert-IP-address-here}:8200
     - Verify the response and publish ready should be "true".
 
     TODO: ADD SCREENSHOT SHOWING THE EXPECTED RESPONSE.
+    ![alt text](../resources/troubleshooting-images/apm-response.png)
 
 ## Step 4: Post Installation and Verification
 
@@ -342,10 +344,12 @@ TBD - Verify this is necessary because I think this is started automatically whe
    a. Login to Kibana and select the Elastic APM under the Integration or in search bar type Elastic APM and select under Integration.<br/>
 
    TODO: ADD SCREENSHOT.
+   ![alt text](../resources/troubleshooting-images/apm-integration.png)
 
    b. In the Right top select Add Elastic APM button.  <br/>
 
    TODO: ADD SCREENSHOT.
+   ![alt text](../resources/troubleshooting-images/add-apm-integration.png)
 
    c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
        Ex: Host:{insert-hostname-here} or {insert-IP-address-here}:8200
@@ -354,10 +358,12 @@ TBD - Verify this is necessary because I think this is started automatically whe
    d. Click on Save and Continue. <br/>
 
    TODO: ADD SCREENSHOT.
+   ![alt text](../resources/troubleshooting-images/apm-integration-host-name.png)
    
    e. Select "Add Elastic Agent later" button as Agent is not required for the initial setups. <br/>      
 
    TODO: ADD SCREENSHOT.
+   ![alt text](../resources/troubleshooting-images/agent-button.png)
 
 2. **Verify APM Data View**
    
