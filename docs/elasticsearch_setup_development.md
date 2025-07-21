@@ -13,14 +13,7 @@
 
 	c. Extract the files to C:\\elastic<br/>
 
-2. **Set Up Environment Variable for JAVA**
-    a. Go to Control Panel
-    b. Search for Environment Variables in search box
-    c. Click on Edit the system environment variables
-
-    ![alt text](..//resources/troubleshooting-images/environmentvariables.png)
-
-3. **Install and Configure Elasticsearch 8.17.x**
+2. **Install and Configure Elasticsearch 8.17.x**
 	a. Run the below command from a terminal using an elevated command prompt to start Elasticsearch and perform the auto installation steps.<br/>
 
       **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
@@ -42,19 +35,19 @@
     .\bin\elasticsearch-service.bat install
     ```
 
-4. **Set JVM Heap Size**  <br/>
+3. **Set JVM Heap Size**  <br/>
    
-	a. Edit config\\jvm.options and set:
+	a. Edit config\\jvm.options and set both -Xms and -Xmx to 50% of available system memory, but not more than 30 GB. For ex::
     ```
     -Xms8g
-    -Xmx10g
+    -Xmx8g
     ```
 
     There should be no space while uncommenting and setting the line for heap size
 
     ![alt text](..//resources/troubleshooting-images/heapsize.png)
 
-5. **Run Elasticsearch as a Windows Service**
+4. **Run Elasticsearch as a Windows Service**
 TBD - Verify this is necessary because I think this is started automatically when running the ".bat install" command above.   
 
     TODO: Every single command must be explicitly defined and use common terminology.
@@ -64,7 +57,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     .\bin\elasticsearch-service.bat start
     ```
 
-6. **Enable  "Stack Monitoring" built-in dashboard**
+5. **Enable  "Stack Monitoring" built-in dashboard**
    
    a. To enable "Stack Monitoring" built-in dashboard add following line to elasticsearch.yml 
 
@@ -77,7 +70,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     --Look for service name starting with ElasticSearch
     --Right click on the service and select Restart
 
-7. **Create Elastic User Passwords**
+6. **Create Elastic User Passwords**
 
     TODO: What are they supposed to do with this? We tell them to run this command but make no mention at all why this is done and what should b done with the output. In fact, it doesn't even explain the fact that the command OUTPUT displays the new elastic account password. This should provide some basic display on what the user will see and recommendation for them to write this password down for sake keeping.
 
@@ -90,7 +83,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     b. It is strongly recommended that you immediately record and securely store the password in accordance with your organization’s credential management and security policies.
     c. This password will be required for future authentication to Elasticsearch and Kibana.
 
-8. **Check mapper-size plugin**
+7. **Check mapper-size plugin**
     ```
     ./elasticsearch-plugin list
     ```
@@ -104,7 +97,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     - Look for service name starting with ElasticSearch
     - Right click on the service and select Restart
 
-9. **Verify Elasticsearch Server**
+8. **Verify Elasticsearch Server**
     - Open a browser and navigate to https://{insert-hostname-here} or {insert-IP-address-here}:9200.
     - Verify the response is valid.
 
@@ -282,7 +275,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     f. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
 
     g. Update host of apm-server to "{insert-hostname-here} or {insert-IP-address-here}/:8200". Uncomment the line, if it is commented
-    ![alt text](../resources//troubleshooting-images/apm-conf1.png)
+    ![alt text](../resources/troubleshooting-images/apm-conf1.png)
 
     h. In the "Elasticsearch output" section, perform the below changes:
 
@@ -302,7 +295,8 @@ TBD - Verify this is necessary because I think this is started automatically whe
     - Update ssl.enabled: true
     - Update ssl.verification_mode: none
 
-    ![alt text](../resources/troubleshooting-images/apm-ssl.png)
+    ![alt text](../resources/troubleshooting-images/apm-ssl1.png)
+    ![alt text](../resources/troubleshooting-images/apm-ssl2.png)
 
     k. Update Instrumentation section as below:
 
