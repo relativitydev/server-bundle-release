@@ -371,9 +371,10 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
 3. **Verify Cluster Health in Kibana**
     
-   Open a browser and navigate to https://{insert-hostname-here} or {insert-IP-address-here}:9200.    
+   Open a browser and navigate to https://{insert-hostname-here} or {insert-IP-address-here}:9200/_cat/health.    
 
    TODO: ADD INSTRUCTIONS AND SCREENSHOT.
+   ![alt text](../resources/troubleshooting-images/cluster_health.png)
 
 ## Next
 
