@@ -1,5 +1,15 @@
 ﻿# Development Tier
 
+## How to Unblock Downloaded Files
+
+If you download a .zip or other file from the internet, Windows may block the file and prevent it from running correctly. To unblock a file:
+
+- Right-click the downloaded file and select **Properties**.
+- In the **General** tab, check the box for **Unblock** at the bottom (if present).
+- Click **Apply** and then **OK**.
+
+![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
+
 ## Step 1: Download and Install Elasticsearch 8.17.3 on One Server
 
 
@@ -8,9 +18,7 @@
    - Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
    - Download the 8.17.3 Windows .zip version.
 
-   > **Note:** Ensure the file is unblocked before extracting. (See screenshot below)
-
-   ![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
+   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
    - Extract the files to `C:\elastic`
 
@@ -39,20 +47,7 @@
   .\bin\elasticsearch-service.bat install
   ```
 
-3. **Set JVM Heap Size**
-
-   - Edit `config\jvm.options` and set both `-Xms` and `-Xmx` to 50% of available system memory, but not more than 30 GB. For example:
-
-     ```
-     -Xms8g
-     -Xmx8g
-     ```
-
-   - There should be no space while uncommenting and setting the line for heap size.
-
-   ![Heap size example](../resources/troubleshooting-images/heapsize.png)
-
-4. **Run Elasticsearch as a Windows Service**
+3. **Run Elasticsearch as a Windows Service**
 
    - Open an elevated PowerShell and run the following command to start the Elasticsearch service:
 
@@ -60,7 +55,7 @@
      .\bin\elasticsearch-service.bat start
      ```
 
-5. **Enable "Stack Monitoring" built-in dashboard**
+4. **Enable "Stack Monitoring" built-in dashboard**
 
    - Add the following line to your `elasticsearch.yml` file to enable the built-in Stack Monitoring dashboard:
 
@@ -74,7 +69,7 @@
        Restart-Service -Name "elasticsearch"
        ```
 
-6. **Reset the Elastic (Admin) User Password**
+5. **Reset the Elastic (Admin) User Password**
 
    The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
 
@@ -87,9 +82,7 @@
    - Immediately record and securely store the password according to your organization’s credential management and security policies.
    - You will need this password for future authentication to Elasticsearch and Kibana.
 
-7. **Install the 'mapper-size' plugin**
-
-- If 'mapper-size' is not listed, install it using:
+6. **Install the 'mapper-size' plugin**
 
   ```
   .\elasticsearch-plugin install mapper-size
@@ -107,7 +100,7 @@
      Restart-Service -Name "elasticsearch"
      ```
 
-8. **Verify Elasticsearch Server**
+7. **Verify Elasticsearch Server**
 
    - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `yourelasticusername`, `yourpassword` and `{hostname_or_ip}` with your actual values):
 
@@ -127,12 +120,7 @@
     
    - Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
 
-   - Before extracting, ensure the file is unblocked (see screenshot below):
-
-     ![Kibana folder unblock screenshot](../resources/troubleshooting-images/kibanafolder.png)
-    
-    TODO: This is also where you should remind the reader on the issue of exceeding the max Windows path.
-
+   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
 2. **Start Kibana from the command line**
     
@@ -265,8 +253,7 @@
 
     TODO: This must specify the latest supported version.
 
-    TODO: Ensure the file is unblocked (include screenshot)
-    ![alt text](..//resources/troubleshooting-images/apmunblocked.png)
+    - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
     c. Extract the files to C:\\elastic<br/>
 
