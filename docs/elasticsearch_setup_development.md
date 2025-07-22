@@ -4,22 +4,22 @@
 
 1. **Download Elasticsearch 8.17.x**
    
-	a. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).<br/>
-	b. Download the 8.17.x Windows .zip version.<br/>    
+    a. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).<br/>
+    b. Download the 8.17.x Windows .zip version.<br/>    
 
     TODO: Ensure the file is unblocked (include screenshot)
 
     ![alt text](..//resources/troubleshooting-images/unblocked.png)
 
-	c. Extract the files to C:\\elastic<br/>
+    c. Extract the files to C:\\elastic<br/>
 
 2. **Install and Configure Elasticsearch 8.17.x**
-	a. Run the below command from a terminal using an elevated command prompt to start Elasticsearch and perform the auto installation steps.<br/>
+    a. Run the below command from a terminal using an elevated command prompt to start Elasticsearch and perform the auto installation steps.<br/>
 
       **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default. The following security configuration occurs automatically: 
       - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser. 
-	  - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
-	  - An enrollment token is generated for Kibana, which is valid for 30 minutes.
+      - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
+      - An enrollment token is generated for Kibana, which is valid for 30 minutes.
 
     ```
     bin\elasticsearch.bat
@@ -37,7 +37,7 @@
 
 3. **Set JVM Heap Size**  <br/>
    
-	a. Edit config\\jvm.options and set both -Xms and -Xmx to 50% of available system memory, but not more than 30 GB. For ex::
+    a. Edit config\\jvm.options and set both -Xms and -Xmx to 50% of available system memory, but not more than 30 GB. For ex::
     ```
     -Xms8g
     -Xmx8g
@@ -52,7 +52,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
     TODO: Every single command must be explicitly defined and use common terminology.
 
-	a. Run the below command from an elevated Command Prompt :
+    a. Run the below command from an elevated Command Prompt :
     ```
     .\bin\elasticsearch-service.bat start
     ```
@@ -79,21 +79,24 @@ TBD - Verify this is necessary because I think this is started automatically whe
     ```
     .\bin\elasticsearch-reset-password -u elastic
     ```
-    a. The password will be displayed only once in the console output and cannot be retrieved afterward.
-    b. It is strongly recommended that you immediately record and securely store the password in accordance with your organization’s credential management and security policies.
-    c. This password will be required for future authentication to Elasticsearch and Kibana.
+
+    - The password will be displayed only once in the console output and cannot be retrieved afterward.
+    - It is strongly recommended that you immediately record and securely store the password in accordance with your organization’s credential management and security policies.
+    - This password will be required for future authentication to Elasticsearch and Kibana.
 
 7. **Check mapper-size plugin**
     ```
     ./elasticsearch-plugin list
     ```
-    If mapper-size plugin not installed, please install using below cmd
-    ```
-    .\elasticsearch-plugin install mapper-size
-    ```
+    - If the mapper-size plugin is not installed, install it using the following command:
+      ```
+      .\elasticsearch-plugin install mapper-size
+      ```
 
-    Re-Start the ElasticSearch Service
-    - Press Win + R, type services.msc, and press Enter
+    - Restart the ElasticSearch Service:
+      - Press Win + R, type services.msc, and press Enter
+      - Look for service name starting with ElasticSearch
+      - Right click on the service and select Restart
     - Look for service name starting with ElasticSearch
     - Right click on the service and select Restart
 
@@ -112,7 +115,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
 - Double click on enable the Long path. 
 
 1. **Download Kibana 8.17.x**
-	
+    
     a. Download and extract the 8.17.x Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana). <br/>    
 
     TODO: Ensure the file is unblocked (include screenshot).
@@ -135,16 +138,16 @@ TBD - Verify this is necessary because I think this is started automatically whe
     ![alt text](..//resources/troubleshooting-images/kibanabatchresponse.png)
 
 3. **Enroll Kibana**
-	
+    
     a. In your terminal, click the generated link to open Kibana in your browser. <br/>
-	b. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, and then click the button to connect your Kibana instance with Elasticsearch. <br/>
+    b. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, and then click the button to connect your Kibana instance with Elasticsearch. <br/>
     c. In case token got expired, execute the following command in Elastic bin folder <br/> 
     ```
-	.\elasticsearch-create-enrollment-token --scope kibana
-	```
+    .\elasticsearch-create-enrollment-token --scope kibana
+    ```
     
-	d. Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch.<br/>
-	![](/resources/elasticsearch_setup_003.png)
+    d. Log in to Kibana as the elastic user with the password that was generated when you started Elasticsearch.<br/>
+    ![](/resources/elasticsearch_setup_003.png)
 
 4. **Generate Kibana encryption keys**
 
@@ -152,9 +155,9 @@ TBD - Verify this is necessary because I think this is started automatically whe
    
     a. Navigate to Kibana's bin folder Ex: "C:\elastic\kibana\bin" <br/>
     b. Run the below command in PowerShell or Command prompt using Admin rights <br/>
-	```
-	.\kibana-encryption-keys generate
-	```
+    ```
+    .\kibana-encryption-keys generate
+    ```
     
     TODO: What should they see? How do you know if this was successful?
     ![alt text](..//resources/troubleshooting-images/encryptionkeyresponse.png)
@@ -173,7 +176,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     e. Refer https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html for more details
 
 5. **Create Kibana Windows Service**
-	
+    
     a. Download latest nssm exe file version from https://nssm.cc/download and place it in C drive (Example: C:\nssm\nssm.exe)<br/>
     
     b. Open a command line with administrative privilege in the folder with nssm.exe and run the command .\nssm.exe install kibana_service. A popup will open to create a windows service.<br/>
@@ -227,8 +230,8 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
 2. **Download APM Server 8.17.x**
    
-	a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm). <br/>
-	b. Download and extract the 8.17.x Windows .zip file. <br/>
+    a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm). <br/>
+    b. Download and extract the 8.17.x Windows .zip file. <br/>
 
     TODO: This must specify the latest supported version.
 
@@ -311,7 +314,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
     
 4. **Execute required scripts to install APM Server as a Windows service**
    
-	 <br/>a. Navigate inside the downloaded apm-server.
+     <br/>a. Navigate inside the downloaded apm-server.
 
      b. Open an elevated PowerShell terminal.<br/>
 
@@ -365,7 +368,7 @@ TBD - Verify this is necessary because I think this is started automatically whe
 
     - Open a browser and go to https://{insert-hostname-here} or {insert-IP-address-here}:5601.
   
-	- Log in using elastic or kibana_system credentials.
+    - Log in using elastic or kibana_system credentials.
 
     TODO: WE HAVE CONFIRMED VIA ELASTIC SUPPORT THAT YOU MUST LITERALLY VISIT THE OBSERVABILITY->APM DASHBOARD FOR KIBANA TO TRIGGER THE CREATION OF THIS DATAVIEW. THIS INSTRUCTION SHOULD NOT DISCLOSE ANY OF THESE DETAILS; RATHER, IT SHOULD FORCE THE USER TO SIMPLY GO TO THE APM PAGE (INCLUDE SCREENSHOTS) AND CONFIRM THERE ARE TRACES PRESENT. ONCE YOU CLICK ON A TRACE, THIS WILL TRIGGER THE CREATION. THIS STEP SHOULD BE PLACED RIGHT HERE BECAUSE IT SHOULD YIELD SUCCESS BELOW.
 
