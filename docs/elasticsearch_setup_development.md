@@ -16,10 +16,10 @@
 
 2. **Install and Configure Elasticsearch 8.17.3**
 
-- Open a terminal with elevated (administrator) privileges and start Elasticsearch to perform the auto installation steps:
+- Open an elevated PowerShell and start Elasticsearch to perform the auto installation steps:
 
   ```
-  bin\elasticsearch.bat
+  .\bin\elasticsearch.bat
   ```
 
   > **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default:
@@ -33,7 +33,7 @@
   # Terminate the process after saving the token (Ctrl+C in the terminal)
   ```
 
-- To install Elasticsearch as a Windows service, run the following command in an elevated Command Prompt:
+- To install Elasticsearch as a Windows service, run the following command in an elevated PowerShell:
 
   ```
   .\bin\elasticsearch-service.bat install
@@ -54,7 +54,7 @@
 
 4. **Run Elasticsearch as a Windows Service**
 
-   - Open an elevated Command Prompt and run the following command to start the Elasticsearch service:
+   - Open an elevated PowerShell and run the following command to start the Elasticsearch service:
 
      ```
      .\bin\elasticsearch-service.bat start
@@ -69,9 +69,10 @@
      ```
 
    - Save the changes and restart the Elasticsearch service:
-     - Press `Win + R`, type `services.msc`, and press Enter
-     - Look for the service name starting with `ElasticSearch`
-     - Right click on the service and select **Restart**
+     - Open an elevated PowerShell and run the following command:
+       ```
+       Restart-Service -Name "elasticsearch"
+       ```
 
 6. **Reset the Elastic (Admin) User Password**
 
@@ -99,14 +100,16 @@
   ./elasticsearch-plugin list
   ```
 
-- Restart the Elasticsearch Service:
-  - Press Win + R, type `services.msc`, and press Enter
-  - Look for the service name starting with `ElasticSearch`
-  - Right click on the service and select **Restart**
+- Restart the Elasticsearch Service:   
+  - To restart the Elasticsearch service, run the following an elevated PowerShell:
+
+     ```
+     Restart-Service -Name "elasticsearch"
+     ```
 
 8. **Verify Elasticsearch Server**
 
-   - To verify Elasticsearch is running, use the following command (replace `yourelasticusername`, `yourpassword` and `{hostname_or_ip}` with your actual values):
+   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `yourelasticusername`, `yourpassword` and `{hostname_or_ip}` with your actual values):
 
      ```
      curl -u yourelasticusername:yourpassword -k https://{hostname_or_ip}:9200
@@ -134,7 +137,7 @@
 2. **Start Kibana from the command line**
     
    - Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
-   - In PowerShell (run as Administrator), execute:
+   - Open an elevated PowerShell and run the following command:
 
      ```
      .\kibana.bat
@@ -172,7 +175,7 @@
    ⚠️WARNING: Skipping the steps below will cause the Relativity Server CLI to fail.
 
    - Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
-   - In PowerShell or Command Prompt (run as Administrator), execute:
+   - Open an elevated PowerShell and run the following command:
 
      ```
      .\kibana-encryption-keys generate
@@ -199,7 +202,7 @@
     
    - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm\nssm.exe`).
 
-   - Open a command line with administrative privileges in the folder containing `nssm.exe` and run:
+   - Open an elevated Powershell in the folder containing `nssm.exe` and run:
 
      ```
      .\nssm.exe install kibana_service
@@ -276,7 +279,7 @@
 
     b. Once the API key is generated, keep a note of the key.
 
-    c. Open PowerShell window under Admin and Navigate to "Relativity Secret Store\Client" folder. 
+    c. Open an elevated PowerShell and navigate to "Relativity Secret Store\Client" folder. 
         E.g. CD "C:\Program Files\Relativity Secret Store\Client"
 
     d. Execute the following script:
@@ -343,7 +346,7 @@
    
      <br/>a. Navigate inside the downloaded apm-server.
 
-     b. Open an elevated PowerShell terminal.<br/>
+     b. Open an elevated PowerShell.<br/>
 
      c. Execute **PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1** to install the APM Server as a Windows service.<br/>
      
