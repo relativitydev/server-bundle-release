@@ -244,90 +244,85 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 1. **Prerequisites to setup APM Server**
 
-    a. Elastic and Kibana should be configured and Services should be up and running.
+   - Elastic and Kibana should be configured and services should be up and running.
 
 2. **Download APM Server 8.17.3**
    
-    a. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm). <br/>
-    b. Download and extract the 8.17.3 Windows .zip file. <br/>
-
-    TODO: This must specify the latest supported version.
-
-    - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
-
-    c. Extract the files to C:\\elastic<br/>
+   - Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
+   - Download and extract the 8.17.3 Windows .zip file.
+   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
+   - Extract the files to `C:\elastic`.
 
 3. **Configure APM Server (config\\apm-server.yml)**
-    Either Username / Password or API Key is required for configuring APM. If Username and Password is used, can ignore using API key inside apm-server.yml file and for API Key usage check below step(a).
+Either Username / Password or API Key is required for configuring APM. If Username and Password is used, you can ignore using API key inside apm-server.yml file. For API Key usage, see below:
 
-    a. Create new API key from kibana. Navigate to StackManagement  → API Keys  → Create. And create one by providing API Key name. Keep the other default settings as it is. 
+- Create a new API key from Kibana. Navigate to Stack Management → API Keys → Create, and create one by providing an API Key name. Keep the other default settings as is.
 
-    ![alt text](../resources/troubleshooting-images/apm_apikey.png)
+  ![alt text](../resources/troubleshooting-images/apm_apikey.png)
 
-    b. Once the API key is generated, keep a note of the key.
+- Once the API key is generated, keep a note of the key.
 
-    c. Open an elevated PowerShell and navigate to "Relativity Secret Store\Client" folder. 
-        E.g. CD "C:\Program Files\Relativity Secret Store\Client"
+- Open an elevated PowerShell and navigate to "Relativity Secret Store\Client" folder.  
+  E.g. `CD "C:\Program Files\Relativity Secret Store\Client"`
 
-    d. Execute the following script:
+- Execute the following script:
 
-    ```
-    do {
+  ```powershell
+  do {
     $urlServer = Read-Host -Prompt "Please enter url for your Elasticsearch Server"
-    } until ($urlServer -ne '')
+  } until ($urlServer -ne '')
 
-    do {
-        $apiKey = Read-Host -Prompt "Please enter API key to access your Elasticsearch Server"
-    } until ($urlServer -ne '')
- 
-    #Replace 'ElasticSearchServer' with a real Server Host name
-    .\secretstore.exe secret write /database/elasticsearch/clusters/rel-cluster-datagrid primary-node-url=$urlServer kibana-server-url=$urlServer apm-server-url=$urlServer primary-node-tls-skip-certificate-validation=true apm-server-tls-skip-certificate-validation=true kibana-server-tls-skip-certificate-validation=true
-    
-    #Replace 'NewlyGeneratedApiKey' with a real newly created ApiKey value
-    .\secretstore.exe secret write database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid api-key=$apiKey min-version=7.17.0
-    ```
-
-    e. Set "Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle" Toggle
-    ```
-    EXEC EDDS.eddsdbo.pr_SetToggle 'Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle', 1
-    ```
-
-    f. Navigate to apm-server folder and open the "apm-server.yml" using text editor.
-
-    g. Update host of apm-server to "{insert-hostname-here} or {insert-IP-address-here}/:8200". Uncomment the line, if it is commented
-    ![alt text](../resources/troubleshooting-images/apm-conf1.png)
-
-    h. In the "Elasticsearch output" section, perform the below changes:
-
-    - Uncomment the output.elasticsearch
-    - Update username to elastic and password to updated password. Uncomment both the lines if they are commented
-    - Update hosts: ["{insert-hostname-here} or {insert-IP-address-here}:9200"]
-    - Update protocol: https
-    - This setting is needed because elasticsearch is running under https
-
-    i. Either Username and Password / API Key required for APM Services. The same is highlighted below
-    ![alt text](../resources/troubleshooting-images/apm-conf2.png)
-
-    j. Also within output.elasticsearch, modify ssl settings
-
-    These changes are needed because elasticsearch is running under ssl
-
-    - Update ssl.enabled: true
-    - Update ssl.verification_mode: none
-
-    ![alt text](../resources/troubleshooting-images/apm-ssl1.png)
-    ![alt text](../resources/troubleshooting-images/apm-ssl2.png)
-
-    k. Update Instrumentation section as below:
-
-    - Uncomment Instrumentation section to enable apm-server instrumentation.
-    - Update enabled: true, environment: production
-    - hosts: - "http://{insert-hostname-here} or {insert-IP-address-here}:8200"
+  do {
+    $apiKey = Read-Host -Prompt "Please enter API key to access your Elasticsearch Server"
+  } until ($urlServer -ne '')
   
-    ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
+  # Replace 'ElasticSearchServer' with a real Server Host name
+  .\secretstore.exe secret write /database/elasticsearch/clusters/rel-cluster-datagrid primary-node-url=$urlServer kibana-server-url=$urlServer apm-server-url=$urlServer primary-node-tls-skip-certificate-validation=true apm-server-tls-skip-certificate-validation=true kibana-server-tls-skip-certificate-validation=true
+  
+  # Replace 'NewlyGeneratedApiKey' with a real newly created ApiKey value
+  .\secretstore.exe secret write database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid api-key=$apiKey min-version=7.17.0
+  ```
 
-    l. Once the instrumentation is set, we can verify it in Kibana as shown below:
-    ![alt text](../resources/troubleshooting-images/verify-instrumentation.png)
+- Set the `Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle` toggle:
+
+  ```sql
+  EXEC EDDS.eddsdbo.pr_SetToggle 'Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle', 1
+  ```
+
+- Navigate to the apm-server folder and open the `apm-server.yml` using a text editor.
+
+- Update the host of apm-server to `{insert-hostname-here} or {insert-IP-address-here}/:8200`. Uncomment the line if it is commented.
+
+  ![alt text](../resources/troubleshooting-images/apm-conf1.png)
+
+- In the "Elasticsearch output" section, perform the following changes:
+  - Uncomment the output.elasticsearch
+  - Update username to `elastic` and password to the updated password. Uncomment both lines if they are commented
+  - Update hosts: ["{insert-hostname-here} or {insert-IP-address-here}:9200"]
+  - Update protocol: https
+  - This setting is needed because Elasticsearch is running under https
+
+- Either Username and Password or API Key is required for APM Services. The same is highlighted below:
+
+  ![alt text](../resources/troubleshooting-images/apm-conf2.png)
+
+- Also within output.elasticsearch, modify SSL settings:
+  - Update ssl.enabled: true
+  - Update ssl.verification_mode: none
+
+  ![alt text](../resources/troubleshooting-images/apm-ssl1.png)
+  ![alt text](../resources/troubleshooting-images/apm-ssl2.png)
+
+- Update the Instrumentation section as below:
+  - Uncomment Instrumentation section to enable apm-server instrumentation.
+  - Update enabled: true, environment: production
+  - hosts: - "http://{insert-hostname-here} or {insert-IP-address-here}:8200"
+
+  ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
+
+- Once the instrumentation is set, you can verify it in Kibana as shown below:
+
+  ![alt text](../resources/troubleshooting-images/verify-instrumentation.png)
     
 4. **Execute required scripts to install APM Server as a Windows service**
    
@@ -351,33 +346,30 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ## Step 4: Post Installation and Verification
 
+
 1. **Add Elastic APM Integration Package**
 
-   ⚠️**WARNING**: Skipping below steps will cause the Relativity Server CLI to fail
-   
-   a. Login to Kibana and select the Elastic APM under the Integration or in search bar type Elastic APM and select under Integration.<br/>
+   ⚠️**WARNING**: Skipping the steps below will cause the Relativity Server CLI to fail
 
-   TODO: ADD SCREENSHOT.
-   ![alt text](../resources/troubleshooting-images/apm-integration.png)
+   - Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
+     
+     ![alt text](../resources/troubleshooting-images/apm-integration.png)
 
-   b. In the Right top select Add Elastic APM button.  <br/>
+   - In the top right, select the Add Elastic APM button.
 
-   TODO: ADD SCREENSHOT.
-   ![alt text](../resources/troubleshooting-images/add-apm-integration.png)
+     ![alt text](../resources/troubleshooting-images/add-apm-integration.png)
 
-   c. Add Integration name into it and for server configuration [MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST]. Update apm hostname and apm url<br/>
-       Ex: Host:{insert-hostname-here} or {insert-IP-address-here}:8200
-           URL: http://{insert-hostname-here} or {insert-IP-address-here}:8200 <br/>   
+   - Add an Integration name and for server configuration (MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST). Update apm hostname and apm url.  
+     Ex: Host: {insert-hostname-here} or {insert-IP-address-here}:8200  
+     URL: http://{insert-hostname-here} or {insert-IP-address-here}:8200
 
-   d. Click on Save and Continue. <br/>
+   - Click on Save and Continue.
 
-   TODO: ADD SCREENSHOT.
-   ![alt text](../resources/troubleshooting-images/apm-integration-host-name.png)
-   
-   e. Select "Add Elastic Agent later" button as Agent is not required for the initial setups. <br/>      
+     ![alt text](../resources/troubleshooting-images/apm-integration-host-name.png)
 
-   TODO: ADD SCREENSHOT.
-   ![alt text](../resources/troubleshooting-images/agent-button.png)
+   - Select "Add Elastic Agent later" button as Agent is not required for the initial setups.
+
+     ![alt text](../resources/troubleshooting-images/agent-button.png)
 
 2. **Verify APM Data View**
    
@@ -389,12 +381,21 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     TODO: WE HAVE CONFIRMED VIA ELASTIC SUPPORT THAT YOU MUST LITERALLY VISIT THE OBSERVABILITY->APM DASHBOARD FOR KIBANA TO TRIGGER THE CREATION OF THIS DATAVIEW. THIS INSTRUCTION SHOULD NOT DISCLOSE ANY OF THESE DETAILS; RATHER, IT SHOULD FORCE THE USER TO SIMPLY GO TO THE APM PAGE (INCLUDE SCREENSHOTS) AND CONFIRM THERE ARE TRACES PRESENT. ONCE YOU CLICK ON A TRACE, THIS WILL TRIGGER THE CREATION. THIS STEP SHOULD BE PLACED RIGHT HERE BECAUSE IT SHOULD YIELD SUCCESS BELOW.
 
-3. **Verify Cluster Health in Kibana**
+3. **Verify Cluster Health**
     
-   Open a browser and navigate to https://{insert-hostname-here} or {insert-IP-address-here}:9200/_cat/health.    
+- Open an elevated Command Prompt and run the following command (replace `yourelasticusername`, `yourpassword`, and `{hostname_or_ip}` with your actual values):
 
-   TODO: ADD INSTRUCTIONS AND SCREENSHOT.
-   ![alt text](../resources/troubleshooting-images/cluster_health.png)
+  ```
+  curl -u yourelasticusername:yourpassword -k https://{hostname_or_ip}:9200/_cat/health
+  ```
+
+- You should see a response similar to:
+
+  ```
+  1690219200 10:00:00 elasticsearch green 1 1 0 0 0 0 0 0 - 100.0%
+  ```
+
+- The word `green` in the response means the cluster is healthy. The word `yellow` in the response means the cluster is partially healthy. If you see `yellow` or `red`, investigate further.
 
 ## Next
 
