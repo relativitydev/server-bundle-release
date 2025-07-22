@@ -2,6 +2,32 @@
 
 This document provides troubleshooting guidance for common OpenTelemetry Collector issues encountered during installation, configuration, and operation in Relativity environments.
 
+> [!NOTE]
+> This guide assumes a default OpenTelemetry Collector installation path of `C:\otel\otelcol`. Adjust paths according to your actual installation directory.
+
+## Table of Contents
+
+- [Windows Service Issues](#windows-service-issues)
+  - [Issue 1: OpenTelemetry Collector Service Not Starting](#issue-1-opentelemetry-collector-service-not-starting)
+  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
+  - [Issue 3: Permission and Access Issues](#issue-3-permission-and-access-issues)
+- [Port Configuration Issues](#port-configuration-issues)
+  - [Issue 4: Port Conflicts](#issue-4-port-conflicts)
+  - [Issue 5: Network Connectivity Problems](#issue-5-network-connectivity-problems)
+- [Error Handling and Diagnostics](#error-handling-and-diagnostics)
+  - [Issue 6: Windows Event Viewer Analysis](#issue-6-windows-event-viewer-analysis)
+  - [Issue 7: Standard Output and Error Stream Analysis](#issue-7-standard-output-and-error-stream-analysis)
+  - [Issue 8: Configuration Validation and Testing](#issue-8-configuration-validation-and-testing)
+- [Prerequisite Access Verification](#prerequisite-access-verification)
+  - [Issue 9: BCP Share Access](#issue-9-bcp-share-access)
+  - [Issue 10: Secret Server Access](#issue-10-secret-server-access)
+  - [Issue 11: Kepler SSL Certificate Access](#issue-11-kepler-ssl-certificate-access)
+  - [Issue 12: Elasticsearch Access Verification](#issue-12-elasticsearch-access-verification)
+  - [Issue 13: Kibana Access Verification](#issue-13-kibana-access-verification)
+  - [Issue 14: APM Server Access Verification](#issue-14-apm-server-access-verification)
+  - [Issue 15: Relativity Service Account Verification](#issue-15-relativity-service-account-verification)
+- [Additional Diagnostic Commands](#additional-diagnostic-commands)
+
 ## Windows Service Issues
 
 ### Issue 1: OpenTelemetry Collector Service Not Starting
@@ -9,7 +35,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 **Symptoms:**
 - OpenTelemetry Collector service fails to start
 - Service stops immediately after starting
-- Error messages in Windows Event Viewer
+- Error messages in OpenTelemetry Collector logs
 
 **Troubleshooting Steps:**
 
@@ -21,12 +47,12 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 2. **Verify Service Configuration:**
    - Open Services.msc
    - Locate "OpenTelemetry Collector" service
-   - Check that the service is set to run under the correct user account
-   - Verify the service has "Log on as a service" rights
+   - Verify the service is running under Local System account (default configuration)
 
 3. **Check Configuration File:**
    ```powershell
-   # Validate YAML configuration
+   # Validate YAML configuration (navigate to installation directory first)
+   cd "C:\otel\otelcol"
    .\otelcol.exe --config-validate --config=config.yaml
    ```
 

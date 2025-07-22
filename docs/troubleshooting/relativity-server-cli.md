@@ -2,6 +2,27 @@
 
 This document provides troubleshooting guidance for common Relativity Server CLI issues encountered during Environment Watch and Data Grid Audit setup, configuration, and operation.
 
+> [!NOTE]
+> This guide assumes the Relativity Server CLI is installed in the default location. Adjust paths according to your actual installation directory.
+
+## Table of Contents
+
+- [Elastic APM Integration Package Issues](#elastic-apm-integration-package-issues)
+  - [Issue 1: APM Integration Package Installation Failures](#issue-1-apm-integration-package-installation-failures)
+  - [Issue 2: APM Integration Package Configuration Problems](#issue-2-apm-integration-package-configuration-problems)
+- [Data View Configuration Issues](#data-view-configuration-issues)
+  - [Issue 3: Data View Must Be Triggered Through Frontend](#issue-3-data-view-must-be-triggered-through-frontend)
+- [Kibana Encryption Keys Issues](#kibana-encryption-keys-issues)
+  - [Issue 4: Missing Kibana Encryption Keys](#issue-4-missing-kibana-encryption-keys)
+- [Prerequisite Access Verification](#prerequisite-access-verification)
+  - [Issue 5: Relativity Admin Account Access](#issue-5-relativity-admin-account-access)
+  - [Issue 6: Secret Server Access Verification](#issue-6-secret-server-access-verification)
+  - [Issue 7: Kepler SSL Certificate Access](#issue-7-kepler-ssl-certificate-access)
+  - [Issue 8: Elasticsearch Access Verification](#issue-8-elasticsearch-access-verification)
+  - [Issue 9: Kibana Access Verification](#issue-9-kibana-access-verification)
+  - [Issue 10: APM Server Access Verification](#issue-10-apm-server-access-verification)
+- [Additional Diagnostic Commands](#additional-diagnostic-commands)
+
 ## Elastic APM Integration Package Issues
 
 ### Issue 1: APM Integration Package Installation Failures
@@ -15,7 +36,7 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 
 1. **Verify Elasticsearch Connectivity:**
    ```powershell
-   Test-NetConnection -ComputerName your-elasticsearch-server -Port 9200
+   curl -X GET "https://your-elasticsearch-server:9200/"
    ```
 
 2. **Check Integration Package Availability:**

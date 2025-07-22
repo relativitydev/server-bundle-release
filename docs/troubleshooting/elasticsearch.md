@@ -2,6 +2,29 @@
 
 This document provides troubleshooting guidance for common Elasticsearch issues encountered during installation, configuration, and operation in Relativity environments.
 
+> [!NOTE]
+> This guide assumes a default Elasticsearch installation path of `C:\elastic\elasticsearch`. Adjust paths according to your actual installation directory.
+
+## Table of Contents
+
+- [Windows Service Issues](#windows-service-issues)
+  - [Issue 1: Elasticsearch Service Not Starting](#issue-1-elasticsearch-service-not-starting)
+  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
+- [Port Configuration Issues](#port-configuration-issues)
+  - [Issue 3: Port Conflicts](#issue-3-port-conflicts)
+  - [Issue 4: Network Connectivity Problems](#issue-4-network-connectivity-problems)
+- [Memory Issues](#memory-issues)
+  - [Issue 5: Insufficient Memory Allocation](#issue-5-insufficient-memory-allocation)
+  - [Issue 6: Virtual Memory Configuration](#issue-6-virtual-memory-configuration)
+- [Authentication Issues](#authentication-issues)
+  - [Issue 7: API Key Expiration](#issue-7-api-key-expiration)
+  - [Issue 8: Username/Password Authentication Problems](#issue-8-usernamepassword-authentication-problems)
+  - [Issue 9: SSL/TLS Certificate Issues](#issue-9-ssltls-certificate-issues)
+- [Service Verification](#service-verification)
+  - [Issue 10: Verifying Elasticsearch Health](#issue-10-verifying-elasticsearch-health)
+  - [Issue 11: Service Dependencies Verification](#issue-11-service-dependencies-verification)
+- [Additional Diagnostic Commands](#additional-diagnostic-commands)
+
 ## Windows Service Issues
 
 ### Issue 1: Elasticsearch Service Not Starting
@@ -9,7 +32,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 **Symptoms:**
 - Elasticsearch service fails to start
 - Service stops immediately after starting
-- Error messages in Windows Event Viewer
+- Error messages in Elasticsearch logs
 
 **Troubleshooting Steps:**
 
@@ -21,13 +44,16 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 2. **Verify Service Configuration:**
    - Open Services.msc
    - Locate "Elasticsearch" service
-   - Check that the service is set to run under the correct user account
-   - Verify the service has "Log on as a service" rights
+   - Verify the service is running under Local System account (default configuration)
 
 3. **Check Elasticsearch Logs:**
-   - Navigate to `%ES_HOME%\logs\`
-   - Review the latest log files for error messages
+   - Navigate to `C:\elastic\elasticsearch\logs\`
+   - Review the cluster log file (`elasticsearch.log`) for error messages
+   - Check the slow logs and garbage collection logs if present
    - Look for Java heap space issues or configuration errors
+   
+   > [!TIP]
+   > For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
 
 4. **Verify Java Installation:**
    ```powershell
@@ -49,19 +75,30 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 **Troubleshooting Steps:**
 
-1. **Check Windows Event Logs:**
-   - Open Event Viewer
-   - Navigate to Windows Logs > Application
-   - Look for Elasticsearch-related error events
+1. **Check Elasticsearch Logs:**
+   - Navigate to `C:\elastic\elasticsearch\logs\`
+   - Review the cluster log file (`elasticsearch.log`) for errors
+   - Look for OutOfMemoryError or service crash indicators
 
-2. **Review JVM Settings:**
-   - Check `jvm.options` file in `%ES_HOME%\config\`
-   - Verify heap size settings are appropriate for available memory
-   - Ensure `-Xms` and `-Xmx` values don't exceed physical RAM
+2. **Review JVM Settings (Advanced):**
+   - Check `jvm.options` file in `C:\elastic\elasticsearch\config\`
+   - Monitor current memory usage to determine if heap adjustment is needed
+   - If modifying heap settings:
+     - `-Xms`: Initial heap size (should match -Xmx)
+     - `-Xmx`: Maximum heap size (recommend 50% of available RAM, max 32GB)
+   - Example configuration for a system with 16GB RAM:
+   ```
+   -Xms4g
+   -Xmx4g
+   ```
 
 3. **Verify Disk Space:**
-   - Ensure sufficient disk space on data and log directories
-   - Elasticsearch requires at least 15% free disk space
+   - Ensure sufficient disk space on data and log directories (minimum 15% free)
+   - Verify data and log files are on separate drives from the Operating System drive
+   ```powershell
+   # Check disk space
+   Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="FreeSpace(%)";Expression={[math]::Round(($_.FreeSpace/$_.Size)*100,2)}}
+   ```
 
 ## Port Configuration Issues
 
@@ -71,6 +108,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 - Elasticsearch fails to bind to default ports
 - "Address already in use" errors in logs
 - Cannot access Elasticsearch via HTTP/HTTPS
+
+> [!NOTE]
+> A comprehensive port diagram will be available soon and referenced across multiple documentation pages.
 
 **Troubleshooting Steps:**
 
@@ -83,14 +123,23 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    netstat -an | findstr ":9300"
    ```
 
-2. **Identify Port Conflicts:**
+2. **Test Elasticsearch Connectivity:**
+   ```powershell
+   # Test Elasticsearch HTTP port
+   curl -X GET -u username:password "localhost:9200/"
+   
+   # Alternative using PowerShell
+   Invoke-RestMethod -Uri "http://localhost:9200/" -Method GET
+   ```
+
+3. **Identify Port Conflicts:**
    ```powershell
    Get-NetTCPConnection -LocalPort 9200 -State Listen
    Get-NetTCPConnection -LocalPort 9300 -State Listen
    ```
 
-3. **Configure Alternative Ports:**
-   - Edit `elasticsearch.yml`:
+3. **Configure Alternative Ports (if needed):**
+   - Edit `C:\elastic\elasticsearch\config\elasticsearch.yml`:
    ```yaml
    http.port: 9201
    transport.port: 9301
@@ -112,7 +161,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 **Troubleshooting Steps:**
 
 1. **Verify Network Binding:**
-   - Check `elasticsearch.yml` configuration:
+   - Check `C:\elastic\elasticsearch\config\elasticsearch.yml` configuration:
    ```yaml
    network.host: 0.0.0.0  # For all interfaces
    # or
@@ -146,13 +195,15 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 2. **Review JVM Heap Settings:**
-   - Edit `jvm.options` file:
+   - Edit `C:\elastic\elasticsearch\config\jvm.options` file:
    ```
    # Recommended: Set Xms and Xmx to same value
+   # Example for system with 8GB+ RAM:
    -Xms4g
    -Xmx4g
    ```
-   - Rule of thumb: Set heap to 50% of available RAM, max 32GB
+   > [!IMPORTANT]
+   > Rule of thumb: Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
 
 3. **Monitor Memory Usage:**
    ```curl
@@ -177,7 +228,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    - Increase virtual memory in WSL configuration
 
 2. **Alternative Solutions:**
-   - Add to `elasticsearch.yml`:
+   - Add to `C:\elastic\elasticsearch\config\elasticsearch.yml`:
    ```yaml
    bootstrap.memory_lock: false
    ```
@@ -243,7 +294,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 4. **Verify Security Configuration:**
-   - Check `elasticsearch.yml`:
+   - Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
    ```yaml
    xpack.security.enabled: true
    xpack.security.authc.api_key.enabled: true
@@ -363,10 +414,10 @@ Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="Size(GB
 
 ```powershell
 # View recent Elasticsearch logs
-Get-Content "C:\elasticsearch\logs\elasticsearch.log" -Tail 50
+Get-Content "C:\elastic\elasticsearch\logs\elasticsearch.log" -Tail 50
 
 # Search for specific errors
-Select-String -Path "C:\elasticsearch\logs\*.log" -Pattern "ERROR|WARN" | Select-Object -Last 20
+Select-String -Path "C:\elastic\elasticsearch\logs\*.log" -Pattern "ERROR|WARN" | Select-Object -Last 20
 ```
 
 

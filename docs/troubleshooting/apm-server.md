@@ -2,6 +2,29 @@
 
 This document provides troubleshooting guidance for common APM Server issues encountered during installation, configuration, and operation in Relativity environments.
 
+> [!NOTE]
+> This guide assumes a default APM Server installation path of `C:\elastic\apm-server`. Adjust paths according to your actual installation directory.
+
+## Table of Contents
+
+- [Windows Service Issues](#windows-service-issues)
+  - [Issue 1: APM Server Service Not Starting](#issue-1-apm-server-service-not-starting)
+  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
+  - [Issue 3: Permission and Access Issues](#issue-3-permission-and-access-issues)
+- [Port Configuration Issues](#port-configuration-issues)
+  - [Issue 4: Port Conflicts](#issue-4-port-conflicts)
+  - [Issue 5: Network Connectivity Problems](#issue-5-network-connectivity-problems)
+  - [Issue 6: SSL/TLS Configuration Issues](#issue-6-ssltls-configuration-issues)
+- [Authentication Issues](#authentication-issues)
+  - [Issue 7: API Key Authentication Problems](#issue-7-api-key-authentication-problems)
+  - [Issue 8: Username/Password Authentication Issues](#issue-8-usernamepassword-authentication-issues)
+  - [Issue 9: APM Agent Authentication](#issue-9-apm-agent-authentication)
+- [Service Verification](#service-verification)
+  - [Issue 10: Verifying APM Server Health and Status](#issue-10-verifying-apm-server-health-and-status)
+  - [Issue 11: Data Flow Verification](#issue-11-data-flow-verification)
+  - [Issue 12: Performance and Resource Monitoring](#issue-12-performance-and-resource-monitoring)
+- [Additional Diagnostic Commands](#additional-diagnostic-commands)
+
 ## Windows Service Issues
 
 ### Issue 1: APM Server Service Not Starting
@@ -9,7 +32,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 **Symptoms:**
 - APM Server service fails to start
 - Service stops immediately after starting
-- Error messages in Windows Event Viewer
+- Error messages in APM Server logs
 
 **Troubleshooting Steps:**
 
@@ -21,17 +44,17 @@ This document provides troubleshooting guidance for common APM Server issues enc
 2. **Verify Service Configuration:**
    - Open Services.msc
    - Locate "APM Server" service
-   - Check that the service is set to run under the correct user account
-   - Verify the service has "Log on as a service" rights
+   - Verify the service is running under Local System account (default configuration)
 
 3. **Check APM Server Logs:**
-   - Navigate to `%APM_SERVER_HOME%\logs\`
-   - Review the latest log files for error messages
+   - Navigate to `C:\elastic\apm-server\logs\`
+   - Review the latest log files (`apm-server.log`) for error messages
    - Look for configuration errors or connection issues with Elasticsearch
 
 4. **Verify Configuration File:**
    ```powershell
-   # Test configuration syntax
+   # Test configuration syntax (navigate to APM Server directory first)
+   cd "C:\elastic\apm-server"
    .\apm-server.exe test config -c apm-server.yml
    ```
 
