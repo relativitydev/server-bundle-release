@@ -2,6 +2,31 @@
 
 This document provides troubleshooting guidance for common Kibana issues encountered during installation, configuration, and operation in Relativity environments.
 
+> [!NOTE]
+> This guide assumes a default Kibana installation path of `C:\elastic\kibana`. Adjust paths according to your actual installation directory.
+
+## Table of Contents
+
+- [Windows Service Issues](#windows-service-issues)
+  - [Issue 1: Kibana Service Not Starting](#issue-1-kibana-service-not-starting)
+  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
+- [Port Configuration Issues](#port-configuration-issues)
+  - [Issue 3: Port Conflicts](#issue-3-port-conflicts)
+  - [Issue 4: Network Binding Problems](#issue-4-network-binding-problems)
+- [Memory Issues](#memory-issues)
+  - [Issue 5: Insufficient Memory Allocation](#issue-5-insufficient-memory-allocation)
+  - [Issue 6: Large Dataset Performance Issues](#issue-6-large-dataset-performance-issues)
+- [Authentication Issues](#authentication-issues)
+  - [Issue 7: API Key Authentication Problems](#issue-7-api-key-authentication-problems)
+  - [Issue 8: Username/Password Authentication Issues](#issue-8-usernamepassword-authentication-issues)
+  - [Issue 9: SSL/TLS Configuration Problems](#issue-9-ssltls-configuration-problems)
+- [Kibana Encryption Keys Configuration](#kibana-encryption-keys-configuration)
+  - [Issue 10: Missing or Invalid Encryption Keys](#issue-10-missing-or-invalid-encryption-keys)
+- [Service Verification](#service-verification)
+  - [Issue 11: Verifying Kibana Health and Status](#issue-11-verifying-kibana-health-and-status)
+  - [Issue 13: Dashboard and Visualization Verification](#issue-13-dashboard-and-visualization-verification)
+- [Additional Diagnostic Commands](#additional-diagnostic-commands)
+
 ## Windows Service Issues
 
 ### Issue 1: Kibana Service Not Starting
@@ -9,7 +34,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 **Symptoms:**
 - Kibana service fails to start
 - Service stops immediately after starting
-- Error messages in Windows Event Viewer
+- Error messages in Kibana logs
 
 **Troubleshooting Steps:**
 
@@ -21,20 +46,17 @@ This document provides troubleshooting guidance for common Kibana issues encount
 2. **Verify Service Configuration:**
    - Open Services.msc
    - Locate "Kibana" service
-   - Check that the service is set to run under the correct user account
-   - Verify the service has "Log on as a service" rights
+   - Verify the service is running under Local System account (default configuration)
 
 3. **Check Kibana Logs:**
-   - Navigate to `%KIBANA_HOME%\logs\`
-   - Review the latest log files for error messages
-   - Look for configuration errors or connection issues
+   - Navigate to `C:\elastic\kibana\logs\`
+   - Review the latest log files (`kibana.log`) for error messages
+   - Look for configuration errors or Elasticsearch connection issues
 
-4. **Verify Node.js Installation:**
-   ```powershell
-   node --version
-   ```
+4. **Verify Node.js Runtime:**
    - Kibana includes its own Node.js runtime
-   - Ensure no conflicting Node.js installations
+   - No additional Node.js installation required
+   - Check for conflicting Node.js installations if issues persist
 
 5. **Start Service Manually:**
    ```powershell
@@ -50,19 +72,19 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Check Windows Event Logs:**
-   - Open Event Viewer
-   - Navigate to Windows Logs > Application
-   - Look for Kibana-related error events
+1. **Check Kibana Logs:**
+   - Navigate to `C:\elastic\kibana\logs\`
+   - Review the latest log files (`kibana.log`) for crash details
+   - Look for memory issues or connection failures
 
 2. **Review Kibana Configuration:**
-   - Check `kibana.yml` file in `%KIBANA_HOME%\config\`
+   - Check `C:\elastic\kibana\config\kibana.yml` file
    - Verify Elasticsearch connection settings
    - Ensure all required configuration parameters are present
 
 3. **Verify Elasticsearch Connectivity:**
    ```powershell
-   Test-NetConnection -ComputerName your-elasticsearch-server -Port 9200
+   curl -X GET "your-elasticsearch-server:9200/"
    ```
 
 4. **Check Memory Usage:**
@@ -87,13 +109,17 @@ This document provides troubleshooting guidance for common Kibana issues encount
    netstat -an | findstr ":5601"
    ```
 
-2. **Identify Port Conflicts:**
+2. **Test Kibana Connectivity:**
    ```powershell
-   Get-NetTCPConnection -LocalPort 5601 -State Listen
+   # Test Kibana web interface
+   curl -X GET "localhost:5601/"
+   
+   # Alternative using PowerShell
+   Invoke-RestMethod -Uri "http://localhost:5601/" -Method GET
    ```
 
-3. **Configure Alternative Port:**
-   - Edit `kibana.yml`:
+3. **Configure Alternative Port (if needed):**
+   - Edit `C:\elastic\kibana\config\kibana.yml`:
    ```yaml
    server.port: 5602
    ```
@@ -113,7 +139,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 **Troubleshooting Steps:**
 
 1. **Verify Network Configuration:**
-   - Check `kibana.yml` configuration:
+   - Check `C:\elastic\kibana\config\kibana.yml` configuration:
    ```yaml
    server.host: "0.0.0.0"  # For all interfaces
    # or
@@ -122,12 +148,12 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 2. **Test Local Access:**
    ```powershell
-   Invoke-WebRequest -Uri "http://localhost:5601" -Method GET
+   curl -X GET "localhost:5601/"
    ```
 
 3. **Test Remote Access:**
    ```powershell
-   Test-NetConnection -ComputerName your-kibana-server -Port 5601
+   curl -X GET "your-kibana-server:5601/"
    ```
 
 4. **Check Load Balancer Configuration:**
