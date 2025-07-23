@@ -162,38 +162,70 @@ If you download a .zip or other file from the internet, Windows may block the fi
    
    ⚠️WARNING: Skipping the steps below will cause the Relativity Server CLI to fail.
 
-   - Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
-   - Open an elevated PowerShell and run the following command:
 
-     ```
-     .\kibana-encryption-keys generate
-     ```
+- Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
+- Open an elevated PowerShell and run the following command:
+
+  ```
+  .\kibana-encryption-keys generate
+  ```
 
    - If successful, you will see output showing the generated encryption keys. For example:
 
-     ![Kibana encryption key response](../resources/troubleshooting-images/encryptionkeyresponse.png)
+     <details>
+     <summary>Sample output</summary>
+
+     ```
+     xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-1>"
+     xpack.reporting.encryptionKey: "<randomly-generated-key-2>"
+     xpack.security.encryptionKey: "<randomly-generated-key-3>"
+     ```
+     </details>
 
    - Copy the generated encryption keys and paste them into your `kibana.yml` file. The configuration should look similar to:
 
-     ![Sample kibana.yml configuration](../resources/troubleshooting-images/kibanayml.png)
+     <details>
+     <summary>Sample kibana.yml configuration</summary>
 
-   - Restart the Kibana service by running `./kibana.bat` from the `bin` folder in PowerShell (as Administrator).
+     ```yaml
+     xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-1>"
+     xpack.reporting.encryptionKey: "<randomly-generated-key-2>"
+     xpack.security.encryptionKey: "<randomly-generated-key-3>"
+     ```
+     </details>
+
+   - Restart the Kibana service:
+     - Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
+     - Open an elevated PowerShell and run the following command:
+
+       ```
+       .\kibana.bat
+       ```
 
    - To verify success, check the terminal output for lines indicating that Kibana has started successfully. You can also refer to the screenshots below:
 
      ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
+
+> **ℹ️ Info:**
+>
+> After Kibana has restarted, open a browser and go to `https://{insert-hostname-here}` or `https://{insert-IP-address-here}:5601`.
+> Log in using the `elastic` username and the password you generated earlier.
+> This verifies that Kibana is running and your credentials are working.
+
      ![Kibana restart verification 2](../resources/troubleshooting-images/kibanarerun02.png)
 
    - For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
 5. **Create Kibana Windows Service**
     
-   - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm\nssm.exe`).
+   - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
-   - Open an elevated Powershell in the folder containing `nssm.exe` and run:
+
+   - Navigate to the folder containing `nssm.exe` (e.g., `C:\nssm-2.24\win64`).
+   - Open an elevated PowerShell and run the following command:
 
      ```
-     .\nssm.exe install kibana_service
+     .\nssm.exe install kibana
      ```
 
      This will open a popup to create a Windows service for Kibana.
@@ -203,9 +235,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
      ![Kibana service application tab](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
 
      **Note:** If you accidentally press Return, the service may be installed before your configuration is complete. To edit the service properties, use:
+     
+      - Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
+      - Open an elevated PowerShell and run the following command:
 
      ```
-     .\nssm.exe edit kibana_service
+     .\nssm.exe edit kibana
      ```
 
    - In the I/O tab, enter the path of a log file where the service logs will be stored. Create a folder in the Kibana directory (e.g., `service_logs`) and a blank log file (e.g., `kibana_service.log`). Copy the log file path into the stdout and stderr sections:
@@ -218,11 +253,13 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
    - Click the Install service button to create the Windows service for Kibana.
 
-   - Go to the Services app in Windows, search for the `kibana_service` service, right click, and start the service.
+   - Go to the Services app in Windows, search for the `kibana` service, right click, and start the service.
 
    - Right click on the service and open Properties to change the startup type to Automatic, so Kibana runs automatically on system startup.
 
    - Verify that Kibana is running by opening it in your browser.
+
+     > **Note:** It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
 6. **Rename Kibana Service Using NSSM**
    - If the service name is not what you want (e.g., `kibana`), you can rename it using NSSM.
@@ -235,7 +272,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 7. **Verify Kibana Server**
    - Open a browser and go to `https://{insert-hostname-here}` or `{insert-IP-address-here}:5601`.
-   - Log in using the `elastic` or `kibana_system` credential to verify successful access.
+   - Log in using the `elastic` credential to verify successful access.
 
      ![Kibana login screenshot](../resources/troubleshooting-images/kibanalogin.png)
      ![Kibana running screenshot](../resources/troubleshooting-images/kibanarerun02.png)
@@ -258,7 +295,9 @@ Either Username / Password or API Key is required for configuring APM. If Userna
 
 - Create a new API key from Kibana. Navigate to Stack Management → API Keys → Create, and create one by providing an API Key name. Keep the other default settings as is.
 
-  ![alt text](../resources/troubleshooting-images/apm_apikey.png)
+![alt text](../resources/troubleshooting-images/apm_apikey.png)
+
+> **Important:** You will only see the API key at the time it is created. It will not be shown again. **Copy and save the API key immediately and store it securely.**
 
 - Once the API key is generated, keep a note of the key.
 
@@ -289,7 +328,7 @@ Either Username / Password or API Key is required for configuring APM. If Userna
   EXEC EDDS.eddsdbo.pr_SetToggle 'Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle', 1
   ```
 
-- Navigate to the apm-server folder and open the `apm-server.yml` using a text editor.
+- Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
 - Update the host of apm-server to `{insert-hostname-here} or {insert-IP-address-here}/:8200`. Uncomment the line if it is commented.
 
@@ -326,23 +365,31 @@ Either Username / Password or API Key is required for configuring APM. If Userna
     
 4. **Execute required scripts to install APM Server as a Windows service**
    
-     <br/>a. Navigate inside the downloaded apm-server.
+- Navigate to the downloaded apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`).
+- Open an elevated PowerShell.
+- Run the following command to install the APM Server as a Windows service:
 
-     b. Open an elevated PowerShell.<br/>
-
-     c. Execute **PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1** to install the APM Server as a Windows service.<br/>
+  ```
+  PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1
+  ```
      
-
 5. **Start the APM Server service**
-    TODO: JUST USE WINDOWS SERVICES UI AND SHOW THIS IN A SCREENSHOT.
-    ![alt text](../resources/troubleshooting-images/APM-Service.png)
+
+- Open an elevated PowerShell and run the following command:
+
+  ```
+  Start-Service -Name "apm-server"
+  ```
 
 6. **Verify APM Server**
-    - Open a browser and navigate to http://{insert-hostname-here} or {insert-IP-address-here}:8200
-    - Verify the response and publish ready should be "true".
 
-    TODO: ADD SCREENSHOT SHOWING THE EXPECTED RESPONSE.
-    ![alt text](../resources/troubleshooting-images/apm-response.png)
+- Open an elevated Command Prompt and run the following command (replace `{hostname_or_ip}` with your actual value):
+
+- The response should indicate `publish_ready` is `true`.
+
+  ```
+  curl -k http://{hostname_or_ip}:8200
+  ```
 
 ## Step 4: Post Installation and Verification
 
