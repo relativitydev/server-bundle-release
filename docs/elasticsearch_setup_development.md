@@ -102,10 +102,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 7. **Verify Elasticsearch Server**
 
-   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
+   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<yourelasticusername>`, `<yourpassword>`, and `<hostname_or_ip>` with your actual values):
 
      ```
-     curl -u <username>:<password> -k https://<hostname_or_ip>:9200
+     curl -u <yourelasticusername>:<yourpassword> -k https://<hostname_or_ip>:9200
      ```
 
    - The response should show basic cluster information in JSON format if the server is running and accessible.
@@ -429,7 +429,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - Open an elevated Command Prompt and run the following command (replace `yourelasticusername`, `yourpassword`, and `{hostname_or_ip}` with your actual values):
 
   ```
-  curl -u <username>:<password> -k https://<hostname_or_ip>:9200/_cat/health
+  curl -u <yourelasticusername>:<yourpassword> -k https://<hostname_or_ip>:9200/_cat/health
   ```
 
 - You should see a response similar to:
