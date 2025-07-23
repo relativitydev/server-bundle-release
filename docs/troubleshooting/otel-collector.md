@@ -8,29 +8,29 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 ## Table of Contents
 
 - [Windows Service Issues](#windows-service-issues)
-  - [Issue 1: OpenTelemetry Collector Service Not Starting](#issue-1-opentelemetry-collector-service-not-starting)
-  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
-  - [Issue 3: Permission and Access Issues](#issue-3-permission-and-access-issues)
+  - [OpenTelemetry Collector Service Not Starting](#opentelemetry-collector-service-not-starting)
+  - [Service Crashes or Stops Unexpectedly](#service-crashes-or-stops-unexpectedly)
+  - [Permission and Access Issues](#permission-and-access-issues)
 - [Port Configuration Issues](#port-configuration-issues)
-  - [Issue 4: Port Conflicts](#issue-4-port-conflicts)
-  - [Issue 5: Network Connectivity Problems](#issue-5-network-connectivity-problems)
+  - [Port Conflicts](#port-conflicts)
+  - [Network Connectivity Problems](#network-connectivity-problems)
 - [Error Handling and Diagnostics](#error-handling-and-diagnostics)
-  - [Issue 6: Windows Event Viewer Analysis](#issue-6-windows-event-viewer-analysis)
-  - [Issue 7: Standard Output and Error Stream Analysis](#issue-7-standard-output-and-error-stream-analysis)
-  - [Issue 8: Configuration Validation and Testing](#issue-8-configuration-validation-and-testing)
+  - [Windows Event Viewer Analysis](#windows-event-viewer-analysis)
+  - [Standard Output and Error Stream Analysis](#standard-output-and-error-stream-analysis)
+  - [Configuration Validation and Testing](#configuration-validation-and-testing)
 - [Prerequisite Access Verification](#prerequisite-access-verification)
-  - [Issue 9: BCP Share Access](#issue-9-bcp-share-access)
-  - [Issue 10: Secret Server Access](#issue-10-secret-server-access)
-  - [Issue 11: Kepler SSL Certificate Access](#issue-11-kepler-ssl-certificate-access)
-  - [Issue 12: Elasticsearch Access Verification](#issue-12-elasticsearch-access-verification)
-  - [Issue 13: Kibana Access Verification](#issue-13-kibana-access-verification)
-  - [Issue 14: APM Server Access Verification](#issue-14-apm-server-access-verification)
-  - [Issue 15: Relativity Service Account Verification](#issue-15-relativity-service-account-verification)
+  - [BCP Share Access](#bcp-share-access)
+  - [Secret Server Access](#secret-server-access)
+  - [Kepler SSL Certificate Access](#kepler-ssl-certificate-access)
+  - [Elasticsearch Access Verification](#elasticsearch-access-verification)
+  - [Kibana Access Verification](#kibana-access-verification)
+  - [APM Server Access Verification](#apm-server-access-verification)
+  - [Relativity Service Account Verification](#relativity-service-account-verification)
 - [Additional Diagnostic Commands](#additional-diagnostic-commands)
 
 ## Windows Service Issues
 
-### Issue 1: OpenTelemetry Collector Service Not Starting
+### OpenTelemetry Collector Service Not Starting
 
 **Symptoms:**
 - OpenTelemetry Collector service fails to start
@@ -67,7 +67,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    Start-Service otelcol
    ```
 
-### Issue 2: Service Crashes or Stops Unexpectedly
+### Service Crashes or Stops Unexpectedly
 
 **Symptoms:**
 - OpenTelemetry Collector service starts but stops after a short period
@@ -96,7 +96,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    - Verify sufficient disk space for logs and temporary data
    - Check for any resource constraints
 
-### Issue 3: Permission and Access Issues
+### Permission and Access Issues
 
 **Symptoms:**
 - Access denied errors when starting service
@@ -123,7 +123,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 
 ## Port Configuration Issues
 
-### Issue 4: Port Conflicts
+### Port Conflicts
 
 **Symptoms:**
 - OpenTelemetry Collector fails to bind to configured ports
@@ -173,7 +173,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    New-NetFirewallRule -DisplayName "OpenTelemetry Health Check" -Direction Inbound -Protocol TCP -LocalPort 13133 -Action Allow
    ```
 
-### Issue 5: Network Connectivity Problems
+### Network Connectivity Problems
 
 **Symptoms:**
 - Applications cannot connect to OpenTelemetry Collector
@@ -212,7 +212,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 
 ## Error Handling and Diagnostics
 
-### Issue 6: Windows Event Viewer Analysis
+### Windows Event Viewer Analysis
 
 **Symptoms:**
 - Need to diagnose service startup failures
@@ -241,7 +241,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    Get-WinEvent -FilterHashtable @{LogName='Application'; ProviderName='OpenTelemetry Collector'} | Export-Csv -Path "otelcol-events.csv"
    ```
 
-### Issue 7: Standard Output and Error Stream Analysis
+### Standard Output and Error Stream Analysis
 
 **Symptoms:**
 - Configuration validation errors
@@ -275,7 +275,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
          encoding: json
    ```
 
-### Issue 8: Configuration Validation and Testing
+### Configuration Validation and Testing
 
 **Symptoms:**
 - YAML syntax errors
@@ -316,7 +316,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 
 ## Prerequisite Access Verification
 
-### Issue 9: BCP Share Access
+### BCP Share Access
 
 **Symptoms:**
 - Cannot access required BCP share for data processing
@@ -354,7 +354,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
            regex: '^(?P<timestamp>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})'
    ```
 
-### Issue 10: Secret Server Access
+### Secret Server Access
 
 **Symptoms:**
 - Cannot retrieve secrets from Secret Server
@@ -397,7 +397,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    $env:SECRET_PASSWORD = (Get-Secret -Name "RelativityPassword").SecretValueText
    ```
 
-### Issue 11: Kepler SSL Certificate Access
+### Kepler SSL Certificate Access
 
 **Symptoms:**
 - SSL certificate validation errors
@@ -433,7 +433,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
          ca_file: C:\certs\kepler-ca.crt
    ```
 
-### Issue 12: Elasticsearch Access Verification
+### Elasticsearch Access Verification
 
 **Symptoms:**
 - Cannot connect to Elasticsearch cluster
@@ -473,7 +473,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    curl -X POST "http://localhost:4318/v1/traces" -H "Content-Type: application/json" -d '{"resourceSpans":[]}'
    ```
 
-### Issue 13: Kibana Access Verification
+### Kibana Access Verification
 
 **Symptoms:**
 - Cannot access Kibana dashboards
@@ -511,7 +511,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
            action: upsert
    ```
 
-### Issue 14: APM Server Access Verification
+### APM Server Access Verification
 
 **Symptoms:**
 - Cannot send APM data to APM Server
@@ -544,7 +544,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    curl -X POST "https://apm-server.domain.com:8200/intake/v2/events" -H "Authorization: Bearer your-secret-token"
    ```
 
-### Issue 15: Relativity Service Account Verification
+### Relativity Service Account Verification
 
 **Symptoms:**
 - Service account authentication failures

@@ -8,28 +8,28 @@ This document provides troubleshooting guidance for common Kibana issues encount
 ## Table of Contents
 
 - [Windows Service Issues](#windows-service-issues)
-  - [Issue 1: Kibana Service Not Starting](#issue-1-kibana-service-not-starting)
-  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
+  - [Kibana Service Not Starting](#kibana-service-not-starting)
+  - [Service Crashes or Stops Unexpectedly](#service-crashes-or-stops-unexpectedly)
 - [Port Configuration Issues](#port-configuration-issues)
-  - [Issue 3: Port Conflicts](#issue-3-port-conflicts)
-  - [Issue 4: Network Binding Problems](#issue-4-network-binding-problems)
+  - [Port Conflicts](#port-conflicts)
+  - [Network Binding Problems](#network-binding-problems)
 - [Memory Issues](#memory-issues)
-  - [Issue 5: Insufficient Memory Allocation](#issue-5-insufficient-memory-allocation)
-  - [Issue 6: Large Dataset Performance Issues](#issue-6-large-dataset-performance-issues)
+  - [Insufficient Memory Allocation](#insufficient-memory-allocation)
+  - [Large Dataset Performance Issues](#large-dataset-performance-issues)
 - [Authentication Issues](#authentication-issues)
-  - [Issue 7: API Key Authentication Problems](#issue-7-api-key-authentication-problems)
-  - [Issue 8: Username/Password Authentication Issues](#issue-8-usernamepassword-authentication-issues)
-  - [Issue 9: SSL/TLS Configuration Problems](#issue-9-ssltls-configuration-problems)
+  - [API Key Authentication Problems](#api-key-authentication-problems)
+  - [Username/Password Authentication Issues](#usernamepassword-authentication-issues)
+  - [SSL/TLS Configuration Problems](#ssltls-configuration-problems)
 - [Kibana Encryption Keys Configuration](#kibana-encryption-keys-configuration)
-  - [Issue 10: Missing or Invalid Encryption Keys](#issue-10-missing-or-invalid-encryption-keys)
+  - [Missing or Invalid Encryption Keys](#missing-or-invalid-encryption-keys)
 - [Service Verification](#service-verification)
-  - [Issue 11: Verifying Kibana Health and Status](#issue-11-verifying-kibana-health-and-status)
-  - [Issue 13: Dashboard and Visualization Verification](#issue-13-dashboard-and-visualization-verification)
+  - [Verifying Kibana Health and Status](#verifying-kibana-health-and-status)
+  - [Dashboard and Visualization Verification](#dashboard-and-visualization-verification)
 - [Additional Diagnostic Commands](#additional-diagnostic-commands)
 
 ## Windows Service Issues
 
-### Issue 1: Kibana Service Not Starting
+### Kibana Service Not Starting
 
 **Symptoms:**
 - Kibana service fails to start
@@ -63,7 +63,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    Start-Service kibana
    ```
 
-### Issue 2: Service Crashes or Stops Unexpectedly
+### Service Crashes or Stops Unexpectedly
 
 **Symptoms:**
 - Kibana service starts but stops after a short period
@@ -93,7 +93,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Port Configuration Issues
 
-### Issue 3: Port Conflicts
+### Port Conflicts
 
 **Symptoms:**
 - Kibana fails to bind to default port
@@ -129,7 +129,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    New-NetFirewallRule -DisplayName "Kibana Web Interface" -Direction Inbound -Protocol TCP -LocalPort 5601 -Action Allow
    ```
 
-### Issue 4: Network Binding Problems
+### Network Binding Problems
 
 **Symptoms:**
 - Cannot access Kibana from remote hosts
@@ -162,7 +162,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Memory Issues
 
-### Issue 5: Insufficient Memory Allocation
+### Insufficient Memory Allocation
 
 **Symptoms:**
 - Kibana becomes unresponsive
@@ -194,7 +194,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    elasticsearch.maxSockets: 1024
    ```
 
-### Issue 6: Large Dataset Performance Issues
+### Large Dataset Performance Issues
 
 **Symptoms:**
 - Slow visualization rendering
@@ -221,7 +221,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Authentication Issues
 
-### Issue 7: API Key Authentication Problems
+### API Key Authentication Problems
 
 **Symptoms:**
 - Authentication failures between Kibana and Elasticsearch
@@ -270,7 +270,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    - Replace expired API key in `kibana.yml`
    - Restart Kibana service
 
-### Issue 8: Username/Password Authentication Issues
+### Username/Password Authentication Issues
 
 **Symptoms:**
 - Login failures at Kibana interface
@@ -308,7 +308,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
        realm: "ldap_realm"
    ```
 
-### Issue 9: SSL/TLS Configuration Problems
+### SSL/TLS Configuration Problems
 
 **Symptoms:**
 - SSL certificate errors
@@ -337,7 +337,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Kibana Encryption Keys Configuration
 
-### Issue 10: Missing or Invalid Encryption Keys
+### Missing or Invalid Encryption Keys
 
 **Symptoms:**
 - Kibana fails to start with encryption-related errors
@@ -380,7 +380,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Service Verification
 
-### Issue 11: Verifying Kibana Health and Status
+### Verifying Kibana Health and Status
 
 **Symptoms:**
 - Need to confirm Kibana is operating correctly
@@ -424,7 +424,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    curl -X GET "http://localhost:5601/api/stats"
    ```
 
-### Issue 13: Dashboard and Visualization Verification
+### Dashboard and Visualization Verification
 
 **Symptoms:**
 - Dashboards not loading properly

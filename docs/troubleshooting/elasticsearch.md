@@ -1,6 +1,6 @@
 # Elasticsearch Troubleshooting
 
-This document provides troubleshooting guidance for common Elasticsearch issues encountered during installation, configuration, and operation in Relativity environments.
+This document provides troubleshooting guidance for common Elasticsearch issues encountered during installation, configuration, and operation in Relativity Server environments.
 
 > [!NOTE]
 > This guide assumes a default Elasticsearch installation path of `C:\elastic\elasticsearch`. Adjust paths according to your actual installation directory.
@@ -8,26 +8,26 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 ## Table of Contents
 
 - [Windows Service Issues](#windows-service-issues)
-  - [Issue 1: Elasticsearch Service Not Starting](#issue-1-elasticsearch-service-not-starting)
-  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
+  - [Elasticsearch Service Not Starting](#elasticsearch-service-not-starting)
+  - [Service Crashes or Stops Unexpectedly](#service-crashes-or-stops-unexpectedly)
 - [Port Configuration Issues](#port-configuration-issues)
-  - [Issue 3: Port Conflicts](#issue-3-port-conflicts)
-  - [Issue 4: Network Connectivity Problems](#issue-4-network-connectivity-problems)
+  - [Port Conflicts](#port-conflicts)
+  - [Network Connectivity Problems](#network-connectivity-problems)
 - [Memory Issues](#memory-issues)
-  - [Issue 5: Insufficient Memory Allocation](#issue-5-insufficient-memory-allocation)
-  - [Issue 6: Virtual Memory Configuration](#issue-6-virtual-memory-configuration)
+  - [Insufficient Memory Allocation](#insufficient-memory-allocation)
+  - [Virtual Memory Configuration](#virtual-memory-configuration)
 - [Authentication Issues](#authentication-issues)
-  - [Issue 7: API Key Expiration](#issue-7-api-key-expiration)
-  - [Issue 8: Username/Password Authentication Problems](#issue-8-usernamepassword-authentication-problems)
-  - [Issue 9: SSL/TLS Certificate Issues](#issue-9-ssltls-certificate-issues)
+  - [API Key Expiration](#api-key-expiration)
+  - [Username/Password Authentication Problems](#usernamepassword-authentication-problems)
+  - [SSL/TLS Certificate Issues](#ssltls-certificate-issues)
 - [Service Verification](#service-verification)
-  - [Issue 10: Verifying Elasticsearch Health](#issue-10-verifying-elasticsearch-health)
-  - [Issue 11: Service Dependencies Verification](#issue-11-service-dependencies-verification)
+  - [Verifying Elasticsearch Health](#verifying-elasticsearch-health)
+  - [Service Dependencies Verification](#service-dependencies-verification)
 - [Additional Diagnostic Commands](#additional-diagnostic-commands)
 
 ## Windows Service Issues
 
-### Issue 1: Elasticsearch Service Not Starting
+### Elasticsearch Service Not Starting
 
 **Symptoms:**
 - Elasticsearch service fails to start
@@ -42,9 +42,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 2. **Verify Service Configuration:**
-   - Open Services.msc
-   - Locate "Elasticsearch" service
-   - Verify the service is running under Local System account (default configuration)
+   ```powershell
+   (Get-CimInstance Win32_Service -Filter "Name = 'elasticsearch'").StartName
+   ```
 
 3. **Check Elasticsearch Logs:**
    - Navigate to `C:\elastic\elasticsearch\logs\`
@@ -67,7 +67,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    Start-Service elasticsearch
    ```
 
-### Issue 2: Service Crashes or Stops Unexpectedly
+### Service Crashes or Stops Unexpectedly
 
 **Symptoms:**
 - Elasticsearch service starts but stops after a short period
@@ -102,7 +102,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ## Port Configuration Issues
 
-### Issue 3: Port Conflicts
+### Port Conflicts
 
 **Symptoms:**
 - Elasticsearch fails to bind to default ports
@@ -151,7 +151,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    New-NetFirewallRule -DisplayName "Elasticsearch Transport" -Direction Inbound -Protocol TCP -LocalPort 9300 -Action Allow
    ```
 
-### Issue 4: Network Connectivity Problems
+### Network Connectivity Problems
 
 **Symptoms:**
 - Cannot connect to Elasticsearch from remote hosts
@@ -180,7 +180,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ## Memory Issues
 
-### Issue 5: Insufficient Memory Allocation
+### Insufficient Memory Allocation
 
 **Symptoms:**
 - OutOfMemoryError in Elasticsearch logs
@@ -215,7 +215,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    - Look for continuously increasing memory consumption
    - Review application logs for memory-related warnings
 
-### Issue 6: Virtual Memory Configuration
+### Virtual Memory Configuration
 
 **Symptoms:**
 - "max virtual memory areas vm.max_map_count [65530] is too low" error
@@ -236,7 +236,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ## Authentication Issues
 
-### Issue 7: API Key Expiration
+### API Key Expiration
 
 **Symptoms:**
 - Authentication failures after previously working
@@ -266,7 +266,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    - Update Relativity configuration with new API key
    - Restart affected services
 
-### Issue 8: Username/Password Authentication Problems
+### Log Analysis
 
 **Symptoms:**
 - Login failures
@@ -300,7 +300,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    xpack.security.authc.api_key.enabled: true
    ```
 
-### Issue 9: SSL/TLS Certificate Issues
+### SSL/TLS Certificate Issues
 
 **Symptoms:**
 - Certificate validation errors
@@ -324,7 +324,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ## Service Verification
 
-### Issue 10: Verifying Elasticsearch Health
+### Verifying Elasticsearch Health
 
 **Symptoms:**
 - Uncertainty about cluster status
@@ -364,7 +364,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    curl -X GET "localhost:9200/_nodes/stats?pretty"
    ```
 
-### Issue 11: Service Dependencies Verification
+### Service Dependencies Verification
 
 **Symptoms:**
 - Elasticsearch starts but related services fail

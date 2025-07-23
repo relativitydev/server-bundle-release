@@ -1,6 +1,6 @@
 # APM Server Troubleshooting
 
-This document provides troubleshooting guidance for common APM Server issues encountered during installation, configuration, and operation in Relativity environments.
+This document provides troubleshooting guidance for common APM Server issues encountered during installation, configuration, and operation in Relativity Server environments.
 
 > [!NOTE]
 > This guide assumes a default APM Server installation path of `C:\elastic\apm-server`. Adjust paths according to your actual installation directory.
@@ -8,26 +8,25 @@ This document provides troubleshooting guidance for common APM Server issues enc
 ## Table of Contents
 
 - [Windows Service Issues](#windows-service-issues)
-  - [Issue 1: APM Server Service Not Starting](#issue-1-apm-server-service-not-starting)
-  - [Issue 2: Service Crashes or Stops Unexpectedly](#issue-2-service-crashes-or-stops-unexpectedly)
-  - [Issue 3: Permission and Access Issues](#issue-3-permission-and-access-issues)
+  - [APM Server Service Not Starting](#apm-server-service-not-starting)
+  - [Service Crashes or Stops Unexpectedly](#service-crashes-or-stops-unexpectedly)
+  - [Permission and Access Issues](#permission-and-access-issues)
 - [Port Configuration Issues](#port-configuration-issues)
-  - [Issue 4: Port Conflicts](#issue-4-port-conflicts)
-  - [Issue 5: Network Connectivity Problems](#issue-5-network-connectivity-problems)
-  - [Issue 6: SSL/TLS Configuration Issues](#issue-6-ssltls-configuration-issues)
+  - [Port Conflicts](#port-conflicts)
+  - [Network Connectivity Problems](#network-connectivity-problems)
+- [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
+  - [Connection Failures](#connection-failures)
+  - [Authentication Problems](#authentication-problems)
+  - [Network and Connectivity](#network-and-connectivity)
 - [Authentication Issues](#authentication-issues)
-  - [Issue 7: API Key Authentication Problems](#issue-7-api-key-authentication-problems)
-  - [Issue 8: Username/Password Authentication Issues](#issue-8-usernamepassword-authentication-issues)
-  - [Issue 9: APM Agent Authentication](#issue-9-apm-agent-authentication)
+  - [API Key Authentication Problems](#api-key-authentication-problems)
 - [Service Verification](#service-verification)
-  - [Issue 10: Verifying APM Server Health and Status](#issue-10-verifying-apm-server-health-and-status)
-  - [Issue 11: Data Flow Verification](#issue-11-data-flow-verification)
-  - [Issue 12: Performance and Resource Monitoring](#issue-12-performance-and-resource-monitoring)
+  - [Verifying APM Server Health and Status](#verifying-apm-server-health-and-status)
 - [Additional Diagnostic Commands](#additional-diagnostic-commands)
 
 ## Windows Service Issues
 
-### Issue 1: APM Server Service Not Starting
+### APM Server Service Not Starting
 
 **Symptoms:**
 - APM Server service fails to start
@@ -42,34 +41,38 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
 
 2. **Verify Service Configuration:**
-   - Open Services.msc
-   - Locate "APM Server" service
    - Verify the service is running under Local System account (default configuration)
+   ```powershell
+   (Get-CimInstance Win32_Service -Filter "Name = 'apm-server'").StartName
+   ```
 
 3. **Check APM Server Logs:**
    - Navigate to `C:\elastic\apm-server\logs\`
    - Review the latest log files (`apm-server.log`) for error messages
    - Look for configuration errors or connection issues with Elasticsearch
+   - For Elasticsearch connection issues, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
 
 4. **Verify Configuration File:**
    ```powershell
-   # Test configuration syntax (navigate to APM Server directory first)
-   cd "C:\elastic\apm-server"
-   .\apm-server.exe test config -c apm-server.yml
+   # Stop Windows service first, then test configuration syntax
+   Stop-Service apm-server
+   C:\elastic\apm-server\apm-server.exe test config -c "C:\elastic\apm-server\apm-server.yml"
    ```
 
 5. **Start Service Manually:**
+    - If the Windows service still fails to run with the below command, please follow the next step.
    ```powershell
    Start-Service apm-server
    ```
 
 6. **Run APM Server in Foreground for Debugging:**
    ```powershell
-   # Navigate to APM Server directory
-   .\apm-server.exe -e -c apm-server.yml
+   # Ensure Windows service is stopped first
+   Stop-Service apm-server
+   C:\elastic\apm-server\apm-server.exe -e -c "C:\elastic\apm-server\apm-server.yml"
    ```
 
-### Issue 2: Service Crashes or Stops Unexpectedly
+### Service Crashes or Stops Unexpectedly
 
 **Symptoms:**
 - APM Server service starts but stops after a short period
@@ -78,36 +81,77 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Troubleshooting Steps:**
 
-1. **Check Windows Event Logs:**
-   - Open Event Viewer
-   - Navigate to Windows Logs > Application
-   - Look for APM Server-related error events
+1. **Check APM Server Logs:**
+   - Navigate to `C:\Program Files\apm-server\logs`
+   - Review the latest log files (`apm-server.log`) for error messages
+   - Look for service crash indicators or startup failures
 
 2. **Review APM Server Configuration:**
-   - Check `apm-server.yml` file in `%APM_SERVER_HOME%`
-   - Verify Elasticsearch connection settings
-   - Ensure all required configuration parameters are present
+   - Check `apm-server.yml` file in `C:\elastic\apm-server\`
+   - Verify Elasticsearch connection settings (see [Elasticsearch Connection Issues](#elasticsearch-connection-issues) for detailed troubleshooting)
+   - Common configuration issues:
+     - **TLS**: Ensure correct protocol (`http` vs `https`)
+     - **Hostname**: Verify correct Elasticsearch server hostname
+     - **Port**: Confirm correct Elasticsearch port (usually 9200)
+   
+   > [!TIP]
+   > API keys are the preferred authentication method and expire by default in 6 months. Consider switching from username/password to API key authentication.
+
+   ```yaml
+   output.elasticsearch:
+     hosts: ["https://your-elasticsearch-server:9200"]
+     api_key: "your-api-key-here"
+     # OR (not recommended)
+     # username: "apm_system"
+     # password: "your-password"
+   ```
 
 3. **Verify Elasticsearch Connectivity:**
-   ```powershell
-   Test-NetConnection -ComputerName your-elasticsearch-server -Port 9200
+   > [!NOTE]
+   > For detailed Elasticsearch connection troubleshooting, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
+   
+   ```bash
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+   ```
+   
+   Expected response for healthy Elasticsearch:
+   ```json
+   {
+    "name" : "EMTTEST",
+    "cluster_name" : "elasticsearch",
+    "cluster_uuid" : "vD-9K0uGRwuFm1XpLkgI5Q",
+    "version" : {
+      "number" : "8.17.3",
+      "build_flavor" : "default",
+      "build_type" : "zip",
+      "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
+      "build_date" : "2025-02-28T10:07:26.089129809Z",
+      "build_snapshot" : false,
+      "lucene_version" : "9.12.0",
+      "minimum_wire_compatibility_version" : "7.17.0",
+      "minimum_index_compatibility_version" : "7.0.0"
+      },
+   "tagline" : "You Know, for Search"
+   }
    ```
 
 4. **Check Resource Usage:**
-   - Monitor CPU and memory consumption
-   - Verify sufficient disk space for logs and data
-   - Check for any resource constraints
+   - The APM Server generates minimal data compared to Elasticsearch/Kibana
+   - All logs are written to `C:\Program Files\apm-server\logs`
+   - Verify sufficient disk space for logs
 
-5. **Validate Output Configuration:**
+5. **Validate Elasticsearch Configuration:**
    ```yaml
    output.elasticsearch:
      hosts: ["https://elasticsearch-server:9200"]
+     api_key: "your-api-key-here"
      protocol: "https"
-     username: "apm_system"
-     password: "your-password"
+     ssl.enabled: true
+     ssl.verification_mode: none
+     
    ```
 
-### Issue 3: Permission and Access Issues
+### Permission and Access Issues
 
 **Symptoms:**
 - Access denied errors when starting service
@@ -116,25 +160,14 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Troubleshooting Steps:**
 
-1. **Verify Service Account Permissions:**
-   - Ensure service account has read access to APM Server directory
-   - Verify write permissions to logs directory
-   - Check permissions on configuration files
-
-2. **Grant Required Permissions:**
-   ```powershell
-   # Grant permissions to APM Server directory
-   icacls "C:\apm-server" /grant "NT SERVICE\apm-server:(OI)(CI)F" /T
-   ```
-
-3. **Check User Rights Assignment:**
-   - Open Local Security Policy (secpol.msc)
-   - Navigate to User Rights Assignment
-   - Verify "Log on as a service" right for service account
+1. **Verify Service Configuration:**
+   - The APM Server Windows service runs under Local System account by default
+   - Verify access to `C:\elastic\apm-server\` directory
+   - Check write permissions to `C:\Program Files\apm-server\logs` directory
 
 ## Port Configuration Issues
 
-### Issue 4: Port Conflicts
+### Port Conflicts
 
 **Symptoms:**
 - APM Server fails to bind to default port
@@ -149,34 +182,28 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```powershell
    netstat -an | findstr ":8200"
    ```
+   
+   > [!NOTE]
+   > If no output is returned, port 8200 is available. If you see `LISTENING` status, the port is already in use.
 
 2. **Identify Port Conflicts:**
    ```powershell
    Get-NetTCPConnection -LocalPort 8200 -State Listen
    ```
+   
+   > [!NOTE]
+   > If this command returns results, another process is using port 8200. If no results are returned, the port is available.
 
-3. **Configure Alternative Port:**
-   - Edit `apm-server.yml`:
-   ```yaml
-   apm-server:
-     host: "0.0.0.0:8201"
-   ```
+3. **Resolve Port Conflicts:**
+   > [!IMPORTANT]
+   > Do not change the APM Server port. Instead, identify and stop the conflicting service using port 8200, as changing the APM Server port requires extensive configuration changes across Environment Watch, Relativity, and other components.
 
-4. **Update Firewall Rules:**
-   ```powershell
-   New-NetFirewallRule -DisplayName "APM Server" -Direction Inbound -Protocol TCP -LocalPort 8200 -Action Allow
-   ```
-
-5. **Update APM Agent Configuration:**
-   - Update application configuration to use new port
-   - Restart applications using APM agents
-
-### Issue 5: Network Connectivity Problems
+### Network Connectivity Problems
 
 **Symptoms:**
-- APM agents cannot connect to server
-- Connection timeouts from applications
-- "connection refused" errors in agent logs
+- Service Not Running: APM Server or Elasticsearch may not be running or listening on the expected endpoints.
+- Incorrect Configuration: The APM Server or Elasticsearch endpoint URLs may be misconfigured (wrong host, port, or protocol).
+- Firewall Rules: Firewalls on the VM host or network may be blocking required ports (e.g., 9200 for Elasticsearch, 8200 for APM Server).
 
 **Troubleshooting Steps:**
 
@@ -189,9 +216,19 @@ This document provides troubleshooting guidance for common APM Server issues enc
      host: "your-server-ip:8200"
    ```
 
-2. **Test Local Connectivity:**
-   ```powershell
-   Invoke-WebRequest -Uri "http://localhost:8200/" -Method GET
+2. **Test APM Server Connectivity:**
+   ```bash
+   curl.exe -k -X GET "http://<hostname_or_ip>:8200/"
+   ```
+   
+   Expected response for healthy APM Server:
+   ```json
+   {
+     "build_date": "2025-02-27T18:17:35Z",
+     "build_sha": "f6b917b725e1a22af433e5b52c5c6f0ff9164adf",
+     "publish_ready": true,
+     "version": "8.17.3"
+   }
    ```
 
 3. **Test Remote Connectivity:**
@@ -199,47 +236,205 @@ This document provides troubleshooting guidance for common APM Server issues enc
    Test-NetConnection -ComputerName your-apm-server -Port 8200
    ```
 
-4. **Check Load Balancer Configuration:**
-   - If using a load balancer, verify proper configuration
-   - Ensure health checks are properly configured
-   - Verify SSL termination settings
+## Elasticsearch Connection Issues
 
-### Issue 6: SSL/TLS Configuration Issues
+### Connection Failures
 
 **Symptoms:**
-- SSL handshake failures
-- Certificate validation errors
-- APM agents cannot establish secure connections
+- APM Server cannot connect to Elasticsearch
+- "connection refused" or "connection timeout" errors in APM Server logs
+- APM data not being indexed in Elasticsearch
 
 **Troubleshooting Steps:**
 
-1. **Configure SSL in APM Server:**
+1. **Verify Elasticsearch Service Status:**
+   ```powershell
+   # Check if Elasticsearch service is running
+   Get-Service -Name elasticsearch
+   ```
+   
+   > [!TIP]
+   > For detailed Elasticsearch troubleshooting, see [Elasticsearch Troubleshooting](elasticsearch.md)
+
+2. **Test Elasticsearch Connectivity:**
+   ```bash
+   curl -u <username>:<password> -X GET "https://your-elasticsearch-server:9200/"
+   ```
+   
+   Expected response for healthy Elasticsearch:
+   ```json
+   {
+     "name": "elasticsearch-node",
+     "cluster_name": "elasticsearch",
+     "version": {"number": "8.x.x"},
+     "tagline": "You Know, for Search"
+   }
+   ```
+
+3. **Check Elasticsearch Cluster Health:**
+   ```bash
+   curl -u <username>:<password> -X GET "https://your-elasticsearch-server:9200/_cluster/health?pretty"
+   ```
+   
+   Expected response for healthy cluster:
+   ```json
+   {
+     "cluster_name": "elasticsearch",
+     "status": "green",
+     "timed_out": false,
+     "number_of_nodes": 1,
+     "number_of_data_nodes": 1
+   }
+   ```
+
+4. **Verify APM Server Output Configuration:**
    ```yaml
-   apm-server:
-     ssl:
-       enabled: true
-       certificate: "path/to/apm-server.crt"
-       key: "path/to/apm-server.key"
+   # Check apm-server.yml
+   output.elasticsearch:
+     hosts: ["https://your-elasticsearch-server:9200"]
+     protocol: "https"  # or "http" if not using SSL
+     api_key: "your-api-key"
    ```
 
-2. **Verify Certificate Validity:**
+5. **Test APM Server to Elasticsearch Connection:**
    ```powershell
-   openssl x509 -in apm-server.crt -text -noout
+   # Stop service first, then test output connectivity
+   Stop-Service apm-server
+   C:\elastic\apm-server\apm-server.exe test output -c "C:\elastic\apm-server\apm-server.yml"
    ```
 
-3. **Test SSL Connection:**
+### Authentication Problems
+
+**Symptoms:**
+- "Unauthorized" (401) errors in APM Server logs
+- "Forbidden" (403) errors when APM Server tries to write to Elasticsearch
+- Authentication failures between APM Server and Elasticsearch
+
+**Troubleshooting Steps:**
+
+1. **Verify API Key Configuration:**
+   ```yaml
+   # In apm-server.yml
+   output.elasticsearch:
+     hosts: ["https://your-elasticsearch-server:9200"]
+     api_key: "your-base64-encoded-api-key"
+   ```
+
+2. **Test API Key Validity:**
+   ```bash
+   curl -X GET "https://your-elasticsearch-server:9200/_security/api_key" \
+        -H "Authorization: ApiKey your-api-key"
+   ```
+
+3. **Check API Key Expiration:**
+   ```bash
+   curl -X GET "https://your-elasticsearch-server:9200/_security/api_key?owner=true" \
+        -H "Authorization: ApiKey your-api-key"
+   ```
+   
+   > [!IMPORTANT]
+   > API keys expire by default in 6 months. Check the `expiration` field in the response.
+
+4. **Verify API Key Permissions:**
+   The API key must have appropriate permissions for APM data:
+   ```json
+   {
+     "role_descriptors": {
+       "apm_writer": {
+         "cluster": ["monitor", "manage_ilm"],
+         "index": [
+           {
+             "names": ["apm-*", "logs-apm*", "metrics-apm*", "traces-apm*"],
+             "privileges": ["create_doc", "create_index", "auto_configure"]
+           }
+         ]
+       }
+     }
+   }
+   ```
+
+5. **Create New API Key if Needed:**
+   ```bash
+   curl -X POST "https://your-elasticsearch-server:9200/_security/api_key" \
+        -H "Content-Type: application/json" \
+        -u <username>:<password> \
+        -d '{
+          "name": "apm-server-api-key",
+          "expiration": "365d",
+          "role_descriptors": {
+            "apm_writer": {
+              "cluster": ["monitor", "manage_ilm"],
+              "index": [
+                {
+                  "names": ["apm-*", "logs-apm*", "metrics-apm*", "traces-apm*"],
+                  "privileges": ["create_doc", "create_index", "auto_configure"]
+                }
+              ]
+            }
+          }
+        }'
+   ```
+
+### Network and Connectivity
+
+**Symptoms:**
+- Network timeouts when connecting to Elasticsearch
+- DNS resolution failures
+- Firewall blocking connections
+
+**Troubleshooting Steps:**
+
+1. **Test Network Connectivity:**
    ```powershell
-   openssl s_client -connect your-apm-server:8200
+   Test-NetConnection -ComputerName your-elasticsearch-server -Port 9200
+   ```
+
+2. **Verify DNS Resolution:**
+   ```powershell
+   Resolve-DnsName your-elasticsearch-server
+   ```
+
+3. **Check Firewall Rules:**
+   ```powershell
+   # Check if port 9200 is open
+   Test-NetConnection -ComputerName your-elasticsearch-server -Port 9200 -InformationLevel Detailed
+   ```
+
+4. **Validate TLS/SSL Configuration:**
+   ```bash
+   # Test SSL connection to Elasticsearch
+   curl -u <username>:<password> -k -X GET "https://your-elasticsearch-server:9200/"
+   ```
+   
+   > [!NOTE]
+   > The `-k` flag bypasses certificate validation for testing purposes only.
+
+5. **Check APM Server Network Configuration:**
+   ```yaml
+   # Ensure APM Server can reach Elasticsearch
+   output.elasticsearch:
+     hosts: ["https://your-elasticsearch-server:9200"]
+     timeout: 90s
+     max_retries: 3
+   ```
+
+6. **Test from APM Server Host:**
+   ```bash
+   # Run from the same machine as APM Server
+   curl -u <username>:<password> -X GET "https://your-elasticsearch-server:9200/_cluster/health"
    ```
 
 ## Authentication Issues
 
-### Issue 7: API Key Authentication Problems
+### API Key Authentication Problems
 
 **Symptoms:**
 - Authentication failures between APM Server and Elasticsearch
 - "Unauthorized" errors in APM Server logs
 - APM data not appearing in Elasticsearch
+
+> [!NOTE]
+> For comprehensive Elasticsearch connection and authentication troubleshooting, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
 
 **Troubleshooting Steps:**
 
@@ -252,16 +447,39 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
 
 2. **Test API Key Validity:**
-   ```curl
+   ```bash
    curl -X GET "https://elasticsearch-server:9200/_security/api_key" \
         -H "Authorization: ApiKey your-api-key"
    ```
+   
+   Expected response for valid API key:
+   ```json
+   {
+      "api_keys": [
+      {
+         "id": "YGcGXJcBAkfpte8rEst4",
+         "name": "rel-infrawatch",
+         "type": "rest",
+         "creation": 1749595591294,
+         "expiration": 1765147591294,
+         "invalidated": false,
+         "username": "elastic",
+         "realm": "reserved",
+         "realm_type": "reserved",
+         "metadata": {},
+         "role_descriptors": {}
+      }
+      ]
+   }
+   ```
 
-3. **Create New API Key for APM Server:**
-   ```curl
+3. **Replace Expired API Key:**
+   For detailed steps on creating API keys, see [Authentication Problems](#authentication-problems) section.
+   
+   ```bash
    curl -X POST "https://elasticsearch-server:9200/_security/api_key" \
         -H "Content-Type: application/json" \
-        -u elastic:password \
+        -u <username>:<password> \
         -d '{
           "name": "apm-server-api-key",
           "role_descriptors": {
@@ -280,91 +498,23 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
 
 4. **Update APM Server Configuration:**
-   - Replace expired API key in `apm-server.yml`
-   - Restart APM Server service
-
-### Issue 8: Username/Password Authentication Issues
-
-**Symptoms:**
-- Login failures for APM Server to Elasticsearch
-- "authentication failed" errors in logs
-- APM data ingestion failures
-
-**Troubleshooting Steps:**
-
-1. **Verify User Configuration:**
-   - Check `apm-server.yml`:
    ```yaml
    output.elasticsearch:
-     hosts: ["https://elasticsearch-server:9200"]
-     username: "apm_system"
-     password: "your-password"
+    hosts: ["https://elasticsearch-server:9200"]
+    api_key: "your-api-key-here"
+    protocol: "https"
+    ssl.enabled: true
+    ssl.verification_mode: none
    ```
-
-2. **Reset APM System User Password:**
+   
+   Then restart APM Server service:
    ```powershell
-   # From Elasticsearch bin directory
-   .\elasticsearch-reset-password.bat -u apm_system
-   ```
-
-3. **Test User Authentication:**
-   ```curl
-   curl -X GET "https://elasticsearch-server:9200/_security/user/apm_system" \
-        -u elastic:admin-password
-   ```
-
-4. **Verify User Roles:**
-   ```curl
-   curl -X GET "https://elasticsearch-server:9200/_security/user/apm_system" \
-        -u elastic:admin-password
-   ```
-
-   Expected roles for apm_system user:
-   - `apm_system`
-   - `ingest_admin` (if using ingest pipelines)
-
-### Issue 9: APM Agent Authentication
-
-**Symptoms:**
-- APM agents cannot authenticate with APM Server
-- Authentication token errors
-- APM data not reaching server
-
-**Troubleshooting Steps:**
-
-1. **Configure APM Server Authentication:**
-   ```yaml
-   apm-server:
-     auth:
-       api_key:
-         enabled: true
-       secret_token: "your-secret-token"
-   ```
-
-2. **Generate Secret Token:**
-   ```powershell
-   # Generate random secret token
-   -join ((1..64) | ForEach {Get-Random -input ([char[]]"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")})
-   ```
-
-3. **Update APM Agent Configuration:**
-   ```yaml
-   # Example for .NET APM agent
-   ELASTIC_APM_SECRET_TOKEN: "your-secret-token"
-   ELASTIC_APM_SERVER_URL: "https://apm-server:8200"
-   ```
-
-4. **Test Agent Connection:**
-   ```powershell
-   # Test with curl
-   curl -X POST "https://apm-server:8200/intake/v2/events" \
-        -H "Authorization: Bearer your-secret-token" \
-        -H "Content-Type: application/x-ndjson"
+   Restart-Service apm-server
    ```
 
 ## Service Verification
 
-### Issue 10: Verifying APM Server Health and Status
+### Verifying APM Server Health and Status
 
 **Symptoms:**
 - Need to confirm APM Server is operating correctly
@@ -374,107 +524,57 @@ This document provides troubleshooting guidance for common APM Server issues enc
 **Troubleshooting Steps:**
 
 1. **Check APM Server Status:**
-   ```curl
-   curl -X GET "http://localhost:8200/"
+   ```bash
+   curl.exe -k -X GET "http://<hostname_or_ip>:8200/"
    ```
    
    Expected response for healthy APM Server:
    ```json
    {
-     "build_date": "2024-01-01T00:00:00Z",
-     "build_sha": "abc123",
-     "version": "8.x.x"
+      "build_date": "2025-02-27T18:17:35Z",
+      "build_sha": "f6b917b725e1a22af433e5b52c5c6f0ff9164adf",
+      "publish_ready": true,
+      "version": "8.17.3"
    }
    ```
 
 2. **Verify Server Configuration:**
-   ```curl
-   curl -X GET "http://localhost:8200/config"
+   ```bash
+   curl -X GET "http://your-apm-server:8200/config"
+   ```
+   
+   Expected response includes server configuration details:
+   ```json
+   {
+     "apm-server": {
+       "host": "0.0.0.0:8200",
+       "max_request_size": 1048576
+     }
+   }
    ```
 
 3. **Check Elasticsearch Connection:**
    ```powershell
-   # Test from APM Server
-   .\apm-server.exe test output -c apm-server.yml
+   # Stop Windows service first, then test output connectivity
+   Stop-Service apm-server
+   C:\elastic\apm-server\apm-server.exe test output -c "C:\elastic\apm-server\apm-server.yml"
    ```
-
-4. **Monitor Performance Metrics:**
-   ```curl
-   curl -X GET "http://localhost:8200/stats"
+   
+   Expected output for successful connection:
    ```
-
-### Issue 11: Data Flow Verification
-
-**Symptoms:**
-- APM data not appearing in Elasticsearch
-- Missing transactions or metrics
-- Incomplete trace data
-
-**Troubleshooting Steps:**
-
-1. **Verify APM Indices in Elasticsearch:**
-   ```curl
-   curl -X GET "https://elasticsearch-server:9200/_cat/indices/apm-*?v"
+   elasticsearch: https://elasticsearch-server:9200...
+     parse url... OK
+     connection...
+       parse host... OK
+       dns lookup... OK
+       addresses: 192.168.1.100
+       dial up... OK
+     TLS... WARN secure connection disabled
+     talk to server... OK
    ```
-
-2. **Check Data Ingestion:**
-   ```curl
-   curl -X GET "https://elasticsearch-server:9200/apm-*/_search?size=1" \
-        -H "Content-Type: application/json" \
-        -d '{"sort": [{"@timestamp": {"order": "desc"}}]}'
-   ```
-
-3. **Verify Index Templates:**
-   ```curl
-   curl -X GET "https://elasticsearch-server:9200/_index_template/apm-*"
-   ```
-
-4. **Test Data Pipeline:**
-   ```powershell
-   # Send test event to APM Server
-   curl -X POST "http://localhost:8200/intake/v2/events" \
-        -H "Content-Type: application/x-ndjson" \
-        -d '{"metadata":{"service":{"name":"test-service","version":"1.0.0"}}}
-{"transaction":{"name":"test-transaction","type":"request","duration":100}}'
-   ```
-
-### Issue 12: Performance and Resource Monitoring
-
-**Symptoms:**
-- High CPU or memory usage
-- Slow APM data processing
-- Queue buildup in APM Server
-
-**Troubleshooting Steps:**
-
-1. **Monitor APM Server Metrics:**
-   ```yaml
-   # Enable monitoring in apm-server.yml
-   monitoring:
-     enabled: true
-     elasticsearch:
-       hosts: ["https://elasticsearch-server:9200"]
-   ```
-
-2. **Check Queue Status:**
-   ```curl
-   curl -X GET "http://localhost:8200/stats" | jq '.apm-server.processor.transaction'
-   ```
-
-3. **Monitor Resource Usage:**
-   ```powershell
-   Get-Process -Name apm-server | Select-Object CPU, WorkingSet, VirtualMemorySize
-   ```
-
-4. **Optimize Configuration:**
-   ```yaml
-   apm-server:
-     max_request_size: "1mb"
-     idle_timeout: "45s"
-     read_timeout: "30s"
-     write_timeout: "30s"
-     shutdown_timeout: "30s"
-   ```
+   
+   > [!NOTE]
+   > If this test fails, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues) for detailed troubleshooting steps.
 
 ## Additional Diagnostic Commands
 
@@ -490,53 +590,54 @@ Get-Process -Name apm-server | Select-Object Id, ProcessName, CPU, WorkingSet
 # Check listening ports
 Get-NetTCPConnection | Where-Object {$_.LocalPort -eq 8200} | Select-Object LocalAddress, LocalPort, State
 
-# Test configuration file
-.\apm-server.exe test config -c apm-server.yml
+# Test configuration file (stop service first)
+Stop-Service apm-server
+C:\elastic\apm-server\apm-server.exe test config -c "C:\elastic\apm-server\apm-server.yml"
 
 # Test output connectivity
-.\apm-server.exe test output -c apm-server.yml
+C:\elastic\apm-server\apm-server.exe test output -c "C:\elastic\apm-server\apm-server.yml"
+
+# Note: If Elasticsearch connection tests fail, see Elasticsearch Connection Issues section
 ```
 
 ### Configuration Validation
 
 ```powershell
-# Validate YAML syntax
-.\apm-server.exe test config -c apm-server.yml
+# Validate YAML syntax (stop service first)
+Stop-Service apm-server
+C:\elastic\apm-server\apm-server.exe test config -c "C:\elastic\apm-server\apm-server.yml"
 
 # Export current configuration
-.\apm-server.exe export config -c apm-server.yml
+C:\elastic\apm-server\apm-server.exe export config -c "C:\elastic\apm-server\apm-server.yml"
 
 # Test Elasticsearch template
-.\apm-server.exe test template -c apm-server.yml
+C:\elastic\apm-server\apm-server.exe test template -c "C:\elastic\apm-server\apm-server.yml"
 ```
 
 ### Log Analysis
 
 ```powershell
 # View recent APM Server logs
-Get-Content "C:\apm-server\logs\apm-server*.log" -Tail 50
+Get-Content "C:\elastic\apm-server\logs\apm-server*.log" -Tail 50
 
 # Search for specific errors
-Select-String -Path "C:\apm-server\logs\*.log" -Pattern "ERROR|WARN|FATAL" | Select-Object -Last 20
+Select-String -Path "C:\elastic\apm-server\logs\*.log" -Pattern "ERROR|WARN|FATAL" | Select-Object -Last 20
 
 # Filter authentication errors
-Select-String -Path "C:\apm-server\logs\*.log" -Pattern "authentication|unauthorized|forbidden" | Select-Object -Last 10
+Select-String -Path "C:\elastic\apm-server\logs\*.log" -Pattern "authentication|unauthorized|forbidden" | Select-Object -Last 10
 
 # Monitor real-time logs
-Get-Content "C:\apm-server\logs\apm-server*.log" -Wait -Tail 10
+Get-Content "C:\elastic\apm-server\logs\apm-server*.log" -Wait -Tail 10
 ```
 
 ### Network Diagnostics
 
 ```powershell
 # Test APM Server endpoint
-Invoke-WebRequest -Uri "http://localhost:8200/" -Method GET
+curl -X GET "http://your-apm-server:8200/"
 
-# Test SSL endpoint
-Test-NetConnection -ComputerName localhost -Port 8200
-
-# Check certificate details
-openssl s_client -connect localhost:8200 -servername localhost
+# Test network connectivity
+Test-NetConnection -ComputerName your-apm-server -Port 8200
 ```
 
 
