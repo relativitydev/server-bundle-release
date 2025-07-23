@@ -8,24 +8,24 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 ## Table of Contents
 
 - [Elastic APM Integration Package Issues](#elastic-apm-integration-package-issues)
-  - [Issue 1: APM Integration Package Installation Failures](#issue-1-apm-integration-package-installation-failures)
-  - [Issue 2: APM Integration Package Configuration Problems](#issue-2-apm-integration-package-configuration-problems)
+  - [APM Integration Package Installation Failures](#apm-integration-package-installation-failures)
+  - [APM Integration Package Configuration Problems](#apm-integration-package-configuration-problems)
 - [Data View Configuration Issues](#data-view-configuration-issues)
-  - [Issue 3: Data View Must Be Triggered Through Frontend](#issue-3-data-view-must-be-triggered-through-frontend)
+  - [Data View Must Be Triggered Through Frontend](#data-view-must-be-triggered-through-frontend)
 - [Kibana Encryption Keys Issues](#kibana-encryption-keys-issues)
-  - [Issue 4: Missing Kibana Encryption Keys](#issue-4-missing-kibana-encryption-keys)
+  - [Missing Kibana Encryption Keys](#missing-kibana-encryption-keys)
 - [Prerequisite Access Verification](#prerequisite-access-verification)
-  - [Issue 5: Relativity Admin Account Access](#issue-5-relativity-admin-account-access)
-  - [Issue 6: Secret Server Access Verification](#issue-6-secret-server-access-verification)
-  - [Issue 7: Kepler SSL Certificate Access](#issue-7-kepler-ssl-certificate-access)
-  - [Issue 8: Elasticsearch Access Verification](#issue-8-elasticsearch-access-verification)
-  - [Issue 9: Kibana Access Verification](#issue-9-kibana-access-verification)
-  - [Issue 10: APM Server Access Verification](#issue-10-apm-server-access-verification)
+  - [Relativity Admin Account Access](#relativity-admin-account-access)
+  - [Secret Server Access Verification](#secret-server-access-verification)
+  - [Kepler SSL Certificate Access](#kepler-ssl-certificate-access)
+  - [Elasticsearch Access Verification](#elasticsearch-access-verification)
+  - [Kibana Access Verification](#kibana-access-verification)
+  - [APM Server Access Verification](#apm-server-access-verification)
 - [Additional Diagnostic Commands](#additional-diagnostic-commands)
 
 ## Elastic APM Integration Package Issues
 
-### Issue 1: APM Integration Package Installation Failures
+### APM Integration Package Installation Failures
 
 **Symptoms:**
 - CLI fails during APM integration package installation
@@ -67,7 +67,7 @@ Cause: Unable to connect to Elastic Package Registry
 Solution: Verify internet connectivity and firewall settings
 ```
 
-### Issue 2: APM Integration Package Configuration Problems
+### APM Integration Package Configuration Problems
 
 **Symptoms:**
 - Package installs but configuration fails
@@ -106,7 +106,7 @@ Solution: Verify internet connectivity and firewall settings
 
 ## Data View Configuration Issues
 
-### Issue 3: Data View Must Be Triggered Through Frontend
+### Data View Must Be Triggered Through Frontend
 
 **Symptoms:**
 - CLI completes successfully but data views are not available
@@ -158,7 +158,7 @@ Solution: Verify internet connectivity and firewall settings
 
 ## Kibana Encryption Keys Issues
 
-### Issue 4: Missing Kibana Encryption Keys
+### Missing Kibana Encryption Keys
 
 **Symptoms in CLI:**
 - CLI displays encryption key validation errors
@@ -230,7 +230,7 @@ WARNING: xpack.security.encryptionKey not found in Kibana configuration
 
 ## Prerequisite Access Verification
 
-### Issue 5: Relativity Admin Account Access
+### Relativity Admin Account Access
 
 **Symptoms:**
 - CLI authentication failures with Relativity
@@ -266,7 +266,7 @@ WARNING: xpack.security.encryptionKey not found in Kibana configuration
    .\RelativityServerCLI.exe test-relativity-connection --relativity-url https://your-relativity --username admin@domain.com
    ```
 
-### Issue 6: Secret Server Access Verification
+### Secret Server Access Verification
 
 **Symptoms:**
 - Cannot retrieve secrets during CLI setup
@@ -304,7 +304,7 @@ WARNING: xpack.security.encryptionKey not found in Kibana configuration
    .\RelativityServerCLI.exe configure-secret-server --server-url https://secret-server.domain.com --token your-token
    ```
 
-### Issue 7: Kepler SSL Certificate Access
+### Kepler SSL Certificate Access
 
 **Symptoms:**
 - SSL certificate validation errors during setup
@@ -338,7 +338,7 @@ WARNING: xpack.security.encryptionKey not found in Kibana configuration
    .\RelativityServerCLI.exe configure-kepler --kepler-url https://kepler.domain.com --cert-path C:\certs\kepler.crt
    ```
 
-### Issue 8: Elasticsearch Access Verification
+### Elasticsearch Access Verification
 
 **Symptoms:**
 - Cannot connect to Elasticsearch during CLI setup
@@ -377,7 +377,7 @@ WARNING: xpack.security.encryptionKey not found in Kibana configuration
    .\RelativityServerCLI.exe test-elasticsearch --elasticsearch-url https://elasticsearch.domain.com:9200 --api-key your-key
    ```
 
-### Issue 9: Kibana Access Verification
+### Kibana Access Verification
 
 **Symptoms:**
 - Cannot access Kibana during dashboard setup
@@ -413,7 +413,7 @@ WARNING: xpack.security.encryptionKey not found in Kibana configuration
    .\RelativityServerCLI.exe test-kibana --kibana-url https://kibana.domain.com:5601
    ```
 
-### Issue 10: APM Server Access Verification
+### APM Server Access Verification
 
 **Symptoms:**
 - Cannot configure APM Server during setup
