@@ -182,7 +182,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      ```
      </details>
 
-   - Copy the generated encryption keys and paste them into your `kibana.yml` file. The configuration should look similar to:
+   - Copy the generated encryption keys and paste them at the end of your `kibana.yml` file. The configuration should look similar to:
 
      <details>
      <summary>Sample kibana.yml configuration</summary>
@@ -206,7 +206,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
      ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
 
-> **ℹ️ Info:**
+> **ℹ️ Information:**
 >
 > After Kibana has restarted, open a browser and go to `https://{insert-hostname-here}` or `https://{insert-IP-address-here}:5601`.
 > Log in using the `elastic` username and the password you generated earlier.
@@ -243,7 +243,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      .\nssm.exe edit kibana
      ```
 
-   - In the I/O tab, enter the path of a log file where the service logs will be stored. Create a folder in the Kibana directory (e.g., `service_logs`) and a blank log file (e.g., `kibana_service.log`). Copy the log file path into the stdout and stderr sections:
+   - In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). Copy the full log file path into the stdout and stderr sections:
 
      ![Kibana service I/O tab](../resources/troubleshooting-images/kibanaservice-io-tab.png)
 
@@ -261,16 +261,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
      > **Note:** It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
-6. **Rename Kibana Service Using NSSM**
-   - If the service name is not what you want (e.g., `kibana`), you can rename it using NSSM.
-   - Run the following commands (replace `kibana-service` with your actual service name):
-
-     ```
-     nssm set kibana-service DisplayName "Kibana Service"
-     nssm set kibana-service Start "SERVICE_DEMAND_START"
-     ```
-
-7. **Verify Kibana Server**
+6. **Verify Kibana Server**
    - Open a browser and go to `https://{insert-hostname-here}` or `{insert-IP-address-here}:5601`.
    - Log in using the `elastic` credential to verify successful access.
 
@@ -290,12 +281,17 @@ If you download a .zip or other file from the internet, Windows may block the fi
    - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
    - Extract the files to `C:\elastic`.
 
-3. **Configure APM Server (config\\apm-server.yml)**
-Either Username / Password or API Key is required for configuring APM. If Username and Password is used, you can ignore using API key inside apm-server.yml file. For API Key usage, see below:
 
-- Create a new API key from Kibana. Navigate to Stack Management → API Keys → Create, and create one by providing an API Key name. Keep the other default settings as is.
+3. **Configure APM Server (`config\apm-server.yml`)**
 
-![alt text](../resources/troubleshooting-images/apm_apikey.png)
+
+- Navigate to the APM Server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`).
+
+- Either Username / Password or API Key is required for configuring APM. If Username and Password is used, you can ignore using API key inside `apm-server.yml`. For API Key usage, see below:
+
+  - Create a new API key from Kibana. Navigate to Stack Management → API Keys → Create, and create one by providing an API Key name. Keep the other default settings as is.
+
+    ![alt text](../resources/troubleshooting-images/apm_apikey.png)
 
 > **Important:** You will only see the API key at the time it is created. It will not be shown again. **Copy and save the API key immediately and store it securely.**
 
