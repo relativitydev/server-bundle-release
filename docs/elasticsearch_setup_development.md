@@ -102,10 +102,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 7. **Verify Elasticsearch Server**
 
-   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `yourelasticusername`, `yourpassword` and `{hostname_or_ip}` with your actual values):
+   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
 
      ```
-     curl -u yourelasticusername:yourpassword -k https://{hostname_or_ip}:9200
+     curl -u <username>:<password> -k https://<hostname_or_ip>:9200
      ```
 
    - The response should show basic cluster information in JSON format if the server is running and accessible.
@@ -208,7 +208,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 > **ℹ️ Information:**
 >
-> After Kibana has restarted, open a browser and go to `https://{insert-hostname-here}` or `https://{insert-IP-address-here}:5601`.
+> After Kibana has restarted, open a browser and go to `https://<hostname_or_ip>:5601`.
 > Log in using the `elastic` username and the password you generated earlier.
 > This verifies that Kibana is running and your credentials are working.
 
@@ -262,7 +262,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      > **Note:** It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
 6. **Verify Kibana Server**
-   - Open a browser and go to `https://{insert-hostname-here}` or `{insert-IP-address-here}:5601`.
+   - Open a browser and go to `https://<hostname_or_ip>:5601`.
    - Log in using the `elastic` credential to verify successful access.
 
      ![Kibana login screenshot](../resources/troubleshooting-images/kibanalogin.png)
@@ -326,14 +326,14 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
-- Update the host of apm-server to `{insert-hostname-here} or {insert-IP-address-here}/:8200`. Uncomment the line if it is commented.
+- Update the host of apm-server to `<hostname_or_ip>:8200`. Uncomment the line if it is commented.
 
   ![alt text](../resources/troubleshooting-images/apm-conf1.png)
 
 - In the "Elasticsearch output" section, perform the following changes:
   - Uncomment the output.elasticsearch
   - Update username to `elastic` and password to the updated password. Uncomment both lines if they are commented
-  - Update hosts: ["{insert-hostname-here} or {insert-IP-address-here}:9200"]
+  - Update hosts: ["<hostname_or_ip>:9200"]
   - Update protocol: https
   - This setting is needed because Elasticsearch is running under https
 
@@ -351,7 +351,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - Update the Instrumentation section as below:
   - Uncomment Instrumentation section to enable apm-server instrumentation.
   - Update enabled: true, environment: production
-  - hosts: - "http://{insert-hostname-here} or {insert-IP-address-here}:8200"
+  - hosts: - "http://<hostname_or_ip>:8200"
 
   ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
 
@@ -379,12 +379,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 6. **Verify APM Server**
 
-- Open an elevated Command Prompt and run the following command (replace `{hostname_or_ip}` with your actual value):
+- Open an elevated Command Prompt and run the following command (replace `<hostname_or_ip>` with your actual value):
 
 - The response should indicate `publish_ready` is `true`.
 
   ```
-  curl -k http://{hostname_or_ip}:8200
+  curl -k http://<hostname_or_ip>:8200
   ```
 
 ## Step 4: Post Installation and Verification
@@ -403,8 +403,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
      ![alt text](../resources/troubleshooting-images/add-apm-integration.png)
 
    - Add an Integration name and for server configuration (MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST). Update apm hostname and apm url.  
-     Ex: Host: {insert-hostname-here} or {insert-IP-address-here}:8200  
-     URL: http://{insert-hostname-here} or {insert-IP-address-here}:8200
+     Ex: Host: <hostname_or_ip>:8200  
+     URL: http://<hostname_or_ip>:8200
 
    - Click on Save and Continue.
 
@@ -418,7 +418,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
    
    a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
 
-    - Open a browser and go to https://{insert-hostname-here} or {insert-IP-address-here}:5601.
+    - Open a browser and go to https://<hostname_or_ip>:5601.
   
     - Log in using elastic or kibana_system credentials.
 
@@ -429,7 +429,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - Open an elevated Command Prompt and run the following command (replace `yourelasticusername`, `yourpassword`, and `{hostname_or_ip}` with your actual values):
 
   ```
-  curl -u yourelasticusername:yourpassword -k https://{hostname_or_ip}:9200/_cat/health
+  curl -u <username>:<password> -k https://<hostname_or_ip>:9200/_cat/health
   ```
 
 - You should see a response similar to:
