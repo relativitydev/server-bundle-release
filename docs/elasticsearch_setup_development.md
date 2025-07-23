@@ -331,11 +331,32 @@ If you download a .zip or other file from the internet, Windows may block the fi
   ![alt text](../resources/troubleshooting-images/apm-conf1.png)
 
 - In the "Elasticsearch output" section, perform the following changes:
-  - Uncomment the output.elasticsearch
-  - Update username to `elastic` and password to the updated password. Uncomment both lines if they are commented
-  - Update hosts: ["<hostname_or_ip>:9200"]
-  - Update protocol: https
-  - This setting is needed because Elasticsearch is running under https
+  - Uncomment the `output.elasticsearch` section in your `apm-server.yml` file if it is commented.
+  - Generate an API key by sending a POST request to Elasticsearch using Kibana Dev Tools:
+
+    ```json
+    POST /_security/api_key
+    {
+      "name": "<api-key-name>"
+    }
+    ```
+
+    The response will include the `id` and `api_key` values.
+    ![apikey-id-value](../resources/troubleshooting-images/apikey-id-value.png)
+
+  - Update the Elasticsearch output section to use the API key. Uncomment the `api_key` line if it is commented:
+
+    ```yaml
+    output.elasticsearch:
+      hosts: ["<hostname_or_ip>:9200"]
+      protocol: https
+      api_key: "<id>:<api_key>"
+    ```
+
+    Replace `<id>` and `<api_key>` with the values returned from the API key creation response.
+  - Ensure `hosts` is set to `["<hostname_or_ip>:9200"]`.
+  - Ensure `protocol` is set to `https`.
+  - These settings are needed because Elasticsearch is running under https.
 
 - Either Username and Password or API Key is required for APM Services. The same is highlighted below:
 
