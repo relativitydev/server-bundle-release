@@ -52,8 +52,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    - Check the slow logs and garbage collection logs if present
    - Look for Java heap space issues or configuration errors
    
-   > [!TIP]
-   > For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
+> [!TIP]
+> For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
 
 4. **Verify Java Installation:**
    ```powershell
