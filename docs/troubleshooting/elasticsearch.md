@@ -199,8 +199,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    -Xms4g
    -Xmx4g
    ```
-   > [!IMPORTANT]
-   > Rule of thumb: Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
+> [!IMPORTANT]
+> Rule of thumb: Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
 
 - **Monitor Memory Usage:**
    ```bash
