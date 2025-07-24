@@ -38,27 +38,27 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Check Service Status:**
+- **Check Service Status:**
    ```powershell
    Get-Service -Name kibana
    ```
 
-2. **Verify Service Configuration:**
+- **Verify Service Configuration:**
    - Open Services.msc
    - Locate "Kibana" service
    - Verify the service is running under Local System account (default configuration)
 
-3. **Check Kibana Logs:**
+- **Check Kibana Logs:**
    - Navigate to `C:\elastic\kibana\logs\`
    - Review the latest log files (`kibana.log`) for error messages
    - Look for configuration errors or Elasticsearch connection issues
 
-4. **Verify Node.js Runtime:**
+- **Verify Node.js Runtime:**
    - Kibana includes its own Node.js runtime
    - No additional Node.js installation required
    - Check for conflicting Node.js installations if issues persist
 
-5. **Start Service Manually:**
+- **Start Service Manually:**
    ```powershell
    Start-Service kibana
    ```
@@ -84,7 +84,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 3. **Verify Elasticsearch Connectivity:**
    ```bash
-   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
 
 4. **Check Memory Usage:**
@@ -102,25 +102,25 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Check Default Port:**
+- **Check Default Port:**
    - Default Kibana port: 5601
    - Verify port availability:
    ```powershell
    netstat -an | findstr ":5601"
    ```
 
-2. **Test Kibana Connectivity:**
+- **Test Kibana Connectivity:**
    ```bash
-   curl -X GET "http://<hostname_or_ip>:5601/"
+   curl.exe -k -X GET "http://<hostname_or_ip>:5601/"
    ```
 
-3. **Configure Alternative Port (if needed):**
+- **Configure Alternative Port (if needed):**
    - Edit `C:\elastic\kibana\config\kibana.yml`:
    ```yaml
    server.port: 5602
    ```
 
-4. **Update Firewall Rules:**
+- **Update Firewall Rules:**
    ```powershell
    New-NetFirewallRule -DisplayName "Kibana Web Interface" -Direction Inbound -Protocol TCP -LocalPort 5601 -Action Allow
    ```
@@ -134,7 +134,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Verify Network Configuration:**
+- **Verify Network Configuration:**
    - Check `C:\elastic\kibana\config\kibana.yml` configuration:
    ```yaml
    server.host: "0.0.0.0"  # For all interfaces
@@ -142,17 +142,17 @@ This document provides troubleshooting guidance for common Kibana issues encount
    server.host: "<hostname_or_ip>"
    ```
 
-2. **Test Local Access:**
+- **Test Local Access:**
    ```bash
-   curl -X GET "http://localhost:5601/"
+   curl.exe -k -X GET "http://localhost:5601/"
    ```
 
-3. **Test Remote Access:**
+- **Test Remote Access:**
    ```bash
-   curl -X GET "http://<hostname_or_ip>:5601/"
+   curl.exe -k -X GET "http://<hostname_or_ip>:5601/"
    ```
 
-4. **Check Load Balancer Configuration:**
+- **Check Load Balancer Configuration:**
    - If using a load balancer, verify proper configuration
    - Ensure health checks are properly configured
 
@@ -226,7 +226,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Verify API Key Configuration:**
+- **Verify API Key Configuration:**
    - Check `kibana.yml`:
    ```yaml
    elasticsearch.apiVersion: "8.x"
@@ -234,35 +234,41 @@ This document provides troubleshooting guidance for common Kibana issues encount
    elasticsearch.apiKey: "your-api-key-here"
    ```
 
-2. **Test API Key Validity:**
+- **Test API Key Validity:**
    ```bash
-   curl -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
         -H "Authorization: ApiKey your-api-key"
    ```
 
-3. **Create New API Key for Kibana:**
-   ```bash
-   curl -X POST "https://<hostname_or_ip>:9200/_security/api_key" \
-        -H "Content-Type: application/json" \
-        -u <username>:<password> \
-        -d '{
-          "name": "kibana-api-key",
-          "role_descriptors": {
-            "kibana_admin": {
-              "cluster": ["all"],
-              "index": [
-                {
-                  "names": ["*"],
-                  "privileges": ["all"]
-                }
-              ]
-            }
-          },
-          "expiration": "365d"
-        }'
+- **Create New API Key for Kibana:**
+   ```powershell
+   # Create the JSON file
+   @'
+   {
+     "name": "kibana-api-key",
+     "expiration": "365d",
+     "role_descriptors": {
+       "kibana_admin": {
+         "cluster": ["all"],
+         "index": [
+           {
+             "names": ["*"],
+             "privileges": ["all"]
+           }
+         ]
+       }
+     }
+   }
+   '@ | Out-File -FilePath "kibana-api-key.json" -Encoding utf8
+   
+   # Use curl with the file
+   curl.exe -k -X POST "https://<hostname_or_ip>:9200/_security/api_key" -H "Content-Type: application/json" -u <username>:<password> -d @kibana-api-key.json
+   
+   # Clean up (optional)
+   Remove-Item "kibana-api-key.json"
    ```
 
-4. **Update Kibana Configuration:**
+- **Update Kibana Configuration:**
    - Replace expired API key in `kibana.yml`
    - Restart Kibana service
 
@@ -285,12 +291,12 @@ This document provides troubleshooting guidance for common Kibana issues encount
 2. **Reset Kibana System User Password:**
    ```powershell
    # From Elasticsearch bin directory
-   .\elasticsearch-reset-password.bat -u kibana_system
+   C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u kibana_system
    ```
 
 3. **Test User Authentication:**
    ```bash
-   curl -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" \
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" \
         -u <username>:<password>
    ```
 
@@ -351,16 +357,16 @@ This document provides troubleshooting guidance for common Kibana issues encount
 2. **Configure Required Encryption Keys in kibana.yml:**
    ```yaml
    # Saved Objects encryption key (required)
-   xpack.encryptedSavedObjects.encryptionKey: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-1>"
    
    # Reporting encryption key (if using reporting)
-   xpack.reporting.encryptionKey: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+   xpack.reporting.encryptionKey: "<randomly-generated-key-2>"
    
    # Security session encryption key (if using security)
-   xpack.security.encryptionKey: "cccccccccccccccccccccccccccccccccc"
+   xpack.security.encryptionKey: "<randomly-generated-key-3>"
    
    # Alerting encryption key (if using alerting)
-   xpack.encryptedSavedObjects.encryptionKey: "dddddddddddddddddddddddddddddddddd"
+   xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-4>"
    ```
 
 3. **Key Requirements:**
@@ -385,12 +391,14 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Check Kibana Status:**
+- **Check Kibana Status:**
    ```bash
-   curl -X GET "http://<hostname_or_ip>:5601/api/status"
+   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/status"
    ```
    
-   Expected response for healthy Kibana:
+   <details>
+   <summary>Expected response for healthy Kibana</summary>
+
    ```json
    {
      "name": "kibana",
@@ -404,20 +412,21 @@ This document provides troubleshooting guidance for common Kibana issues encount
      }
    }
    ```
+   </details>
 
-2. **Verify Elasticsearch Connection:**
+- **Verify Elasticsearch Connection:**
    ```bash
-   curl -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="elasticsearch")'
+   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="elasticsearch")'
    ```
 
-3. **Check Plugin Status:**
+- **Check Plugin Status:**
    ```bash
-   curl -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="plugin:*")'
+   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="plugin:*")'
    ```
 
-4. **Monitor Performance Metrics:**
+- **Monitor Performance Metrics:**
    ```bash
-   curl -X GET "http://<hostname_or_ip>:5601/api/stats"
+   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/stats"
    ```
 
 ### Dashboard and Visualization Verification
@@ -429,24 +438,24 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Verify Index Patterns:**
+- **Verify Index Patterns:**
    ```bash
-   curl -X GET "http://<hostname_or_ip>:5601/api/saved_objects/_find?type=index-pattern"
+   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/saved_objects/_find?type=index-pattern"
    ```
 
-2. **Check Data View Configuration:**
+- **Check Data View Configuration:**
    - Navigate to Stack Management > Data Views
    - Verify index patterns match Elasticsearch indices
    - Refresh field mappings if necessary
 
-3. **Test Search Functionality:**
+- **Test Search Functionality:**
    ```bash
-   curl -X POST "http://<hostname_or_ip>:5601/api/console/proxy?path=_search&method=GET" \
+   curl.exe -k -X POST "http://<hostname_or_ip>:5601/api/console/proxy?path=_search&method=GET" \
         -H "Content-Type: application/json" \
         -d '{"query": {"match_all": {}}}'
    ```
 
-4. **Validate Time Range Settings:**
+- **Validate Time Range Settings:**
    - Check time picker configuration
    - Verify data exists within selected time range
    - Ensure timezone settings are correct

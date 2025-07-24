@@ -35,36 +35,55 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Troubleshooting Steps:**
 
-1. **Check Service Status:**
+- **Check APM Server Status:**
+   ```bash
+   curl.exe -k -X GET "http://<hostname_or_ip>:8200/"
+   ```
+
+   <details>
+   <summary>Expected response for healthy APM Server</summary>
+
+   ```json
+   {
+      "build_date": "2025-02-27T18:17:35Z",
+      "build_sha": "f6b917b725e1a22af433e5b52c5c6f0ff9164adf",
+      "publish_ready": true,
+      "version": "8.17.3"
+   }
+   ```
+   </details>
+
+- **Check Service Status:**
    ```powershell
    Get-Service -Name apm-server
    ```
 
-2. **Verify Service Configuration:**
-   - Verify the service is running under Local System account (default configuration)
+- **Verify Service Configuration:**
    ```powershell
    (Get-CimInstance Win32_Service -Filter "Name = 'apm-server'").StartName
    ```
 
-3. **Check APM Server Logs:**
+- **Check APM Server Logs:**
    - Navigate to `C:\Program Files\apm-server\logs\`
    - Review the latest log files (`apm-server.log`) for error messages
    - Look for configuration errors or connection issues with Elasticsearch
-   - For Elasticsearch connection issues, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
 
-4. **Verify Configuration File:**
+> [!NOTE]
+> For Elasticsearch connection issues, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
+
+- **Verify Configuration File:**
    ```powershell
    # Stop Windows service first, then test configuration syntax
    Stop-Service apm-server
    C:\elastic\apm-server\apm-server.exe test config -c "C:\elastic\apm-server\apm-server.yml"
    ```
 
-5. **Start Service Manually:**
+- **Start Service Manually:**
    ```powershell
    Start-Service apm-server
    ```
 
-6. **Run APM Server in Foreground for Debugging:**
+- **Run APM Server in Foreground for Debugging:**
    ```powershell
    # Ensure Windows service is stopped first
    Stop-Service apm-server
@@ -93,7 +112,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
      - **Hostname**: Verify correct Elasticsearch server hostname
      - **Port**: Confirm correct Elasticsearch port (usually 9200)
 
-> [!TIP]
+> [!INFO]
 > API keys are the preferred authentication method and expire by default in 6 months. Consider switching from username/password to API key authentication.
 
    ```yaml
@@ -111,10 +130,12 @@ This document provides troubleshooting guidance for common APM Server issues enc
 > For detailed Elasticsearch connection troubleshooting, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
 
    ```bash
-   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
 
-   Expected response for healthy Elasticsearch:
+   <details>
+   <summary>Expected response for healthy Elasticsearch</summary>
+
    ```json
    {
     "name" : "EMTTEST",
@@ -134,6 +155,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    "tagline" : "You Know, for Search"
    }
    ```
+   </details>
 
 4. **Check Resource Usage:**
    - The APM Server generates minimal data compared to Elasticsearch/Kibana
@@ -218,10 +240,12 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 2. **Test APM Server Connectivity:**
    ```bash
-   curl -k -X GET "https://<hostname_or_ip>:8200/"
+   curl.exe -k -X GET "https://<hostname_or_ip>:8200/"
    ```
 
-   Expected response for healthy APM Server:
+   <details>
+   <summary>Expected response for healthy APM Server</summary>
+
    ```json
    {
      "build_date": "2025-02-27T18:17:35Z",
@@ -230,6 +254,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
      "version": "8.17.3"
    }
    ```
+   </details>
 
 3. **Test Remote Connectivity:**
    ```powershell
@@ -258,34 +283,62 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 2. **Test Elasticsearch Connectivity:**
    ```bash
-   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
 
-   Expected response for healthy Elasticsearch:
+   <details>
+   <summary>Expected response for healthy Elasticsearch</summary>
+
    ```json
    {
-     "name": "elasticsearch-node",
-     "cluster_name": "elasticsearch",
-     "version": {"number": "8.x.x"},
-     "tagline": "You Know, for Search"
+      "name" : "EMTTEST",
+      "cluster_name" : "elasticsearch",
+      "cluster_uuid" : "PwBZoINKQjGZ53WH4gFfBg",
+      "version" : {
+            "number" : "8.17.3",
+         "build_flavor" : "default",
+         "build_type" : "zip",
+         "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
+         "build_date" : "2025-02-28T10:07:26.089129809Z",
+         "build_snapshot" : false,
+         "lucene_version" : "9.12.0",
+         "minimum_wire_compatibility_version" : "7.17.0",
+         "minimum_index_compatibility_version" : "7.0.0"
+      },
+      "tagline" : "You Know, for Search"
    }
    ```
+   </details>
 
 3. **Check Elasticsearch Cluster Health:**
    ```bash
-   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health?pretty"
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health?pretty"
    ```
 
-   Expected response for healthy cluster:
+   <details>
+   <summary>Expected response for healthy cluster</summary>
+
    ```json
    {
-     "cluster_name": "elasticsearch",
-     "status": "green",
-     "timed_out": false,
-     "number_of_nodes": 1,
-     "number_of_data_nodes": 1
+      "cluster_name" : "elasticsearch",
+      "status" : "green",
+      "timed_out" : false,
+      "number_of_nodes" : 1,
+      "number_of_data_nodes" : 1,
+      "active_primary_shards" : 129,
+      "active_shards" : 129,
+      "relocating_shards" : 0,
+      "initializing_shards" : 0,
+      "unassigned_shards" : 83,
+      "unassigned_primary_shards" : 0,
+      "delayed_unassigned_shards" : 0,
+      "number_of_pending_tasks" : 0,
+      "number_of_in_flight_fetch" : 0,
+      "task_max_waiting_in_queue_millis" : 0,
+      "active_shards_percent_as_number" : 60.84905660377359
    }
    ```
+   </details>
 
 4. **Verify APM Server Output Configuration:**
    ```yaml
@@ -322,13 +375,13 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 2. **Test API Key Validity:**
    ```bash
-   curl -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
         -H "Authorization: ApiKey your-api-key"
    ```
 
 3. **Check API Key Expiration:**
    ```bash
-   curl -X GET "https://<hostname_or_ip>:9200/_security/api_key?owner=true" \
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key?owner=true" \
         -H "Authorization: ApiKey your-api-key"
    ```
 
@@ -353,26 +406,43 @@ This document provides troubleshooting guidance for common APM Server issues enc
    }
    ```
 
-5. **Create New API Key if Needed:**
-   ```bash
-   curl -X POST "https://<hostname_or_ip>:9200/_security/api_key" \
-        -H "Content-Type: application/json" \
-        -u <username>:<password> \
-        -d '{
-          "name": "apm-server-api-key",
-          "expiration": "365d",
-          "role_descriptors": {
-            "apm_writer": {
-              "cluster": ["monitor", "manage_ilm"],
-              "index": [
-                {
-                  "names": ["apm-*", "logs-apm*", "metrics-apm*", "traces-apm*"],
-                  "privileges": ["create_doc", "create_index", "auto_configure"]
-                }
-              ]
-            }
-          }
-        }'
+5. **Replace Expired API Key:**
+   ```powershell
+   # Create the JSON file
+   @'
+   {
+     "name": "apm-server-api-key",
+     "expiration": "365d",
+     "role_descriptors": {
+       "apm_writer": {
+         "cluster": ["monitor", "manage_ilm"],
+         "index": [
+           {
+             "names": ["apm-*", "logs-apm*", "metrics-apm*", "traces-apm*"],
+             "privileges": ["create_doc", "create_index", "auto_configure"]
+           }
+         ]
+       }
+     }
+   }
+   '@ | Out-File -FilePath "apm-api-key.json" -Encoding utf8
+   
+   # Use curl with the file
+   curl.exe -k -X POST "https://<hostname_or_ip>:9200/_security/api_key" -H "Content-Type: application/json" -u <username>:<password> -d @apm-api-key.json
+   
+   # Clean up (optional)
+   Remove-Item "apm-api-key.json"
+   ```
+
+6. **Update APM Server Configuration:**
+   ```yaml
+   output.elasticsearch:
+    api_key: "your-new-api-key-here"
+   ```
+
+   Then restart APM Server service:
+   ```powershell
+   Restart-Service apm-server
    ```
 
 ### Network and Connectivity
@@ -403,7 +473,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 4. **Validate TLS/SSL Configuration:**
    ```bash
    # Test SSL connection to Elasticsearch
-   curl -u <username>:<password> -k -X GET "https://<hostname_or_ip>:9200/"
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
 
 > [!NOTE]
@@ -421,7 +491,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 6. **Test from APM Server Host:**
    ```bash
    # Run from the same machine as APM Server
-   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health"
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health"
    ```
 
 ## Authentication Issues
@@ -448,11 +518,13 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 2. **Test API Key Validity:**
    ```bash
-   curl -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
         -H "Authorization: ApiKey your-api-key"
    ```
 
-   Expected response for valid API key:
+   <details>
+   <summary>Expected response for valid API key</summary>
+
    ```json
    {
       "api_keys": [
@@ -472,29 +544,36 @@ This document provides troubleshooting guidance for common APM Server issues enc
       ]
    }
    ```
+   </details>
 
 3. **Replace Expired API Key:**
    For detailed steps on creating API keys, see [Authentication Problems](#authentication-problems) section.
 
-   ```bash
-   curl -X POST "https://<hostname_or_ip>:9200/_security/api_key" \
-        -H "Content-Type: application/json" \
-        -u <username>:<password> \
-        -d '{
-          "name": "apm-server-api-key",
-          "role_descriptors": {
-            "apm_writer": {
-              "cluster": ["monitor", "manage_ilm"],
-              "index": [
-                {
-                  "names": ["apm-*", "logs-apm*", "metrics-apm*", "traces-apm*"],
-                  "privileges": ["create_doc", "create_index", "auto_configure"]
-                }
-              ]
-            }
-          },
-          "expiration": "365d"
-        }'
+   ```powershell
+   # Create the JSON file
+   @'
+   {
+     "name": "apm-server-api-key",
+     "expiration": "365d",
+     "role_descriptors": {
+       "apm_writer": {
+         "cluster": ["monitor", "manage_ilm"],
+         "index": [
+           {
+             "names": ["apm-*", "logs-apm*", "metrics-apm*", "traces-apm*"],
+             "privileges": ["create_doc", "create_index", "auto_configure"]
+           }
+         ]
+       }
+     }
+   }
+   '@ | Out-File -FilePath "apm-api-key.json" -Encoding utf8
+   
+   # Use curl with the file
+   curl.exe -k -X POST "https://<hostname_or_ip>:9200/_security/api_key" -H "Content-Type: application/json" -u <username>:<password> -d @apm-api-key.json
+   
+   # Clean up (optional)
+   Remove-Item "apm-api-key.json"
    ```
 
 4. **Update APM Server Configuration:**
@@ -523,27 +602,14 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Troubleshooting Steps:**
 
-1. **Check APM Server Status:**
+- **Verify Server Configuration:**
    ```bash
-   curl -k -X GET "http://<hostname_or_ip>:8200/"
+   curl.exe -k -X GET "http://<hostname_or_ip>:8200/config"
    ```
 
-   Expected response for healthy APM Server:
-   ```json
-   {
-      "build_date": "2025-02-27T18:17:35Z",
-      "build_sha": "f6b917b725e1a22af433e5b52c5c6f0ff9164adf",
-      "publish_ready": true,
-      "version": "8.17.3"
-   }
-   ```
+   <details>
+   <summary>Expected response includes server configuration details</summary>
 
-2. **Verify Server Configuration:**
-   ```bash
-   curl -X GET "http://<hostname_or_ip>:8200/config"
-   ```
-
-   Expected response includes server configuration details:
    ```json
    {
      "apm-server": {
@@ -552,15 +618,18 @@ This document provides troubleshooting guidance for common APM Server issues enc
      }
    }
    ```
+   </details>
 
-3. **Check Elasticsearch Connection:**
+- **Check Elasticsearch Connection:**
    ```powershell
    # Stop Windows service first, then test output connectivity
    Stop-Service apm-server
    C:\elastic\apm-server\apm-server.exe test output -c "C:\elastic\apm-server\apm-server.yml"
    ```
 
-   Expected output for successful connection:
+   <details>
+   <summary>Expected output for successful connection</summary>
+
    ```
    elasticsearch: https://<hostname_or_ip>:9200...
      parse url... OK
@@ -572,6 +641,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
      TLS... WARN secure connection disabled
      talk to server... OK
    ```
+   </details>
 
 > [!NOTE]
 > If this test fails, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues) for detailed troubleshooting steps.
@@ -633,9 +703,6 @@ Get-Content "C:\Program Files\apm-server\logs\apm-server*.log" -Wait -Tail 10
 ### Network Diagnostics
 
 ```powershell
-# Test APM Server endpoint
-curl -X GET "http://<hostname_or_ip>:8200/"
-
 # Test network connectivity
 Test-NetConnection -ComputerName <hostname_or_ip> -Port 8200
 ```
