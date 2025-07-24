@@ -251,7 +251,7 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
 > Log in using the `elastic` username and the password you generated earlier.
 > This verifies that Kibana is running and your credentials are working.
 
-     ![Kibana restart verification 2](../resources/troubleshooting-images/kibanarerun02.png)
+   ![Kibana restart verification 2](../resources/troubleshooting-images/kibanarerun02.png)
 
    - For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
