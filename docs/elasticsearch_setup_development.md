@@ -35,7 +35,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
   > - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
   > - An enrollment token is generated for Kibana, which is valid for 30 minutes.
 
-- Save the token for future reference. Terminate the process once the token is generated.
+- Save the token for future reference. Terminate the process once the token is generated. The enrollment token will look similar to:
+
+  ```
+  Enrollment token for Kibana:
+  eyJ2ZXIiOiI4LjE3LjMiLCJ...<rest_of_token>
+  ```
 
   ```
   # Terminate the process after saving the token (Ctrl+C in the terminal)
