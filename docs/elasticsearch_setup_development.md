@@ -2,6 +2,7 @@
 
 ## How to Unblock Downloaded Files
 
+:::info
 If you download a .zip or other file from the internet, Windows may block the file and prevent it from running correctly. To unblock a file:
 
 - Right-click the downloaded file and select **Properties**.
@@ -9,6 +10,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - Click **Apply** and then **OK**.
 
 ![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
+:::
 
 ## Step 1: Download and Install Elasticsearch 8.17.3 on One Server
 
@@ -30,10 +32,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
   .\bin\elasticsearch.bat
   ```
 
-  > **Note:** When starting Elasticsearch for the first time, security features are enabled and configured by default:
-  > - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser.
-  > - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
-  > - An enrollment token is generated for Kibana, which is valid for 30 minutes.
+  :::info
+  When starting Elasticsearch for the first time, security features are enabled and configured by default:
+  - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser.
+  - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
+  - An enrollment token is generated for Kibana, which is valid for 30 minutes.
+  :::
 
 - Save the token for future reference. Terminate the process once the token is generated. The enrollment token will look similar to:
 
@@ -82,17 +86,19 @@ If you download a .zip or other file from the internet, Windows may block the fi
    .\bin\elasticsearch-reset-password -u elastic
    ```
 
+  ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
+
    - When you run this command, a new password will be generated and displayed in the console output.
-   - **Important:** The password is shown only once and cannot be retrieved later.
-   - Immediately record and securely store the password according to your organization’s credential management and security policies.
-   - You will need this password for future authentication to Elasticsearch and Kibana.
+   :::warning
+   The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
+   :::
 
 6. **Install the 'mapper-size' plugin**
 
   ```
   .\elasticsearch-plugin install mapper-size
   ```
-- To check if the 'mapper-size' plugin is installed, run:
+- To verify the 'mapper-size' plugin is installed, run:
 
   ```
   ./elasticsearch-plugin list
@@ -115,11 +121,38 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
    - The response should show basic cluster information in JSON format if the server is running and accessible.
 
+   <details>
+   <summary>Sample JSON response</summary>
+
+   ```
+   {
+     "name" : "emttest",
+     "cluster_name" : "elasticsearch",
+     "cluster_uuid" : "q5VtYDCQT2iNHU9dOdqomw",
+     "version" : {
+       "number" : "8.17.3",
+       "build_flavor" : "default",
+       "build_type" : "zip",
+       "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
+       "build_date" : "2025-02-28T10:07:26.089129809Z",
+       "build_snapshot" : false,
+       "lucene_version" : "9.12.0",
+       "minimum_wire_compatibility_version" : "7.17.0",
+       "minimum_index_compatibility_version" : "7.0.0"
+     },
+     "tagline" : "You Know, for Search"
+   }
+   ```
+   </details>
+
 ## Step 2: Install and Configure Kibana
 
-⚠️WARNING : **When the Kibana distribution is extracted, it can exceed the maximum Windows path. To prevent this from occurring, Relativity recommends enabling the long path feature** - <br/>
-- Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. 
-- Double click on enable the Long path. 
+:::warning
+When the Kibana distribution is extracted, it can exceed the maximum Windows path. To prevent this from occurring, Relativity recommends enabling the long path feature.
+
+- Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem.
+- Double click on enable the Long path.
+:::
 
 1. **Download Kibana 8.17.3**
     
@@ -139,18 +172,20 @@ If you download a .zip or other file from the internet, Windows may block the fi
    - If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
 
      ```
-     [INFO][server][http] http server running at https://localhost:5601
+     [INFO][server][http] http server running at http://localhost:5601
+     ...
+     kibana has not been configured
+     Go to https://localhost:5601/?code=xyz to get started
      ```
-
-   - You can also refer to the screenshot below for a sample successful startup:
-
-     ![Kibana batch response screenshot](../resources/troubleshooting-images/kibanabatchresponse.png)
 
 3. **Enroll Kibana**
     
    - In your terminal, click the generated link to open Kibana in your browser.
    - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
-   - If the token has expired, generate a new one by running the following command in the Elastic bin folder:
+  - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
+  
+    [See where the enrollment token is generated.](#install-and-configure-elasticsearch-8173)
+   - If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`):
 
      ```
      .\elasticsearch-create-enrollment-token --scope kibana
@@ -163,10 +198,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 4. **Generate Kibana encryption keys**
 
-    ⚠️WARNING: Skipping below steps will cause the Relativity Server CLI to fail
-   
-   ⚠️WARNING: Skipping the steps below will cause the Relativity Server CLI to fail.
-
+    :::warning
+    Skipping the steps below will cause the Relativity Server CLI to fail.
+    :::
 
 - Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
 - Open an elevated PowerShell and run the following command:
@@ -225,6 +259,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
     
    - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
+:::info
+Kibana does not install as a Windows service by default. We recommend using NSSM—a commonly used open-source tool—to run Kibana as a Windows service.
+:::
 
    - Navigate to the folder containing `nssm.exe` (e.g., `C:\nssm-2.24\win64`).
    - Open an elevated PowerShell and run the following command:
@@ -298,7 +335,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     ![alt text](../resources/troubleshooting-images/apm_apikey.png)
 
-> **Important:** You will only see the API key at the time it is created. It will not be shown again. **Copy and save the API key immediately and store it securely.**
+:::warning
+You will only see the API key at the time it is created. It will not be shown again. Copy and save the API key immediately and store it securely.
+:::
 
 - Once the API key is generated, keep a note of the key.
 
@@ -408,7 +447,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 1. **Add Elastic APM Integration Package**
 
-   ⚠️**WARNING**: Skipping the steps below will cause the Relativity Server CLI to fail
+   :::warning
+   Skipping the steps below will cause the Relativity Server CLI to fail.
+   :::
 
    - Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
      
