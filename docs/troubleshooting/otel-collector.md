@@ -33,44 +33,26 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 ### OpenTelemetry Collector Service Not Starting
 
 **Symptoms:**
-- OpenTelemetry Collector service fails to start
+- Relativity Environment Watch service fails to start
 - Service stops immediately after starting
-- Error messages in OpenTelemetry Collector logs
+- Error messages in Relativity Environment Watch logs
 
 **Troubleshooting Steps:**
 
 1. **Check Service Status:**
    ```powershell
-   Get-Service -Name otelcol
+   Get-Service -Name Relativity Environment Watch
    ```
 
-2. **Verify Service Configuration:**
-   - Open Services.msc
-   - Locate "OpenTelemetry Collector" service
-   - Verify the service is running under Local System account (default configuration)
-
-3. **Check Configuration File:**
+2. **Start Service Manually:**
    ```powershell
-   # Validate YAML configuration (navigate to installation directory first)
-   cd "C:\otel\otelcol"
-   .\otelcol.exe --config-validate --config=config.yaml
-   ```
-
-4. **Run in Foreground for Debugging:**
-   ```powershell
-   # Navigate to OpenTelemetry Collector directory
-   .\otelcol.exe --config=config.yaml
-   ```
-
-5. **Start Service Manually:**
-   ```powershell
-   Start-Service otelcol
+   Start-Service Relativity Environment Watch
    ```
 
 ### Service Crashes or Stops Unexpectedly
 
 **Symptoms:**
-- OpenTelemetry Collector service starts but stops after a short period
+- Relativity Environment Watch service starts but stops after a short period
 - Service status shows "Stopped" unexpectedly
 - Data collection stops working
 
@@ -79,16 +61,16 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 1. **Check Windows Event Logs:**
    - Open Event Viewer
    - Navigate to Windows Logs > Application
-   - Look for OpenTelemetry Collector-related error events
+   - Look for Relativity Environment Watch-related error events
 
 2. **Review Configuration File:**
-   - Check `config.yaml` file for syntax errors
+   - Navigate to `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent` and Check `otelcol-config-auto-generated.yaml` file for syntax errors ()
    - Verify all required sections (receivers, processors, exporters, service)
    - Ensure proper indentation and YAML format
 
 3. **Validate Configuration:**
    ```powershell
-   .\otelcol.exe --config-validate --config=config.yaml
+   .\otelcol-relativity.exe --config-validate --config=config.yaml
    ```
 
 4. **Check Resource Usage:**
@@ -113,7 +95,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 2. **Grant Required Permissions:**
    ```powershell
    # Grant permissions to OpenTelemetry Collector directory
-   icacls "C:\otelcol" /grant "NT SERVICE\otelcol:(OI)(CI)F" /T
+   icacls "C:\otelcol" /grant "NT SERVICE\otelcol-relativity:(OI)(CI)F" /T
    ```
 
 3. **Check User Rights Assignment:**
@@ -151,7 +133,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
    ```
 
 3. **Configure Alternative Ports:**
-   - Edit `config.yaml`:
+   - Edit `otelcol-config-auto-generated.yaml`:
    ```yaml
    receivers:
      otlp:
@@ -228,7 +210,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 
 2. **Search for Specific Error Patterns:**
    ```powershell
-   Get-WinEvent -FilterHashtable @{LogName='Application'; Level=2} | Where-Object {$_.Message -like "*otelcol*"}
+   Get-WinEvent -FilterHashtable @{LogName='Application'; Level=2} | Where-Object {$_.Message -like "*otelcol-relativity*"}
    ```
 
 3. **Monitor Real-time Events:**
@@ -252,17 +234,17 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 
 1. **Run with Verbose Logging:**
    ```powershell
-   .\otelcol.exe --config=config.yaml --log-level=debug
+   .\otelcol-relativity.exe --config=config.yaml --log-level=debug
    ```
 
 2. **Capture Output to File:**
    ```powershell
-   .\otelcol.exe --config=config.yaml 2>&1 | Tee-Object -FilePath "otelcol-output.log"
+   .\otelcol-relativity.exe --config=config.yaml 2>&1 | Tee-Object -FilePath "otelcol-output.log"
    ```
 
 3. **Monitor Specific Log Levels:**
    ```powershell
-   .\otelcol.exe --config=config.yaml --log-level=warn
+   .\otelcol-relativity.exe --config=config.yaml --log-level=warn
    ```
 
 4. **Enable Structured Logging:**
@@ -286,12 +268,12 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 
 1. **Validate Configuration Syntax:**
    ```powershell
-   .\otelcol.exe --config-validate --config=config.yaml
+   .\otelcol-relativity.exe --config-validate --config=config.yaml
    ```
 
 2. **Test Configuration with Dry Run:**
    ```powershell
-   .\otelcol.exe --config=config.yaml --dry-run
+   .\otelcol-relativity.exe --config=config.yaml --dry-run
    ```
 
 3. **Check Individual Components:**
@@ -573,7 +555,7 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 4. **Configure Service with Service Account:**
    ```powershell
    # Set service to run as specific account
-   $service = Get-WmiObject -Class Win32_Service -Filter "Name='otelcol'"
+   $service = Get-WmiObject -Class Win32_Service -Filter "Name='otelcol-relativity'"
    $service.Change($null,$null,$null,$null,$null,$null,"domain\relativity-otelcol","password")
    ```
 
@@ -583,16 +565,16 @@ This document provides troubleshooting guidance for common OpenTelemetry Collect
 
 ```powershell
 # Check service status
-Get-Service otelcol | Select-Object Status, StartType, Name
+Get-Service otelcol-relativity | Select-Object Status, StartType, Name
 
 # Check process information
-Get-Process -Name otelcol | Select-Object Id, ProcessName, CPU, WorkingSet
+Get-Process -Name otelcol-relativity | Select-Object Id, ProcessName, CPU, WorkingSet
 
 # Check listening ports
 Get-NetTCPConnection | Where-Object {$_.LocalPort -in @(4317,4318,13133)} | Select-Object LocalAddress, LocalPort, State
 
 # Validate configuration
-.\otelcol.exe --config-validate --config=config.yaml
+.\otelcol-relativity.exe --config-validate --config=config.yaml
 
 # Test health endpoint
 Invoke-WebRequest -Uri "http://localhost:13133/" -Method GET
@@ -602,13 +584,13 @@ Invoke-WebRequest -Uri "http://localhost:13133/" -Method GET
 
 ```powershell
 # Test minimal configuration
-.\otelcol.exe --config=minimal-config.yaml --dry-run
+.\otelcol-relativity.exe --config=minimal-config.yaml --dry-run
 
 # Validate YAML syntax
 Get-Content config.yaml | ConvertFrom-Yaml
 
 # Check component availability
-.\otelcol.exe --help | Select-String "receivers|processors|exporters"
+.\otelcol-relativity.exe --help | Select-String "receivers|processors|exporters"
 ```
 
 ### Network Diagnostics
@@ -628,4 +610,5 @@ foreach ($endpoint in $endpoints) {
     Test-NetConnection -ComputerName $endpoint.Host -Port $endpoint.Port
 }
 ```
+````
 
