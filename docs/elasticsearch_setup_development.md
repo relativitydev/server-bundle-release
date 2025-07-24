@@ -2,7 +2,7 @@
 
 ## How to Unblock Downloaded Files
 
-:::info
+> [!NOTE]
 If you download a .zip or other file from the internet, Windows may block the file and prevent it from running correctly. To unblock a file:
 
 - Right-click the downloaded file and select **Properties**.
@@ -10,7 +10,6 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - Click **Apply** and then **OK**.
 
 ![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
-:::
 
 ## Step 1: Download and Install Elasticsearch 8.17.3 on One Server
 
@@ -33,12 +32,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
   ```
 
   <a id="enrollment-token-generation"></a>
-  :::info
+> [!IMPORTANT]
   When starting Elasticsearch for the first time, security features are enabled and configured by default:
   - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser.
   - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
   - An enrollment token is generated for Kibana, which is valid for 30 minutes.
-  :::
 
 - Save the token for future reference. Terminate the process once the token is generated. The enrollment token will look similar to:
 
@@ -90,9 +88,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
    - When you run this command, a new password will be generated and displayed in the console output.
-   :::warning
+> [!WARNING]
    The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
-   :::
 
 6. **Install the 'mapper-size' plugin**
 
@@ -148,12 +145,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ## Step 2: Install and Configure Kibana
 
-:::warning
+> [!CAUTION]
 When the Kibana distribution is extracted, it can exceed the maximum Windows path. To prevent this from occurring, Relativity recommends enabling the long path feature.
 
 - Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem.
 - Double click on enable the Long path.
-:::
 
 1. **Download Kibana 8.17.3**
     
@@ -203,9 +199,8 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
 
 4. **Generate Kibana encryption keys**
 
-    :::warning
+> [!IMPORTANT]
     Skipping the steps below will cause the Relativity Server CLI to fail.
-    :::
 
 - Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
 - Open an elevated PowerShell and run the following command:
@@ -264,9 +259,8 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
     
    - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
-:::info
+> [!Note]
 Kibana does not install as a Windows service by default. We recommend using NSSM—a commonly used open-source tool—to run Kibana as a Windows service.
-:::
 
    - Navigate to the folder containing `nssm.exe` (e.g., `C:\nssm-2.24\win64`).
    - Open an elevated PowerShell and run the following command:
@@ -281,7 +275,8 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 
      ![Kibana service application tab](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
 
-     **Note:** If you accidentally press Return, the service may be installed before your configuration is complete. To edit the service properties, use:
+> [!NOTE]
+If you accidentally press Return, the service may be installed before your configuration is complete. To edit the service properties, use:
      
       - Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
       - Open an elevated PowerShell and run the following command:
@@ -306,7 +301,8 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 
    - Verify that Kibana is running by opening it in your browser.
 
-     > **Note:** It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
+> [!NOTE]
+     It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
 6. **Verify Kibana Server**
    - Open a browser and go to `https://<hostname_or_ip>:5601`.
@@ -340,9 +336,8 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 
     ![alt text](../resources/troubleshooting-images/apm_apikey.png)
 
-:::warning
+> [!WARNING]
 You will only see the API key at the time it is created. It will not be shown again. Copy and save the API key immediately and store it securely.
-:::
 
 - Once the API key is generated, keep a note of the key.
 
@@ -452,9 +447,8 @@ You will only see the API key at the time it is created. It will not be shown ag
 
 1. **Add Elastic APM Integration Package**
 
-   :::warning
+> [!IMPORTANT]
    Skipping the steps below will cause the Relativity Server CLI to fail.
-   :::
 
    - Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
      
