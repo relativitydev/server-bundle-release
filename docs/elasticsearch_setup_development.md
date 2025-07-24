@@ -245,11 +245,10 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
 
      ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
 
-> **ℹ️ Information:**
->
-> After Kibana has restarted, open a browser and go to `https://<hostname_or_ip>:5601`.
-> Log in using the `elastic` username and the password you generated earlier.
-> This verifies that Kibana is running and your credentials are working.
+> [!NOTE]
+After Kibana has restarted, open a browser and go to `https://<hostname_or_ip>:5601`.
+Log in using the `elastic` username and the password you generated earlier.
+This verifies that Kibana is running and your credentials are working.
 
    ![Kibana restart verification 2](../resources/troubleshooting-images/kibanarerun02.png)
 
