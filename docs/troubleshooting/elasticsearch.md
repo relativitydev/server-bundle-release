@@ -124,12 +124,12 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 2. **Test Elasticsearch Connectivity:**
-   ```powershell
+   ```bash
    # Test Elasticsearch HTTP port
-   curl -X GET -u username:password "localhost:9200/"
+   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    
    # Alternative using PowerShell
-   Invoke-RestMethod -Uri "http://localhost:9200/" -Method GET
+   Invoke-RestMethod -Uri "https://<hostname_or_ip>:9200/" -Method GET
    ```
 
 3. **Identify Port Conflicts:**
@@ -169,13 +169,13 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 2. **Test Local Connectivity:**
-   ```powershell
-   curl -X GET "localhost:9200/"
+   ```bash
+   curl -u <username>:<password> -X GET "https://localhost:9200/"
    ```
 
 3. **Test Remote Connectivity:**
    ```powershell
-   Test-NetConnection -ComputerName your-es-server -Port 9200
+   Test-NetConnection -ComputerName <hostname_or_ip> -Port 9200
    ```
 
 ## Memory Issues
@@ -206,8 +206,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    > Rule of thumb: Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
 
 3. **Monitor Memory Usage:**
-   ```curl
-   curl -X GET "localhost:9200/_nodes/stats/jvm?pretty"
+   ```bash
+   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_nodes/stats/jvm?pretty"
    ```
 
 4. **Check for Memory Leaks:**
@@ -246,16 +246,16 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 **Troubleshooting Steps:**
 
 1. **Check API Key Status:**
-   ```curl
-   curl -X GET "localhost:9200/_security/api_key" \
+   ```bash
+   curl -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
         -H "Authorization: ApiKey <your-api-key>"
    ```
 
 2. **Create New API Key:**
-   ```curl
-   curl -X POST "localhost:9200/_security/api_key" \
+   ```bash
+   curl -X POST "https://<hostname_or_ip>:9200/_security/api_key" \
         -H "Content-Type: application/json" \
-        -u elastic:password \
+        -u <username>:<password> \
         -d '{
           "name": "relativity-api-key",
           "expiration": "365d"
@@ -276,9 +276,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 **Troubleshooting Steps:**
 
 1. **Verify User Exists:**
-   ```curl
-   curl -X GET "localhost:9200/_security/user/username" \
-        -u elastic:password
+   ```bash
+   curl -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" \
+        -u <username>:<password>
    ```
 
 2. **Reset Password:**
@@ -288,9 +288,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 3. **Check User Roles:**
-   ```curl
-   curl -X GET "localhost:9200/_security/user/username" \
-        -u elastic:password
+   ```bash
+   curl -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" \
+        -u <username>:<password>
    ```
 
 4. **Verify Security Configuration:**
@@ -334,8 +334,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 **Troubleshooting Steps:**
 
 1. **Check Cluster Health:**
-   ```curl
-   curl -X GET "localhost:9200/_cluster/health?pretty"
+   ```bash
+   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health?pretty"
    ```
    
    Expected response for healthy cluster:
@@ -350,18 +350,18 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 2. **Verify Node Status:**
-   ```curl
-   curl -X GET "localhost:9200/_cat/nodes?v"
+   ```bash
+   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/nodes?v"
    ```
 
 3. **Check Index Health:**
-   ```curl
-   curl -X GET "localhost:9200/_cat/indices?v"
+   ```bash
+   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/indices?v"
    ```
 
 4. **Monitor Performance:**
-   ```curl
-   curl -X GET "localhost:9200/_nodes/stats?pretty"
+   ```bash
+   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_nodes/stats?pretty"
    ```
 
 ### Service Dependencies Verification
@@ -384,7 +384,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 3. **Test API Connectivity:**
    ```powershell
    # Test from Relativity server
-   Invoke-RestMethod -Uri "https://your-es-server:9200/" -Method GET
+   Invoke-RestMethod -Uri "https://<hostname_or_ip>:9200/" -Method GET
    ```
 
 4. **Validate Configuration:**
