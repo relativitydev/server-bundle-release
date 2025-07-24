@@ -297,27 +297,6 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 - Once the API key is generated, keep a note of the key.
 
-- Open an elevated PowerShell and navigate to "Relativity Secret Store\Client" folder.  
-  E.g. `CD "C:\Program Files\Relativity Secret Store\Client"`
-
-- Execute the following script:
-
-  ```powershell
-  do {
-    $urlServer = Read-Host -Prompt "Please enter url for your Elasticsearch Server"
-  } until ($urlServer -ne '')
-
-  do {
-    $apiKey = Read-Host -Prompt "Please enter API key to access your Elasticsearch Server"
-  } until ($urlServer -ne '')
-  
-  # Replace 'ElasticSearchServer' with a real Server Host name
-  .\secretstore.exe secret write /database/elasticsearch/clusters/rel-cluster-datagrid primary-node-url=$urlServer kibana-server-url=$urlServer apm-server-url=$urlServer primary-node-tls-skip-certificate-validation=true apm-server-tls-skip-certificate-validation=true kibana-server-tls-skip-certificate-validation=true
-  
-  # Replace 'NewlyGeneratedApiKey' with a real newly created ApiKey value
-  .\secretstore.exe secret write database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid api-key=$apiKey min-version=7.17.0
-  ```
-
 - Set the `Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle` toggle:
 
   ```sql
@@ -327,8 +306,6 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
 - Update the host of apm-server to `<hostname_or_ip>:8200`. Uncomment the line if it is commented.
-
-  ![alt text](../resources/troubleshooting-images/apm-conf1.png)
 
 - In the "Elasticsearch output" section, perform the following changes:
   - Uncomment the `output.elasticsearch` section in your `apm-server.yml` file if it is commented.
@@ -360,21 +337,34 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 - Either Username and Password or API Key is required for APM Services. The same is highlighted below:
 
-  ![alt text](../resources/troubleshooting-images/apm-conf2.png)
-
 - Also within output.elasticsearch, modify SSL settings:
   - Update ssl.enabled: true
   - Update ssl.verification_mode: none
-
-  ![alt text](../resources/troubleshooting-images/apm-ssl1.png)
-  ![alt text](../resources/troubleshooting-images/apm-ssl2.png)
 
 - Update the Instrumentation section as below:
   - Uncomment Instrumentation section to enable apm-server instrumentation.
   - Update enabled: true, environment: production
   - hosts: - "http://<hostname_or_ip>:8200"
 
-  ![alt text](../resources/troubleshooting-images/apm-instrumentation.png)
+- Below is a sample configuration for `C:\apm-server-8.17.3-windows-x86_64\config\apm-server.yml` after setup. Update `<username>`, `<password>`, and `<hostname_or_ip>` as needed for your environment.
+
+    ```yaml
+    apm-server:
+      host: "<apm-server-hostname_or_ip>:8200"
+
+    output.elasticsearch:
+      hosts: ["<elasticsearch-hostname_or_ip>:9200"]
+      protocol: "https"
+      api_key: "<id>:<api-key>"
+      ssl.enabled: true
+      ssl.verification_mode: none
+
+    instrumentation:
+      enabled: false
+      environment: production
+      hosts:
+        - "http://<apm-server-hostname_or_ip>:8200"
+    ```
 
 - Once the instrumentation is set, you can verify it in Kibana as shown below:
 
