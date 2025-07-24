@@ -63,9 +63,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
      .\bin\elasticsearch-service.bat start
      ```
 
-4. **Enable "Stack Monitoring" built-in dashboard**
+4. **Enable Stack Monitoring**
 
-   - Add the following line to your `elasticsearch.yml` file to enable the built-in Stack Monitoring dashboard:
+   - Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-8.17.3\config`) and open the `elasticsearch.yml` file.
+   - Add the following line to enable Stack Monitoring:
 
      ```
      xpack.monitoring.collection.enabled: true
