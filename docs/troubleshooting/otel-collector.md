@@ -1,4 +1,4 @@
-# OpenTelemetry Collector Troubleshooting
+# Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting
 
 This document provides troubleshooting guidance for common OpenTelemetry Collector issues encountered during installation, configuration, and operation in Relativity environments.
 
