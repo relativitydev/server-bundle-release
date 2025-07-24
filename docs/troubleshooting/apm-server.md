@@ -2,7 +2,7 @@
 
 This document provides troubleshooting guidance for common APM Server issues encountered during installation, configuration, and operation in Relativity Server environments.
 
-> NOTE  
+> [!NOTE]
 > This guide assumes a default APM Server installation path of `C:\elastic\apm-server`. Adjust paths according to your actual installation directory.
 
 ## Table of Contents
@@ -93,7 +93,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
      - **Hostname**: Verify correct Elasticsearch server hostname
      - **Port**: Confirm correct Elasticsearch port (usually 9200)
 
-> TIP  
+> [!TIP]
 > API keys are the preferred authentication method and expire by default in 6 months. Consider switching from username/password to API key authentication.
 
    ```yaml
@@ -107,7 +107,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 3. **Verify Elasticsearch Connectivity:**
 
-> NOTE  
+> [!NOTE]
 > For detailed Elasticsearch connection troubleshooting, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
 
    ```bash
@@ -182,7 +182,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    netstat -an | findstr ":8200"
    ```
 
-> NOTE  
+> [!NOTE]
 > If no output is returned, port 8200 is available. If you see `LISTENING` status, the port is already in use.
 
 2. **Identify Port Conflicts:**
@@ -190,11 +190,12 @@ This document provides troubleshooting guidance for common APM Server issues enc
    Get-NetTCPConnection -LocalPort 8200 -State Listen
    ```
 
-> NOTE  
+> [!NOTE]
 > If this command returns results, another process is using port 8200. If no results are returned, the port is available.
 
 3. **Resolve Port Conflicts:**
-> IMPORTANT  
+
+> [!IMPORTANT]
 > Do not change the APM Server port. Instead, identify and stop the conflicting service using port 8200, as changing the APM Server port requires extensive configuration changes across Environment Watch, Relativity, and other components.
 
 ### Network Connectivity Problems
@@ -252,7 +253,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    Get-Service -Name elasticsearch
    ```
 
-> TIP  
+> [!TIP]
 > For detailed Elasticsearch troubleshooting, see [Elasticsearch Troubleshooting](elasticsearch.md)
 
 2. **Test Elasticsearch Connectivity:**
@@ -331,7 +332,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
         -H "Authorization: ApiKey your-api-key"
    ```
 
-> IMPORTANT  
+> [!IMPORTANT]
 > API keys expire by default in 6 months. Check the `expiration` field in the response.
 
 4. **Verify API Key Permissions:**
@@ -405,7 +406,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    curl -u <username>:<password> -k -X GET "https://<hostname_or_ip>:9200/"
    ```
 
-> NOTE  
+> [!NOTE]
 > The `-k` flag bypasses certificate validation for testing purposes only.
 
 5. **Check APM Server Network Configuration:**
@@ -432,7 +433,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 - "Unauthorized" errors in APM Server logs
 - APM data not appearing in Elasticsearch
 
-> NOTE  
+> [!NOTE]
 > For comprehensive Elasticsearch connection and authentication troubleshooting, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
 
 **Troubleshooting Steps:**
@@ -572,7 +573,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
      talk to server... OK
    ```
 
-> NOTE  
+> [!NOTE]
 > If this test fails, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues) for detailed troubleshooting steps.
 
 ## Additional Diagnostic Commands
@@ -638,5 +639,6 @@ curl -X GET "http://<hostname_or_ip>:8200/"
 # Test network connectivity
 Test-NetConnection -ComputerName <hostname_or_ip> -Port 8200
 ```
+````
 
 
