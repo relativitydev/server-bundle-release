@@ -190,10 +190,8 @@ When the Kibana distribution is extracted, it can exceed the maximum Windows pat
 
      ```
      .\elasticsearch-create-enrollment-token --scope kibana
-
 <details>
 <summary>Sample output</summary>
-
 ```
 eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
 ```
