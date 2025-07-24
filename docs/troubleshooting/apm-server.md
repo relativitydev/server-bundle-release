@@ -94,8 +94,8 @@ This document provides troubleshooting guidance for common APM Server issues enc
      - **Hostname**: Verify correct Elasticsearch server hostname
      - **Port**: Confirm correct Elasticsearch port (usually 9200)
    
-   > [!TIP]
-   > API keys are the preferred authentication method and expire by default in 6 months. Consider switching from username/password to API key authentication.
+> [!TIP]
+> API keys are the preferred authentication method and expire by default in 6 months. Consider switching from username/password to API key authentication.
 
    ```yaml
    output.elasticsearch:
@@ -107,8 +107,8 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
 
 3. **Verify Elasticsearch Connectivity:**
-   > [!NOTE]
-   > For detailed Elasticsearch connection troubleshooting, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
+> [!NOTE]
+> For detailed Elasticsearch connection troubleshooting, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues)
    
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
@@ -183,20 +183,20 @@ This document provides troubleshooting guidance for common APM Server issues enc
    netstat -an | findstr ":8200"
    ```
    
-   > [!NOTE]
-   > If no output is returned, port 8200 is available. If you see `LISTENING` status, the port is already in use.
+> [!NOTE]
+> If no output is returned, port 8200 is available. If you see `LISTENING` status, the port is already in use.
 
 2. **Identify Port Conflicts:**
    ```powershell
    Get-NetTCPConnection -LocalPort 8200 -State Listen
    ```
    
-   > [!NOTE]
-   > If this command returns results, another process is using port 8200. If no results are returned, the port is available.
+> [!NOTE]
+> If this command returns results, another process is using port 8200. If no results are returned, the port is available.
 
 3. **Resolve Port Conflicts:**
-   > [!IMPORTANT]
-   > Do not change the APM Server port. Instead, identify and stop the conflicting service using port 8200, as changing the APM Server port requires extensive configuration changes across Environment Watch, Relativity, and other components.
+> [!IMPORTANT]
+> Do not change the APM Server port. Instead, identify and stop the conflicting service using port 8200, as changing the APM Server port requires extensive configuration changes across Environment Watch, Relativity, and other components.
 
 ### Network Connectivity Problems
 
@@ -218,7 +218,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 2. **Test APM Server Connectivity:**
    ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:8200/"
+   curl.exe -k -X GET "https://<hostname_or_ip>:8200/"
    ```
    
    Expected response for healthy APM Server:
@@ -253,8 +253,8 @@ This document provides troubleshooting guidance for common APM Server issues enc
    Get-Service -Name elasticsearch
    ```
    
-   > [!TIP]
-   > For detailed Elasticsearch troubleshooting, see [Elasticsearch Troubleshooting](elasticsearch.md)
+> [!TIP]
+> For detailed Elasticsearch troubleshooting, see [Elasticsearch Troubleshooting](elasticsearch.md)
 
 2. **Test Elasticsearch Connectivity:**
    ```bash
@@ -332,8 +332,8 @@ This document provides troubleshooting guidance for common APM Server issues enc
         -H "Authorization: ApiKey your-api-key"
    ```
    
-   > [!IMPORTANT]
-   > API keys expire by default in 6 months. Check the `expiration` field in the response.
+> [!IMPORTANT]
+> API keys expire by default in 6 months. Check the `expiration` field in the response.
 
 4. **Verify API Key Permissions:**
    The API key must have appropriate permissions for APM data:
@@ -406,8 +406,8 @@ This document provides troubleshooting guidance for common APM Server issues enc
    curl -u <username>:<password> -k -X GET "https://your-elasticsearch-server:9200/"
    ```
    
-   > [!NOTE]
-   > The `-k` flag bypasses certificate validation for testing purposes only.
+> [!NOTE]
+> The `-k` flag bypasses certificate validation for testing purposes only.
 
 5. **Check APM Server Network Configuration:**
    ```yaml
@@ -573,8 +573,8 @@ This document provides troubleshooting guidance for common APM Server issues enc
      talk to server... OK
    ```
    
-   > [!NOTE]
-   > If this test fails, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues) for detailed troubleshooting steps.
+> [!NOTE]
+> If this test fails, see [Elasticsearch Connection Issues](#elasticsearch-connection-issues) for detailed troubleshooting steps.
 
 ## Additional Diagnostic Commands
 
