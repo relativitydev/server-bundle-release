@@ -32,6 +32,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
   .\bin\elasticsearch.bat
   ```
 
+  <a id="enrollment-token-generation"></a>
   :::info
   When starting Elasticsearch for the first time, security features are enabled and configured by default:
   - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser.
@@ -184,7 +185,7 @@ When the Kibana distribution is extracted, it can exceed the maximum Windows pat
    - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
   - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
   
-    [See where the enrollment token is generated.](#install-and-configure-elasticsearch-8173)
+    [See where the enrollment token is generated.](#enrollment-token-generation)
    - If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`):
 
      ```
