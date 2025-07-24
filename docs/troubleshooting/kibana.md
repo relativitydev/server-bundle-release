@@ -83,8 +83,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
    - Ensure all required configuration parameters are present
 
 3. **Verify Elasticsearch Connectivity:**
-   ```powershell
-   curl -X GET "your-elasticsearch-server:9200/"
+   ```bash
+   curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
 
 4. **Check Memory Usage:**
@@ -110,12 +110,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
 
 2. **Test Kibana Connectivity:**
-   ```powershell
-   # Test Kibana web interface
-   curl -X GET "localhost:5601/"
-   
-   # Alternative using PowerShell
-   Invoke-RestMethod -Uri "http://localhost:5601/" -Method GET
+   ```bash
+   curl -X GET "http://<hostname_or_ip>:5601/"
    ```
 
 3. **Configure Alternative Port (if needed):**
@@ -143,17 +139,17 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```yaml
    server.host: "0.0.0.0"  # For all interfaces
    # or
-   server.host: "your-server-ip"
+   server.host: "<hostname_or_ip>"
    ```
 
 2. **Test Local Access:**
-   ```powershell
-   curl -X GET "localhost:5601/"
+   ```bash
+   curl -X GET "http://localhost:5601/"
    ```
 
 3. **Test Remote Access:**
-   ```powershell
-   curl -X GET "your-kibana-server:5601/"
+   ```bash
+   curl -X GET "http://<hostname_or_ip>:5601/"
    ```
 
 4. **Check Load Balancer Configuration:**
@@ -234,21 +230,21 @@ This document provides troubleshooting guidance for common Kibana issues encount
    - Check `kibana.yml`:
    ```yaml
    elasticsearch.apiVersion: "8.x"
-   elasticsearch.hosts: ["https://elasticsearch-server:9200"]
+   elasticsearch.hosts: ["https://<hostname_or_ip>:9200"]
    elasticsearch.apiKey: "your-api-key-here"
    ```
 
 2. **Test API Key Validity:**
-   ```curl
-   curl -X GET "https://elasticsearch-server:9200/_security/api_key" \
+   ```bash
+   curl -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
         -H "Authorization: ApiKey your-api-key"
    ```
 
 3. **Create New API Key for Kibana:**
-   ```curl
-   curl -X POST "https://elasticsearch-server:9200/_security/api_key" \
+   ```bash
+   curl -X POST "https://<hostname_or_ip>:9200/_security/api_key" \
         -H "Content-Type: application/json" \
-        -u elastic:password \
+        -u <username>:<password> \
         -d '{
           "name": "kibana-api-key",
           "role_descriptors": {
@@ -283,7 +279,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    - Check `kibana.yml`:
    ```yaml
    elasticsearch.username: "kibana_system"
-   elasticsearch.password: "your-password"
+   elasticsearch.password: "<password>"
    ```
 
 2. **Reset Kibana System User Password:**
@@ -293,9 +289,9 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
 
 3. **Test User Authentication:**
-   ```curl
-   curl -X GET "https://elasticsearch-server:9200/_security/user/kibana_system" \
-        -u elastic:admin-password
+   ```bash
+   curl -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" \
+        -u <username>:<password>
    ```
 
 4. **Configure LDAP/Active Directory Integration:**
@@ -390,8 +386,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
 **Troubleshooting Steps:**
 
 1. **Check Kibana Status:**
-   ```curl
-   curl -X GET "http://localhost:5601/api/status"
+   ```bash
+   curl -X GET "http://<hostname_or_ip>:5601/api/status"
    ```
    
    Expected response for healthy Kibana:
@@ -410,18 +406,18 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
 
 2. **Verify Elasticsearch Connection:**
-   ```curl
-   curl -X GET "http://localhost:5601/api/status" | jq '.status.statuses[] | select(.id=="elasticsearch")'
+   ```bash
+   curl -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="elasticsearch")'
    ```
 
 3. **Check Plugin Status:**
-   ```curl
-   curl -X GET "http://localhost:5601/api/status" | jq '.status.statuses[] | select(.id=="plugin:*")'
+   ```bash
+   curl -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="plugin:*")'
    ```
 
 4. **Monitor Performance Metrics:**
-   ```curl
-   curl -X GET "http://localhost:5601/api/stats"
+   ```bash
+   curl -X GET "http://<hostname_or_ip>:5601/api/stats"
    ```
 
 ### Dashboard and Visualization Verification
@@ -434,8 +430,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
 **Troubleshooting Steps:**
 
 1. **Verify Index Patterns:**
-   ```curl
-   curl -X GET "http://localhost:5601/api/saved_objects/_find?type=index-pattern"
+   ```bash
+   curl -X GET "http://<hostname_or_ip>:5601/api/saved_objects/_find?type=index-pattern"
    ```
 
 2. **Check Data View Configuration:**
@@ -444,8 +440,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
    - Refresh field mappings if necessary
 
 3. **Test Search Functionality:**
-   ```curl
-   curl -X POST "http://localhost:5601/api/console/proxy?path=_search&method=GET" \
+   ```bash
+   curl -X POST "http://<hostname_or_ip>:5601/api/console/proxy?path=_search&method=GET" \
         -H "Content-Type: application/json" \
         -d '{"query": {"match_all": {}}}'
    ```
@@ -473,29 +469,29 @@ Get-NetTCPConnection | Where-Object {$_.LocalPort -eq 5601} | Select-Object Loca
 Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="Size(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, @{Name="FreeSpace(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
 
 # Test web interface connectivity
-Test-NetConnection -ComputerName localhost -Port 5601
+Test-NetConnection -ComputerName <hostname_or_ip> -Port 5601
 ```
 
 ### Configuration Validation
 
 ```powershell
 # Validate YAML syntax
-.\kibana.bat --validate-config
+C:\elastic\kibana\bin\kibana.bat --validate-config
 
 # Check current configuration
-.\kibana.bat --config-path="C:\kibana\config\kibana.yml" --dry-run
+C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
 ```
 
 ### Log Analysis
 
 ```powershell
 # View recent Kibana logs
-Get-Content "C:\kibana\logs\kibana.log" -Tail 50
+Get-Content "C:\elastic\kibana\logs\kibana.log" -Tail 50
 
 # Search for specific errors
-Select-String -Path "C:\kibana\logs\*.log" -Pattern "ERROR|WARN|FATAL" | Select-Object -Last 20
+Select-String -Path "C:\elastic\kibana\logs\*.log" -Pattern "ERROR|WARN|FATAL" | Select-Object -Last 20
 
 # Filter authentication errors
-Select-String -Path "C:\kibana\logs\*.log" -Pattern "authentication|unauthorized" | Select-Object -Last 10
+Select-String -Path "C:\elastic\kibana\logs\*.log" -Pattern "authentication|unauthorized" | Select-Object -Last 10
 ```
 
