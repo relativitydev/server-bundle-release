@@ -112,7 +112,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
      - **Hostname**: Verify correct Elasticsearch server hostname
      - **Port**: Confirm correct Elasticsearch port (usually 9200)
 
-> [!INFO]
+> [!NOTE]
 > API keys are the preferred authentication method and expire by default in 6 months. Consider switching from username/password to API key authentication.
 
    ```yaml
