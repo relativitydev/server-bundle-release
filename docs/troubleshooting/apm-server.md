@@ -706,6 +706,5 @@ Get-Content "C:\Program Files\apm-server\logs\apm-server*.log" -Wait -Tail 10
 # Test network connectivity
 Test-NetConnection -ComputerName <hostname_or_ip> -Port 8200
 ```
-````
 
 
