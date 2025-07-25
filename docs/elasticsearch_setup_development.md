@@ -425,7 +425,7 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
       ssl.verification_mode: none
 
     instrumentation:
-      enabled: false
+      enabled: true
       environment: production
       hosts:
         - "http://<apm-server-hostname_or_ip>:8200"
@@ -433,7 +433,7 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
 
 - Once the instrumentation is set, you can verify it in Kibana as shown below:
 
-  ![alt text](../resources/troubleshooting-images/verify-instrumentation.png)
+  ![verify-instrumentation](../resources/troubleshooting-images/verify-instrumentation.png)
     
 4. **Execute required scripts to install APM Server as a Windows service**
    
@@ -513,7 +513,7 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
 
     - Open a browser and go to http://<hostname_or_ip>:5601.
   
-    - Log in using elastic or kibana_system credentials.
+    - Log in using elastic credentials.
 
     TODO: WE HAVE CONFIRMED VIA ELASTIC SUPPORT THAT YOU MUST LITERALLY VISIT THE OBSERVABILITY->APM DASHBOARD FOR KIBANA TO TRIGGER THE CREATION OF THIS DATAVIEW. THIS INSTRUCTION SHOULD NOT DISCLOSE ANY OF THESE DETAILS; RATHER, IT SHOULD FORCE THE USER TO SIMPLY GO TO THE APM PAGE (INCLUDE SCREENSHOTS) AND CONFIRM THERE ARE TRACES PRESENT. ONCE YOU CLICK ON A TRACE, THIS WILL TRIGGER THE CREATION. THIS STEP SHOULD BE PLACED RIGHT HERE BECAUSE IT SHOULD YIELD SUCCESS BELOW.
 
