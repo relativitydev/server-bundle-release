@@ -54,17 +54,32 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - Open an elevated PowerShell and run the following command to install Elasticsearch as a Windows service:
 
   ```
-  .\bin\elasticsearch-service.bat install
+  .\elasticsearch-service.bat install
+  ```
+
+  The output will look similar to:
+
+  ```
+  Installing service      :  "elasticsearch-service-x64"
+  Using JAVA_HOME (64-bit):  C:\Program Files\Java\jdk-17
+  The service 'elasticsearch-service-x64' has been installed.
   ```
 
 3. **Run Elasticsearch as a Windows Service**
 
-   - Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
-   - Open an elevated PowerShell and run the following command to start the Elasticsearch service:
+- Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
+- Open an elevated PowerShell and run the following command to start the Elasticsearch service:
 
-     ```
-     .\bin\elasticsearch-service.bat start
-     ```
+  ```
+  .\elasticsearch-service.bat start
+  ```
+
+  The output will look similar to:
+
+  ```
+  Starting service   :  "elasticsearch-service-x64"
+  The service 'elasticsearch-service-x64' has been started.
+  ```
 
 4. **Enable Stack Monitoring**
 
@@ -114,7 +129,13 @@ If you download a .zip or other file from the internet, Windows may block the fi
   - To restart the Elasticsearch service, run the following an elevated PowerShell:
 
      ```
-     Restart-Service -Name "elasticsearch"
+     Restart-Service -Name "elasticsearch-service-x64"
+     ```
+
+     The output will look similar to:
+
+     ```
+     WARNING: Waiting for service 'Elasticsearch 8.17.3 (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
      ```
 
 7. **Verify Elasticsearch Server**
@@ -229,7 +250,7 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
      ```
      </details>
 
-   - Copy the generated encryption keys and paste them at the end of your `kibana.yml` file. The configuration should look similar to:
+   - Copy the generated encryption keys and paste them at the end of your `kibana.yml` file (e.g., `C:\Kibana\kibana-8.17.3\config\kibana.yml`). The configuration should look similar to:
 
      <details>
      <summary>Sample kibana.yml configuration</summary>
@@ -312,7 +333,7 @@ If you accidentally press Return, the service may be installed before your confi
      It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
 6. **Verify Kibana Server**
-   - Open a browser and go to `https://<hostname_or_ip>:5601`.
+   - Open a browser and go to `http://<hostname_or_ip>:5601`.
    - Log in using the `elastic` credential to verify successful access.
 
      ![Kibana login screenshot](../resources/troubleshooting-images/kibanalogin.png)
@@ -424,6 +445,13 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
   ```
   PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1
   ```
+
+  The output will look similar to:
+
+  ```
+  Installing service apm-server...
+  Service "apm-server" has been successfully installed.
+  ```
      
 5. **Start the APM Server service**
 
@@ -437,10 +465,19 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
 
 - Open an elevated Command Prompt and run the following command (replace `<hostname_or_ip>` with your actual value):
 
-- The response should indicate `publish_ready` is `true`.
-
   ```
   curl -k http://<hostname_or_ip>:8200
+  ```
+
+  The response should indicate `publish_ready` is `true` and will look similar to:
+
+  ```
+  {
+    "build_date": "2025-02-27T18:17:35Z",
+    "build_sha": "f6b917b725e1a22af433e5b52c5c6f0ff9164adf",
+    "publish_ready": true,
+    "version": "8.17.3"
+  }
   ```
 
 ## Step 4: Post Installation and Verification
@@ -475,7 +512,7 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
    
    a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
 
-    - Open a browser and go to https://<hostname_or_ip>:5601.
+    - Open a browser and go to http://<hostname_or_ip>:5601.
   
     - Log in using elastic or kibana_system credentials.
 
