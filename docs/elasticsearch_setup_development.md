@@ -93,7 +93,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
    - When you run this command, a new password will be generated and displayed in the console output.
-> [!WARNING]
+> [!NOTE]
    The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
 6. **Install the 'mapper-size' plugin**
@@ -334,17 +334,30 @@ If you accidentally press Return, the service may be installed before your confi
 
 3. **Configure APM Server (`config\apm-server.yml`)**
 
+- An API key is required for configuring APM. To create an API key:
+  - Open an elevated Command Prompt.
+  - Run the following command (replace `<hostname_or_ip>`, `<username>`, `<password>`, and `<api-key-name>` with your actual values):
 
-- Navigate to the APM Server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`).
+    ```
+    curl -k -X POST "https://<hostname_or_ip>:9200/_security/api_key" ^
+    -H "Content-Type: application/json" ^
+    -u <username>:<password> ^
+    -d "{ \"name\": \"<api-key-name>\" }"
+    ```
 
-- API Key is required for configuring APM. For API Key usage, see below:
+    The output will look similar to:
 
-  - Create a new API key from Kibana. Navigate to Stack Management → API Keys → Create, and create one by providing an API Key name. Keep the other default settings as is.
+    ```json
+    {
+      "id": "_q-CP5gBkkOj6XzvuWrA",
+      "name": "api-key01",
+      "api_key": "zvVd_kQDTI6WzQcVInue5Q",
+      "encoded": "X3EtQ1A1Z0Jra09qNlh6dnVXckE6enZWZF9rUURUSTZXelFjVkludWU1UQ=="
+    }
+    ```
 
-    ![alt text](../resources/troubleshooting-images/apm_apikey.png)
-
-> [!WARNING]
-You will only see the API key at the time it is created. It will not be shown again. Copy and save the API key immediately and store it securely.
+> [!NOTE]
+Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store them securely according to your organization’s credential management and security policies.
 
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
@@ -352,17 +365,6 @@ You will only see the API key at the time it is created. It will not be shown ag
 
 - In the "Elasticsearch output" section, perform the following changes:
   - Uncomment the `output.elasticsearch` section in your `apm-server.yml` file if it is commented.
-  - Generate an API key by sending a POST request to Elasticsearch using Kibana Dev Tools:
-
-    ```json
-    POST /_security/api_key
-    {
-      "name": "<api-key-name>"
-    }
-    ```
-
-    The response will include the `id` and `api_key` values.
-    ![apikey-id-value](../resources/troubleshooting-images/apikey-id-value.png)
 
   - Update the Elasticsearch output section to use the API key. Uncomment the `api_key` line if it is commented:
 
@@ -378,7 +380,7 @@ You will only see the API key at the time it is created. It will not be shown ag
   - Ensure `protocol` is set to `https`.
   - These settings are needed because Elasticsearch is running under https.
 
-- Either Username and Password or API Key is required for APM Services. The same is highlighted below:
+- API Key is required for APM Services. The same is highlighted below sample configuration:
 
 - Also within output.elasticsearch, modify SSL settings:
   - Update ssl.enabled: true
@@ -389,7 +391,7 @@ You will only see the API key at the time it is created. It will not be shown ag
   - Update enabled: true, environment: production
   - hosts: - "http://<hostname_or_ip>:8200"
 
-- Below is a sample configuration for `C:\apm-server-8.17.3-windows-x86_64\config\apm-server.yml` after setup. Update `<username>`, `<password>`, and `<hostname_or_ip>` as needed for your environment.
+- Below is a sample configuration for `C:\apm-server-8.17.3-windows-x86_64\config\apm-server.yml` after setup. Update `<username>`, `<password>`, `<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`and `<hostname_or_ip>` as needed for your environment.
 
     ```yaml
     apm-server:
