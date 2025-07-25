@@ -604,19 +604,14 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 - **Verify Server Configuration:**
    ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:8200/config"
+   C:\elastic\apm-server\apm-server.exe test config -c "C:\elastic\apm-server\apm-server.yml"
    ```
 
    <details>
    <summary>Expected response includes server configuration details</summary>
 
-   ```json
-   {
-     "apm-server": {
-       "host": "0.0.0.0:8200",
-       "max_request_size": 1048576
-     }
-   }
+   ```
+   Config OK
    ```
    </details>
 
