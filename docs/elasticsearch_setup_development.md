@@ -25,10 +25,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 2. **Install and Configure Elasticsearch 8.17.3**
 
-- Open an elevated PowerShell and start Elasticsearch to perform the auto installation steps:
+- Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
+- Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:
 
   ```
-  .\bin\elasticsearch.bat
+  .\elasticsearch.bat
   ```
 
   <a id="enrollment-token-generation"></a>
@@ -49,7 +50,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
   # Terminate the process after saving the token (Ctrl+C in the terminal)
   ```
 
-- To install Elasticsearch as a Windows service, run the following command in an elevated PowerShell:
+- Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
+- Open an elevated PowerShell and run the following command to install Elasticsearch as a Windows service:
 
   ```
   .\bin\elasticsearch-service.bat install
@@ -57,6 +59,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 3. **Run Elasticsearch as a Windows Service**
 
+   - Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
    - Open an elevated PowerShell and run the following command to start the Elasticsearch service:
 
      ```
@@ -80,10 +83,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 5. **Reset the Elastic (Admin) User Password**
 
+   Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
    The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
 
    ```
-   .\bin\elasticsearch-reset-password -u elastic
+   .\elasticsearch-reset-password -u elastic
    ```
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
@@ -93,6 +97,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
    The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
 6. **Install the 'mapper-size' plugin**
+
+  - Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
+  - Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
 
   ```
   .\elasticsearch-plugin install mapper-size
@@ -112,10 +119,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 7. **Verify Elasticsearch Server**
 
-   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<yourelasticusername>`, `<yourpassword>`, and `<hostname_or_ip>` with your actual values):
+   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
 
      ```
-     curl -u <yourelasticusername>:<yourpassword> -k https://<hostname_or_ip>:9200
+     curl -u <username>:<password> -k https://<hostname_or_ip>:9200
      ```
 
    - The response should show basic cluster information in JSON format if the server is running and accessible.
@@ -247,7 +254,7 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
      ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
 
 > [!NOTE]
-After Kibana has restarted, open a browser and go to `https://<hostname_or_ip>:5601`.
+After Kibana has restarted, open a browser and go to `http://<hostname_or_ip>:5601`.
 Log in using the `elastic` username and the password you generated earlier.
 This verifies that Kibana is running and your credentials are working.
 
@@ -330,7 +337,7 @@ If you accidentally press Return, the service may be installed before your confi
 
 - Navigate to the APM Server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`).
 
-- Either Username / Password or API Key is required for configuring APM. If Username and Password is used, you can ignore using API key inside `apm-server.yml`. For API Key usage, see below:
+- API Key is required for configuring APM. For API Key usage, see below:
 
   - Create a new API key from Kibana. Navigate to Stack Management → API Keys → Create, and create one by providing an API Key name. Keep the other default settings as is.
 
@@ -338,14 +345,6 @@ If you accidentally press Return, the service may be installed before your confi
 
 > [!WARNING]
 You will only see the API key at the time it is created. It will not be shown again. Copy and save the API key immediately and store it securely.
-
-- Once the API key is generated, keep a note of the key.
-
-- Set the `Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle` toggle:
-
-  ```sql
-  EXEC EDDS.eddsdbo.pr_SetToggle 'Relativity.Audit.Common.Toggles.ElasticAPIKeyAuthenticationToggle', 1
-  ```
 
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
@@ -482,10 +481,10 @@ You will only see the API key at the time it is created. It will not be shown ag
 
 3. **Verify Cluster Health**
     
-- Open an elevated Command Prompt and run the following command (replace `yourelasticusername`, `yourpassword`, and `{hostname_or_ip}` with your actual values):
+- Open an elevated Command Prompt and run the following command (replace `username`, `password`, and `{hostname_or_ip}` with your actual values):
 
   ```
-  curl -u <yourelasticusername>:<yourpassword> -k https://<hostname_or_ip>:9200/_cat/health
+  curl -u <username>:<password> -k https://<hostname_or_ip>:9200/_cat/health
   ```
 
 - You should see a response similar to:
