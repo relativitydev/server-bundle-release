@@ -15,11 +15,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
   - [Network Connectivity Problems](#network-connectivity-problems)
 - [Memory Issues](#memory-issues)
   - [Insufficient Memory Allocation](#insufficient-memory-allocation)
-  - [Virtual Memory Configuration](#virtual-memory-configuration)
 - [Authentication Issues](#authentication-issues)
-  - [API Key Expiration](#api-key-expiration)
   - [Username/Password Authentication Problems](#usernamepassword-authentication-problems)
-  - [SSL/TLS Certificate Issues](#ssltls-certificate-issues)
+  - [SSL/TTLS Certificate Issues](#ssltls-certificate-issues)
 - [Service Verification](#service-verification)
   - [Verifying Elasticsearch Health](#verifying-elasticsearch-health)
   - [Service Dependencies Verification](#service-dependencies-verification)
@@ -59,8 +57,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    java -version
    ```
-   - Ensure Java 11 or later is installed
-   - Check JAVA_HOME environment variable is set correctly
+   - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
+   - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.
+   - If you want to use a specific Java version, ensure `JAVA_HOME` is set correctly.
 
 - **Start Service Manually:**
    ```powershell
@@ -79,18 +78,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    - Navigate to `C:\elastic\elasticsearch\logs\`
    - Review the cluster log file (`elasticsearch.log`) for errors
    - Look for OutOfMemoryError or service crash indicators
-
-2. **Review JVM Settings (Advanced):**
-   - Check `jvm.options` file in `C:\elastic\elasticsearch\config\`
-   - Monitor current memory usage to determine if heap adjustment is needed
-   - If modifying heap settings:
-     - `-Xms`: Initial heap size (should match -Xmx)
-     - `-Xmx`: Maximum heap size (recommend 50% of available RAM, max 32GB)
-   - Example configuration for a system with 16GB RAM:
-   ```
-   -Xms4g
-   -Xmx4g
-   ```
 
 3. **Verify Disk Space:**
    - Ensure sufficient disk space on data and log directories (minimum 15% free)
@@ -135,12 +122,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    Get-NetTCPConnection -LocalPort 9300 -State Listen
    ```
 
-- **Configure Alternative Ports (if needed):**
-   - Edit `C:\elastic\elasticsearch\config\elasticsearch.yml`:
-   ```yaml
-   http.port: 9201
-   transport.port: 9301
-   ```
 
 - **Update Firewall Rules:**
    ```powershell
@@ -193,6 +174,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 2. **Review JVM Heap Settings:**
    - Edit `C:\elastic\elasticsearch\config\jvm.options` file:
+   - If the file does not exist, create it.
    ```
    # Recommended: Set Xms and Xmx to same value
    # Example for system with 8GB+ RAM:
@@ -212,60 +194,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    - Look for continuously increasing memory consumption
    - Review application logs for memory-related warnings
 
-### Virtual Memory Configuration
-
-**Symptoms:**
-- "max virtual memory areas vm.max_map_count [65530] is too low" error
-- Bootstrap check failures
-
-**Troubleshooting Steps:**
-
-1. **For Windows Systems:**
-   - This is typically a Linux-specific issue, but if running in WSL or containers:
-   - Increase virtual memory in WSL configuration
-
-2. **Alternative Solutions:**
-   - Add to `C:\elastic\elasticsearch\config\elasticsearch.yml`:
-   ```yaml
-   bootstrap.memory_lock: false
-   ```
-   - Or configure system memory settings appropriately
-
 ## Authentication Issues
 
-### API Key Expiration
-
-**Symptoms:**
-- Authentication failures after previously working
-- "invalid API key" errors in logs
-- 401 Unauthorized responses
-
-**Troubleshooting Steps:**
-
-- **Check API Key Status:**
-   ```bash
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
-        -H "Authorization: ApiKey <your-api-key>"
-   ```
-
-- **Create New API Key:**
-   ```powershell
-   # Create the JSON file
-   @'
-   {
-     "name": "relativity-api-key",
-     "expiration": "365d"
-   }
-   '@ | Out-File -FilePath "elasticsearch-api-key.json" -Encoding utf8
-   
-   # Use curl with the file
-   curl.exe -k -X POST "https://<hostname_or_ip>:9200/_security/api_key" -H "Content-Type: application/json" -u <username>:<password> -d @elasticsearch-api-key.json
-   
-   # Clean up (optional)
-   Remove-Item "elasticsearch-api-key.json"
-   ```
-
-### Log Analysis
+### Username/Password Authentication Problems
 
 **Symptoms:**
 - Login failures
@@ -296,30 +227,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    - Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
    ```yaml
    xpack.security.enabled: true
-   xpack.security.authc.api_key.enabled: true
    ```
 
-### SSL/TLS Certificate Issues
-
-**Symptoms:**
-- Certificate validation errors
-- "unable to verify certificate" warnings
-- HTTPS connection failures
-
-**Troubleshooting Steps:**
-
-1. **Check Certificate Validity:**
-   ```powershell
-   openssl x509 -in certificate.crt -text -noout
-   ```
-
-2. **Verify Certificate Chain:**
-   - Ensure all intermediate certificates are included
-   - Check certificate expiration dates
-
-3. **Trust Certificate in Windows:**
-   - Import certificate to Trusted Root Certification Authorities
-   - Use Certificate Manager (certmgr.msc)
 
 ## Service Verification
 
