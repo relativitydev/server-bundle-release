@@ -15,16 +15,12 @@ This document provides troubleshooting guidance for common Kibana issues encount
   - [Network Binding Problems](#network-binding-problems)
 - [Memory Issues](#memory-issues)
   - [Insufficient Memory Allocation](#insufficient-memory-allocation)
-  - [Large Dataset Performance Issues](#large-dataset-performance-issues)
 - [Authentication Issues](#authentication-issues)
-  - [API Key Authentication Problems](#api-key-authentication-problems)
   - [Username/Password Authentication Issues](#usernamepassword-authentication-issues)
-  - [SSL/TLS Configuration Problems](#ssltls-configuration-problems)
 - [Kibana Encryption Keys Configuration](#kibana-encryption-keys-configuration)
   - [Missing or Invalid Encryption Keys](#missing-or-invalid-encryption-keys)
 - [Service Verification](#service-verification)
   - [Verifying Kibana Health and Status](#verifying-kibana-health-and-status)
-  - [Dashboard and Visualization Verification](#dashboard-and-visualization-verification)
 - [Additional Diagnostic Commands](#additional-diagnostic-commands)
 
 ## Windows Service Issues
@@ -52,11 +48,6 @@ This document provides troubleshooting guidance for common Kibana issues encount
    - Navigate to `C:\elastic\kibana\logs\`
    - Review the latest log files (`kibana.log`) for error messages
    - Look for configuration errors or Elasticsearch connection issues
-
-- **Verify Node.js Runtime:**
-   - Kibana includes its own Node.js runtime
-   - No additional Node.js installation required
-   - Check for conflicting Node.js installations if issues persist
 
 - **Start Service Manually:**
    ```powershell
@@ -86,10 +77,30 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
+   **Expected output:**
+   ```
+   {
+      "name" : "EMTTEST",
+      "cluster_name" : "elasticsearch",
+      "cluster_uuid" : "PwBZoINKQjGZ53WH4gFfBg",
+      "version" : {
+            "number" : "8.17.3",
+         "build_flavor" : "default",
+         "build_type" : "zip",
+         "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
+         "build_date" : "2025-02-28T10:07:26.089129809Z",
+         "build_snapshot" : false,
+         "lucene_version" : "9.12.0",
+         "minimum_wire_compatibility_version" : "7.17.0",
+         "minimum_index_compatibility_version" : "7.0.0"
+      },
+      "tagline" : "You Know, for Search"
+   }
+   ```
 
 4. **Check Memory Usage:**
-   - Monitor Kibana process memory consumption
-   - Verify sufficient system memory is available
+   - Monitor Kibana process memory consumption using Task Manager or Resource Monitor.
+   - Verify sufficient system memory is available.
 
 ## Port Configuration Issues
 
@@ -111,10 +122,25 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 - **Test Kibana Connectivity:**
    ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:5601/"
+   curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/"
+   ```
+   **Expected output:**
+   ```
+   <!DOCTYPE html>
+   <html>
+   <head>
+     <title>Kibana</title>
+     ...
+   </head>
+   <body>
+     ...
+   </body>
+   </html>
    ```
 
 - **Configure Alternative Port (if needed):**
+> [!WARNING]
+> At present, you cannot use alternative ports without introducing several side effects. If you must use a different port, ensure the other application using port 5601 is removed before changing the port.
    - Edit `C:\elastic\kibana\config\kibana.yml`:
    ```yaml
    server.port: 5602
@@ -142,15 +168,24 @@ This document provides troubleshooting guidance for common Kibana issues encount
    server.host: "<hostname_or_ip>"
    ```
 
-- **Test Local Access:**
+- **Test Local and Remote Access:**
    ```bash
-   curl.exe -k -X GET "http://localhost:5601/"
+   curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/"
    ```
-
-- **Test Remote Access:**
-   ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:5601/"
+   **Expected output:**
    ```
+   <!DOCTYPE html>
+   <html>
+   <head>
+     <title>Kibana</title>
+     ...
+   </head>
+   <body>
+     ...
+   </body>
+   </html>
+   ```
+   - Run this command from the server hosting Kibana (local) and from a remote machine (remote).
 
 - **Check Load Balancer Configuration:**
    - If using a load balancer, verify proper configuration
@@ -172,51 +207,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    Get-Process -Name node | Where-Object {$_.ProcessName -eq "node"} | Select-Object WorkingSet, VirtualMemorySize
    ```
 
-2. **Configure Node.js Memory Limits:**
-   - Edit Kibana startup script or service configuration:
-   ```
-   NODE_OPTIONS="--max-old-space-size=4096"
-   ```
-
-3. **Monitor Memory Usage:**
-   - Use Task Manager or Performance Monitor
-   - Track memory consumption over time
-   - Look for memory leaks
-
-4. **Optimize Kibana Configuration:**
-   - Reduce concurrent search requests:
-   ```yaml
-   elasticsearch.requestTimeout: 30000
-   elasticsearch.maxSockets: 1024
-   ```
-
-### Large Dataset Performance Issues
-
-**Symptoms:**
-- Slow visualization rendering
-- Timeouts when loading large datasets
-- Browser becomes unresponsive
-
-**Troubleshooting Steps:**
-
-1. **Adjust Query Settings:**
-   ```yaml
-   elasticsearch.requestTimeout: 60000
-   elasticsearch.shardTimeout: 30000
-   ```
-
-2. **Configure Data Sampling:**
-   ```yaml
-   discover.sampleSize: 500
-   ```
-
-3. **Optimize Index Patterns:**
-   - Use time-based indices
-   - Configure appropriate field mappings
-   - Limit field discovery
-
 ## Authentication Issues
-
 ### API Key Authentication Problems
 
 **Symptoms:**
@@ -288,53 +279,27 @@ This document provides troubleshooting guidance for common Kibana issues encount
    elasticsearch.password: "<password>"
    ```
 
-2. **Reset Kibana System User Password:**
+2. **Test User Authentication:**
+   ```bash
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" -u <username>:<password>
+   ```
+   **Expected output:**
+   ```
+   {
+     "kibana_system": {
+       "username": "kibana_system",
+       "roles": [
+         "kibana_system"
+       ],
+       ...
+     }
+   }
+   ```
+
+3. **Reset Kibana System User Password:**
    ```powershell
    # From Elasticsearch bin directory
    C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u kibana_system
-   ```
-
-3. **Test User Authentication:**
-   ```bash
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" \
-        -u <username>:<password>
-   ```
-
-4. **Configure LDAP/Active Directory Integration:**
-   ```yaml
-   xpack.security.authc.providers:
-     basic.basic1:
-       order: 0
-     ldap.ldap1:
-       order: 1
-       realm: "ldap_realm"
-   ```
-
-### SSL/TLS Configuration Problems
-
-**Symptoms:**
-- SSL certificate errors
-- "unable to verify the first certificate" warnings
-- HTTPS connection failures
-
-**Troubleshooting Steps:**
-
-1. **Configure SSL for Elasticsearch Connection:**
-   ```yaml
-   elasticsearch.ssl.certificateAuthorities: ["path/to/ca.crt"]
-   elasticsearch.ssl.verificationMode: "certificate"
-   ```
-
-2. **Disable SSL Verification (Not Recommended for Production):**
-   ```yaml
-   elasticsearch.ssl.verificationMode: "none"
-   ```
-
-3. **Configure Kibana HTTPS:**
-   ```yaml
-   server.ssl.enabled: true
-   server.ssl.certificate: "path/to/kibana.crt"
-   server.ssl.key: "path/to/kibana.key"
    ```
 
 ## Kibana Encryption Keys Configuration
@@ -351,34 +316,18 @@ This document provides troubleshooting guidance for common Kibana issues encount
 1. **Generate Encryption Keys:**
    ```powershell
    # Navigate to Kibana bin directory
+   cd C:\elastic\kibana\bin
    .\kibana-encryption-keys.bat generate
+   ```
+   **Expected output:**
+   ```
+   xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-1>"
+   xpack.reporting.encryptionKey: "<randomly-generated-key-2>"
+   xpack.security.encryptionKey: "<randomly-generated-key-3>"
    ```
 
 2. **Configure Required Encryption Keys in kibana.yml:**
-   ```yaml
-   # Saved Objects encryption key (required)
-    xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-1>"
-   
-   # Reporting encryption key (if using reporting)
-   xpack.reporting.encryptionKey: "<randomly-generated-key-2>"
-   
-   # Security session encryption key (if using security)
-   xpack.security.encryptionKey: "<randomly-generated-key-3>"
-   
-   # Alerting encryption key (if using alerting)
-   xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-4>"
-   ```
-
-3. **Key Requirements:**
-   - Keys must be at least 32 characters long
-   - Use cryptographically secure random strings
-   - Keep keys consistent across Kibana instances in a cluster
-
-4. **Generate Secure Keys:**
-   ```powershell
-   # Generate random 32-character string
-   -join ((1..32) | ForEach {Get-Random -input ([char[]]"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")})
-   ```
+   - Copy the generated lines above and paste them into your `C:\elastic\kibana\config\kibana.yml` file.
 
 ## Service Verification
 
@@ -393,13 +342,10 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 - **Check Kibana Status:**
    ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/status"
+   curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status"
    ```
-   
-   <details>
-   <summary>Expected response for healthy Kibana</summary>
-
-   ```json
+   **Expected output:**
+   ```
    {
      "name": "kibana",
      "version": {
@@ -412,74 +358,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
      }
    }
    ```
-   </details>
-
-- **Verify Elasticsearch Connection:**
-   ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="elasticsearch")'
-   ```
-
-- **Check Plugin Status:**
-   ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/status" | jq '.status.statuses[] | select(.id=="plugin:*")'
-   ```
-
-- **Monitor Performance Metrics:**
-   ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/stats"
-   ```
-
-### Dashboard and Visualization Verification
-
-**Symptoms:**
-- Dashboards not loading properly
-- Visualizations showing no data
-- Index pattern issues
-
-**Troubleshooting Steps:**
-
-- **Verify Index Patterns:**
-   ```bash
-   curl.exe -k -X GET "http://<hostname_or_ip>:5601/api/saved_objects/_find?type=index-pattern"
-   ```
-
-- **Check Data View Configuration:**
-   - Navigate to Stack Management > Data Views
-   - Verify index patterns match Elasticsearch indices
-   - Refresh field mappings if necessary
-
-- **Test Search Functionality:**
-   ```bash
-   curl.exe -k -X POST "http://<hostname_or_ip>:5601/api/console/proxy?path=_search&method=GET" \
-        -H "Content-Type: application/json" \
-        -d '{"query": {"match_all": {}}}'
-   ```
-
-- **Validate Time Range Settings:**
-   - Check time picker configuration
-   - Verify data exists within selected time range
-   - Ensure timezone settings are correct
 
 ## Additional Diagnostic Commands
-
-### General Health Checks
-
-```powershell
-# Check service status
-Get-Service kibana | Select-Object Status, StartType, Name
-
-# Check process information
-Get-Process -Name node | Where-Object {$_.MainModule.FileName -like "*kibana*"}
-
-# Check listening ports
-Get-NetTCPConnection | Where-Object {$_.LocalPort -eq 5601} | Select-Object LocalAddress, LocalPort, State
-
-# Check disk space for Kibana data
-Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="Size(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, @{Name="FreeSpace(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
-
-# Test web interface connectivity
-Test-NetConnection -ComputerName <hostname_or_ip> -Port 5601
-```
 
 ### Configuration Validation
 
