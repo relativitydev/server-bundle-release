@@ -7,6 +7,9 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Table of Contents
 
+- [Authentication Issues](#authentication-issues)
+  - [Username/Password Authentication Issues](#usernamepassword-authentication-issues)
+  - [API Key Authentication Problems](#api-key-authentication-problems)
 - [Windows Service Issues](#windows-service-issues)
   - [Kibana Service Not Starting](#kibana-service-not-starting)
   - [Service Crashes or Stops Unexpectedly](#service-crashes-or-stops-unexpectedly)
@@ -15,13 +18,103 @@ This document provides troubleshooting guidance for common Kibana issues encount
   - [Network Binding Problems](#network-binding-problems)
 - [Memory Issues](#memory-issues)
   - [Insufficient Memory Allocation](#insufficient-memory-allocation)
-- [Authentication Issues](#authentication-issues)
-  - [Username/Password Authentication Issues](#usernamepassword-authentication-issues)
 - [Kibana Encryption Keys Configuration](#kibana-encryption-keys-configuration)
   - [Missing or Invalid Encryption Keys](#missing-or-invalid-encryption-keys)
 - [Service Verification](#service-verification)
   - [Verifying Kibana Health and Status](#verifying-kibana-health-and-status)
 - [Additional Diagnostic Commands](#additional-diagnostic-commands)
+
+---
+
+## Authentication Issues
+
+### Username/Password Authentication Issues
+
+**Symptoms:**
+- Login failures at Kibana interface
+- "Invalid username or password" errors
+- Users cannot access Kibana dashboards
+
+**Troubleshooting Steps:**
+
+1. **Verify User Configuration:**
+   - Check `C:\elastic\kibana\config\kibana.yml`:
+   ```yaml
+   elasticsearch.username: "kibana_system"
+   elasticsearch.password: "<password>"
+   ```
+
+2. **Test Elasticsearch Credentials Independently:**
+   - Use the same credentials from `kibana.yml` to verify connectivity to Elasticsearch:
+   ```bash
+   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+   ```
+   **Expected output:**
+   ```
+   {
+      "name" : "EMTTEST",
+      "cluster_name" : "elasticsearch",
+      ...
+   }
+   ```
+
+3. **Test User Authentication:**
+   ```bash
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" -u <username>:<password>
+   ```
+   **Expected output:**
+   ```
+   {
+     "kibana_system": {
+       "username": "kibana_system",
+       "roles": [
+         "kibana_system"
+       ],
+       ...
+     }
+   }
+   ```
+
+4. **Reset Kibana System User Password:**
+   ```powershell
+   # From Elasticsearch bin directory
+   C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u kibana_system
+   ```
+
+---
+
+## API Key Authentication Problems
+
+**Symptoms:**
+- Authentication failures between Kibana and Elasticsearch
+- "Unable to retrieve version information" errors
+- 401 Unauthorized responses in Kibana logs
+
+**Troubleshooting Steps:**
+
+- **Verify API Key Configuration:**
+   - Check `C:\elastic\kibana\config\kibana.yml`:
+   ```yaml
+   elasticsearch.apiVersion: "8.x"
+   elasticsearch.hosts: ["https://<hostname_or_ip>:9200"]
+   elasticsearch.apiKey: "your-api-key-here"
+   ```
+
+- **Test API Key Validity:**
+   ```bash
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" ^
+        -H "Authorization: ApiKey your-api-key"
+   ```
+
+- **Create New API Key for Kibana:**
+   To create a new API key for Kibana, use the Kibana web interface:
+   1. Log in to Kibana at `http://<hostname_or_ip>:5601/` using an account with sufficient privileges.
+   2. Navigate to **Stack Management** > **API Keys**.
+   3. Click **Create API key**.
+   4. Enter a name, set expiration (optional), and assign appropriate privileges.
+   5. Click **Create API key** and copy the generated key for use in your `kibana.yml`.
+
+---
 
 ## Windows Service Issues
 
@@ -122,7 +215,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 - **Test Kibana Connectivity:**
    ```bash
-   curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/"
+   curl.exe -k -X -u <username>:<password> GET "http://<hostname>:5601/api/status"
    ```
    **Expected output:**
    ```
@@ -205,101 +298,6 @@ This document provides troubleshooting guidance for common Kibana issues encount
 1. **Check Current Memory Usage:**
    ```powershell
    Get-Process -Name node | Where-Object {$_.ProcessName -eq "node"} | Select-Object WorkingSet, VirtualMemorySize
-   ```
-
-## Authentication Issues
-### API Key Authentication Problems
-
-**Symptoms:**
-- Authentication failures between Kibana and Elasticsearch
-- "Unable to retrieve version information" errors
-- 401 Unauthorized responses in Kibana logs
-
-**Troubleshooting Steps:**
-
-- **Verify API Key Configuration:**
-   - Check `kibana.yml`:
-   ```yaml
-   elasticsearch.apiVersion: "8.x"
-   elasticsearch.hosts: ["https://<hostname_or_ip>:9200"]
-   elasticsearch.apiKey: "your-api-key-here"
-   ```
-
-- **Test API Key Validity:**
-   ```bash
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" \
-        -H "Authorization: ApiKey your-api-key"
-   ```
-
-- **Create New API Key for Kibana:**
-   ```powershell
-   # Create the JSON file
-   @'
-   {
-     "name": "kibana-api-key",
-     "expiration": "365d",
-     "role_descriptors": {
-       "kibana_admin": {
-         "cluster": ["all"],
-         "index": [
-           {
-             "names": ["*"],
-             "privileges": ["all"]
-           }
-         ]
-       }
-     }
-   }
-   '@ | Out-File -FilePath "kibana-api-key.json" -Encoding utf8
-   
-   # Use curl with the file
-   curl.exe -k -X POST "https://<hostname_or_ip>:9200/_security/api_key" -H "Content-Type: application/json" -u <username>:<password> -d @kibana-api-key.json
-   
-   # Clean up (optional)
-   Remove-Item "kibana-api-key.json"
-   ```
-
-- **Update Kibana Configuration:**
-   - Replace expired API key in `kibana.yml`
-   - Restart Kibana service
-
-### Username/Password Authentication Issues
-
-**Symptoms:**
-- Login failures at Kibana interface
-- "Invalid username or password" errors
-- Users cannot access Kibana dashboards
-
-**Troubleshooting Steps:**
-
-1. **Verify User Configuration:**
-   - Check `kibana.yml`:
-   ```yaml
-   elasticsearch.username: "kibana_system"
-   elasticsearch.password: "<password>"
-   ```
-
-2. **Test User Authentication:**
-   ```bash
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" -u <username>:<password>
-   ```
-   **Expected output:**
-   ```
-   {
-     "kibana_system": {
-       "username": "kibana_system",
-       "roles": [
-         "kibana_system"
-       ],
-       ...
-     }
-   }
-   ```
-
-3. **Reset Kibana System User Password:**
-   ```powershell
-   # From Elasticsearch bin directory
-   C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u kibana_system
    ```
 
 ## Kibana Encryption Keys Configuration
