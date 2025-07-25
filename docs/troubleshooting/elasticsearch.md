@@ -97,7 +97,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 - Cannot access Elasticsearch via HTTP/HTTPS
 
 > [!NOTE]
-> A comprehensive port diagram will be available soon and referenced across multiple documentation pages.
+> Click here to view the latest port diagram that includes the Elastic Stack [Port Diagram](../environment-watch/port-diagram.md)
 
 **Troubleshooting Steps:**
 
