@@ -118,6 +118,13 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Windows Service Issues
 
+> [!CAUTION]
+> When the Kibana distribution is extracted, it can exceed the maximum Windows path. To prevent this from occurring, Relativity recommends enabling the long path feature.
+>
+> - Run `gpedit.msc` to open the Local Group Policy Editor.
+> - Navigate to **Computer Configuration** → **Administrative Template** → **System** → **Filesystem**.
+> - Double click on **Enable Win32 long paths** and set it to **Enabled**.
+
 ### Kibana Service Not Starting
 
 **Symptoms:**
@@ -214,21 +221,15 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
 
 - **Test Kibana Connectivity:**
-   ```bash
-   curl.exe -k -X -u <username>:<password> GET "http://<hostname>:5601/api/status"
+   ```powershell
+   (curl.exe -s -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status" | ConvertFrom-Json).status.overall | ConvertTo-Json -Depth 10
    ```
    **Expected output:**
-   ```
-   <!DOCTYPE html>
-   <html>
-   <head>
-     <title>Kibana</title>
-     ...
-   </head>
-   <body>
-     ...
-   </body>
-   </html>
+   ```json
+   {
+     "level": "available",
+     "summary": "All services and plugins are available"
+   }
    ```
 
 - **Configure Alternative Port (if needed):**
@@ -368,17 +369,3 @@ C:\elastic\kibana\bin\kibana.bat --validate-config
 # Check current configuration
 C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
 ```
-
-### Log Analysis
-
-```powershell
-# View recent Kibana logs
-Get-Content "C:\elastic\kibana\logs\kibana.log" -Tail 50
-
-# Search for specific errors
-Select-String -Path "C:\elastic\kibana\logs\*.log" -Pattern "ERROR|WARN|FATAL" | Select-Object -Last 20
-
-# Filter authentication errors
-Select-String -Path "C:\elastic\kibana\logs\*.log" -Pattern "authentication|unauthorized" | Select-Object -Last 10
-```
-
