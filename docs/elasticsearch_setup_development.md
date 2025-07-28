@@ -25,11 +25,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 2. **Install and Configure Elasticsearch 8.17.3**
 
-- Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
 - Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:
 
   ```
-  .\elasticsearch.bat
+  C:\elastic\elasticsearch-8.17.3\bin\elasticsearch.bat
   ```
 
   <a id="enrollment-token-generation"></a>
@@ -49,11 +48,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > [!TIP]
 > To stop Elasticsearch after you have copied the enrollment token, click inside the PowerShell window and press `Ctrl` and `C` at the same time. This will end the running process.
 
-- Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
 - Open an elevated PowerShell and run the following command to install Elasticsearch as a Windows service:
 
   ```
-  .\elasticsearch-service.bat install
+  C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-service.bat install
   ```
 
   The output will look similar to:
@@ -66,11 +64,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 3. **Run Elasticsearch as a Windows Service**
 
-- Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
 - Open an elevated PowerShell and run the following command to start the Elasticsearch service:
 
   ```
-  .\elasticsearch-service.bat start
+  C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-service.bat start
   ```
 
   The output will look similar to:
@@ -97,11 +94,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 5. **Reset the Elastic (Admin) User Password**
 
-   Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
    The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
 
+   - Open an elevated PowerShell and run the following command:
+
    ```
-   .\elasticsearch-reset-password -u elastic
+   C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-reset-password -u elastic
    ```
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
@@ -112,16 +110,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 6. **Install the 'mapper-size' plugin**
 
-  - Navigate to the Elasticsearch `bin` folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
   - Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
 
-  ```
-  .\elasticsearch-plugin install mapper-size
-  ```
+  C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-plugin install mapper-size
 - To verify the 'mapper-size' plugin is installed, run:
-
   ```
-  ./elasticsearch-plugin list
+  C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-plugin list
   ```
 
 - Restart the Elasticsearch Service:   
@@ -173,12 +167,6 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ## Step 2: Install and Configure Kibana
 
-> [!CAUTION]
-When the Kibana distribution is extracted, it can exceed the maximum Windows path. To prevent this from occurring, Relativity recommends enabling the long path feature.
-
-- Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem.
-- Double click on enable the Long path.
-
 1. **Download Kibana 8.17.3**
     
    - Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
@@ -191,7 +179,7 @@ When the Kibana distribution is extracted, it can exceed the maximum Windows pat
    - Open an elevated PowerShell and run the following command:
 
      ```
-     .\kibana.bat
+     C:\Kibana\kibana-8.17.3\bin\kibana.bat
      ```
 
    - If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
@@ -213,7 +201,7 @@ When the Kibana distribution is extracted, it can exceed the maximum Windows pat
    - If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`):
 
      ```
-     .\elasticsearch-create-enrollment-token --scope kibana
+     C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-create-enrollment-token --scope kibana
      ```
 <details>
 <summary>Sample output</summary>
@@ -230,11 +218,10 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
 > [!IMPORTANT]
     Skipping the steps below will cause the Relativity Server CLI to fail.
 
-- Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
 - Open an elevated PowerShell and run the following command:
 
   ```
-  .\kibana-encryption-keys generate
+  C:\Kibana\kibana-8.17.3\bin\kibana-encryption-keys generate
   ```
 
    - If successful, you will see output showing the generated encryption keys. For example:
@@ -262,11 +249,10 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
      </details>
 
    - Restart the Kibana service:
-     - Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
      - Open an elevated PowerShell and run the following command:
 
        ```
-       .\kibana.bat
+       C:\Kibana\kibana-8.17.3\bin\kibana.bat
        ```
 
    - To verify success, check the terminal output for lines indicating that Kibana has started successfully. You can also refer to the screenshots below:
@@ -289,11 +275,10 @@ This verifies that Kibana is running and your credentials are working.
 > [!Note]
 Kibana does not install as a Windows service by default. We recommend using NSSM—a commonly used open-source tool—to run Kibana as a Windows service.
 
-   - Navigate to the folder containing `nssm.exe` (e.g., `C:\nssm-2.24\win64`).
    - Open an elevated PowerShell and run the following command:
 
      ```
-     .\nssm.exe install kibana
+     C:\nssm-2.24\win64\nssm.exe install kibana
      ```
 
      This will open a popup to create a Windows service for Kibana.
@@ -305,11 +290,10 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 > [!NOTE]
 If you accidentally press Return, the service may be installed before your configuration is complete. To edit the service properties, use:
      
-      - Navigate to the Kibana `bin` folder (e.g., `C:\Kibana\kibana-8.17.3\bin`).
-      - Open an elevated PowerShell and run the following command:
+   - Open an elevated PowerShell and run the following command:
 
      ```
-     .\nssm.exe edit kibana
+     C:\nssm-2.24\win64\nssm.exe edit kibana
      ```
 
    - In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). Copy the full log file path into the stdout and stderr sections:
@@ -381,55 +365,27 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
 
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
-- Update the host of apm-server to `<hostname_or_ip>:8200`. Uncomment the line if it is commented.
+- Open the `apm-server.yml` file in a text editor and update it to match the following sample configuration. Replace the placeholder values (`<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`) as needed for your environment.
 
-- In the "Elasticsearch output" section, perform the following changes:
-  - Uncomment the `output.elasticsearch` section in your `apm-server.yml` file if it is commented.
+- Below is a sample configuration
 
-  - Update the Elasticsearch output section to use the API key. Uncomment the `api_key` line if it is commented:
+  ```yaml
+  apm-server:
+    host: "<apm-server-hostname_or_ip>:8200"
 
-    ```yaml
-    output.elasticsearch:
-      hosts: ["<hostname_or_ip>:9200"]
-      protocol: https
-      api_key: "<id>:<api_key>"
-    ```
+  output.elasticsearch:
+    hosts: ["<elasticsearch-hostname_or_ip>:9200"]
+    protocol: "https"
+    api_key: "<id>:<api-key>"
+    ssl.enabled: true
+    ssl.verification_mode: none
 
-    Replace `<id>` and `<api_key>` with the values returned from the API key creation response.
-  - Ensure `hosts` is set to `["<hostname_or_ip>:9200"]`.
-  - Ensure `protocol` is set to `https`.
-  - These settings are needed because Elasticsearch is running under https.
-
-- API Key is required for APM Services. The same is highlighted below sample configuration:
-
-- Also within output.elasticsearch, modify SSL settings:
-  - Update ssl.enabled: true
-  - Update ssl.verification_mode: none
-
-- Update the Instrumentation section as below:
-  - Uncomment Instrumentation section to enable apm-server instrumentation.
-  - Update enabled: true, environment: production
-  - hosts: - "http://<hostname_or_ip>:8200"
-
-- Below is a sample configuration for `C:\apm-server-8.17.3-windows-x86_64\config\apm-server.yml` after setup. Update `<username>`, `<password>`, `<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`and `<hostname_or_ip>` as needed for your environment.
-
-    ```yaml
-    apm-server:
-      host: "<apm-server-hostname_or_ip>:8200"
-
-    output.elasticsearch:
-      hosts: ["<elasticsearch-hostname_or_ip>:9200"]
-      protocol: "https"
-      api_key: "<id>:<api-key>"
-      ssl.enabled: true
-      ssl.verification_mode: none
-
-    instrumentation:
-      enabled: true
-      environment: production
-      hosts:
-        - "http://<apm-server-hostname_or_ip>:8200"
-    ```
+  instrumentation:
+    enabled: true
+    environment: production
+    hosts:
+      - "http://<apm-server-hostname_or_ip>:8200"
+  ```
 
 - Once the instrumentation is set, you can verify it in Kibana as shown below:
 
@@ -437,12 +393,11 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
     
 4. **Execute required scripts to install APM Server as a Windows service**
    
-- Navigate to the downloaded apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`).
 - Open an elevated PowerShell.
 - Run the following command to install the APM Server as a Windows service:
 
   ```
-  PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1
+  PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-8.17.3-windows-x86_64\install-service.ps1
   ```
 
   The output will look similar to:
@@ -495,7 +450,7 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
 
      ![alt text](../resources/troubleshooting-images/add-apm-integration.png)
 
-   - Add an Integration name and for server configuration (MUST ENSURE THE HOSTNAME IS USED - NOT LOCALHOST). Update apm hostname and apm url.  
+   - Add an Integration name and for server configuration. Update apm hostname and apm url.  
      Ex: Host: <hostname_or_ip>:8200  
      URL: http://<hostname_or_ip>:8200
 
@@ -509,13 +464,14 @@ Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store
 
 2. **Verify APM Data View**
    
-   a. Before proceeding with EW CLI, check if the APM Data View is created in Kibana or not. 
 
-    - Open a browser and go to http://<hostname_or_ip>:5601.
-  
-    - Log in using elastic credentials.
+Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
-    ![dataview](../resources/troubleshooting-images/dataview.png)
+- Open a browser and go to http://<hostname_or_ip>:5601
+- Log in using elastic credentials
+- Confirm the APM Data View is present:
+
+  ![dataview](../resources/troubleshooting-images/dataview.png)
 
 3. **Verify Cluster Health**
     
