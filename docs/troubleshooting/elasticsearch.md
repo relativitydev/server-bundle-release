@@ -321,14 +321,4 @@ Get-NetTCPConnection | Where-Object {$_.LocalPort -in @(9200,9300)} | Select-Obj
 Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="Size(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, @{Name="FreeSpace(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
 ```
 
-### Log Analysis
-
-```powershell
-# View recent Elasticsearch logs
-Get-Content "C:\elastic\elasticsearch\logs\elasticsearch.log" -Tail 50
-
-# Search for specific errors
-Select-String -Path "C:\elastic\elasticsearch\logs\*.log" -Pattern "ERROR|WARN" | Select-Object -Last 20
-```
-
 
