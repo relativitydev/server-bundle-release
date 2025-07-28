@@ -189,10 +189,6 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 2. **Windows *should* be updated to support long paths** - This is recommended because the Elastic Stack components have dense file paths when fully extracted. In many cases, the product apppears to function properly but certain features may fail because files may be missing or cannot be accessed because the path exceeds the max Windows character length. Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on enable the Long path.
 
-TODO: Kibana is built on Node and includes several files that can easily exceeed the max path length in Windows. This problem is well known within the Elastic community and MUST be addressed. You have 2 choices: extract Kibana to intentionally short paths (e.g. C:\elastic\kibana) or enable long paths in Windows. This section and Kibana extraction specifically must be better explained.
-
-
-TODO: Add a screenshot + incorporate the link below.
 
     https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
 

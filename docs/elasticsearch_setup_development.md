@@ -338,30 +338,20 @@ If you accidentally press Return, the service may be installed before your confi
 
 3. **Configure APM Server (`config\apm-server.yml`)**
 
-- An API key is required for configuring APM. To create an API key:
-  - Open an elevated Command Prompt.
-  - Run the following command (replace `<hostname_or_ip>`, `<username>`, `<password>`, and `<api-key-name>` with your actual values):
+- An API key is required for configuring both APM and Beats. To create an API key:
 
-    ```
-    curl -k -X POST "https://<hostname_or_ip>:9200/_security/api_key" ^
-    -H "Content-Type: application/json" ^
-    -u <username>:<password> ^
-    -d "{ \"name\": \"<api-key-name>\" }"
-    ```
+  - Log in to Kibana (`http://<hostname_or_ip>:5601`) using the `elastic` credential.
+  - Use the global search at the top of Kibana to search for "API keys" and select it from the results.
+  - Click the **Create API key** button.
+  - Enter a name for your API key (for example, specify if it will be used for Beats or APM).
+  - Click the **Privileges** dropdown and select **Beats** to automatically apply the recommended permissions for Beats.
+  - Click **Create API key**.
+  - Copy and securely save the generated `id` and `api_key` values.
 
-    The output will look similar to:
-
-    ```json
-    {
-      "id": "_q-CP5gBkkOj6XzvuWrA",
-      "name": "api-key01",
-      "api_key": "zvVd_kQDTI6WzQcVInue5Q",
-      "encoded": "X3EtQ1A1Z0Jra09qNlh6dnVXckE6enZWZF9rUURUSTZXelFjVkludWU1UQ=="
-    }
-    ```
+  ![create-apikey](../resources/troubleshooting-images/create-apikey.png)
 
 > [!NOTE]
-Copy and save `id`, `name`, `api_key` and `encoded` values immediately and store them securely according to your organization’s credential management and security policies.
+Copy and save `id` and `api_key` values immediately and store them securely according to your organization’s credential management and security policies.
 
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
