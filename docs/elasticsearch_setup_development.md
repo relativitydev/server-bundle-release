@@ -89,7 +89,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
    - Save the changes and restart the Elasticsearch service:
      - Open an elevated PowerShell and run the following command:
        ```
-       Restart-Service -Name "elasticsearch"
+       Restart-Service -Name "elasticsearch-service-x64"
        ```
 
 5. **Reset the Elastic (Admin) User Password**
