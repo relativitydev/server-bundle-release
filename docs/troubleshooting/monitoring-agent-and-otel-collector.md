@@ -28,41 +28,58 @@ This document provides troubleshooting guidance for the Relativity Environment W
   ```powershell
   Start-Service -Name "Relativity Environment Watch"
   ```
+  **Expected output:**  
+  *(No output if successful. Service status will be "Running" after execution.)*
+
 - Stop service:
   ```powershell
   Stop-Service -Name "Relativity Environment Watch"
   ```
+  **Expected output:**  
+  *(No output if successful. Service status will be "Stopped" after execution.)*
+
 - Check status:
   ```powershell
   Get-Service 'Relativity Environment Watch'
   ```
-- **Expected:**
-  - Windows service starts/stops successfully.
-  - When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present.
-  - When stopped, neither process is present.
-  - Port 4318 is listening only when service is running.
-  - To check port status:
-    ```powershell
-    netstat -an | findstr ":4318"
-    Get-NetTCPConnection -LocalPort 4318 -State Listen
-    ```
-    **Expected result:** Output shows port 4318 is listening only when the service is running.
+  **Expected output:**
+  ```
+  Status   Name                          DisplayName
+  ------   ----                          -----------
+  Running  Relativity Environment Watch  Relativity Environment Watch
+  ```
+
+- Check port status:
+  ```powershell
+  netstat -an | findstr ":4318"
+  Get-NetTCPConnection -LocalPort 4318 -State Listen
+  ```
+  **Expected output:**
+  ```
+  TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
+  ```
+  *(Only present when service is running; no output if stopped.)*
+
+> [!INFO]
+When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
 
 ---
 
 ## Port Configuration Issues
 
-- Only one Open Telemetry Collector can run per environment.
-- Default port: OTLP HTTP 4318.
+> [!INFO]
+Only one Open Telemetry Collector can run per environment. Default port: OTLP HTTP 4318.
+
 - Check port:
   ```powershell
   netstat -an | findstr ":4318"
   Get-NetTCPConnection -LocalPort 4318 -State Listen
   ```
-- Update firewall:
-  ```powershell
-  New-NetFirewallRule -DisplayName "Open Telemetry OTLP HTTP" -Direction Inbound -Protocol TCP -LocalPort 4318 -Action Allow
+  **Expected output:**
   ```
+  TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
+  ```
+  *(Only present when service is running; no output if stopped.)*
 
 ---
 
@@ -79,6 +96,12 @@ This document provides troubleshooting guidance for the Relativity Environment W
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Information" }
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.Message -like "*Everything is ready*" }
   ```
+  **Expected output (for last command):**
+  ```
+  Index Time          EntryType   Source                        InstanceID Message
+  ----- ----          ---------   ------                        ---------- -------
+  123   7/29/2025     Information Relativity.EnvironmentWatch   ...        Everything is ready
+  ```
 
 ---
 
@@ -90,15 +113,35 @@ This document provides troubleshooting guidance for the Relativity Environment W
   ```powershell
   Test-NetConnection -ComputerName <hostname_or_ip> -Port 443
   ```
+  **Expected output:**
+  ```
+  ComputerName     : <hostname_or_ip>
+  RemoteAddress    : <ip>
+  RemotePort       : 443
+  TcpTestSucceeded : True
+  ```
+
 - Test API access:
-  ```bash
+  ```powershell
   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/api/v1/secrets"
   ```
-  **Expected response:** A valid JSON response with secret data.
+  **Expected response:**
+  ```json
+  {
+    "secrets": [
+      {
+        "id": "secret_id",
+        "name": "secret_name",
+        ...
+      }
+    ]
+  }
+  ```
 
 ### BCP Share Access Verification
 
-> If you are not logged in as the Relativity Service Account, use the commands below.
+> [!INFO]
+If you are not logged in as the Relativity Service Account, use the commands below.
 
 - Test as the Relativity Service Account:
   ```powershell
@@ -107,6 +150,11 @@ This document provides troubleshooting guidance for the Relativity Environment W
   # In the new PowerShell session window, run:
   Test-Path "\\bcp-share\relativity-data"
   ```
+  **Expected output:**
+  ```
+  True
+  ```
+  *(If the path is accessible; otherwise, False.)*
 
 ### Kepler (SSL Certificate) Verification
 
@@ -116,26 +164,36 @@ This document provides troubleshooting guidance for the Relativity Environment W
   ```powershell
   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/relativity.rest/api/relativity-infrawatch-services/v1/infrawatch-manager/getkeplerstatusasync"
   ```
-  **Expected response:** A JSON status indicating Kepler is healthy.
+  **Expected response:**
+  ```json
+  {
+    "status": "Healthy",
+    ...
+  }
+  ```
 
 ### Elasticsearch Access Verification
 
-- For connectivity and troubleshooting, see [Elasticsearch Troubleshooting](../elasticsearch.md).
+> [!INFO]
+For connectivity and troubleshooting, [ElasticSearch Troubleshooting](elasticsearch.md)
 
 ### APM Server Access Verification
 
-- For connectivity and troubleshooting, see [APM Server Troubleshooting](../apm-server.md).
+> [!INFO]
+For connectivity and troubleshooting, [APM-Server Troubleshooting](apm-server.md)
 
 ### Relativity Service Account Verification
 
-- For service account requirements and troubleshooting, see [Environment Watch Installer](../environment_watch_installer.md).
+> [!INFO]
+For service account requirements and troubleshooting, [Environment_Watch_Installer](../environment_watch_installer.md)
 
 ---
 
 ## Open Telemetry YAML File Auto-Generation
 
-- The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:
-  - `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml`
+> [!INFO]
+The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
+C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml
 
 ---
 
@@ -146,11 +204,12 @@ To verify that metrics, logs, and traces are flowing from the Open Telemetry Col
 1. **Monitoring Agents Dashboard**
    - Open Kibana and navigate to the **Monitoring Agents** dashboard.
    - Confirm the "Last Check-In" field is updating for each monitored server.
-   - This proves the heartbeat metric is working.
+   - **Expected:** The "Last Check-In" timestamp updates regularly.
 
 2. **Host Infrastructure Overview**
    - Open Kibana and navigate to the **Host Infrastructure Overview** dashboard.
    - Confirm metrics are present for each host.
+   - **Expected:** Metrics and graphs are populated for the host.
 
 3. **Discover Query**
    - Open Kibana, go to **Discover**.
@@ -161,9 +220,8 @@ To verify that metrics, logs, and traces are flowing from the Open Telemetry Col
      ```
    - **Expected result:** You should see logs, metrics, and traces from the Open Telemetry Collector for the specified host.
 
-   ![Sample Discover Query Result](../troubleshooting-images/monitoring-agent-discover-result.png)
-
 ---
 
-For additional troubleshooting, refer to the main [Environment Watch documentation](../environment_watch_installer.md).
+For additional troubleshooting, refer to the main documentation:  
+[Environment_Watch_Installer](../environment_watch_installer.md)
 

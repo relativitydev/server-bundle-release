@@ -38,27 +38,11 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    Get-Service -Name elasticsearch
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   Status   Name              DisplayName
-   ------   ----              -----------
-   Running  elasticsearch     Elasticsearch
-   ```
-   </details>
 
 - **Verify Service Configuration:**
    ```powershell
    (Get-CimInstance Win32_Service -Filter "Name = 'elasticsearch'").StartName
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   LocalSystem
-   ```
-   </details>
 
 - **Check Elasticsearch Logs:**
    - Navigate to `C:\elastic\elasticsearch\logs\`
@@ -73,15 +57,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    java -version
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   java version "17.0.8" 2023-07-18 LTS
-   Java(TM) SE Runtime Environment (build 17.0.8+9-LTS-211)
-   Java HotSpot(TM) 64-Bit Server VM (build 17.0.8+9-LTS-211, mixed mode, sharing)
-   ```
-   </details>
    - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
    - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.
    - If you want to use a specific Java version, ensure `JAVA_HOME` is set correctly.
@@ -90,13 +65,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    Start-Service elasticsearch
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   (No output if successful. Service status will be "Running" after execution.)
-   ```
-   </details>
 
 ### Service Crashes or Stops Unexpectedly
 
@@ -118,16 +86,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    # Check disk space
    Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="FreeSpace(%)";Expression={[math]::Round(($_.FreeSpace/$_.Size)*100,2)}}
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   DeviceID FreeSpace(%)
-   -------- ------------
-   C:       22.15
-   D:       48.92
-   ```
-   </details>
 
 ## Port Configuration Issues
 
@@ -151,72 +109,25 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    netstat -an | findstr ":9200"
    netstat -an | findstr ":9300"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   TCP    0.0.0.0:9200           0.0.0.0:0              LISTENING
-   TCP    0.0.0.0:9300           0.0.0.0:0              LISTENING
-   ```
-   </details>
 
 - **Test Elasticsearch Connectivity:**
    ```bash
    # Test Elasticsearch HTTP port
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "name" : "EMTTEST",
-     "cluster_name" : "elasticsearch",
-     "cluster_uuid" : "PwBZoINKQjGZ53WH4gFfBg",
-     "version" : {
-       "number" : "8.17.3",
-       "build_flavor" : "default",
-       "build_type" : "zip",
-       "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
-       "build_date" : "2025-02-28T10:07:26.089129809Z",
-       "build_snapshot" : false,
-       "lucene_version" : "9.12.0",
-       "minimum_wire_compatibility_version" : "7.17.0",
-       "minimum_index_compatibility_version" : "7.0.0"
-     },
-     "tagline" : "You Know, for Search"
-   }
-   ```
-   </details>
 
 - **Identify Port Conflicts:**
    ```powershell
    Get-NetTCPConnection -LocalPort 9200 -State Listen
    Get-NetTCPConnection -LocalPort 9300 -State Listen
    ```
-   <details>
-   <summary>Expected output</summary>
 
-   ```
-   LocalAddress LocalPort State
-   ----------- --------- -----
-   0.0.0.0     9200      Listen
-   0.0.0.0     9300      Listen
-   ```
-   </details>
 
 - **Update Firewall Rules:**
    ```powershell
    New-NetFirewallRule -DisplayName "Elasticsearch HTTP" -Direction Inbound -Protocol TCP -LocalPort 9200 -Action Allow
    New-NetFirewallRule -DisplayName "Elasticsearch Transport" -Direction Inbound -Protocol TCP -LocalPort 9300 -Action Allow
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   (No output if successful. Rules will appear in Windows Firewall.)
-   ```
-   </details>
 
 ### Network Connectivity Problems
 
@@ -239,29 +150,11 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "name" : "EMTTEST",
-     "cluster_name" : "elasticsearch",
-     ...
-   }
-   ```
-   </details>
 
 - **Test Remote Connectivity:**
    ```powershell
    Test-NetConnection -ComputerName <hostname_or_ip> -Port 9200
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   TcpTestSucceeded : True
-   ```
-   </details>
 
 ## Memory Issues
 
@@ -278,16 +171,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    Get-WmiObject -Class Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   Count    : 2
-   Average  :
-   Sum      : 34359738368
-   Property : Capacity
-   ```
-   </details>
+> [!NOTE]
+> `Sum` is the total RAM in bytes (e.g., 34359738368 bytes = 32 GB).
 
 2. **Review JVM Heap Settings:**
    - Edit `C:\elastic\elasticsearch\config\jvm.options` file:
@@ -305,24 +190,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_nodes/stats/jvm?pretty"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "nodes": {
-       "node_id": {
-         "jvm": {
-           "mem": {
-             "heap_used_percent": 23,
-             ...
-           }
-         }
-       }
-     }
-   }
-   ```
-   </details>
 
 4. **Check for Memory Leaks:**
    - Monitor heap usage over time
@@ -345,54 +212,18 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" \
         -u <username>:<password>
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "<username>": {
-       "username": "<username>",
-       "roles": [
-         "superuser"
-       ],
-       ...
-     }
-   }
-   ```
-   </details>
 
 - **Reset Password:**
    ```powershell
    # Navigate to Elasticsearch bin directory
    C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u elastic
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   Password for the [elastic] user successfully reset.
-   ```
-   </details>
 
 - **Check User Roles:**
    ```bash
    curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" \
         -u <username>:<password>
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "<username>": {
-       "roles": [
-         "superuser"
-       ],
-       ...
-     }
-   }
-   ```
-   </details>
 
 - **Verify Security Configuration:**
    - Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
@@ -415,6 +246,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health?pretty"
    ```
+   
    <details>
    <summary>Expected response for healthy cluster</summary>
 
@@ -433,48 +265,16 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/nodes?v"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   ip         heap.percent ram.percent cpu load_1m load_5m load_15m node.role   master name
-   127.0.0.1           23          56   2    0.00    0.01     0.05 cdfhilmrstw *      EMTTEST
-   ```
-   </details>
 
 - **Check Index Health:**
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/indices?v"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   health status index                           uuid                   pri rep docs.count docs.deleted store.size pri.store.size
-   green  open   .apm-agent-configuration        9b1...                 1   1          0            0       208b           104b
-   green  open   .kibana_1                      9b2...                 1   1         10            2      1.2mb          600kb
-   ```
-   </details>
 
 - **Monitor Performance:**
    ```bash
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_nodes/stats?pretty"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "nodes": {
-       "node_id": {
-         "name": "EMTTEST",
-         "host": "127.0.0.1",
-         ...
-       }
-     }
-   }
-   ```
-   </details>
 
 ### Service Dependencies Verification
 
@@ -488,17 +288,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    Get-Service -Name elasticsearch, kibana, apm-server | Format-Table -AutoSize
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   Status   Name          DisplayName
-   ------   ----          -----------
-   Running  elasticsearch Elasticsearch
-   Running  kibana        Kibana
-   Running  apm-server    Elastic APM Server
-   ```
-   </details>
 
 2. **Check Service Dependencies:**
    - Ensure Elasticsearch starts before dependent services
@@ -509,17 +298,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    # Test from Relativity server
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "name" : "EMTTEST",
-     "cluster_name" : "elasticsearch",
-     ...
-   }
-   ```
-   </details>
 
 4. **Validate Configuration:**
    - Review Relativity configuration for correct Elasticsearch endpoints
@@ -533,30 +311,15 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 ```powershell
 # Check service status
 Get-Service elasticsearch | Select-Object Status, StartType, Name
-# Expected output:
-# Status   StartType Name
-# ------   --------- ----
-# Running  Automatic elasticsearch
 
 # Check process information
 Get-Process -Name java | Where-Object {$_.ProcessName -eq "java"}
-# Expected output: Process info for Java (used by Elasticsearch)
 
 # Check listening ports
 Get-NetTCPConnection | Where-Object {$_.LocalPort -in @(9200,9300)} | Select-Object LocalAddress, LocalPort, State
-# Expected output:
-# LocalAddress LocalPort State
-# ----------- --------- -----
-# 0.0.0.0     9200      Listen
-# 0.0.0.0     9300      Listen
 
 # Check disk space
 Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="Size(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, @{Name="FreeSpace(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
-# Expected output:
-# DeviceID Size(GB) FreeSpace(GB)
-# -------- -------- ------------
-# C:       100.00   22.15
-# D:       500.00   48.92
 ```
 
 
