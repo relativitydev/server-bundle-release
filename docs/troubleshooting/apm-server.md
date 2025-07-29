@@ -306,7 +306,7 @@ instrumentation:
   # Hosts to report instrumentation results to.
   # For reporting to itself, leave this field commented or set to the local APM endpoint.
   hosts:
-    - http://emttest:8200
+    - http://<hostname_or_ip>:8200
 ```
 
 After updating the configuration, restart the APM Server service:
