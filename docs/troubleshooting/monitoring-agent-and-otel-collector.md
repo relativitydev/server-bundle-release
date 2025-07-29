@@ -24,62 +24,96 @@ This document provides troubleshooting guidance for the Relativity Environment W
 
 ## Windows Service Troubleshooting
 
-- Start service:
-  ```powershell
-  Start-Service -Name "Relativity Environment Watch"
-  ```
-  **Expected output:**  
-  *(No output if successful. Service status will be "Running" after execution.)*
-
-- Stop service:
-  ```powershell
-  Stop-Service -Name "Relativity Environment Watch"
-  ```
-  **Expected output:**  
-  *(No output if successful. Service status will be "Stopped" after execution.)*
-
-- Check status:
+- **Check if the service is running:**
   ```powershell
   Get-Service 'Relativity Environment Watch'
   ```
-  **Expected output:**
+  <details>
+  <summary>Expected output</summary>
+
   ```
   Status   Name                          DisplayName
   ------   ----                          -----------
   Running  Relativity Environment Watch  Relativity Environment Watch
   ```
+  </details>
 
-- Check port status:
+  If the service is not running, restart it:
+  ```powershell
+  Restart-Service -Name "Relativity Environment Watch"
+  ```
+  <details>
+  <summary>Expected output</summary>
+
+  ```
+  (No output if successful. Service status will be "Running" after execution.)
+  ```
+  </details>
+
+- **Check in Task Manager whether `otelcol-relativity.exe` is running:**
+  - Open Task Manager and look for `otelcol-relativity.exe` under the Processes tab.
+  - Alternatively, use PowerShell:
+    ```powershell
+    Get-Process -Name otelcol-relativity
+    ```
+    <details>
+    <summary>Expected output</summary>
+
+    ```
+    Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+    -------  ------    -----      -----     ------     --  -- -----------
+    ...      ...       ...        ...       ...        ... ... otelcol-relativity
+    ```
+    *(If not running, no output.)*
+    </details>
+
+- **Verify logs are being generated:**
+  - Check the directory:  
+    `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs`
+  - Ensure files like `otelcol-relativity-stderr.log` and `otelcol-relativity-stdout.log` are present and updating.
+
+- **Check if the auto-generated YAML file exists:**
+  - Verify the file:  
+    `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml`
+  - The file should exist and contain configuration details for the Open Telemetry Collector.
+
+- **Check port status:**
   ```powershell
   netstat -an | findstr ":4318"
   Get-NetTCPConnection -LocalPort 4318 -State Listen
   ```
-  **Expected output:**
+  <details>
+  <summary>Expected output</summary>
+
   ```
   TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
   ```
   *(Only present when service is running; no output if stopped.)*
+  </details>
 
-> [!INFO]
-> When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
+> [!NOTE]
+When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
 
 ---
 
 ## Port Configuration Issues
 
-> [!INFO]
-> Only one Open Telemetry Collector can run per environment. Default port: OTLP HTTP 4318.
+> [!NOTE]
+Only one Open Telemetry Collector can run per environment. Default port: OTLP HTTP 4318.
 
 - Check port:
   ```powershell
   netstat -an | findstr ":4318"
   Get-NetTCPConnection -LocalPort 4318 -State Listen
   ```
-  **Expected output:**
+  <details>
+  <summary>Expected output</summary>
+
   ```
   TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
   ```
   *(Only present when service is running; no output if stopped.)*
+  </details>
 
 ---
 
@@ -96,12 +130,15 @@ This document provides troubleshooting guidance for the Relativity Environment W
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Information" }
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.Message -like "*Everything is ready*" }
   ```
-  **Expected output (for last command):**
+  <details>
+  <summary>Expected output (for last command)</summary>
+
   ```
   Index Time          EntryType   Source                        InstanceID Message
   ----- ----          ---------   ------                        ---------- -------
   123   7/29/2025     Information Relativity.EnvironmentWatch   ...        Everything is ready
   ```
+  </details>
 
 ---
 
@@ -113,19 +150,24 @@ This document provides troubleshooting guidance for the Relativity Environment W
   ```powershell
   Test-NetConnection -ComputerName <hostname_or_ip> -Port 443
   ```
-  **Expected output:**
+  <details>
+  <summary>Expected output</summary>
+
   ```
   ComputerName     : <hostname_or_ip>
   RemoteAddress    : <ip>
   RemotePort       : 443
   TcpTestSucceeded : True
   ```
+  </details>
 
 - Test API access:
   ```powershell
   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/api/v1/secrets"
   ```
-  **Expected response:**
+  <details>
+  <summary>Expected response</summary>
+
   ```json
   {
     "secrets": [
@@ -137,11 +179,12 @@ This document provides troubleshooting guidance for the Relativity Environment W
     ]
   }
   ```
+  </details>
 
 ### BCP Share Access Verification
 
-> [!INFO]
-> If you are not logged in as the Relativity Service Account, use the commands below.
+> [!NOTE]
+If you are not logged in as the Relativity Service Account, use the commands below.
 
 - Test as the Relativity Service Account:
   ```powershell
@@ -150,11 +193,14 @@ This document provides troubleshooting guidance for the Relativity Environment W
   # In the new PowerShell session window, run:
   Test-Path "\\bcp-share\relativity-data"
   ```
-  **Expected output:**
+  <details>
+  <summary>Expected output</summary>
+
   ```
   True
   ```
   *(If the path is accessible; otherwise, False.)*
+  </details>
 
 ### Kepler (SSL Certificate) Verification
 
@@ -164,35 +210,38 @@ This document provides troubleshooting guidance for the Relativity Environment W
   ```powershell
   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/relativity.rest/api/relativity-infrawatch-services/v1/infrawatch-manager/getkeplerstatusasync"
   ```
-  **Expected response:**
+  <details>
+  <summary>Expected response</summary>
+
   ```json
   {
     "status": "Healthy",
     ...
   }
   ```
+  </details>
 
 ### Elasticsearch Access Verification
 
-> [!INFO]
-> For connectivity and troubleshooting, [ElasticSearch Troubleshooting](elasticsearch.md)
+> [!NOTE]
+For connectivity and troubleshooting, [ElasticSearch Troubleshooting](elasticsearch.md)
 
 ### APM Server Access Verification
 
-> [!INFO]
-> For connectivity and troubleshooting, [APM-Server Troubleshooting](apm-server.md)
+> [!NOTE]
+For connectivity and troubleshooting, [APM-Server Troubleshooting](apm-server.md)
 
 ### Relativity Service Account Verification
 
-> [!INFO]
-> For service account requirements and troubleshooting, [Environment_Watch_Installer](../environment_watch_installer.md)
+> [!NOTE]
+For service account requirements and troubleshooting, [Environment_Watch_Installer](../environment_watch_installer.md)
 
 ---
 
 ## Open Telemetry YAML File Auto-Generation
 
-> [!INFO]
-> The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
+> [!NOTE]
+The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
 C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml
 
 ---
