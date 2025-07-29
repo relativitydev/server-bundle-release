@@ -70,6 +70,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 > For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
 
 - **Verify Java Installation:**
+
    ```powershell
    java -version
    ```
@@ -82,9 +83,11 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    Java HotSpot(TM) 64-Bit Server VM (build 17.0.8+9-LTS-211, mixed mode, sharing)
    ```
    </details>
-   - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
-   - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.
-   - If you want to use a specific Java version, ensure `JAVA_HOME` is set correctly.
+
+> [!NOTE]
+> - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
+> - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.
+> - If you want to use a specific Java version, ensure `JAVA_HOME` is set correctly.
 
 - **Start Service Manually:**
    ```powershell
@@ -484,7 +487,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 **Symptoms:**
 - Elasticsearch starts but related services fail
-- Integration issues with Relativity components
 
 **Troubleshooting Steps:**
 
@@ -503,31 +505,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    Running  apm-server     apm-server
    ```
    </details>
-
-2. **Check Service Dependencies:**
-   - Ensure Elasticsearch starts before dependent services
-   - Verify network connectivity between services
-
-3. **Test API Connectivity:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "name" : "EMTTEST",
-     "cluster_name" : "elasticsearch",
-     ...
-   }
-   ```
-   </details>
-
-4. **Validate Configuration:**
-   - Review Relativity configuration for correct Elasticsearch endpoints
-   - Verify authentication credentials are current
-   - Check SSL certificate configuration
 
 ## Additional Diagnostic Commands
 
