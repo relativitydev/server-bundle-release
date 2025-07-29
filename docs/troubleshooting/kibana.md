@@ -50,7 +50,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
    **Expected output:**
-   ```
+   ```json
    {
       "name" : "EMTTEST",
       "cluster_name" : "elasticsearch",
@@ -63,7 +63,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" -u <username>:<password>
    ```
    **Expected output:**
-   ```
+   ```json
    {
      "kibana_system": {
        "username": "kibana_system",
@@ -79,6 +79,10 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```powershell
    # From Elasticsearch bin directory
    C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u kibana_system
+   ```
+   **Expected output:**
+   ```
+   Password for the [kibana_system] user successfully reset.
    ```
 
 ---
@@ -104,6 +108,18 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```bash
    curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" ^
         -H "Authorization: ApiKey your-api-key"
+   ```
+   **Expected output:**
+   ```json
+   {
+     "api_keys": [
+       {
+         "id": "api_key_id",
+         "name": "api_key_name",
+         ...
+       }
+     ]
+   }
    ```
 
 - **Create New API Key for Kibana:**
@@ -138,6 +154,12 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```powershell
    Get-Service -Name kibana
    ```
+   **Expected output:**
+   ```
+   Status   Name   DisplayName
+   ------   ----   -----------
+   Running  kibana Kibana
+   ```
 
 - **Verify Service Configuration:**
    - Open Services.msc
@@ -152,6 +174,10 @@ This document provides troubleshooting guidance for common Kibana issues encount
 - **Start Service Manually:**
    ```powershell
    Start-Service kibana
+   ```
+   **Expected output:**
+   ```
+   (No output if successful. Service status will be "Running" after execution.)
    ```
 
 ### Service Crashes or Stops Unexpectedly
@@ -178,13 +204,13 @@ This document provides troubleshooting guidance for common Kibana issues encount
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
    **Expected output:**
-   ```
+   ```json
    {
       "name" : "EMTTEST",
       "cluster_name" : "elasticsearch",
       "cluster_uuid" : "PwBZoINKQjGZ53WH4gFfBg",
       "version" : {
-            "number" : "8.17.3",
+         "number" : "8.17.3",
          "build_flavor" : "default",
          "build_type" : "zip",
          "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
@@ -219,6 +245,10 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```powershell
    netstat -an | findstr ":5601"
    ```
+   **Expected output:**
+   ```
+   TCP    0.0.0.0:5601           0.0.0.0:0              LISTENING
+   ```
 
 - **Test Kibana Connectivity:**
    ```powershell
@@ -244,6 +274,10 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```powershell
    New-NetFirewallRule -DisplayName "Kibana Web Interface" -Direction Inbound -Protocol TCP -LocalPort 5601 -Action Allow
    ```
+   **Expected output:**
+   ```
+   (No output if successful. Rule will appear in Windows Firewall.)
+   ```
 
 ### Network Binding Problems
 
@@ -267,7 +301,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/"
    ```
    **Expected output:**
-   ```
+   ```html
    <!DOCTYPE html>
    <html>
    <head>
@@ -299,6 +333,12 @@ This document provides troubleshooting guidance for common Kibana issues encount
 1. **Check Current Memory Usage:**
    ```powershell
    Get-Process -Name node | Where-Object {$_.ProcessName -eq "node"} | Select-Object WorkingSet, VirtualMemorySize
+   ```
+   **Expected output:**
+   ```
+   WorkingSet VirtualMemorySize
+   ---------- ----------------
+   12345678   23456789
    ```
 
 ## Kibana Encryption Keys Configuration
@@ -344,7 +384,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status"
    ```
    **Expected output:**
-   ```
+   ```json
    {
      "name": "kibana",
      "version": {
@@ -365,7 +405,11 @@ This document provides troubleshooting guidance for common Kibana issues encount
 ```powershell
 # Validate YAML syntax
 C:\elastic\kibana\bin\kibana.bat --validate-config
+# Expected output:
+# Configuration is valid
 
 # Check current configuration
 C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
+# Expected output:
+# Configuration loaded successfully
 ```
