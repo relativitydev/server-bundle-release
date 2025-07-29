@@ -61,14 +61,14 @@ This document provides troubleshooting guidance for the Relativity Environment W
   *(Only present when service is running; no output if stopped.)*
 
 > [!INFO]
-When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
+>When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
 
 ---
 
 ## Port Configuration Issues
 
 > [!INFO]
-Only one Open Telemetry Collector can run per environment. Default port: OTLP HTTP 4318.
+>Only one Open Telemetry Collector can run per environment. Default port: OTLP HTTP 4318.
 
 - Check port:
   ```powershell
@@ -141,7 +141,7 @@ Only one Open Telemetry Collector can run per environment. Default port: OTLP HT
 ### BCP Share Access Verification
 
 > [!INFO]
-If you are not logged in as the Relativity Service Account, use the commands below.
+>If you are not logged in as the Relativity Service Account, use the commands below.
 
 - Test as the Relativity Service Account:
   ```powershell
@@ -175,24 +175,24 @@ If you are not logged in as the Relativity Service Account, use the commands bel
 ### Elasticsearch Access Verification
 
 > [!INFO]
-For connectivity and troubleshooting, [ElasticSearch Troubleshooting](elasticsearch.md)
+>For connectivity and troubleshooting, [ElasticSearch Troubleshooting](elasticsearch.md)
 
 ### APM Server Access Verification
 
 > [!INFO]
-For connectivity and troubleshooting, [APM-Server Troubleshooting](apm-server.md)
+>For connectivity and troubleshooting, [APM-Server Troubleshooting](apm-server.md)
 
 ### Relativity Service Account Verification
 
 > [!INFO]
-For service account requirements and troubleshooting, [Environment_Watch_Installer](../environment_watch_installer.md)
+>For service account requirements and troubleshooting, [Environment_Watch_Installer](../environment_watch_installer.md)
 
 ---
 
 ## Open Telemetry YAML File Auto-Generation
 
 > [!INFO]
-The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
+>The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
 C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml
 
 ---
