@@ -348,10 +348,6 @@ This document provides troubleshooting guidance for common Kibana issues encount
    </details>
    - Run this command from the server hosting Kibana (local) and from a remote machine (remote).
 
-- **Check Load Balancer Configuration:**
-   - If using a load balancer, verify proper configuration
-   - Ensure health checks are properly configured
-
 ---
 
 ## Memory Issues
