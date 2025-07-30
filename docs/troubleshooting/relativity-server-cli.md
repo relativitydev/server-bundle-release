@@ -88,7 +88,8 @@ Kibana encryption keys must be added to `C:\elastic\kibana\config\kibana.yml` be
 [ERROR] Missing required Kibana encryption key: xpack.reporting.encryptionKey
 [ERROR] Missing required Kibana encryption key: xpack.security.encryptionKey
 ```
-If you encounter encryption key validation errors or warnings in the CLI, follow the instructions in [Kibana Encryption Key Configuration](kibana.md#missing-or-invalid-encryption-keys).
+> [!NOTE]
+> If you encounter encryption key validation errors or warnings in the CLI, follow the instructions in [Kibana Encryption Key Configuration](kibana.md#missing-or-invalid-encryption-keys).
 
 ---
 
