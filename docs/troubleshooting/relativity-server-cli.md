@@ -33,7 +33,8 @@ The Elastic APM integration package must be added and configured in Kibana befor
 ![APM Integration Host Name](../../resources/troubleshooting-images/apm-integration-host-name.png)
 ![Agent Button](../../resources/troubleshooting-images/agent-button.png)
 
-If you encounter errors such as "Package not found" or installation timeouts during APM integration package installation, refer to the official [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#elastic-apm-integration-package).
+> [!NOTE]
+> If you encounter errors such as "Package not found" or installation timeouts during APM integration package installation, refer to the official [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#elastic-apm-integration-package).
 
 To verify connectivity, always use the following format for verification commands:
 ```powershell
