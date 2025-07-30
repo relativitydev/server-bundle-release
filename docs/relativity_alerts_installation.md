@@ -7,7 +7,7 @@ The Relativity Alerts application is a new application as part of the Relativity
 
 ## Prerequisites
 Requirements for installation of the Relativity Alerts Application:  
-- Relativity Server 2024 Patch 1 release.  
+- Relativity Server 2024 Patch 2 or later.  
 - Configure [Elasticsearch, Kibana, and APM server](elasticsearch_setup.md) in an environment.  
 - Run the one-time [CLI setup](relativity_server_cli_setup.md) for Environment Watch.  
 - Install [Relativity Environment Watch Agent](environment_watch_installer.md) in an environment.
