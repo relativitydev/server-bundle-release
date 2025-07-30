@@ -7,12 +7,18 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 
 ## Table of Contents
 
+<<<<<<< HEAD
 - [APM Integration and Data View](#apm-integration-and-data-view)
+=======
+- [Elastic APM Integration Package Issues](#elastic-apm-integration-package-issues)
+- [Data View Configuration Issues](#data-view-configuration-issues)
+>>>>>>> 6652f46d9f84dcdeaf90d08d46a5a9f65ae55f41
 - [Kibana Encryption Keys Issues](#kibana-encryption-keys-issues)
 - [Prerequisite Access Verification](#prerequisite-access-verification)
 
 ---
 
+<<<<<<< HEAD
 ## APM Integration and Data View
 
 ### Elastic APM Integration Package
@@ -33,6 +39,11 @@ The Elastic APM integration package must be added and configured in Kibana befor
 ![APM Integration Host Name](../../resources/troubleshooting-images/apm-integration-host-name.png)
 ![Agent Button](../../resources/troubleshooting-images/agent-button.png)
 
+=======
+## Elastic APM Integration Package Issues
+
+The Elastic APM integration package must be installed and configured before running the CLI setup.  
+>>>>>>> 6652f46d9f84dcdeaf90d08d46a5a9f65ae55f41
 If you encounter errors such as "Package not found" or installation timeouts during APM integration package installation, refer to the official [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#elastic-apm-integration-package).
 
 To verify connectivity, always use the following format for verification commands:
@@ -63,11 +74,18 @@ curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
 ```
 </details>
 
+<<<<<<< HEAD
 ### Data View
+=======
+---
+
+## Data View Configuration Issues
+>>>>>>> 6652f46d9f84dcdeaf90d08d46a5a9f65ae55f41
 
 Data views must be created and managed through the Kibana frontend.  
 For step-by-step instructions, see [Data View Setup](../elasticsearch_setup_development.md#data-view-setup).
 
+<<<<<<< HEAD
 Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
 - Open a browser and go to `http://<hostname_or_ip>:5601`
@@ -76,6 +94,8 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
   ![dataview](../../resources/troubleshooting-images/dataview.png)
 
+=======
+>>>>>>> 6652f46d9f84dcdeaf90d08d46a5a9f65ae55f41
 ---
 
 ## Kibana Encryption Keys Issues
@@ -111,11 +131,19 @@ Before running the CLI, you must have access to all of the following:
   ```
   </details>
 
+<<<<<<< HEAD
 - **Secret Server**    
   See [Secret Server Access Verification](monitoring-agent-and-otel-collector.md#secret-server-access-verification) for verification steps.
 
 - **Kepler (SSL certificate)**    
   See [Kepler (SSL Certificate) Verification](monitoring-agent-and-otel-collector.md#kepler-ssl-certificate-verification) for verification steps.
+=======
+- **Secret Server**  
+  See [Secret Store Troubleshooting](../elasticsearch_setup_development.md#secret-store-access-verification) for verification steps.
+
+- **Kepler (SSL certificate)**  
+  See [Kepler Troubleshooting](../elasticsearch_setup_development.md#kepler-ssl-certificate-access) for verification steps.
+>>>>>>> 6652f46d9f84dcdeaf90d08d46a5a9f65ae55f41
 
 - **Elasticsearch**  
   See [Elasticsearch Troubleshooting](elasticsearch.md) for verification steps.
@@ -126,7 +154,11 @@ Before running the CLI, you must have access to all of the following:
 - **APM Server**  
   See [APM-Server Troubleshooting](apm-server.md) for verification steps.
 
+<<<<<<< HEAD
 --- 
+=======
+---
+>>>>>>> 6652f46d9f84dcdeaf90d08d46a5a9f65ae55f41
 
 For full setup instructions, see [Relativity Server CLI Setup](relativity_server_cli_setup.md).
 
