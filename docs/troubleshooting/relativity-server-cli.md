@@ -77,6 +77,15 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
   ![dataview](../../resources/troubleshooting-images/dataview.png)
 
+#### Self Instrumentation Data View
+  
+Self-instrumentation allows you to monitor the CLI's own metrics, traces, and logs.
+
+See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and troubleshooting instructions.
+
+> [!NOTE]
+> Without the self-instrumentation Data View, you may not see CLI self-monitoring data in Kibana dashboards.
+
 ---
 
 ## Kibana Encryption Keys Issues
@@ -130,5 +139,5 @@ Before running the CLI, you must have access to all of the following:
 
 --- 
 
-For full setup instructions, see [Relativity Server CLI Setup](relativity_server_cli_setup.md).
+For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
 
