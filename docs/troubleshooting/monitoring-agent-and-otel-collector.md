@@ -11,10 +11,11 @@ This document provides troubleshooting guidance for the Relativity Environment W
 - [Port Configuration Issues](#port-configuration-issues)
 - [Error Handling and Diagnostics](#error-handling-and-diagnostics)
 - [Pre-requisite Access Checks](#pre-requisite-access-checks)
-  - [Secret Server Access Verification](#secret-server-access-verification)
   - [BCP Share Access Verification](#bcp-share-access-verification)
+  - [Secret Server Access Verification](#secret-server-access-verification)
   - [Kepler (SSL Certificate) Verification](#kepler-ssl-certificate-verification)
   - [Elasticsearch Access Verification](#elasticsearch-access-verification)
+  - [Kibana Access Verification](#kibana-access-verification)
   - [APM Server Access Verification](#apm-server-access-verification)
   - [Relativity Service Account Verification](#relativity-service-account-verification)
 - [Open Telemetry YAML File Auto-Generation](#open-telemetry-yaml-file-auto-generation)
@@ -144,6 +145,27 @@ Only one Open Telemetry Collector can run per environment. Default port: OTLP HT
 
 ## Pre-requisite Access Checks
 
+### BCP Share Access Verification
+
+> [!NOTE]
+If you are not logged in as the Relativity Service Account, use the commands below.
+
+- Test as the Relativity Service Account:
+  ```powershell
+  $cred = Get-Credential # use the Relativity Service Account
+  Start-Process "powershell.exe" -Credential $cred -ArgumentList '-NoExit'
+  # In the new PowerShell session window, run:
+  Test-Path "\\bcp-share\relativity-data"
+  ```
+  <details>
+  <summary>Expected output</summary>
+
+  ```
+  True
+  ```
+  *(If the path is accessible; otherwise, False.)*
+  </details>
+
 ### Secret Server Access Verification
 
 - Test connectivity:
@@ -181,27 +203,6 @@ Only one Open Telemetry Collector can run per environment. Default port: OTLP HT
   ```
   </details>
 
-### BCP Share Access Verification
-
-> [!NOTE]
-If you are not logged in as the Relativity Service Account, use the commands below.
-
-- Test as the Relativity Service Account:
-  ```powershell
-  $cred = Get-Credential # use the Relativity Service Account
-  Start-Process "powershell.exe" -Credential $cred -ArgumentList '-NoExit'
-  # In the new PowerShell session window, run:
-  Test-Path "\\bcp-share\relativity-data"
-  ```
-  <details>
-  <summary>Expected output</summary>
-
-  ```
-  True
-  ```
-  *(If the path is accessible; otherwise, False.)*
-  </details>
-
 ### Kepler (SSL Certificate) Verification
 
 - The required web certificate must be installed on the server.
@@ -225,6 +226,15 @@ If you are not logged in as the Relativity Service Account, use the commands bel
 
 > [!NOTE]
 For connectivity and troubleshooting, [ElasticSearch Troubleshooting](elasticsearch.md)
+
+### Kibana Access Verification
+
+- Ensure you can access the Kibana dashboard in your environment.
+- Open a browser and navigate to your Kibana instance, e.g.:  
+  `https://<kibana-hostname-or-ip>:5601`
+- You should see the Kibana login page or dashboard.
+- For more information, see [Kibana documentation](https://www.elastic.co/guide/en/kibana/current/index.html).
+- For connectivity and troubleshooting, [Kibana Troubleshooting](kibana.md)
 
 ### APM Server Access Verification
 
