@@ -266,11 +266,13 @@ To verify that metrics, logs, and traces are flowing from the Open Telemetry Col
    - **Expected:** The "Last Check-In" timestamp updates regularly.
    - Confirm the **Version Installed** column is displayed for all hosts and shows the same version for every host.
    - **Expected:** The "Version Installed" value should be the same for all hosts and visible for each host.
+   ![Monitoring Agents](<../../resources/troubleshooting-images/Monitoring Agents.png>)
 
 2. **Host Infrastructure Overview**
    - Open Kibana and navigate to the **Host Infrastructure Overview** dashboard.
    - Confirm metrics are present for each host.
    - **Expected:** Metrics and graphs are populated for the host.
+   ![Host_Infrastructure](../../resources/troubleshooting-images/Host_Infrastructure.png)
 
 3. **Discover Query**
    - Open Kibana, go to **Discover**.
@@ -280,6 +282,7 @@ To verify that metrics, logs, and traces are flowing from the Open Telemetry Col
      service.name: "relsvr_infrawatch_agent" and host.hostname: "<hostname_or_ip>"
      ```
    - **Expected result:** You should see logs, metrics, and traces from the Open Telemetry Collector for the specified host.
+   ![Discover](../../resources/troubleshooting-images/EW_Discover.png)
 
 ---
 
