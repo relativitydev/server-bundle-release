@@ -67,9 +67,8 @@ curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
 ### Data View
 
 Data views must be created and managed through the Kibana frontend.  
-For step-by-step instructions, see [Data View Setup](../elasticsearch_setup_development.md#data-view-setup).
 
-Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
+Check if the APM Data View is created in Kibana:
 
 - Open a browser and go to `http://<hostname_or_ip>:5601`
 - Log in using elastic credentials

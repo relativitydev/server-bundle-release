@@ -239,13 +239,14 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-- **Create New API Key for Kibana:**
-   To create a new API key for Kibana, use the Kibana web interface:
-   1. Log in to Kibana at `http://<hostname_or_ip>:5601/` using an account with sufficient privileges.
-   2. Navigate to **Stack Management** > **API Keys**.
+- **Create API Key via Kibana Frontend:**
+   1. Log in to Kibana at `http://<hostname_or_ip>:5601/` with an account that has sufficient privileges.
+   2. Go to **Stack Management** > **API Keys**.
    3. Click **Create API key**.
-   4. Enter a name, set expiration (optional), and assign appropriate privileges.
-   5. Click **Create API key** and copy the generated key for use in your `kibana.yml`.
+   4. Enter a name, set privileges as needed, and click **Create API key**.
+   5. Copy the generated API key for use in your `kibana.yml`.
+   
+   ![Kibana API Key UI](../../resources/troubleshooting-images/apm_apikey.png)
 
 ---
 
