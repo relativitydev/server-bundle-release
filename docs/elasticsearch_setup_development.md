@@ -110,7 +110,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 6. **Install the 'mapper-size' plugin**
 
-  - Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
+- Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
   ```
   C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-plugin install mapper-size
   ```
