@@ -134,13 +134,13 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 7. **Verify Elasticsearch Server**
 
-   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
+- To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
 
      ```
      curl -u <username>:<password> -k https://<hostname_or_ip>:9200
      ```
 
-   - The response should show basic cluster information in JSON format if the server is running and accessible.
+- The response should show basic cluster information in JSON format if the server is running and accessible.
 
    <details>
    <summary>Sample JSON response</summary>
@@ -170,20 +170,20 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 1. **Download Kibana 8.17.3**
     
-   - Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
+- Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
 
-   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
+- Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
 2. **Start Kibana from the command line**
     
-   - Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
-   - Open an elevated PowerShell and run the following command:
+- Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
+- Open an elevated PowerShell and run the following command:
 
      ```
      C:\Kibana\kibana-8.17.3\bin\kibana.bat
      ```
 
-   - If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
+- If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
 
      ```
      [INFO][server][http] http server running at http://localhost:5601
@@ -194,12 +194,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 3. **Enroll Kibana**
     
-   - In your terminal, click the generated link to open Kibana in your browser.
-   - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
-  - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
+- In your terminal, click the generated link to open Kibana in your browser.
+- In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
+- In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
   
     [See where the enrollment token is generated.](#enrollment-token-generation)
-   - If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`):
+- If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`):
 
      ```
      C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-create-enrollment-token --scope kibana
@@ -209,8 +209,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
 eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
 </details>
 
-   - Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
-   - See the screenshot below for the login screen:
+- Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
+- See the screenshot below for the login screen:
 
      ![](/resources/elasticsearch_setup_003.png)
 
@@ -271,12 +271,12 @@ This verifies that Kibana is running and your credentials are working.
 
 5. **Create Kibana Windows Service**
     
-   - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
+- Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
 > [!Note]
 Kibana does not install as a Windows service by default. We recommend using NSSM—a commonly used open-source tool—to run Kibana as a Windows service.
 
-   - Open an elevated PowerShell and run the following command:
+- Open an elevated PowerShell and run the following command:
 
      ```
      C:\nssm-2.24\win64\nssm.exe install kibana
@@ -284,41 +284,41 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 
      This will open a popup to create a Windows service for Kibana.
 
-   - In the Application tab, enter the path to `kibana.bat` and its folder as shown below:
+- In the Application tab, enter the path to `kibana.bat` and its folder as shown below:
 
      ![Kibana service application tab](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
 
 > [!NOTE]
 If you accidentally press Return, the service may be installed before your configuration is complete. To edit the service properties, use:
      
-   - Open an elevated PowerShell and run the following command:
+- Open an elevated PowerShell and run the following command:
 
      ```
      C:\nssm-2.24\win64\nssm.exe edit kibana
      ```
 
-   - In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). Copy the full log file path into the stdout and stderr sections:
+- In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). Copy the full log file path into the stdout and stderr sections:
 
      ![Kibana service I/O tab](../resources/troubleshooting-images/kibanaservice-io-tab.png)
 
-   - In the File rotation tab, check all boxes and enter `10485760` bytes so a new log file is generated for every 10 MB of logs:
+- In the File rotation tab, check all boxes and enter `10485760` bytes so a new log file is generated for every 10 MB of logs:
 
      ![Kibana service file rotation tab](../resources/troubleshooting-images/kibanaservice-filerotationtab.png)
 
-   - Click the Install service button to create the Windows service for Kibana.
+- Click the Install service button to create the Windows service for Kibana.
 
-   - Go to the Services app in Windows, search for the `kibana` service, right click, and start the service.
+- Go to the Services app in Windows, search for the `kibana` service, right click, and start the service.
 
-   - Right click on the service and open Properties to change the startup type to Automatic, so Kibana runs automatically on system startup.
+- Right click on the service and open Properties to change the startup type to Automatic, so Kibana runs automatically on system startup.
 
-   - Verify that Kibana is running by opening it in your browser.
+- Verify that Kibana is running by opening it in your browser.
 
 > [!NOTE]
      It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
 6. **Verify Kibana Server**
-   - Open a browser and go to `http://<hostname_or_ip>:5601`.
-   - Log in using the `elastic` credential to verify successful access.
+- Open a browser and go to `http://<hostname_or_ip>:5601`.
+- Log in using the `elastic` credential to verify successful access.
 
      ![Kibana login screenshot](../resources/troubleshooting-images/kibanalogin.png)
      ![Kibana running screenshot](../resources/troubleshooting-images/kibanarerun02.png)
@@ -327,14 +327,14 @@ If you accidentally press Return, the service may be installed before your confi
 
 1. **Prerequisites to setup APM Server**
 
-   - Elastic and Kibana should be configured and services should be up and running.
+- Elastic and Kibana should be configured and services should be up and running.
 
 2. **Download APM Server 8.17.3**
    
-   - Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
-   - Download and extract the 8.17.3 Windows .zip file.
-   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
-   - Extract the files to `C:\elastic`.
+- Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
+- Download and extract the 8.17.3 Windows .zip file.
+- Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
+- Extract the files to `C:\elastic`.
 
 
 3. **Configure APM Server (`config\apm-server.yml`)**
