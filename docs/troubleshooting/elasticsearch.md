@@ -36,15 +36,15 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 - **Check Service Status:**
    ```powershell
-   Get-Service -Name elasticsearch
+   Get-Service -Name elasticsearch | Select-Object Status, StartType, Name
    ```
    <details>
    <summary>Expected output</summary>
 
    ```
-   Status   Name           DisplayName
-   ------   ----           -----------
-   Running  elasticsearch  elasticsearch
+   Status   StartType Name
+   ------   --------- ----
+   Running  Automatic elasticsearch
    ```
    </details>
 
@@ -61,29 +61,13 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    </details>
 
 - **Check Elasticsearch Logs:**
-   - Navigate to `C:\elastic\elasticsearch\logs\`
-   - Review the cluster log file (`elasticsearch.log`) for error messages
-   - Check the slow logs and garbage collection logs if present
-   - Look for Java heap space issues or configuration errors
+   - Navigate to the log directory (default: `C:\elastic\elasticsearch-8.17.3\logs\`). 
+   - Review the cluster log file (`elasticsearch.log`) for error messages.
+   - Check the slow logs and garbage collection logs if present.
+   - For every error in the cluster log, provide troubleshooting for that specific error.
 
 > [!TIP]
 > For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
-
-- **Verify Java Installation:**
-
-   ```powershell
-   java -version
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   java version "17.0.8" 2023-07-18 LTS
-   Java(TM) SE Runtime Environment (build 17.0.8+9-LTS-211)
-   Java HotSpot(TM) 64-Bit Server VM (build 17.0.8+9-LTS-211, mixed mode, sharing)
-   ```
-   </details>
-
 > [!NOTE]
 > - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
 > - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.
@@ -95,7 +79,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
    <details>
    <summary>Expected output</summary>
-
+   
    ```
    (No output if successful. Service status will be "Running" after execution.)
    ```
@@ -112,7 +96,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 1. **Check Elasticsearch Logs:**
    - Navigate to `C:\elastic\elasticsearch\logs\`
    - Review the cluster log file (`elasticsearch.log`) for errors
-   - Look for OutOfMemoryError or service crash indicators
+   - For every error in the cluster log, provide troubleshooting for that specific error.
+> [!NOTE] 
+> Always check the latest error in the cluster log and troubleshoot accordingly. This approach should be followed everywhere.
 
 3. **Verify Disk Space:**
    - Ensure sufficient disk space on data and log directories (minimum 15% free)
@@ -207,19 +193,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
    </details>
 
-- **Update Firewall Rules:**
-   ```powershell
-   New-NetFirewallRule -DisplayName "Elasticsearch HTTP" -Direction Inbound -Protocol TCP -LocalPort 9200 -Action Allow
-   New-NetFirewallRule -DisplayName "Elasticsearch Transport" -Direction Inbound -Protocol TCP -LocalPort 9300 -Action Allow
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   (No output if successful. Rule will appear in Windows Firewall.)
-   ```
-   </details>
-
 ### Network Connectivity Problems
 
 **Symptoms:**
@@ -306,32 +279,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    -Xmx4g
    ```
 > [!IMPORTANT]
-> Rule of thumb: Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
-
-- **Monitor Memory Usage:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_nodes/stats/jvm?pretty"
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "nodes": {
-       "node_id": {
-         "jvm": {
-           "mem": {
-             "heap_used_in_bytes": 123456789,
-             "heap_committed_in_bytes": 2147483648,
-             "heap_max_in_bytes": 2147483648,
-             ...
-           }
-         }
-       }
-     }
-   }
-   ```
-   </details>
+> Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
 
 4. **Check for Memory Leaks:**
    - Monitor heap usage over time
@@ -371,33 +319,13 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 - **Reset Password:**
    ```powershell
-   C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u elastic
+   C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u <username>
    ```
    <details>
    <summary>Expected output</summary>
 
    ```
-   Password for the [elastic] user successfully reset.
-   ```
-   </details>
-
-- **Check User Roles:**
-   ```powershell
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" -u <username>:<password>
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "<username>": {
-       "username": "<username>",
-       "roles": [
-         "superuser"
-       ],
-       ...
-     }
-   }
+   Password for the [<username>] user successfully reset.
    ```
    </details>
 
@@ -406,6 +334,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```yaml
    xpack.security.enabled: true
    ```
+> [!NOTE]
+> Also verify that the URL you are using is `https://<username>:9200/`
 
 ## Service Verification
 
@@ -444,9 +374,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    <summary>Expected output</summary>
 
    ```
-   ip         heap.percent ram.percent cpu load_1m load_5m load_15m node.role   master name
-   10.0.0.1   23           55          2   0.00    0.01    0.05    cdfhilmrstw *      node-1
-   10.0.0.2   19           60          1   0.00    0.01    0.05    cdfhilmrstw -      node-2
+   ip            heap.percent ram.percent cpu load_1m load_5m load_15m     node.role      master name
+   <ip address>            14          95  28                          cdfhilmrstw *      <node name>
    ```
    </details>
 
@@ -505,67 +434,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    Running  apm-server     apm-server
    ```
    </details>
-
-## Additional Diagnostic Commands
-
-### General Health Checks
-
-```powershell
-# Check service status
-Get-Service elasticsearch | Select-Object Status, StartType, Name
-```
-<details>
-<summary>Expected output</summary>
-
-```
-Status   StartType Name
-------   --------- ----
-Running  Automatic elasticsearch
-```
-</details>
-
-```powershell
-# Check process information
-Get-Process -Name java | Where-Object {$_.ProcessName -eq "java"}
-```
-<details>
-<summary>Expected output</summary>
-
-```
-Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
--------  ------    -----      -----     ------     --  -- -----------
-...      ...       ...        ...       ...        ... ... java
-```
-</details>
-
-```powershell
-# Check listening ports
-Get-NetTCPConnection | Where-Object {$_.LocalPort -in @(9200,9300)} | Select-Object LocalAddress, LocalPort, State
-```
-<details>
-<summary>Expected output</summary>
-
-```
-LocalAddress LocalPort State
------------ --------- -----
-0.0.0.0     9200      Listen
-0.0.0.0     9300      Listen
-```
-</details>
-
-```powershell
-# Check disk space
-Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="Size(GB)";Expression={[math]::Round($_.Size/1GB,2)}}, @{Name="FreeSpace(GB)";Expression={[math]::Round($_.FreeSpace/1GB,2)}}
-```
-<details>
-<summary>Expected output</summary>
-
-```
-DeviceID Size(GB) FreeSpace(GB)
--------- -------- -------------
-C:       100      22.15
-D:       200      48.92
-```
-</details>
-
+> [!IMPORTANT]
+> Ensure that the `Status` for each service is `Running`.
+> - If Kibana is not in running state, [click here for Kibana troubleshooting](../troubleshooting/kibana.md).
+> - If APM is not in running state, [click here for APM troubleshooting](../troubleshooting/apm.md).
 

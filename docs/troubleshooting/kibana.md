@@ -40,11 +40,10 @@ This document provides troubleshooting guidance for common Kibana issues encount
 **Symptoms:**
 - Kibana service fails to start
 - Service stops immediately after starting
-- Error messages in Kibana logs
 
 **Troubleshooting Steps:**
 
-- **Check Service Status:**
+- **Check Service Status and Configuration:**
    ```powershell
    Get-Service -Name kibana
    ```
@@ -58,15 +57,14 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-- **Verify Service Configuration:**
-   - Open Services.msc
-   - Locate "Kibana" service
-   - Verify the service is running under Local System account (default configuration)
+   Get-CimInstance -ClassName Win32_Service -Filter "Name='kibana'" | Select-Object Name, State, StartMode, StartName
+   ```
+   - Verify the service is running under Local System account (default configuration).
 
 - **Check Kibana Logs:**
    - Navigate to `C:\elastic\kibana\logs\`
-   - Review the latest log files (`kibana.log`) for error messages
-   - Look for configuration errors or Elasticsearch connection issues
+   - Review the latest log files (`kibana.log`) for error messages.
+   - Look for configuration errors or Elasticsearch connection issues (for example: `Unable to connect to Elasticsearch at https://<host or ip address>:9200`).
 
 - **Start Service Manually:**
    ```powershell
@@ -145,14 +143,15 @@ This document provides troubleshooting guidance for common Kibana issues encount
 **Troubleshooting Steps:**
 
 1. **Verify User Configuration:**
+   - Ask the user to log in using the `elastic` username credentials.
    - Check `C:\elastic\kibana\config\kibana.yml`:
    ```yaml
-   elasticsearch.username: "kibana_system"
+   elasticsearch.username: "<username>"
    elasticsearch.password: "<password>"
    ```
 
 2. **Test Elasticsearch Credentials Independently:**
-   - Use the same credentials from `kibana.yml` to verify connectivity to Elasticsearch:
+   - Use the `elastic` username and password from `kibana.yml` to verify connectivity to Elasticsearch:
    ```powershell
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
@@ -170,7 +169,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 3. **Test User Authentication:**
    ```powershell
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/kibana_system" -u <username>:<password>
+   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" -u <username>:<password>
    ```
    <details>
    <summary>Expected output</summary>
@@ -460,6 +459,17 @@ Configuration is valid
 ```
 </details>
 
+```powershell
+# Check current configuration
+C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
+```
+<details>
+<summary>Expected output</summary>
+
+```
+Configuration loaded successfully
+```
+</details>
 ```powershell
 # Check current configuration
 C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
