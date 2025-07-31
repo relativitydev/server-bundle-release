@@ -16,12 +16,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 1. **Download Elasticsearch 8.17.3**
 
-   - Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
-   - Download the 8.17.3 Windows .zip version.
+- Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
+- Download the 8.17.3 Windows .zip version.
 
-   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
+- Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
-   - Extract the files to `C:\elastic`
+- Extract the files to `C:\elastic`
 
 2. **Install and Configure Elasticsearch 8.17.3**
 
@@ -79,22 +79,22 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 4. **Enable Stack Monitoring**
 
-   - Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-8.17.3\config`) and open the `elasticsearch.yml` file.
-   - Add the following line to enable Stack Monitoring:
+- Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-8.17.3\config`) and open the `elasticsearch.yml` file.
+- Add the following line to enable Stack Monitoring:
 
      ```
      xpack.monitoring.collection.enabled: true
      ```
 
-   - Save the changes and restart the Elasticsearch service:
-     - Open an elevated PowerShell and run the following command:
-       ```
-       Restart-Service -Name "elasticsearch-service-x64"
-       ```
+- Save the changes and restart the Elasticsearch service:
+  - Open an elevated PowerShell and run the following command:
+    ```
+    Restart-Service -Name "elasticsearch-service-x64"
+    ```
 
 5. **Reset the Elastic (Admin) User Password**
 
-   The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
+- The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
 
    - Open an elevated PowerShell and run the following command:
 
@@ -104,7 +104,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
-   - When you run this command, a new password will be generated and displayed in the console output.
+- When you run this command, a new password will be generated and displayed in the console output.
 > [!NOTE]
    The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
