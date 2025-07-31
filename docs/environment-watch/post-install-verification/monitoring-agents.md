@@ -1,12 +1,13 @@
-# [Relativity] Monitoring Agents Dashboard Post-Install Verification
+# Post-Install Verification for Monitoring Agents
 ---
 
 ## Prerequisites
 
-**Important:** After installation, wait 10–15 minutes before starting the verification process. This allows time for:
-- All services to fully initialize
-- Data collection to begin
-- Health indicators to show accurate statuses
+> [!IMPORTANT]
+> After installation, wait 10–15 minutes before starting the verification process. This allows time for:
+> - All system services to fully initialize and become available
+> - Data collection agents to begin gathering and transmitting metrics
+> - Dashboard visualizations to populate with accurate status information
 
 ---
 
@@ -16,9 +17,7 @@
 * [Verify Monitoring Agents Dashboard Tags](#verify-monitoring-agents-dashboard-tags)
 * [Verify Dashboard Filters Populate with Data](#verify-dashboard-filters-populate-with-data)
 * [Verify Visualization Order](#verify-visualization-order)
-* [Verify Time Series Graph Is Line Chart](#verify-time-series-graph-is-line-chart)
-* [Verify Data for Multiple Time Ranges](#verify-data-for-multiple-time-ranges)
-* [Verify Data Population](#verify-data-population)
+* [Verify Data Population by Changing Filters and Time Ranges](#verify-data-population-by-changing-filters-and-time-ranges)
 * [Verify Hosts and Agent Versions](#verify-hosts-and-agent-versions)
 * [Verify Data in Discover](#verify-data-in-discover)
 * [Verify Screen Resolution for the Dashboards](#verify-screen-resolution-for-the-dashboards)
@@ -35,11 +34,14 @@ Ensure the Monitoring Agent dashboard is present.
 1. Login to Kibana.
 2. Navigate to **Analytics → Dashboard**.
 
-**Expected Result:**
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 * "Monitoring Agent" is listed.
+</details>
 
 **Screenshot:**
-![Screenshot: Dashboard exists](./screenshots/dashboard-exists.png)
+![Screenshot: Dashboard exists](../../../resources/post-install-verification-images/monitoring-agents/dashboard-exists.png)
 
 ---
 
@@ -53,13 +55,16 @@ Ensure the correct tags are assigned to the dashboard.
 2. Navigate to **Observability → Dashboard**.
 3. Open the Monitoring Agents dashboard.
 
-**Expected Result:**
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 * Tags:
   * `Relativity Environment Watch`
   * `FeatureDomain: Monitoring`
+</details>
 
 **Screenshot:**
-![Screenshot: Tags](./screenshots/dashboard-tags.png)
+![Screenshot: Tags](../../../resources/post-install-verification-images/monitoring-agents/dashboard-tags.png)
 
 ---
 
@@ -73,11 +78,17 @@ Ensure filter dropdowns are populated with available data.
 2. Navigate to **Observability → Dashboard**.
 3. Click on the dashboard and open each filter dropdown.
 
-**Expected Result:**
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 * Filter dropdowns show available values.
+</details>
+
+> [!NOTE]
+> Filters may take a few minutes to populate after initial data collection begins.
 
 **Screenshot:**
-![Screenshot: Filter dropdown populated](./screenshots/filter-dropdown-populated.png)
+![Screenshot: Filter dropdown populated](../../../resources/post-install-verification-images/monitoring-agents/filter-dropdown-populated.png)
 
 ---
 
@@ -91,53 +102,22 @@ Confirm the visualizations appear in the correct order.
 2. Navigate to **Observability → Dashboard**.
 3. Open the dashboard.
 
-**Expected Result:**
-* First: Health/metric indicators (if present)
-* Second: Table visualizations
-* Third: Time series graph
+<details>
+<summary><strong>Expected Result</strong></summary>
+
+* Visualizations should appear in this order:
+  * Top: Filter navigation controls
+  * Left: Main dashboard navigation
+  * Center/Main body: Table visualization showing monitoring agent data
+</details>
 
 **Screenshot:**
-![Screenshot: Visualization order](./screenshots/visualization-order.png)
+![Screenshot: Visualization order](../../../resources/post-install-verification-images/monitoring-agents/visualization-order.png)
+
 
 ---
 
-## Verify Time Series Graph Is Line Chart
-
-**Description:**
-Ensure the graph uses Line chart type.
-
-**Steps:**
-1. Login to Kibana.
-2. Navigate to **Observability → Dashboard**.
-3. Open the dashboard.
-
-**Expected Result:**
-* Time series graph is a Line chart.
-
-**Screenshot:**
-![Screenshot: Line chart](./screenshots/line-chart.png)
-
----
-
-## Verify Data for Multiple Time Ranges
-
-**Description:**
-Ensure the dashboard works correctly for various time ranges.
-
-**Steps:**
-1. Login to Kibana.
-2. Navigate to **Observability → Dashboard**.
-3. Change time ranges to 15 min, 1 hour, 12 hours, and 24 hours.
-
-**Expected Result:**
-* Data is shown for each selected time range.
-
-**Screenshot:**
-![Screenshot: Time range check](./screenshots/time-ranges.png)
-
----
-
-## Verify Data Population
+## Verify Data Population by Changing Filters and Time Ranges
 
 **Description:**
 Ensure the dashboard data is loading correctly.
@@ -145,12 +125,20 @@ Ensure the dashboard data is loading correctly.
 **Steps:**
 1. Login to Kibana.
 2. Open the "Monitoring Agent" dashboard.
+3. Change the time range to 15 minutes, 1 hour, 12 hours, and 24 hours.
+4. Adjust filters to see if data updates accordingly.
 
-**Expected Result:**
+1. Login to Kibana.
+2. Open the "Monitoring Agent" dashboard.
+
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 * All panels are populated with data.
+</details>
 
 **Screenshot:**
-![Screenshot: Populated data](./screenshots/data-populated.png)
+![Screenshot: Populated data](../../../resources/post-install-verification-images/monitoring-agents/data-populated.png)
 
 ---
 
@@ -163,12 +151,16 @@ Ensure hosts and agent versions are correctly displayed.
 1. Login to Kibana.
 2. Open the "Monitoring Agent" dashboard.
 
-**Expected Result:**
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 * Host column lists multiple hosts.
 * Agent Version is the same for all hosts.
+* Last Modified Date column shows timestamp to verify installation time.
+</details>
 
 **Screenshot:**
-![Screenshot: Hosts and versions](./screenshots/hosts-agent-versions.png)
+![Screenshot: Hosts and versions](../../../resources/post-install-verification-images/monitoring-agents/hosts-agent-versions.png)
 
 ---
 
@@ -181,11 +173,14 @@ Ensure dashboard data is reflected in Discover.
 1. Login to Kibana.
 2. Open the dashboard → Monitoring Agents table → Three dots → Explore in Discover.
 
-**Expected Result:**
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 * Data is visible in Discover.
+</details>
 
 **Screenshot:**
-![Screenshot: Discover view](./screenshots/discover-view.png)
+![Screenshot: Discover view](../../../resources/post-install-verification-images/monitoring-agents/discover-view.png)
 
 ---
 
@@ -202,13 +197,16 @@ Ensure the dashboard layout and formatting are optimized for the recommended scr
 5. Toggle the **Device Emulation** feature.
 6. Set the device dimensions to **1920x1080**.
 
-**Expected Result:**
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 - The dashboard fits within a 1920x1080 resolution.
 - No horizontal or vertical scrollbars are required to view core components.
 - All visualizations remain properly aligned.
+</details>
 
 **Screenshot:**  
-*(Optional: Add a screenshot showing the dev tools and resolution setting if available)*
+![Screenshot: Screen resolution check](../../../resources/post-install-verification-images/monitoring-agents/screen-resolution-check.png)
 
 ---
 
@@ -224,8 +222,11 @@ Run the following `curl` command from a secure terminal:
 curl -u <username>:<password> -X GET "https://<hostname_or_ip>:5601/api/saved_objects/_find?type=dashboard&search_fields=title&search=Monitoring%20Agent" -H 'kbn-xsrf: true'
 ```
 
-**Expected Result:**
+<details>
+<summary><strong>Expected Result</strong></summary>
+
 - A JSON response returns the dashboard object.
 - Status code `200 OK`.
+</details>
 
 ---
