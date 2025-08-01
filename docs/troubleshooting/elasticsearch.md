@@ -68,6 +68,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 > [!TIP]
 > For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
+
 > [!NOTE]
 > - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
 > - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.

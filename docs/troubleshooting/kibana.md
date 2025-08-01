@@ -375,6 +375,16 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
+2. **Review Out of Memory Errors in Logs:**
+   - Check for "out of memory" or "heap" errors in `C:\elastic\kibana\logs\kibana.log`.
+   - ![Out of Memory Error Screenshot](../../resources/troubleshooting-images/kibana-out-of-memory.png)
+   - > [!NOTE]
+     > Out of memory errors typically indicate insufficient system memory or improper Node.js heap settings. Review the error details in the log for specific causes and recommended actions.
+
+3. **Verify Disk Space:**
+   - Insufficient disk space can also cause memory-related failures.
+   - For disk space troubleshooting steps, see [Verify Disk Space](elasticsearch.md#verify-disk-space).
+
 ---
 
 ## Kibana Encryption Keys Configuration
@@ -470,6 +480,7 @@ C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.
 Configuration loaded successfully
 ```
 </details>
+
 ```powershell
 # Check current configuration
 C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
