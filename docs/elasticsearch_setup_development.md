@@ -14,7 +14,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 ## Step 1: Download and Install Elasticsearch 8.17.3 on One Server
 
 
-1.1 **Download Elasticsearch 8.17.3**
+**1.1 Download Elasticsearch 8.17.3**
 
 - Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
 - Download the 8.17.3 Windows .zip version.
