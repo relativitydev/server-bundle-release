@@ -105,38 +105,16 @@ Kibana encryption keys must be added to `C:\elastic\kibana\config\kibana.yml` be
 
 Before running the CLI, you must have access to all of the following:
 
-- **Relativity Admin account**  
-  To verify Relativity admin account credentials, run:
-  ```powershell
-  curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/Relativity.REST/API/Relativity.Services.InstanceDetails.IInstanceDetailsModule/InstanceDetailsService/GetRelativityVersionAsync"
-  ```
-  <details>
-  <summary>Expected Output</summary>
+- **Relativity Admin account**
+- **Secret Server**
+- **Kepler (SSL certificate)**
+- **Elasticsearch**
+- **Kibana**
+- **APM Server**
 
-  ```json
-  {
-    "Version": "24.0.0.0",
-    ...
-  }
-  ```
-  </details>
-
-- **Secret Server**    
-  See [Secret Server Access Verification](monitoring-agent-and-otel-collector.md#secret-server-access-verification) for verification steps.
-
-- **Kepler (SSL certificate)**    
-  See [Kepler (SSL Certificate) Verification](monitoring-agent-and-otel-collector.md#kepler-ssl-certificate-verification) for verification steps.
-
-- **Elasticsearch**  
-  See [Elasticsearch Troubleshooting](elasticsearch.md) for verification steps.
-
-- **Kibana**  
-  See [Kibana Troubleshooting](kibana.md) for verification steps.
-
-- **APM Server**  
-  See [APM-Server Troubleshooting](apm-server.md) for verification steps.
+For verification steps for all prerequisites, see [Prerequisite_Access_Verification](monitoring-agent-and-otel-collector.md##Pre-requisite-Access-Checks).
 
 --- 
 
 For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
-
+ 

@@ -31,7 +31,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Troubleshooting Steps:**
 
-- **Check APM Server Status:**
+1. **Check APM Server Status:**
    ```powershell
    Get-Service -Name apm-server
    ```
@@ -45,7 +45,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
    </details>
 
-- **Verify Service Configuration:**
+2. **Verify Service Configuration:**
    ```powershell
    (Get-CimInstance Win32_Service -Filter "Name = 'apm-server'").StartName
    ```
@@ -57,7 +57,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
    </details>
 
-- **Check APM Server Logs:**
+3. **Check APM Server Logs:**
    - Navigate to `C:\Program Files\apm-server\logs\`
    - Review the latest log files (`apm-server.log`) for error messages
    - Look for configuration errors or connection issues with Elasticsearch
@@ -65,7 +65,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 > [!NOTE]
 > For Elasticsearch connection issues, see [Elasticsearch Troubleshooting](elasticsearch.md)
 
-- **Verify Configuration File:**
+4. **Verify Configuration File:**
    ```powershell
    # Stop Windows service first, then test configuration syntax
    Stop-Service apm-server
@@ -79,7 +79,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
    </details>
 
-- **Start Service Manually:**
+5. **Start Service Manually:**
    ```powershell
    Start-Service apm-server
    ```
@@ -124,7 +124,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 > - `username`/`password`: Legacy authentication (not recommended; use API keys instead).
 > For instructions on creating an API key, see [Kibana Troubleshooting](kibana.md).
 
-   To verify the connection, run:
+3. **To verify the connection, run:**
    ```powershell
    C:\elastic\apm-server\apm-server.exe test output -c "C:\elastic\apm-server\apm-server.yml"
    ```
@@ -134,18 +134,18 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
    elasticsearch: https://<hostname_or_ip>:9200...
      parse url... OK
-  connection...
-    parse host... OK
-    dns lookup... OK
-    addresses: fe80::61a7:3f3f:210:8d65%Ethernet 2, 10.0.2.2
-    dial up... OK
-  TLS...
-    security... WARN server's certificate chain verification is disabled
-    handshake... OK
-    TLS version: TLSv1.3
-    dial up... OK
-  talk to server... OK
-  version: 8.17.3
+     connection...
+       parse host... OK
+       dns lookup... OK
+       addresses: fe80::61a7:3f3f:210:8d65%Ethernet 2, 10.0.2.2
+       dial up... OK
+     TLS...
+       security... WARN server's certificate chain verification is disabled
+       handshake... OK
+       TLS version: TLSv1.3
+       dial up... OK
+     talk to server... OK
+     version: 8.17.3
    ```
    </details>
 
@@ -163,9 +163,9 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Troubleshooting Steps:**
 
-- The APM Server Windows service runs under Local System account by default
-- Verify access to `C:\elastic\apm-server\` directory
-- Check write permissions to `C:\Program Files\apm-server\logs\` directory
+1. The APM Server Windows service runs under Local System account by default.
+2. Verify access to `C:\elastic\apm-server\` directory.
+3. Check write permissions to `C:\Program Files\apm-server\logs\` directory.
 
 ---
 
@@ -254,7 +254,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Troubleshooting Steps:**
 
-- **Verify Server Configuration:**
+1. **Verify Server Configuration:**
    ```powershell
    C:\elastic\apm-server\apm-server.exe test config -c "C:\elastic\apm-server\apm-server.yml"
    ```
@@ -266,7 +266,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
    </details>
 
-- **Check Elasticsearch Connection:**
+2. **Check Elasticsearch Connection:**
    ```powershell
    # Stop Windows service first, then test output connectivity
    Stop-Service apm-server
