@@ -1,4 +1,6 @@
 # Post-Install Verification for Monitoring Agents
+
+![Post-Install Verification - Elasticsearch Cluster Health](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 ---
 
 ## Prerequisites
@@ -219,7 +221,7 @@ Verify dashboard backend connectivity using a direct API call to Elasticsearch/K
 Run the following `curl` command from a secure terminal:
 
 ```bash
-curl -u <username>:<password> -X GET "https://<hostname_or_ip>:5601/api/saved_objects/_find?type=dashboard&search_fields=title&search=Monitoring%20Agent" -H 'kbn-xsrf: true'
+curl.exe -k -u <username>:<password> -X GET "https://<hostname>:5601/api/saved_objects/_find?type=dashboard&search_fields=title&search=Monitoring%20Agent" -H "kbn-xsrf: true"
 ```
 
 <details>

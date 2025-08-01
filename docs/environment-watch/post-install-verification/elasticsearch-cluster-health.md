@@ -1,5 +1,7 @@
-# Elastic Cluster Health  
+# Post-Install Verification for Elastic Cluster Health 
 ---
+
+![Post-Install Verification - Elasticsearch Cluster Health](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 > [!IMPORTANT]  
 > After installation, wait 10–15 minutes before starting verification to allow services to fully initialize and collect accurate data.
@@ -107,12 +109,11 @@ Validate index-level metrics including document counts, data size, indexing rate
 ## Verify JVM and GC Metrics
 
 **Description:**  
-Confirm JVM heap usage is visible; garbage collection (GC) metrics may be limited or unavailable.
+Confirm JVM heap usage is visible.
 
 **Steps:**  
 1. Locate the **JVM Heap Usage** on node or cluster overview panels.  
 2. Verify JVM heap usage numbers for each node or cluster aggregate.  
-3. If GC metrics are missing, note and plan for future monitoring improvement.
 
 <details>  
 <summary><strong>Expected Result</strong></summary>  
@@ -189,7 +190,7 @@ Verify Elasticsearch cluster health directly via API for technical confirmation.
 Run this command from a secure terminal:
 
 ```bash
-curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health" -H "Content-Type: application/json"
+curl.exe -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health" -H "Content-Type: application/json"
 ```
 
 <details>
@@ -197,13 +198,27 @@ curl -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/hea
 
 - Status code: `200 OK`
 - A JSON response with cluster health details
+
+```json
+{
+   "cluster_name": "my-elasticsearch-cluster",
+   "status": "green",
+   "timed_out": false,
+   "number_of_nodes": 3,
+   "number_of_data_nodes": 3,
+   "active_primary_shards": 15,
+   "active_shards": 30,
+   "relocating_shards": 0,
+   "initializing_shards": 0,
+   "unassigned_shards": 0,
+   "number_of_pending_tasks": 0,
+   "active_shards_percent_as_number": 100.0
+}
+```
 - Key fields to look for:
   - `"status"` should be `green` (ideal), `yellow` (acceptable), or `red` (problem).
   - `"number_of_nodes"` and `"active_shards"` confirm data nodes are active and functioning.
 </details>
-
-**Screenshot:**  
-![Screenshot: API Health Check Response](../../../resources/post-install-verification-images/elasticsearch-cluster-health/api-health-check.png)
 
 ---
 
