@@ -23,7 +23,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 - Extract the files to `C:\elastic`
 
-1.2 **Install and Configure Elasticsearch 8.17.3**
+**1.2 Install and Configure Elasticsearch 8.17.3**
 
 - Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:
 
@@ -62,7 +62,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
   The service 'elasticsearch-service-x64' has been installed.
   ```
 
-1.3 **Run Elasticsearch as a Windows Service**
+**1.3 Run Elasticsearch as a Windows Service**
 
 - Open an elevated PowerShell and run the following command to start the Elasticsearch service:
 
@@ -77,7 +77,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
   The service 'elasticsearch-service-x64' has been started.
   ```
 
-1.4 **Enable Stack Monitoring**
+**1.4 Enable Stack Monitoring**
 
 - Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-8.17.3\config`) and open the `elasticsearch.yml` file.
 - Add the following line to enable Stack Monitoring:
@@ -92,7 +92,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
     Restart-Service -Name "elasticsearch-service-x64"
     ```
 
-1.5 **Reset the Elastic (Admin) User Password**
+**1.5 Reset the Elastic (Admin) User Password**
 
 - The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
 
@@ -108,7 +108,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > [!NOTE]
    The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
-1.6 **Install the 'mapper-size' plugin**
+**1.6 Install the 'mapper-size' plugin**
 
 - Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
   ```
@@ -132,7 +132,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      WARNING: Waiting for service 'Elasticsearch 8.17.3 (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
      ```
 
-1.7 **Verify Elasticsearch Server**
+**1.7 Verify Elasticsearch Server**
 
 - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
 
@@ -168,13 +168,13 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ## Step 2: Install and Configure Kibana
 
-2.1 **Download Kibana 8.17.3**
+**2.1 Download Kibana 8.17.3**
     
 - Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
 
 - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
-2.2 **Start Kibana from the command line**
+**2.2 Start Kibana from the command line**
     
 - Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
 - Open an elevated PowerShell and run the following command:
@@ -192,7 +192,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      Go to https://localhost:5601/?code=xyz to get started
      ```
 
-2.3 **Enroll Kibana**
+**2.3 Enroll Kibana**
     
 - In your terminal, click the generated link to open Kibana in your browser.
 - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
@@ -214,7 +214,7 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
 
      ![](/resources/elasticsearch_setup_003.png)
 
-2.4 **Generate Kibana encryption keys**
+**2.4 Generate Kibana encryption keys**
 
 > [!IMPORTANT]
     Skipping the steps below will cause the Relativity Server CLI to fail.
@@ -269,7 +269,7 @@ This verifies that Kibana is running and your credentials are working.
 
    - For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
-2.5 **Create Kibana Windows Service**
+**2.5 Create Kibana Windows Service**
     
 - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
@@ -316,7 +316,7 @@ If you accidentally press Return, the service may be installed before your confi
 > [!NOTE]
      It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
-2.6 **Verify Kibana Server**
+**2.6 Verify Kibana Server**
 - Open a browser and go to `http://<hostname_or_ip>:5601`.
 - Log in using the `elastic` credential to verify successful access.
 
@@ -325,11 +325,11 @@ If you accidentally press Return, the service may be installed before your confi
 
 ## Step 3: Install and Configure APM Server
 
-3.1 **Prerequisites to setup APM Server**
+**3.1 Prerequisites to setup APM Server**
 
 - Elastic and Kibana should be configured and services should be up and running.
 
-3.2 **Download APM Server 8.17.3**
+**3.2 Download APM Server 8.17.3**
    
 - Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
 - Download and extract the 8.17.3 Windows .zip file.
@@ -337,7 +337,7 @@ If you accidentally press Return, the service may be installed before your confi
 - Extract the files to `C:\elastic`.
 
 
-3.3 **Configure APM Server (`config\apm-server.yml`)**
+**3.3 Configure APM Server (`config\apm-server.yml`)**
 
 - An API key is required for configuring both APM and Beats. To create an API key:
 
@@ -382,7 +382,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
 
   ![verify-instrumentation](../resources/troubleshooting-images/verify-instrumentation.png)
     
-3.4 **Execute required scripts to install APM Server as a Windows service**
+**3.4 Execute required scripts to install APM Server as a Windows service**
    
 - Open an elevated PowerShell.
 - Run the following command to install the APM Server as a Windows service:
@@ -398,7 +398,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
   Service "apm-server" has been successfully installed.
   ```
      
-3.5 **Start the APM Server service**
+**3.5 Start the APM Server service**
 
 - Open an elevated PowerShell and run the following command:
 
@@ -406,7 +406,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
   Start-Service -Name "apm-server"
   ```
 
-3.6 **Verify APM Server**
+**3.6 Verify APM Server**
 
 - Open an elevated Command Prompt and run the following command (replace `<hostname_or_ip>` with your actual value):
 
@@ -428,7 +428,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
 ## Step 4: Post Installation and Verification
 
 
-4.1 **Add Elastic APM Integration Package**
+**4.1 Add Elastic APM Integration Package**
 
 > [!IMPORTANT]
    Skipping the steps below will cause the Relativity Server CLI to fail.
@@ -453,7 +453,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
 
      ![alt text](../resources/troubleshooting-images/agent-button.png)
 
-4.2 **Verify APM Data View**
+**4.2 Verify APM Data View**
    
 
 Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
@@ -464,7 +464,7 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
   ![dataview](../resources/troubleshooting-images/dataview.png)
 
-4.3 **Verify Cluster Health**
+**4.3 Verify Cluster Health**
     
 - Open an elevated Command Prompt and run the following command (replace `username`, `password`, and `{hostname_or_ip}` with your actual values):
 
