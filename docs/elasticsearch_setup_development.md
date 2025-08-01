@@ -87,6 +87,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      ```
 
 - Save the changes and restart the Elasticsearch service:
+
   - Open an elevated PowerShell and run the following command:
     ```
     Restart-Service -Name "elasticsearch-service-x64"
@@ -98,9 +99,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
    - Open an elevated PowerShell and run the following command:
 
-   ```
-   C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-reset-password -u elastic
-   ```
+     ```
+     C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-reset-password -u elastic
+     ```
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
@@ -199,15 +200,15 @@ If you download a .zip or other file from the internet, Windows may block the fi
 - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
   
     [See where the enrollment token is generated.](#enrollment-token-generation)
-- If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`):
+- If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
 
      ```
      C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-create-enrollment-token --scope kibana
      ```
-<details>
-<summary>Sample output</summary>
-eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
-</details>
+    <details>
+    <summary>Sample output</summary>
+    eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
+    </details>
 
 - Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
 - See the screenshot below for the login screen:
@@ -297,7 +298,9 @@ If you accidentally press Return, the service may be installed before your confi
      C:\nssm-2.24\win64\nssm.exe edit kibana
      ```
 
-- In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). Copy the full log file path into the stdout and stderr sections:
+- In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). 
+
+- Copy the full log file path into the stdout and stderr sections:
 
      ![Kibana service I/O tab](../resources/troubleshooting-images/kibanaservice-io-tab.png)
 
@@ -342,11 +345,17 @@ If you accidentally press Return, the service may be installed before your confi
 - An API key is required for configuring both APM and Beats. To create an API key:
 
   - Log in to Kibana (`http://<hostname_or_ip>:5601`) using the `elastic` credential.
+
   - Use the global search at the top of Kibana to search for "API keys" and select it from the results.
+
   - Click the **Create API key** button.
+
   - Enter a name for your API key (for example, specify if it will be used for Beats or APM).
+
   - Click the **Privileges** dropdown and select **Beats** to automatically apply the recommended permissions for Beats.
+
   - Click **Create API key**.
+  
   - Copy and securely save the generated `id` and `api_key` values.
 
   ![create-apikey](../resources/troubleshooting-images/create-apikey.png)
