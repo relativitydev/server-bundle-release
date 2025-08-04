@@ -99,10 +99,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 - The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
 
+   - Navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-8.17.3\bin`)
    - Open an elevated PowerShell and run the following command:
 
      ```
-     C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-reset-password -u elastic
+     .\elasticsearch-reset-password -u elastic
      ```
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
