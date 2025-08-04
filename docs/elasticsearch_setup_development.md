@@ -261,7 +261,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
      ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
 
-> [!NOTE]
+> [!IMPORTANT]
 After Kibana has restarted, open a browser and go to `http://<hostname_or_ip>:5601`.
 Log in using the `elastic` username and the password you generated earlier.
 This verifies that Kibana is running and your credentials are working.
@@ -365,7 +365,9 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
 
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
-- Open the `apm-server.yml` file in a text editor and update it to match the following sample configuration. Replace the placeholder values (`<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`) as needed for your environment.
+- Open the `apm-server.yml` file in a text editor and update it to match the following sample configuration. 
+
+- Replace the placeholder values (`<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`) as needed for your environment.
 
 - Below is a sample configuration
 
