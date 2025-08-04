@@ -266,7 +266,7 @@ To verify that metrics, logs, and traces are flowing from the Open Telemetry Col
    - **Expected:** The "Last Check-In" timestamp updates regularly.
    - Confirm the **Version Installed** column is displayed for all hosts and shows the same version for every host.
    - **Expected:** The "Version Installed" value should be the same for all hosts and visible for each host.
-   ![Monitoring Agents](<../../resources/troubleshooting-images/Monitoring Agents.png>)
+   ![Monitoring_Agent](../../resources/troubleshooting-images/Monitoring_Agent.png)
 
 2. **Host Infrastructure Overview**
    - Open Kibana and navigate to the **Host Infrastructure Overview** dashboard.

@@ -28,7 +28,6 @@ The Elastic APM integration package must be added and configured in Kibana befor
 - Click on **Save and Continue**.
 - Select **Add Elastic Agent later** button as Agent is not required for the initial setups.
 
-![APM Integration](../../resources/troubleshooting-images/apm-integration.png)
 ![Add APM Integration](../../resources/troubleshooting-images/add-apm-integration.png)
 ![APM Integration Host Name](../../resources/troubleshooting-images/apm-integration-host-name.png)
 ![Agent Button](../../resources/troubleshooting-images/agent-button.png)
@@ -66,7 +65,14 @@ curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
 
 ### Data View
 
-Data views must be created and managed through the Kibana frontend.  
+#### Self Instrumentation Data View
+
+Self-instrumentation allows you to monitor the CLI's own metrics, traces, and logs.
+
+See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and troubleshooting instructions.
+
+> [!NOTE]
+> Without the self-instrumentation Data View, you may not see CLI self-monitoring data in Kibana dashboards.
 
 Check if the APM Data View is created in Kibana:
 
@@ -75,15 +81,6 @@ Check if the APM Data View is created in Kibana:
 - Confirm the APM Data View is present:
 
   ![dataview](../../resources/troubleshooting-images/dataview.png)
-
-#### Self Instrumentation Data View
-  
-Self-instrumentation allows you to monitor the CLI's own metrics, traces, and logs.
-
-See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and troubleshooting instructions.
-
-> [!NOTE]
-> Without the self-instrumentation Data View, you may not see CLI self-monitoring data in Kibana dashboards.
 
 ---
 
@@ -115,6 +112,8 @@ Before running the CLI, you must have access to all of the following:
 For verification steps for all prerequisites, see [Prerequisite_Access_Verification](monitoring-agent-and-otel-collector.md##Pre-requisite-Access-Checks).
 
 --- 
+
+For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
 
 For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
  
