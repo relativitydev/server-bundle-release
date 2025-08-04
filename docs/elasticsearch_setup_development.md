@@ -1,6 +1,6 @@
 ﻿# Development Tier
 
-![Set Up Stage](<Setup Stages.png>)
+![Set Up Stage](../resources/troubleshooting-images/setupstage.png)
 
 ## How to Unblock Downloaded Files
 
