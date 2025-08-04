@@ -1,4 +1,4 @@
-# Post-Install Verification for Elastic Cluster Health 
+# Post-Install Verification for Elastic Cluster Health  
 ---
 
 ![Post-Install Verification - Elasticsearch Cluster Health](../../../resources/post-install-verification-images/Post-installation-verification.svg)
@@ -12,10 +12,8 @@
 
 * [Verify Cluster Health Summary](#verify-cluster-health-summary)  
 * [Verify Node Metrics](#verify-node-metrics)  
-* [Verify Index Statistics](#verify-index-statistics)  
-* [Verify JVM and GC Metrics](#verify-jvm-and-gc-metrics)  
-* [Verify Disk and Storage Utilization](#verify-disk-and-storage-utilization)   
-* [Verify Dashboard Visualization Style and Format](#verify-dashboard-visualization-style-and-format)  
+* [Verify Index Statistics](#verify-index-statistics) 
+* [Verify Disk and Storage Utilization](#verify-disk-and-storage-utilization)
 * [API-Based Cluster Health Check](#api-based-cluster-health-check)  
 
 ---
@@ -67,7 +65,7 @@ Ensure node-level metrics such as CPU usage, JVM heap usage, and disk space are 
 <details>  
 <summary><strong>Expected Result</strong></summary>  
 
-- All nodes listed (3 nodes).  
+- All nodes listed.  
 - CPU, JVM heap %, and disk free space values present.  
 - Load average may show as N/A if unsupported but should be monitored for future inclusion.  
 </details>  
@@ -106,26 +104,6 @@ Validate index-level metrics including document counts, data size, indexing rate
 
 ---
 
-## Verify JVM and GC Metrics
-
-**Description:**  
-Confirm JVM heap usage is visible.
-
-**Steps:**  
-1. Locate the **JVM Heap Usage** on node or cluster overview panels.  
-2. Verify JVM heap usage numbers for each node or cluster aggregate.  
-
-<details>  
-<summary><strong>Expected Result</strong></summary>  
-
-- JVM heap usage visible per node (e.g., 18.5 GB / 51.1 GB).  
-- GC metrics may not be shown; absence acceptable for current setup.  
-</details>  
-
-**Screenshot:**  
-![Screenshot: JVM and GC Metrics](../../../resources/post-install-verification-images/elasticsearch-cluster-health/jvm-gc-metrics.png)
-
----
 
 ## Verify Disk and Storage Utilization
 
@@ -134,7 +112,7 @@ Ensure disk free space and usage metrics are visible for each node.
 
 **Steps:**  
 1. Check disk free space shown per node in the **Node Metrics** panel.  
-2. Confirm reported disk free space aligns with expectations (e.g., 506.7 GB, 1.3 TB).  
+2. Confirm reported disk free space aligns with expectations.  
 
 <details>  
 <summary><strong>Expected Result</strong></summary>  
@@ -148,77 +126,9 @@ Ensure disk free space and usage metrics are visible for each node.
 
 ---
 
-## Verify Dashboard Visualization Style and Format
-
-**Description:**  
-Verify that dashboard panels display correctly for post-installation validation.
-
-**Steps:**  
-1. Access the `Elastic Cluster Dashboard` in your browser.  
-2. Review each panel for proper data display:  
-   - Cluster Health Summary  
-   - Node Metrics  
-   - Index Statistics  
-   - JVM and GC Metrics  
-   - Disk and Storage Utilization  
-3. Verify dashboard functionality:  
-   - All panels load without errors.  
-   - Data refreshes appropriately.  
-   - Navigation between sections works smoothly.  
-4. Validate that all visualizations render correctly and show expected data.
-
-<details>  
-<summary><strong>Expected Result</strong></summary>  
-
-- All dashboard panels display data correctly.  
-- No missing visualizations or error messages.  
-- Dashboard is responsive and functions as expected.  
-- All monitoring components are operational and displaying real-time data.  
-</details>  
-
-**Screenshot:**  
-![Screenshot: Complete Dashboard View](../../../resources/post-install-verification-images/elasticsearch-cluster-health/complete-dashboard-view.png)
-
----
-
 ## API-Based Cluster Health Check
 
-**Description:**  
-Verify Elasticsearch cluster health directly via API for technical confirmation.
-
-**Steps:**  
-Run this command from a secure terminal:
-
-```bash
-curl.exe -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health" -H "Content-Type: application/json"
-```
-
-<details>
-<summary><strong>Expected Result</strong></summary>
-
-- Status code: `200 OK`
-- A JSON response with cluster health details
-
-```json
-{
-   "cluster_name": "my-elasticsearch-cluster",
-   "status": "green",
-   "timed_out": false,
-   "number_of_nodes": 3,
-   "number_of_data_nodes": 3,
-   "active_primary_shards": 15,
-   "active_shards": 30,
-   "relocating_shards": 0,
-   "initializing_shards": 0,
-   "unassigned_shards": 0,
-   "number_of_pending_tasks": 0,
-   "active_shards_percent_as_number": 100.0
-}
-```
-- Key fields to look for:
-  - `"status"` should be `green` (ideal), `yellow` (acceptable), or `red` (problem).
-  - `"number_of_nodes"` and `"active_shards"` confirm data nodes are active and functioning.
-</details>
+<!-- REFER TO API-BASED CLUSTER HEALTH CHECK -->
 
 ---
 

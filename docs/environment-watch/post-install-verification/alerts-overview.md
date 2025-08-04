@@ -108,8 +108,8 @@ Verify the status and formatting of each health indicator tile, based on alert-d
 <details>
 <summary><strong>Expected Result</strong></summary>
 
-- **Green (#58D8B5)** = No active alerts (Healthy)
-- **Red (#FAA0A0)** = Active alerts present (Unhealthy)
+- **Green** = No active alerts (Healthy)
+- **Red** = Active alerts present (Unhealthy)
 </details>
 
 > [!NOTE]
@@ -140,7 +140,7 @@ Ensure that the dashboard is using a custom 15-minute time range as required for
 </details>
 
 **Screenshot:**  
-![Screenshot: Time range 10 minutes](../../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)
+![Screenshot: Time range 15 minutes](../../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)
 
 ---
 
