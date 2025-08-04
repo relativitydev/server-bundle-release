@@ -268,7 +268,7 @@ After Kibana has restarted, open a browser and go to `http://<hostname_or_ip>:56
 Log in using the `elastic` username and the password you generated earlier.
 This verifies that Kibana is running and your credentials are working.
 
-   ![Kibana restart verification 2](../resources/troubleshooting-images/kibanarerun02.png)
+   ![kibana restart](../resources/troubleshooting-images/kibanarestart.png)
 
    - For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
@@ -390,10 +390,6 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
     hosts:
       - "http://<apm-server-hostname_or_ip>:8200"
   ```
-
-- Once the instrumentation is set, you can verify it in Kibana as shown below:
-
-  ![verify-instrumentation](../resources/troubleshooting-images/verify-instrumentation.png)
     
 **3.4 Execute required scripts to install APM Server as a Windows service**
    
@@ -418,6 +414,10 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
   ```
   Start-Service -Name "apm-server"
   ```
+
+- Once the instrumentation is set, you can verify it in Kibana as shown below:
+
+  ![verify-instrumentation](../resources/troubleshooting-images/verify-instrumentation.png)
 
 **3.6 Verify APM Server**
 
