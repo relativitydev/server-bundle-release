@@ -1,5 +1,7 @@
 ﻿# Development Tier
 
+![Set Up Stage](<Setup Stages.png>)
+
 ## How to Unblock Downloaded Files
 
 > [!NOTE]
