@@ -8,7 +8,7 @@
 
 ---
 
-## Navigation
+## Table of Contents
 
 * [Verify Cluster Health Summary](#verify-cluster-health-summary)  
 * [Verify Node Metrics](#verify-node-metrics)  

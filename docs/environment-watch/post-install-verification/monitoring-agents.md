@@ -13,7 +13,7 @@
 
 ---
 
-## Navigation
+## Table of Contents
 
 * [Verify Monitoring Agent Dashboard Exists](#verify-monitoring-agent-dashboard-exists)
 * [Verify Monitoring Agents Dashboard Tags](#verify-monitoring-agents-dashboard-tags)

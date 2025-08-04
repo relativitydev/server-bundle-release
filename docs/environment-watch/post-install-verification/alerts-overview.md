@@ -14,7 +14,7 @@
 
 ---
 
-## Navigation
+## Table of Contents
 
 - [Verify Dashboard Exists](#verify-dashboard-exists)  
 - [Verify Dashboard Tag](#verify-dashboard-tag)  
