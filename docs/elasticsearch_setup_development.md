@@ -323,8 +323,8 @@ If you accidentally press Return, the service may be installed before your confi
 - Open a browser and go to `http://<hostname_or_ip>:5601`.
 - Log in using the `elastic` credential to verify successful access.
 
-     ![Kibana login screenshot](../resources/troubleshooting-images/kibanalogin.png)
-     ![Kibana running screenshot](../resources/troubleshooting-images/kibanarerun02.png)
+     ![Kibana Login Page](../resources/troubleshooting-images/kibanaloginpage.png)
+     ![Kibana Login Page Response](../resources/troubleshooting-images/kibanaloginpageresponse.png)
 
 ## Step 3: Install and Configure APM Server
 
