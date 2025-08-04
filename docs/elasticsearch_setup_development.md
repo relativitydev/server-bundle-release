@@ -342,7 +342,7 @@ If you accidentally press Return, the service may be installed before your confi
 - Extract the files to `C:\elastic`.
 
 
-**3.3 Configure APM Server (`config\apm-server.yml`)**
+**3.3 Configure APM Server (`C:\apm-server-8.17.3-windows-x86_64\apm-server.yml`)**
 
 - An API key is required for configuring both APM and Beats. To create an API key:
 
