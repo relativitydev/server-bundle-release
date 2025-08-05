@@ -179,6 +179,15 @@ If the service and collector are running but data is still missing, check the lo
   
 ---
 
+
+## Open Telemetry YAML File Auto-Generation
+
+> [!NOTE]
+> The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
+> C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml
+
+---
+
 ## Additional Pre-requisite Access Checks
 
 If the above steps do not resolve the issue, verify the following access and configuration requirements:
@@ -241,14 +250,6 @@ JSON response with secrets.
 ### Relativity Service Account Verification
 > [!NOTE]
 > For service account requirements and troubleshooting, see [Environment_Watch_Installer](../environment_watch_installer.md)
-
----
-
-## Open Telemetry YAML File Auto-Generation
-
-> [!NOTE]
-> The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
-> C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml
 
 ---
 
