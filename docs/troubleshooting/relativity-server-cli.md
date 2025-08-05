@@ -5,28 +5,30 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 > [!NOTE]
 > This guide assumes the Relativity Server bundle was extracted to `C:\server-bundle` or a similar directory chosen by the user.
 
+
 ## Table of Contents
 
-- [APM Integration and Data View](#apm-integration-and-data-view)
-- [Kibana Encryption Keys Issues](#kibana-encryption-keys-issues)
-- [Prerequisite Access Verification](#prerequisite-access-verification)
+1. [APM Integration and Data View](#1-apm-integration-and-data-view)
+2. [Kibana Encryption Keys Issues](#2-kibana-encryption-keys-issues)
+3. [Prerequisite Access Verification](#3-prerequisite-access-verification)
 
 ---
 
-## APM Integration and Data View
 
-### Elastic APM Integration Package
+## 1. APM Integration and Data View
+
+### 1.1 Elastic APM Integration Package
 
 The Elastic APM integration package must be added and configured in Kibana before running the CLI setup.
 
-- Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
-- In the top right, select the **Add Elastic APM** button.
-- Add an Integration name and for server configuration. Update APM hostname and APM URL.  
+* Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
+* In the top right, select the **Add Elastic APM** button.
+* Add an Integration name and for server configuration. Update APM hostname and APM URL.  
   Example:  
   Host: `<hostname_or_ip>:8200`  
   URL: `http://<hostname_or_ip>:8200`
-- Click on **Save and Continue**.
-- Select **Add Elastic Agent later** button as Agent is not required for the initial setups.
+* Click on **Save and Continue**.
+* Select **Add Elastic Agent later** button as Agent is not required for the initial setups.
 
 ![Add APM Integration](../../resources/troubleshooting-images/add-apm-integration.png)
 ![APM Integration Host Name](../../resources/troubleshooting-images/apm-integration-host-name.png)
@@ -63,7 +65,8 @@ curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
 ```
 </details>
 
-### Data View
+
+### 1.2 Data View
 
 #### Self Instrumentation Data View
 
@@ -74,19 +77,20 @@ See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and tro
 > [!NOTE]
 > Without the self-instrumentation Data View, you may not see CLI self-monitoring data in Kibana dashboards.
 
-Check if the APM Data View is created in Kibana:
+* To check if the APM Data View is created in Kibana:
 
-- Open a browser and go to `http://<hostname_or_ip>:5601`
-- Log in using elastic credentials
-- Confirm the APM Data View is present:
+* Open a browser and go to `http://<hostname_or_ip>:5601`
+* Log in using elastic credentials
+* Confirm the APM Data View is present:
 
-  ![dataview](../../resources/troubleshooting-images/dataview.png)
+   ![dataview](../../resources/troubleshooting-images/dataview.png)
 
 ---
 
-## Kibana Encryption Keys Issues
 
-Kibana encryption keys must be added to `C:\elastic\kibana\config\kibana.yml` before running CLI setup.  
+## 2. Kibana Encryption Keys Issues
+
+* Kibana encryption keys must be added to `C:\elastic\kibana\config\kibana.yml` before running CLI setup.  
 **If encryption keys are missing or invalid, the CLI will display errors such as:**
 ```
 [ERROR] Missing required Kibana encryption key: xpack.encryptedSavedObjects.encryptionKey
@@ -98,22 +102,18 @@ Kibana encryption keys must be added to `C:\elastic\kibana\config\kibana.yml` be
 
 ---
 
-## Prerequisite Access Verification
 
-Before running the CLI, you must have access to all of the following:
+## 3. Prerequisite Access Verification
 
-- **Relativity Admin account**
-- **Secret Server**
-- **Kepler (SSL certificate)**
-- **Elasticsearch**
-- **Kibana**
-- **APM Server**
+* Before running the CLI, you must have access to all of the following:
+  - **Relativity Admin account**
+  - **Secret Server**
+  - **Kepler (SSL certificate)**
+  - **Elasticsearch**
+  - **Kibana**
+  - **APM Server**
 
-For verification steps for all prerequisites, see [Prerequisite_Access_Verification](monitoring-agent-and-otel-collector.md##Pre-requisite-Access-Checks).
-
---- 
-
-For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
+* For verification steps for all prerequisites, see [Prerequisite_Access_Verification](monitoring-agent-and-otel-collector.md##Pre-requisite-Access-Checks).
 
 For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
  

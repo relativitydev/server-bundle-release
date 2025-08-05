@@ -7,26 +7,26 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Table of Contents
 
-- [Windows Service Issues](#windows-service-issues)
-  - [Kibana Service Not Starting](#kibana-service-not-starting)
-  - [Service Crashes or Stops Unexpectedly](#service-crashes-or-stops-unexpectedly)
-- [Authentication Issues](#authentication-issues)
-  - [Username/Password Authentication Issues](#usernamepassword-authentication-issues)
-  - [API Key Authentication Problems](#api-key-authentication-problems)
-- [Port Configuration Issues](#port-configuration-issues)
-  - [Port Conflicts](#port-conflicts)
-  - [Network Binding Problems](#network-binding-problems)
-- [Memory Issues](#memory-issues)
-  - [Insufficient Memory Allocation](#insufficient-memory-allocation)
-- [Kibana Encryption Keys Configuration](#kibana-encryption-keys-configuration)
-  - [Missing or Invalid Encryption Keys](#missing-or-invalid-encryption-keys)
-- [Service Verification](#service-verification)
-  - [Verifying Kibana Health and Status](#verifying-kibana-health-and-status)
-- [Additional Diagnostic Commands](#additional-diagnostic-commands)
+- [1. Windows Service Issues](#1-windows-service-issues)
+  - [1.1 Kibana Service Not Starting](#11-kibana-service-not-starting)
+  - [1.2 Service Crashes or Stops Unexpectedly](#12-service-crashes-or-stops-unexpectedly)
+- [2. Authentication Issues](#2-authentication-issues)
+  - [2.1 Username/Password Authentication Issues](#21-usernamepassword-authentication-issues)
+  - [2.2 API Key Authentication Problems](#22-api-key-authentication-problems)
+- [3. Port Configuration Issues](#3-port-configuration-issues)
+  - [3.1 Port Conflicts](#31-port-conflicts)
+  - [3.2 Network Binding Problems](#32-network-binding-problems)
+- [4. Memory Issues](#4-memory-issues)
+  - [4.1 Insufficient Memory Allocation](#41-insufficient-memory-allocation)
+- [5. Kibana Encryption Keys Configuration](#5-kibana-encryption-keys-configuration)
+  - [5.1 Missing or Invalid Encryption Keys](#51-missing-or-invalid-encryption-keys)
+- [6. Service Verification](#6-service-verification)
+  - [6.1 Verifying Kibana Health and Status](#61-verifying-kibana-health-and-status)
+- [7. Additional Diagnostic Commands](#7-additional-diagnostic-commands)
 
 ---
 
-## Windows Service Issues
+## 1. Windows Service Issues
 
 > [!CAUTION]
 > When the Kibana distribution is extracted, it can exceed the maximum Windows path. To prevent this from occurring, Relativity recommends enabling the long path feature.
@@ -35,7 +35,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 > - Navigate to **Computer Configuration** → **Administrative Template** → **System** → **Filesystem**.
 > - Double click on **Enable Win32 long paths** and set it to **Enabled**.
 
-### Kibana Service Not Starting
+### 1.1 Kibana Service Not Starting
 
 **Symptoms:**
 - Kibana service fails to start
@@ -43,7 +43,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-- **Check Service Status and Configuration:**
+* **Check Service Status and Configuration:**
    ```powershell
    Get-Service -Name kibana
    ```
@@ -57,16 +57,17 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
+   ```powershell
    Get-CimInstance -ClassName Win32_Service -Filter "Name='kibana'" | Select-Object Name, State, StartMode, StartName
    ```
    - Verify the service is running under Local System account (default configuration).
 
-- **Check Kibana Logs:**
-   - Navigate to `C:\elastic\kibana\logs\`
-   - Review the latest log files (`kibana.log`) for error messages.
-   - Look for configuration errors or Elasticsearch connection issues (for example: `Unable to connect to Elasticsearch at https://<host or ip address>:9200`).
+* **Check Kibana Logs:**
+  - Navigate to `C:\elastic\kibana\logs\`
+  - Review the latest log files (`kibana.log`) for error messages.
+  - Look for configuration errors or Elasticsearch connection issues (for example: `Unable to connect to Elasticsearch at https://<host or ip address>:9200`).
 
-- **Start Service Manually:**
+* **Start Service Manually:**
    ```powershell
    Start-Service kibana
    ```
@@ -78,7 +79,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-### Service Crashes or Stops Unexpectedly
+### 1.2 Service Crashes or Stops Unexpectedly
 
 **Symptoms:**
 - Kibana service starts but stops after a short period
@@ -87,17 +88,17 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Check Kibana Logs:**
-   - Navigate to `C:\elastic\kibana\logs\`
-   - Review the latest log files (`kibana.log`) for crash details
-   - Look for memory issues or connection failures
+* **Check Kibana Logs:**
+  - Navigate to `C:\elastic\kibana\logs\`
+  - Review the latest log files (`kibana.log`) for crash details
+  - Look for memory issues or connection failures
 
-2. **Review Kibana Configuration:**
-   - Check `C:\elastic\kibana\config\kibana.yml` file
-   - Verify Elasticsearch connection settings
-   - Ensure all required configuration parameters are present
+* **Review Kibana Configuration:**
+  - Check `C:\elastic\kibana\config\kibana.yml` file
+  - Verify Elasticsearch connection settings
+  - Ensure all required configuration parameters are present
 
-3. **Verify Elasticsearch Connectivity:**
+* **Verify Elasticsearch Connectivity:**
    ```powershell
    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
    ```
@@ -125,15 +126,15 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-4. **Check Memory Usage:**
-   - Monitor Kibana process memory consumption using Task Manager or Resource Monitor.
-   - Verify sufficient system memory is available.
+* **Check Memory Usage:**
+  - Monitor Kibana process memory consumption using Task Manager or Resource Monitor.
+  - Verify sufficient system memory is available.
 
 ---
 
-## Authentication Issues
+## 2. Authentication Issues
 
-### Username/Password Authentication Issues
+### 2.1 Username/Password Authentication Issues
 
 **Symptoms:**
 - Login failures at Kibana interface
@@ -142,32 +143,32 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Verify User Configuration:**
-   - Ask the user to log in using the `elastic` username credentials.
-   - Check `C:\elastic\kibana\config\kibana.yml`:
-   ```yaml
-   elasticsearch.username: "<username>"
-   elasticsearch.password: "<password>"
-   ```
+* **Verify User Configuration:**
+  - Ask the user to log in using the `elastic` username credentials.
+  - Check `C:\elastic\kibana\config\kibana.yml`:
+    ```yaml
+    elasticsearch.username: "<username>"
+    elasticsearch.password: "<password>"
+    ```
 
-2. **Test Elasticsearch Credentials Independently:**
-   - Use the `elastic` username and password from `kibana.yml` to verify connectivity to Elasticsearch:
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
-   ```
-   <details>
-   <summary>Expected output</summary>
+* **Test Elasticsearch Credentials Independently:**
+  - Use the `elastic` username and password from `kibana.yml` to verify connectivity to Elasticsearch:
+    ```powershell
+    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+    ```
+    <details>
+    <summary>Expected output</summary>
 
-   ```json
-   {
-      "name" : "EMTTEST",
-      "cluster_name" : "elasticsearch",
-      ...
-   }
-   ```
-   </details>
+    ```json
+    {
+       "name" : "EMTTEST",
+       "cluster_name" : "elasticsearch",
+       ...
+    }
+    ```
+    </details>
 
-3. **Test User Authentication:**
+* **Test User Authentication:**
    ```powershell
    curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" -u <username>:<password>
    ```
@@ -187,7 +188,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-4. **Reset Kibana System User Password:**
+* **Reset Kibana System User Password:**
    ```powershell
    C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u kibana_system
    ```
@@ -201,7 +202,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
-## API Key Authentication Problems
+### 2.2 API Key Authentication Problems
 
 **Symptoms:**
 - Authentication failures between Kibana and Elasticsearch
@@ -210,15 +211,15 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-- **Verify API Key Configuration:**
-   - Check `C:\elastic\kibana\config\kibana.yml`:
-   ```yaml
-   elasticsearch.apiVersion: "8.x"
-   elasticsearch.hosts: ["https://<hostname_or_ip>:9200"]
-   elasticsearch.apiKey: "your-api-key-here"
-   ```
+* **Verify API Key Configuration:**
+  - Check `C:\elastic\kibana\config\kibana.yml`:
+    ```yaml
+    elasticsearch.apiVersion: "8.x"
+    elasticsearch.hosts: ["https://<hostname_or_ip>:9200"]
+    elasticsearch.apiKey: "your-api-key-here"
+    ```
 
-- **Test API Key Validity:**
+* **Test API Key Validity:**
    ```powershell
    curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" -H "Authorization: ApiKey your-api-key"
    ```
@@ -238,20 +239,19 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-- **Create API Key via Kibana Frontend:**
-   1. Log in to Kibana at `http://<hostname_or_ip>:5601/` with an account that has sufficient privileges.
-   2. Go to **Stack Management** > **API Keys**.
-   3. Click **Create API key**.
-   4. Enter a name, set privileges as needed, and click **Create API key**.
-   5. Copy the generated API key for use in your `kibana.yml`.
-   
-   ![Kibana API Key UI](../../resources/troubleshooting-images/apm_apikey.png)
+* **Create API Key via Kibana Frontend:**
+  - Log in to Kibana at `http://<hostname_or_ip>:5601/` with an account that has sufficient privileges.
+  - Go to **Stack Management** > **API Keys**.
+  - Click **Create API key**.
+  - Enter a name, set privileges as needed, and click **Create API key**.
+  - Copy the generated API key for use in your `kibana.yml`.
+  - ![Kibana API Key UI](../../resources/troubleshooting-images/apm_apikey.png)
 
 ---
 
-## Port Configuration Issues
+## 3. Port Configuration Issues
 
-### Port Conflicts
+### 3.1 Port Conflicts
 
 **Symptoms:**
 - Kibana fails to bind to default port
@@ -260,21 +260,21 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-- **Check Default Port:**
-   - Default Kibana port: 5601
-   - Verify port availability:
-   ```powershell
-   netstat -an | findstr ":5601"
-   ```
-   <details>
-   <summary>Expected output</summary>
+* **Check Default Port:**
+  - Default Kibana port: 5601
+  - Verify port availability:
+    ```powershell
+    netstat -an | findstr ":5601"
+    ```
+    <details>
+    <summary>Expected output</summary>
 
-   ```
-   TCP    0.0.0.0:5601           0.0.0.0:0              LISTENING
-   ```
-   </details>
+    ```
+    TCP    0.0.0.0:5601           0.0.0.0:0              LISTENING
+    ```
+    </details>
 
-- **Test Kibana Connectivity:**
+* **Test Kibana Connectivity:**
    ```powershell
    (curl.exe -s -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status" | ConvertFrom-Json).status.overall | ConvertTo-Json -Depth 10
    ```
@@ -289,15 +289,15 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-- **Configure Alternative Port (if needed):**
-> [!WARNING]
-> At present, you cannot use alternative ports without introducing several side effects. If you must use a different port, ensure the other application using port 5601 is removed before changing the port.
-   - Edit `C:\elastic\kibana\config\kibana.yml`:
-   ```yaml
-   server.port: 5602
-   ```
+* **Configure Alternative Port (if needed):**
+  > [!WARNING]
+  > At present, you cannot use alternative ports without introducing several side effects. If you must use a different port, ensure the other application using port 5601 is removed before changing the port.
+  - Edit `C:\elastic\kibana\config\kibana.yml`:
+    ```yaml
+    server.port: 5602
+    ```
 
-- **Update Firewall Rules:**
+* **Update Firewall Rules:**
    ```powershell
    New-NetFirewallRule -DisplayName "Kibana Web Interface" -Direction Inbound -Protocol TCP -LocalPort 5601 -Action Allow
    ```
@@ -309,7 +309,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-### Network Binding Problems
+### 3.2 Network Binding Problems
 
 **Symptoms:**
 - Cannot access Kibana from remote hosts
@@ -318,15 +318,15 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-- **Verify Network Configuration:**
-   - Check `C:\elastic\kibana\config\kibana.yml` configuration:
-   ```yaml
-   server.host: "0.0.0.0"  # For all interfaces
-   # or
-   server.host: "<hostname_or_ip>"
-   ```
+* **Verify Network Configuration:**
+  - Check `C:\elastic\kibana\config\kibana.yml` configuration:
+    ```yaml
+    server.host: "0.0.0.0"  # For all interfaces
+    # or
+    server.host: "<hostname_or_ip>"
+    ```
 
-- **Test Local and Remote Access:**
+* **Test Local and Remote Access:**
    ```powershell
    curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/"
    ```
@@ -350,9 +350,9 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
-## Memory Issues
+## 4. Memory Issues
 
-### Insufficient Memory Allocation
+### 4.1 Insufficient Memory Allocation
 
 **Symptoms:**
 - Kibana becomes unresponsive
@@ -361,7 +361,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Check Current Memory Usage:**
+* **Check Current Memory Usage:**
    ```powershell
    Get-Process -Name node | Where-Object {$_.ProcessName -eq "node"} | Select-Object WorkingSet, VirtualMemorySize
    ```
@@ -375,21 +375,21 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-2. **Review Out of Memory Errors in Logs:**
-   - Check for "out of memory" or "heap" errors in `C:\elastic\kibana\logs\kibana.log`.
-   - ![Out of Memory Error Screenshot](../../resources/troubleshooting-images/kibana-out-of-memory.png)
-   - > [!NOTE]
-     > Out of memory errors typically indicate insufficient system memory or improper Node.js heap settings. Review the error details in the log for specific causes and recommended actions.
+* **Review Out of Memory Errors in Logs:**
+  - Check for "out of memory" or "heap" errors in `C:\elastic\kibana\logs\kibana.log`.
+  - ![Out of Memory Error Screenshot](../../resources/troubleshooting-images/kibana-out-of-memory.png)
+  - > [!NOTE]
+    > Out of memory errors typically indicate insufficient system memory or improper Node.js heap settings. Review the error details in the log for specific causes and recommended actions.
 
-3. **Verify Disk Space:**
-   - Insufficient disk space can also cause memory-related failures.
-   - For disk space troubleshooting steps, see [Verify Disk Space](elasticsearch.md#verify-disk-space).
+* **Verify Disk Space:**
+  - Insufficient disk space can also cause memory-related failures.
+  - For disk space troubleshooting steps, see [Verify Disk Space](elasticsearch.md#verify-disk-space).
 
 ---
 
-## Kibana Encryption Keys Configuration
+## 5. Kibana Encryption Keys Configuration
 
-### Missing or Invalid Encryption Keys
+### 5.1 Missing or Invalid Encryption Keys
 
 **Symptoms:**
 - Kibana fails to start with encryption-related errors
@@ -398,7 +398,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-1. **Generate Encryption Keys:**
+* **Generate Encryption Keys:**
    ```powershell
    cd C:\elastic\kibana\bin
    .\kibana-encryption-keys.bat generate
@@ -413,14 +413,14 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-2. **Configure Required Encryption Keys in kibana.yml:**
-   - Copy the generated lines above and paste them into your `C:\elastic\kibana\config\kibana.yml` file.
+* **Configure Required Encryption Keys in kibana.yml:**
+  - Copy the generated lines above and paste them into your `C:\elastic\kibana\config\kibana.yml` file.
 
 ---
 
-## Service Verification
+## 6. Service Verification
 
-### Verifying Kibana Health and Status
+### 6.1 Verifying Kibana Health and Status
 
 **Symptoms:**
 - Need to confirm Kibana is operating correctly
@@ -429,7 +429,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 **Troubleshooting Steps:**
 
-- **Check Kibana Status:**
+* **Check Kibana Status:**
    ```powershell
    curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status"
    ```
@@ -453,42 +453,42 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
-## Additional Diagnostic Commands
+## 7. Additional Diagnostic Commands
 
-### Configuration Validation
+### 7.1 Configuration Validation
 
-```powershell
-# Validate YAML syntax
-C:\elastic\kibana\bin\kibana.bat --validate-config
-```
-<details>
-<summary>Expected output</summary>
+* **Validate YAML syntax**
+  ```powershell
+  C:\elastic\kibana\bin\kibana.bat --validate-config
+  ```
+  <details>
+  <summary>Expected output</summary>
 
-```
-Configuration is valid
-```
-</details>
+  ```
+  Configuration is valid
+  ```
+  </details>
 
-```powershell
-# Check current configuration
-C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
-```
-<details>
-<summary>Expected output</summary>
+* **Check current configuration**
+  ```powershell
+  C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
+  ```
+  <details>
+  <summary>Expected output</summary>
 
-```
-Configuration loaded successfully
-```
-</details>
+  ```
+  Configuration loaded successfully
+  ```
+  </details>
 
-```powershell
-# Check current configuration
-C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
-```
-<details>
-<summary>Expected output</summary>
+* **Check current configuration**
+  ```powershell
+  C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
+  ```
+  <details>
+  <summary>Expected output</summary>
 
-```
-Configuration loaded successfully
-```
-</details>
+  ```
+  Configuration loaded successfully
+  ```
+  </details>
