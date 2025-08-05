@@ -143,33 +143,40 @@ If a specific host is not reporting, check that the Environment Watch Windows se
 
 ---
 
+
 ## Verify the Open Telemetry Collector Logs
 
 If the service and collector are running but data is still missing, check the logs for errors or misconfiguration.
 
 **How to check:**
 
-1. Check the directory:
-   `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs`
-   - Ensure files like `otelcol-relativity-stderr.log` and `otelcol-relativity-stdout.log` are present and updating.
-2. All information and error log entries are also written to the Windows event log:
-   - `Relativity.EnvironmentWatch`
-3. Use PowerShell to check logs:
-   ```powershell
-   Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Error" }
-   Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Information" }
-   Get-EventLog Relativity.EnvironmentWatch | Where { $_.Message -like "*Everything is ready*" }
-   ```
-   <details>
-   <summary>Expected output</summary>
+* All logs are written to:
+  - `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs\otelcol-relativity-stderr.log` (errors)
+  - `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs\otelcol-relativity-stdout.log` (general logs)
+* All information and error log entries are also written to the Windows event log:
+  - `Relativity.EnvironmentWatch`
+* Use PowerShell to check logs:
+  ```powershell
+  Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Error" }
+  Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Information" }
+  Get-EventLog Relativity.EnvironmentWatch | Where { $_.Message -like "*Everything is ready*" }
+  ```
+  <details>
+  <summary>Expected output</summary>
 
-   ```
-   Index Time          EntryType   Source                        InstanceID Message
-   ----- ----          ---------   ------                        ---------- -------
-   123   7/29/2025     Information Relativity.EnvironmentWatch   ...        Everything is ready
-   ```
-   </details>
-
+  ```
+  Index Time          EntryType   Source                        InstanceID Message
+  ----- ----          ---------   ------                        ---------- -------
+  123   7/29/2025     Information Relativity.EnvironmentWatch   ...        Everything is ready
+  ```
+  </details>
+* You can also check the Event Viewer logs for `Relativity.EnvironmentWatch`:
+  - Open **Event Viewer** (eventvwr.msc)
+  - Navigate to **Application and Service Logs** > **Relativity.EnvironmentWatch**
+  - Review any Error or Warning entries for troubleshooting details
+  
+  ![EventViewer_RelativityEnvironmentWatch](../../resources/troubleshooting-images/EventViewer_RelativityEnvironmentWatch.png)
+  
 ---
 
 ## Additional Pre-requisite Access Checks
