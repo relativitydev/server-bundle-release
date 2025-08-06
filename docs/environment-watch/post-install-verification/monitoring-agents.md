@@ -161,6 +161,9 @@ Ensure hosts and agent versions are correctly displayed.
 * Last Modified Date column shows timestamp to verify installation time.
 </details>
 
+> [!NOTE]
+> Verify that the agent version is consistent across all nodes to ensure uniform monitoring capabilities.
+
 **Screenshot:**
 ![Screenshot: Hosts and versions](../../../resources/post-install-verification-images/monitoring-agents/hosts-agent-versions.png)
 
