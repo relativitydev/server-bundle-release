@@ -26,7 +26,8 @@
 - [Example API Health Check (Optional)](#example-api-health-check-optional)
 
 ---
-
+> [!NOTE]
+> The below Health Indicators will be available from September 8th 2025 release.
 ## Verify Dashboard Exists
 
 **Description:**  

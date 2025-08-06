@@ -17,7 +17,7 @@
 * [API-Based Cluster Health Check](#api-based-cluster-health-check)  
 
 ---
-
+The below Cluster Dashboard will be available starting from September 8th 2025 release.
 ## Verify Cluster Health Summary
 
 **Description:**  
