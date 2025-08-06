@@ -377,9 +377,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 * **Review Out of Memory Errors in Logs:**
   - Check for "out of memory" or "heap" errors in `C:\elastic\kibana\logs\kibana.log`.
-  - ![Out of Memory Error Screenshot](../../resources/troubleshooting-images/kibana-out-of-memory.png)
-  - > [!NOTE]
-    > Out of memory errors typically indicate insufficient system memory or improper Node.js heap settings. Review the error details in the log for specific causes and recommended actions.
+> [!NOTE]
+> Out of memory errors typically indicate insufficient system memory or improper Node.js heap settings. Review the error details in the log for specific causes and recommended actions.
 
 * **Verify Disk Space:**
   - Insufficient disk space can also cause memory-related failures.

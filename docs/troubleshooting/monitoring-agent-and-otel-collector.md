@@ -151,7 +151,7 @@ If the service and collector are running but data is still missing, check the lo
 **How to check:**
 
 > [!NOTE]
-> The below log files will be available starting with the September Patch 2 release.
+> The below log files will be available from September 8th 2025 release.
 * All logs are written to:
   - `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs\otelcol-relativity-stderr.log` (errors)
   - `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs\otelcol-relativity-stdout.log` (general logs)

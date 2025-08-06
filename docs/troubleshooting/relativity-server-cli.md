@@ -98,7 +98,7 @@ See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and tro
 [ERROR] Missing required Kibana encryption key: xpack.security.encryptionKey
 ```
 > [!NOTE]
-> If you encounter encryption key validation errors or warnings in the CLI, follow the instructions in [Kibana Encryption Key Configuration](kibana.md#missing-or-invalid-encryption-keys).
+> If you encounter encryption key validation errors or warnings in the CLI, follow the instructions in [Kibana Encryption Keys Configuration](kibana.md#5-kibana-encryption-keys-configuration).
 
 ---
 

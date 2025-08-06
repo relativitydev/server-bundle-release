@@ -482,5 +482,5 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 > [!IMPORTANT]
 > Ensure that the `Status` for each service is `Running`.
 > - If Kibana is not in running state, [click here for Kibana troubleshooting](../troubleshooting/kibana.md).
-> - If APM is not in running state, [click here for APM troubleshooting](../troubleshooting/apm.md).
+> - If APM is not in running state, [click here for APM troubleshooting](apm-server.md)
 
