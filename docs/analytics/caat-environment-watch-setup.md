@@ -1,6 +1,6 @@
 # Setting Up OpenTelemetry Java Agent for Relativity Analytics Engine (CAAT)
 
-![](../resources/caat-environment-watch-setup.png)
+![](../resources/caat_environment_watch_setup.png)
 
 This guide provides step-by-step instructions for installing/updating Relativity Analytics Engine (CAAT) along with the OpenTelemetry Java Agent. This enables distributed tracing and observability with minimal code changes.
 
