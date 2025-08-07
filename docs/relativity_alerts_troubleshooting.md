@@ -1,5 +1,7 @@
 # Relativity Alerts Troubleshooting
 
+![SetupStage](../resources/SetupStage02.png)
+
 This guide will help you resolve common issues that may arise during the installation of Alert application. If you encounter difficulties, follow the steps outlined below to identify and fix the problem quickly. Before proceeding, ensure that your device meets the system requirements and that you have a stable internet connection.
 
 ## During Installation
