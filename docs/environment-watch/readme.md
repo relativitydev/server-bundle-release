@@ -20,7 +20,6 @@ This documentation outlines the step-by-step procedures for verifying that the e
 
 ## Table of Contents
 
-- **[Elastic Cluster Dashboard Post-Install Verification](./elasticsearch-cluster-health.md)**  
-- **[Monitoring Agents Dashboard Post-Install Verification](./monitoring-agents.md)**  
-- **[Alerts Post-Install Verification](./alerts.md)**
-
+- **[Elastic Cluster Dashboard Post-Install Verification](post-install-verification/elasticsearch-cluster-health.md)**  
+- **[Monitoring Agents Dashboard Post-Install Verification](post-install-verification/monitoring-agents.md)**  
+- **[Alerts Post-Install Verification](post-install-verification/alerts.md)**
