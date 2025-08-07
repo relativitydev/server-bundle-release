@@ -12,7 +12,6 @@ This document provides troubleshooting guidance for common Kibana issues encount
   - [1.2 Service Crashes or Stops Unexpectedly](#12-service-crashes-or-stops-unexpectedly)
 - [2. Authentication Issues](#2-authentication-issues)
   - [2.1 Username/Password Authentication Issues](#21-usernamepassword-authentication-issues)
-  - [2.2 API Key Authentication Problems](#22-api-key-authentication-problems)
 - [3. Port Configuration Issues](#3-port-configuration-issues)
   - [3.1 Port Conflicts](#31-port-conflicts)
   - [3.2 Network Binding Problems](#32-network-binding-problems)
@@ -389,3 +388,4 @@ This document provides troubleshooting guidance for common Kibana issues encount
   Configuration loaded successfully
   ```
   </details>
+
