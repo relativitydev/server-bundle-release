@@ -1,39 +1,52 @@
 # Post-Install Verification for Elastic Cluster Health  
----
-
-![Post-Install Verification - Elasticsearch Cluster Health](../../../resources/post-install-verification-images/Post-installation-verification.svg)
-
-> [!IMPORTANT]  
-> After installation, wait 10–15 minutes before starting verification to allow services to fully initialize and collect accurate data.
-
----
+![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Table of Contents
 
+* [Verify Dashboard Exists](#verify-dashboard-exists)
 * [Verify Cluster Health Summary](#verify-cluster-health-summary)  
 * [Verify Node Metrics](#verify-node-metrics)  
 * [Verify Index Statistics](#verify-index-statistics) 
 * [Verify Disk and Storage Utilization](#verify-disk-and-storage-utilization)
-* [API-Based Cluster Health Check](#api-based-cluster-health-check)  
 
 ---
 > [!NOTE]
 > The below Cluster Dashboard will be available starting from September 8th 2025 release.
+## Verify Dashboard Exists
+
+**Description:**  
+Navigate to the Elasticsearch cluster health monitoring dashboard.
+
+**Steps:**  
+1. Navigate to Kibana.
+2. Go to **Dashboards → Monitoring Agent Dashboard** in the navigation panel.
+3. Click on **Cluster Overview**.
+4. Alternatively, visit this direct link: http://<hostname>:5601/app/monitoring#
+
+<details>  
+<summary><strong>Expected Result</strong></summary>  
+
+- Successfully access the Elasticsearch monitoring dashboard.
+- Cluster health panels and metrics are visible.
+- Dashboard loads without errors.
+</details>  
+
+---
+
 ## Verify Cluster Health Summary
 
 **Description:**  
 Confirm cluster health status, total nodes, shards, indices, and document count are displayed and accurate.
 
 **Steps:**  
-1. Open the `Elastic Cluster Dashboard`.  
-2. Locate the **Cluster Overview** or **Cluster Health Summary** panel.  
-3. Validate:  
+1. Locate the **Cluster Health Summary** panel.
+2. Validate:  
    - Cluster status (Green, Yellow, Red) — expect Green for healthy cluster.  
-      - Number of nodes.  
-      - Number of indices.  
-      - Total shards and unassigned shards.  
-      - Total documents.  
-      - Data size.
+   - Number of nodes.  
+   - Number of indices.  
+   - Total shards and unassigned shards.  
+   - Total documents.  
+   - Data size.
 
 <details>  
 <summary><strong>Expected Result</strong></summary>  
@@ -124,12 +137,6 @@ Ensure disk free space and usage metrics are visible for each node.
 
 **Screenshot:**  
 ![Screenshot: Disk and Storage Utilization](../../../resources/post-install-verification-images/elasticsearch-cluster-health/disk-storage-utilization.png)
-
----
-
-## API-Based Cluster Health Check
-
-<!-- REFER TO API-BASED CLUSTER HEALTH CHECK -->
 
 ---
 

@@ -1,18 +1,5 @@
-﻿# Post-Install Verification for Alerts Overview
-
-![Post-Install Verification - Elasticsearch Cluster Health](../../../resources/post-install-verification-images/Post-installation-verification.svg)
-
----
-
-## Prerequisites
-
-> [!IMPORTANT]
-> After installation, wait 10–15 minutes before starting the verification process. This allows time for:
-> - All services to fully initialize
-> - Data collection to begin
-> - Health indicators to show accurate statuses
-
----
+﻿# Post-Install Verification for Alerts
+![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Table of Contents
 
@@ -20,10 +7,7 @@
 - [Verify Dashboard Tag](#verify-dashboard-tag)  
 - [Verify Health Indicators Are Displayed](#verify-health-indicators-are-displayed)  
 - [Verify Individual Health Indicator Status](#verify-individual-health-indicator-status)  
-- [Verify Dashboard in a Time Range](#verify-dashboard-in-a-time-range)  
-- [Verify Visualization Style and Format](#verify-visualization-style-and-format)  
-- [Verify Screen Resolution for the Dashboards](#verify-screen-resolution-for-the-dashboards)  
-- [Example API Health Check (Optional)](#example-api-health-check-optional)
+- [Verify Dashboard in a Time Range](#verify-dashboard-in-a-time-range)
 
 ---
 > [!NOTE]
@@ -142,82 +126,5 @@ Ensure that the dashboard is using a custom 15-minute time range as required for
 
 **Screenshot:**  
 ![Screenshot: Time range 15 minutes](../../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)
-
----
-
-## Verify Visualization Style and Format
-
-**Description:**  
-Confirm that all health indicator visualizations follow the required formatting and visual standards.
-
-**Steps:**
-1. Check for the following attributes:
-  - Font color is **White** for text overlays.
-  - Font size is **22pt for titles, 14pt for subtitles**.
-  - **No decimal values** are used (set to 0).
-  - Text alignment is **center** with **middle baseline**.
-  - Color mapping is set to:
-    - **Color by value → Dynamic**
-    - Supporting visualization: **Type = None**
-  - Subtitle appears using **"Titles and Text"** setting (e.g., *Healthy*).
-  - Title text uses **bold font weight**.
-
-<details>
-<summary><strong>Expected Result</strong></summary>
-
-- All tiles meet visualization standards.
-- No tooltips, labels, or legends are improperly formatted.
-- Visual consistency across the entire dashboard.
-</details>
-
-**Screenshot:**  
-![Screenshot: Visualization settings](../../../resources/post-install-verification-images/alerts-overview/visualization-style.png)
-
----
-
-## Verify Screen Resolution for the Dashboards
-
-**Description:**  
-Ensure the dashboard layout and formatting are optimized for the recommended screen resolution of **1920x1080**, which ensures full visibility of all visual elements without scrollbars or layout distortion.
-
-**Steps:**
-1. Login to **Kibana**.
-2. Navigate to **Observability → Dashboard**.
-3. Click on `[Relativity] Alerts Overview`.
-4. Press **F12** to open Developer Tools in **Chrome** or **Edge**.
-5. Toggle the **Device Emulation** feature.
-6. Set the device dimensions to **1920x1080**.
-
-<details>
-<summary><strong>Expected Result</strong></summary>
-
-- The dashboard fits within a 1920x1080 resolution.
-- No horizontal or vertical scrollbars are required to view core components.
-- All health indicators and visualizations remain properly aligned.
-</details>
-
-**Screenshot:**  
-![Screenshot: Screen resolution check](../../../resources/post-install-verification-images/alerts-overview/screen-resolution-check.png)
-
----
-
-## Example API Health Check (Optional)
-
-**Description:**  
-Verify dashboard backend connectivity using a direct API call to Elasticsearch/Kibana for health indicators (for technical validation).
-
-**Steps:**  
-Run the following `curl` command from a secure terminal:
-
-```bash
-curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:5601/api/saved_objects/_find?type=dashboard&search_fields=title&search=%5BRelativity%5D%20Alerts%20Overview" -H 'kbn-xsrf: true'
-```
-
-<details>
-<summary><strong>Expected Result</strong></summary>
-
-- A JSON response returns the dashboard object.
-- Status code `200 OK`.
-</details>
 
 ---
