@@ -200,7 +200,6 @@ If you download a .zip or other file from the internet, Windows may block the fi
     
 - In your terminal, click the generated link to open Kibana in your browser.
 - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
-- In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
   
     [See where the enrollment token is generated.](#enrollment-token-generation)
 - If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
@@ -274,11 +273,20 @@ This verifies that Kibana is running and your credentials are working.
    - For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
 **2.5 Create Kibana Windows Service**
+> [!IMPORTANT]
+> **Running Kibana as a Windows Service is Optional**
+> Environment Watch does NOT require Kibana to run as a Windows service, nor does it require the use of NSSM. NSSM is a commonly used open-source tool to help run applications as services, but it is not mandatory. You can run Kibana manually from the command line if you prefer, and this will work perfectly for development and most production scenarios.
+> 
+> Only use NSSM if you want Kibana to start automatically as a service on Windows. If you do not wish to use NSSM, simply run `kibana.bat` manually.
+
+    ```
+    C:\Kibana\kibana-8.17.3\bin\kibana.bat
+    ```
     
 - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
 > [!Note]
-Kibana does not install as a Windows service by default. We recommend using NSSM—a commonly used open-source tool—to run Kibana as a Windows service.
+Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
 
 - Open an elevated PowerShell and run the following command:
 
@@ -446,7 +454,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
   }
   ```
 
-## Step 4: Post Installation and Verification
+## Step 4: Additional Setup and Verification
 
 
 **4.1 Add Elastic APM Integration Package**
