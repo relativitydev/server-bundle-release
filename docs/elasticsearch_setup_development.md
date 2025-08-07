@@ -297,13 +297,16 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 > **Editing Kibana Service Properties:**
 > If you accidentally install the Kibana service before completing your configuration (for example, by pressing Return too early in the NSSM dialog), you can easily edit the service properties afterward. This allows you to update the application path, log file settings, or other options without reinstalling the service.
 
-To edit the service properties:
+<details>
+<summary>To edit the service properties</summary>
 
 - Open an elevated PowerShell and run the following command:
 
     ```
     C:\nssm-2.24\win64\nssm.exe edit kibana
     ```
+
+</details>
 
 - In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). 
 
