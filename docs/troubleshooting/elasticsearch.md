@@ -25,7 +25,30 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ---
 
+
 ## 1. Windows Service Issues
+
+> [!IMPORTANT]
+> Before troubleshooting Elasticsearch, verify that all required Elastic Stack services are running. If any of these are not running, other troubleshooting steps may be irrelevant.
+>
+> **Check all required services:**
+> ```powershell
+> Get-Service -Name elasticsearch, kibana, apm-server | Format-Table -AutoSize
+> ```
+> <details>
+> <summary>Expected output</summary>
+>
+> ```
+> Status   Name           DisplayName
+> ------   ----           -----------
+> Running  elasticsearch  elasticsearch
+> Running  kibana         kibana
+> Running  apm-server     apm-server
+> ```
+> </details>
+> - The `kibana` Windows service may not exist if Kibana was not installed as a Windows service (e.g., via NSSM). NSSM is not required; Kibana can be run manually or as a scheduled task. Only check for the `kibana` service if you have installed it as a service.
+> - If Kibana is not in running state, [click here for Kibana troubleshooting](../troubleshooting/kibana.md).
+> - If APM is not in running state, [click here for APM troubleshooting](apm-server.md)
 
 ### 1.1 Elasticsearch Service Not Starting
 
@@ -64,9 +87,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 * **Check Elasticsearch Logs:**
   - Navigate to the log directory (default: `C:\elastic\elasticsearch-8.17.3\logs\`).
-  - Review the cluster log file (`elasticsearch.log`) for error messages.
+  - Review the Elasticsearch log file (`elasticsearch.log`) for error messages.
   - Check the slow logs and garbage collection logs if present.
-  - For every error in the cluster log, provide troubleshooting for that specific error.
+  - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
 
 > [!TIP]
 > For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
@@ -98,14 +121,14 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 * **Check Elasticsearch Logs:**
   - Navigate to `C:\elastic\elasticsearch\logs\`
-  - Review the cluster log file (`elasticsearch.log`) for errors
-  - For every error in the cluster log, provide troubleshooting for that specific error.
+  - Review the Elasticsearch log file (`elasticsearch.log`) for errors
+  - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
 > [!NOTE] 
-> Always check the latest error in the cluster log and troubleshoot accordingly. This approach should be followed everywhere.
+> Always check the latest error in the Elasticsearch log and troubleshoot accordingly. This approach should be followed everywhere.
 
 * **Verify Disk Space:**
   - Ensure sufficient disk space on data and log directories (minimum 15% free)
-  - Verify data and log files are on separate drives from the Operating System drive
+  - Verify data and log files are on separate drives from the Operating System drive. If you store Elasticsearch data on a network share, ensure the share is accessible and has sufficient free space. Some environments may not use mapped drives.
   ```powershell
   # Check disk space
   Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="FreeSpace(%)";Expression={[math]::Round(($_.FreeSpace/$_.Size)*100,2)}}
@@ -215,36 +238,36 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
     network.host: ["_local_", "_site_"]
     ```
 
-* **Test Local Connectivity:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
-   ```
-   <details>
-   <summary>Expected output</summary>
+* **Test Connectivity (from any server):**
+   1. First, check if the port is accessible:
+      ```powershell
+      Test-NetConnection -ComputerName <hostname_or_ip> -Port 9200
+      ```
+      <details>
+      <summary>Expected output</summary>
 
-   ```json
-   {
-     "name" : "EMTTEST",
-     "cluster_name" : "elasticsearch",
-     ...
-   }
-   ```
-   </details>
+      ```
+      ComputerName     : <hostname_or_ip>
+      RemoteAddress    : <ip>
+      RemotePort       : 9200
+      TcpTestSucceeded : True
+      ```
+      </details>
+   2. If the port is accessible, test the Elasticsearch endpoint:
+      ```powershell
+      curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+      ```
+      <details>
+      <summary>Expected output</summary>
 
-* **Test Remote Connectivity:**
-   ```powershell
-   Test-NetConnection -ComputerName <hostname_or_ip> -Port 9200
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   ComputerName     : <hostname_or_ip>
-   RemoteAddress    : <ip>
-   RemotePort       : 9200
-   TcpTestSucceeded : True
-   ```
-   </details>
+      ```json
+      {
+        "name" : "EMTTEST",
+        "cluster_name" : "elasticsearch",
+        ...
+      }
+      ```
+      </details>
 
 ---
 
@@ -358,27 +381,17 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 * **Verify Certificate Location:**
   - Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
     ```yaml
-    xpack.security.transport.ssl.keystore.path: "C:\\path\\to\\your\\keystore.p12"
-    xpack.security.transport.ssl.truststore.path: "C:\\path\\to\\your\\truststore.p12"
+    xpack.security.transport.ssl:
+      keystore.path: certs/transport.p12
+      truststore.path: certs/transport.p12
     ```
 
-* **Test Certificate Validity:**
-   ```powershell
-   # Check if the certificate is valid and not expired
-   openssl pkcs12 -in "C:\path\to\your\keystore.p12" -noout -info
-   ```
-   <details>
-   <summary>Expected output</summary>
 
-   ```
-   PKCS #12: keystore password is 123456
-   ```
-   </details>
 
 * **Check Elasticsearch Logs for SSL Errors:**
   - Navigate to `C:\elastic\elasticsearch\logs\`
-  - Review the cluster log file (`elasticsearch.log`) for SSL-related errors
-  - For every error in the cluster log, provide troubleshooting for that specific error.
+  - Review the Elasticsearch log file (`elasticsearch.log`) for SSL-related errors
+  - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
 
 ---
 
@@ -457,30 +470,5 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
    </details>
 
-### 5.2 Service Dependencies Verification
 
-**Symptoms:**
-- Elasticsearch starts but related services fail
-
-**Troubleshooting Steps:**
-
-* **Verify Required Services:**
-   ```powershell
-   Get-Service -Name elasticsearch, kibana, apm-server | Format-Table -AutoSize
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   Status   Name           DisplayName
-   ------   ----           -----------
-   Running  elasticsearch  elasticsearch
-   Running  kibana         kibana
-   Running  apm-server     apm-server
-   ```
-   </details>
-> [!IMPORTANT]
-> Ensure that the `Status` for each service is `Running`.
-> - If Kibana is not in running state, [click here for Kibana troubleshooting](../troubleshooting/kibana.md).
-> - If APM is not in running state, [click here for APM troubleshooting](apm-server.md)
-
+---

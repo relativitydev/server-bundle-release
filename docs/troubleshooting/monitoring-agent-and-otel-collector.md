@@ -144,9 +144,18 @@ If a specific host is not reporting, check that the Environment Watch Windows se
 ---
 
 
+
 ## Verify the Open Telemetry Collector Logs
 
 If the service and collector are running but data is still missing, check the logs for errors or misconfiguration.
+
+> [!IMPORTANT]
+> The most important log entry to confirm successful operation is:
+> **Everything is ready**
+> If you do not see this message in the logs or Windows Event Viewer, the Open Telemetry Collector is almost certainly not working correctly.
+
+> [!WARNING]
+> The Windows Event Log for `Relativity.EnvironmentWatch` uses a very small default size (1 MB). This can quickly fill up and cause important log entries (like "Everything is ready") to be lost. Increase the log size to at least 500 MB in Event Viewer to ensure you do not miss critical events.
 
 **How to check:**
 

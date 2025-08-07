@@ -1,10 +1,23 @@
+
 # Relativity Server CLI Troubleshooting
 
 This document provides troubleshooting guidance for common Relativity Server CLI issues encountered during Environment Watch and Data Grid Audit setup, configuration, and operation.
 
+## Prerequisite Access
+
+> [!IMPORTANT]
+> Before running the CLI, you must have access to all of the following:
+> - **Relativity Admin account**
+> - **Secret Server**
+> - **Kepler (SSL certificate)**
+> - **Elasticsearch**
+> - **Kibana**
+> - **APM Server**
+>
+> For verification steps for all prerequisites, see [Additional Pre-requisite Access Checks](monitoring-agent-and-otel-collector.md#additional-pre-requisite-access-checks).
+
 > [!NOTE]
 > This guide assumes the Relativity Server bundle was extracted to `C:\server-bundle` or a similar directory chosen by the user.
-
 
 ## Table of Contents
 
@@ -101,19 +114,6 @@ See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and tro
 > If you encounter encryption key validation errors or warnings in the CLI, follow the instructions in [Kibana Encryption Keys Configuration](kibana.md#5-kibana-encryption-keys-configuration).
 
 ---
-
-
-## 3. Prerequisite Access Verification
-
-* Before running the CLI, you must have access to all of the following:
-  - **Relativity Admin account**
-  - **Secret Server**
-  - **Kepler (SSL certificate)**
-  - **Elasticsearch**
-  - **Kibana**
-  - **APM Server**
-
-* For verification steps for all prerequisites, see [Prerequisite_Access_Verification](monitoring-agent-and-otel-collector.md##Pre-requisite-Access-Checks).
 
 For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
  

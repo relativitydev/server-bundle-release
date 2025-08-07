@@ -26,14 +26,11 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
+
 ## 1. Windows Service Issues
 
-> [!CAUTION]
-> When the Kibana distribution is extracted, it can exceed the maximum Windows path. To prevent this from occurring, Relativity recommends enabling the long path feature.
->
-> - Run `gpedit.msc` to open the Local Group Policy Editor.
-> - Navigate to **Computer Configuration** → **Administrative Template** → **System** → **Filesystem**.
-> - Double click on **Enable Win32 long paths** and set it to **Enabled**.
+> [!IMPORTANT]
+> The following troubleshooting steps apply **only if Kibana was set up as a Windows service** (e.g., using NSSM or a similar tool). If you did not install Kibana as a Windows service, you must ensure that `kibana.bat` is running in a command prompt or as a scheduled task.
 
 ### 1.1 Kibana Service Not Starting
 
@@ -168,84 +165,11 @@ This document provides troubleshooting guidance for common Kibana issues encount
     ```
     </details>
 
-* **Test User Authentication:**
-   ```powershell
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" -u <username>:<password>
-   ```
-   <details>
-   <summary>Expected output</summary>
 
-   ```json
-   {
-     "kibana_system": {
-       "username": "kibana_system",
-       "roles": [
-         "kibana_system"
-       ],
-       ...
-     }
-   }
-   ```
-   </details>
-
-* **Reset Kibana System User Password:**
-   ```powershell
-   C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u kibana_system
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   Password for the [kibana_system] user successfully reset.
-   ```
-   </details>
 
 ---
 
-### 2.2 API Key Authentication Problems
 
-**Symptoms:**
-- Authentication failures between Kibana and Elasticsearch
-- "Unable to retrieve version information" errors
-- 401 Unauthorized responses in Kibana logs
-
-**Troubleshooting Steps:**
-
-* **Verify API Key Configuration:**
-  - Check `C:\elastic\kibana\config\kibana.yml`:
-    ```yaml
-    elasticsearch.apiVersion: "8.x"
-    elasticsearch.hosts: ["https://<hostname_or_ip>:9200"]
-    elasticsearch.apiKey: "your-api-key-here"
-    ```
-
-* **Test API Key Validity:**
-   ```powershell
-   curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/api_key" -H "Authorization: ApiKey your-api-key"
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "api_keys": [
-       {
-         "id": "api_key_id",
-         "name": "api_key_name",
-         ...
-       }
-     ]
-   }
-   ```
-   </details>
-
-* **Create API Key via Kibana Frontend:**
-  - Log in to Kibana at `http://<hostname_or_ip>:5601/` with an account that has sufficient privileges.
-  - Go to **Stack Management** > **API Keys**.
-  - Click **Create API key**.
-  - Enter a name, set privileges as needed, and click **Create API key**.
-  - Copy the generated API key for use in your `kibana.yml`.
-  - ![Kibana API Key UI](../../resources/troubleshooting-images/apm_apikey.png)
 
 ---
 
@@ -289,13 +213,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
    ```
    </details>
 
-* **Configure Alternative Port (if needed):**
-  > [!WARNING]
-  > At present, you cannot use alternative ports without introducing several side effects. If you must use a different port, ensure the other application using port 5601 is removed before changing the port.
-  - Edit `C:\elastic\kibana\config\kibana.yml`:
-    ```yaml
-    server.port: 5602
-    ```
+
 
 * **Update Firewall Rules:**
    ```powershell
@@ -326,27 +244,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
     server.host: "<hostname_or_ip>"
     ```
 
-* **Test Local and Remote Access:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/"
-   ```
-   <details>
-   <summary>Expected output</summary>
 
-   ```html
-   <!DOCTYPE html>
-   <html>
-   <head>
-     <title>Kibana</title>
-     ...
-   </head>
-   <body>
-     ...
-   </body>
-   </html>
-   ```
-   </details>
-   - Run this command from the server hosting Kibana (local) and from a remote machine (remote).
 
 ---
 

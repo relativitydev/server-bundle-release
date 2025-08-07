@@ -292,26 +292,25 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 ## 4. Self-Instrumentation
 
-To enable instrumentation of the APM Server itself, add the following section to your `apm-server.yml` file:
+**Symptoms:**
+- Need to monitor APM Server itself for performance and health metrics
+- Want to enable self-monitoring and observability for the APM Server
 
-```yaml
-instrumentation:
+**Troubleshooting Steps:**
 
-  # Set to true to enable instrumentation of the APM Server itself.
-  enabled: true
+> [!NOTE]
+> For detailed self-instrumentation configuration steps, see the [Development Tier Setup Guide](../elasticsearch_setup_development.md#step-3-install-and-configure-apm-server).
 
-  # Environment in which the APM Server is running (e.g., staging, production, etc.)
-  environment: production
+* **Enable Self-Instrumentation:**
+  - Self-instrumentation allows APM Server to monitor its own performance
+  - This feature is configured in the `apm-server.yml` file
+  - Refer to Step 3 in the [elasticsearch_setup_development.md](../elasticsearch_setup_development.md) guide for complete configuration details
 
-  # Hosts to report instrumentation results to.
-  # For reporting to itself, leave this field commented or set to the local APM endpoint.
-  hosts:
-    - http://<hostname_or_ip>:8200
-```
-
-After updating the configuration, restart the APM Server service:
-```powershell
-Restart-Service apm-server
-```
+* **Verify Self-Instrumentation:**
+  - After configuration, restart the APM Server service:
+    ```powershell
+    Restart-Service apm-server
+    ```
+  - Check Kibana to verify that APM Server metrics are being collected
 
 
