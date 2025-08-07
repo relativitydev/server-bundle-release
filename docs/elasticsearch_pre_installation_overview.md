@@ -1,4 +1,22 @@
-﻿# Installing Elasticsearch, Kibana, and APM Server
+﻿
+# System Requirements
+
+> **Banner:**
+> This documentation and release have been tested and certified by Relativity with the following software versions. Any versions above those listed below have not been tested or certified for this release.
+
+**Relativity Server Version:**
+- Minimum required: Relativity Server 2024 Patch 1
+
+**Elasticsearch Version:**
+- 8.17.3 (Required for both Environment Watch and Data Grid Audit)
+
+**Kibana Version:**
+- 8.17.3
+
+**APM Server Version:**
+- 8.17.3
+
+# Installing Elasticsearch, Kibana, and APM Server
 
 ![Setup Stage](../resources/setup_stage.png)
 
@@ -19,6 +37,10 @@ Before you start, we will cover some key Elastic stack concepts.
 ## Elastic Key Concepts
 
 ### Elasticsearch
+[See the port diagram for network requirements.](environment-watch/port-diagram.md)
+
+> **Banner:**
+> Ensure inbound/outbound ports are open for this Elastic stack component.
 
 Elasticsearch is a distributed search and analytics engine, scalable data store, and vector database built on Apache Lucene. It’s optimized for speed and relevance on production-scale workloads.
 
@@ -47,6 +69,10 @@ Every Elasticsearch cluster requires at least one node designated master and dat
 <div class="note">In a cluster being used for both Environment Watch and Data Grid Audit, you do not designate any given data node as being for one or the other. Any node in the cluster can support operations for either product.</div>
 
 ### Kibana
+[See the port diagram for network requirements.](environment-watch/port-diagram.md)
+
+> **Banner:**
+> Ensure inbound/outbound ports are open for this Elastic stack component.
 
 Kibana is a user interface that lets you visualize your Elasticsearch data and navigate the Elastic stack. See below for more information on Kibana.
 
@@ -54,6 +80,10 @@ Kibana is a user interface that lets you visualize your Elasticsearch data and n
 - [Kibana key concepts](https://www.elastic.co/guide/en/kibana/current/kibana-concepts-analysts.html)
 
 ### APM Server
+[See the port diagram for network requirements.](environment-watch/port-diagram.md)
+
+> **Banner:**
+> Ensure inbound/outbound ports are open for this Elastic stack component.
 
 The APM Server provides a fully Open Telemetry compliant telemetry backend to periodically receive log, metric, and trace data from each monitored server.
 
@@ -79,14 +109,14 @@ Any server being used to host Elastic components requires:
 
 The number of servers and hardware specifications that you need to host the Elastic components will vary depending on the size of your Relativity instance and whether you intend to use the cluster for Environment Watch, Data Grid Audit, or both. Below you will find recommendations based on four Relativity Server environment sizes. These are only recommendations. You can adjust the node counts and role blends for your environment based on observed and desired performance and reliability needs.
 
-A few other key notes and reminders:
+**A few other key notes and reminders:**
 
-- **Tuning for speed** - Review Elastic’s guidance on how to tune your environment for speed [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html).
-- **Hosting Elastic –** While the guidance below recommends installing the Elastic components on many dedicated servers, there are no hard requirements to isolate Elasticsearch, Kibana, or APM Server on dedicated hosts. As evident with the Development environment specifications, you can deploy the full Elastic stack on a single host if that server can meet your storage needs.
-  - **Kibana and APM Server hosting** –
-    - For Small environments, we recommend dedicated servers for Kibana and APM Server, but can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node for development and very small environments.
+- **Tuning for speed** – Review Elastic’s guidance on how to tune your environment for speed [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html).
+- **Hosting Elastic** – While the guidance below recommends installing the Elastic components on many dedicated servers, there are no hard requirements to isolate Elasticsearch, Kibana, or APM Server on dedicated hosts. As evident with the Development environment specifications, you can deploy the full Elastic stack on a single host if that server can meet your storage needs.
+  - **Kibana and APM Server hosting:**
+    - For Small environments, we recommend dedicated servers for Kibana and APM Server, but you can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node for development and very small environments.
     - For Medium environments and above, we strongly recommend installing Kibana and APM Server each on dedicated servers.
-- **Nodes in a shared Environment Watch/Data Grid cluster** - In a cluster being used for both Environment Watch and Data Grid Audit, you are not required to designate data nodes for one or the other. Any node in the cluster can support operations for either product, though dedicated node assignments may be needed for certain workloads.
+- **Nodes in a shared Environment Watch/Data Grid cluster** – In a cluster being used for both Environment Watch and Data Grid Audit, you are not required to designate data nodes for one or the other. Any node in the cluster can support operations for either product, though dedicated node assignments may be needed for certain workloads.
 
 **Environment Size**
 
@@ -187,7 +217,9 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 1. **Plan your cluster** – based on the size of your environment, establish a game plan for how many servers/nodes you intend to use and the role of each node within the cluster. We recommend using a Development environment to test drive Environment Watch in order to get up and running as quickly as possible.
 
-2. **Windows *should* be updated to support long paths** - This is recommended because the Elastic Stack components have dense file paths when fully extracted. In many cases, the product apppears to function properly but certain features may fail because files may be missing or cannot be accessed because the path exceeds the max Windows character length. Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on enable the Long path.
+2. **Review the required ports for Elastic components** – See the [port diagram](environment-watch/port-diagram.md) for network requirements and ensure all necessary ports are open between servers hosting Elasticsearch, Kibana, and APM Server.
+
+3. **Windows *should* be updated to support long paths** - This is recommended because the Elastic Stack components have dense file paths when fully extracted. In many cases, the product apppears to function properly but certain features may fail because files may be missing or cannot be accessed because the path exceeds the max Windows character length. Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on enable the Long path.
 
 
     https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
