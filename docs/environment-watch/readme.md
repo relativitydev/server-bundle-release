@@ -1,6 +1,6 @@
 # Relativity Environment Watch Dashboard Post-Install Verification
 
-![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
+![Post-Install Verification Banner](../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Prerequisites
 
