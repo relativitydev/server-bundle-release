@@ -46,6 +46,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 > Running  apm-server     apm-server
 > ```
 > </details>
+>
 > - The `kibana` Windows service may not exist if Kibana was not installed as a Windows service (e.g., via NSSM). NSSM is not required; Kibana can be run manually or as a scheduled task. Only check for the `kibana` service if you have installed it as a service.
 > - If Kibana is not in running state, [click here for Kibana troubleshooting](../troubleshooting/kibana.md).
 > - If APM is not in running state, [click here for APM troubleshooting](apm-server.md)
@@ -469,6 +470,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    }
    ```
    </details>
+
 
 
 ---
