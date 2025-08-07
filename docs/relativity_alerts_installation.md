@@ -26,8 +26,9 @@ Requirements for installation of the Relativity Alerts Application:
 	- **Full name / Email address**: Optional but recommended.
 	5. Under **Roles**, search for and assign the `relativity_dashboard_user` role.
 	6. Click **Create user** to save.  
-	> [!Warning] 
-	> **Important:** Users must log in with this account to access the Kibana dashboards and saved searches provided by Environment Watch.
+	
+> [!WARNING] 
+> **Important:** Users must log in with this account to access the Kibana dashboards and saved searches provided by Environment Watch.
 	![](../resources/custom_kibana_role.png)
 
 ## Installation
