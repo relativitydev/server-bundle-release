@@ -20,8 +20,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
   - [4.2 SSL/TTLS Certificate Issues](#42-ssltls-certificate-issues)
 - [5. Service Verification](#5-service-verification)
   - [5.1 Verifying Elasticsearch Health](#51-verifying-elasticsearch-health)
-  - [5.2 Service Dependencies Verification](#52-service-dependencies-verification)
-- [6. Additional Diagnostic Commands](#6-additional-diagnostic-commands)
 
 ---
 
@@ -474,3 +472,4 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 
 ---
+
