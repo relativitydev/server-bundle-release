@@ -1,0 +1,1 @@
+![Port Diagram](../resources/port_diagram.svg)
