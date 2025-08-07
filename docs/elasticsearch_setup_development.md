@@ -269,7 +269,7 @@ After Kibana has restarted, open a browser and go to `http://<hostname_or_ip>:56
 Log in using the `elastic` username and the password you generated earlier.
 This verifies that Kibana is running and your credentials are working.
 
-   ![kibana restart](../resources/troubleshooting-images/kibanarestart.png)
+   ![Kibana restart](../resources/troubleshooting-images/kibanaloginpageresponse.png)
 
    - For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
