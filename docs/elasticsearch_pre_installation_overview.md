@@ -1,6 +1,5 @@
 ﻿# Installing Elasticsearch, Kibana, and APM Server
 
-![Setup Stage](../resources/setup_stage.png)
 ![](../resources/troubleshooting-images/setupstage.png)
 
 # System Requirements
