@@ -1,7 +1,7 @@
 ﻿
 # System Requirements
 
-> **Banner:**
+> [!NOTE]
 > This documentation and release have been tested and certified by Relativity with the following software versions. Any versions above those listed below have not been tested or certified for this release.
 
 **Relativity Server Version:**
@@ -37,10 +37,11 @@ Before you start, we will cover some key Elastic stack concepts.
 ## Elastic Key Concepts
 
 ### Elasticsearch
-[See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
-> **Banner:**
+> [!IMPORTANT]
 > Ensure inbound/outbound ports are open for this Elastic stack component.
+
+[See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
 Elasticsearch is a distributed search and analytics engine, scalable data store, and vector database built on Apache Lucene. It’s optimized for speed and relevance on production-scale workloads.
 
@@ -69,10 +70,11 @@ Every Elasticsearch cluster requires at least one node designated master and dat
 <div class="note">In a cluster being used for both Environment Watch and Data Grid Audit, you do not designate any given data node as being for one or the other. Any node in the cluster can support operations for either product.</div>
 
 ### Kibana
-[See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
-> **Banner:**
+> [!IMPORTANT]
 > Ensure inbound/outbound ports are open for this Elastic stack component.
+
+[See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
 Kibana is a user interface that lets you visualize your Elasticsearch data and navigate the Elastic stack. See below for more information on Kibana.
 
@@ -80,10 +82,11 @@ Kibana is a user interface that lets you visualize your Elasticsearch data and n
 - [Kibana key concepts](https://www.elastic.co/guide/en/kibana/current/kibana-concepts-analysts.html)
 
 ### APM Server
-[See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
-> **Banner:**
+> [!IMPORTANT]
 > Ensure inbound/outbound ports are open for this Elastic stack component.
+
+[See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
 The APM Server provides a fully Open Telemetry compliant telemetry backend to periodically receive log, metric, and trace data from each monitored server.
 

@@ -1,1 +1,1 @@
-![Port Diagram](port_diagram.svg)
+![Port Diagram](<Port Diagram.svg>)
