@@ -3,11 +3,11 @@
 ![](../resources/relativity_alerts_installation_step.png)
 
 ## Summary
-The Relativity Alerts application is a new application as part of the Relativity Environment Watch suite. Its main functionality is to alert Relativity System Administrators to a variety of Environmental and Application related issues on a Relativity instance within Relativity web interface. It replaces a previous "Legacy Alerts" functionality with a new OTEL based implementation with ELK backend. It allows in real time to notify Relativity System Administrators about issues, redirect them to easily readable dashboards with performance and health information, as well as accompanied by a comprehensive resolution guidelines.
+The Relativity Alerts application is a new application as part of the Relativity Environment Watch suite. Its main functionality is to alert Relativity System Administrators to a variety of Environmental and Application related issues on a Relativity instance within Relativity web interface. It replaces a previous "Legacy Alerts" functionality with a new Open Telemetry based implementation with Elastic Stack backend. It allows in real time to notify Relativity System Administrators about issues, redirect them to easily readable dashboards with performance and health information, as well as accompanied by a comprehensive resolution guidelines.
 
 ## Prerequisites
 Requirements for installation of the Relativity Alerts Application:  
-- Relativity Server 2024 Patch 1 release.  
+- Relativity Server 2024 Patch 2 or later.  
 - Configure [Elasticsearch, Kibana, and APM server](elasticsearch_setup.md) in an environment.  
 - Run the one-time [CLI setup](relativity_server_cli_setup.md) for Environment Watch.  
 - Install [Relativity Environment Watch Agent](environment_watch_installer.md) in an environment.
@@ -15,6 +15,22 @@ Requirements for installation of the Relativity Alerts Application:
 ## Permissions
 - To install the application, access it, and receive alerts, the user must be part of the Relativity System Administrators Group.
 - To access Kibana dashboards and saved searches a new account must be created for each user and be assigned to the custom Kibana role which is installed during the Environment Watch CLI setup.
+	### Creating Kibana Users with Dashboard Access
+	To create a Kibana user and assign the custom Kibana role:
+	1. Log in to Kibana as a user with administrative privileges.
+	2. Navigate to **Stack Management** > **Security** > **Users**.
+	3. Click **Create user**.
+	4. Fill out the following:
+	- **Username**: A unique login name (e.g., `alerts_dashboard_user`).
+	- **Password**: Set a strong password.
+	- **Full name / Email address**: Optional but recommended.
+	5. Under **Roles**, search for and assign the `relativity_dashboard_user` role.
+	6. Click **Create user** to save.  
+	![](../resources/custom_kibana_role.png)
+	
+> [!WARNING] 
+> **Important:** Users must log in with this account to access the Kibana dashboards and saved searches provided by Environment Watch.
+	
 
 ## Installation
 To install the Relativity Alerts application on your Relativity instance:

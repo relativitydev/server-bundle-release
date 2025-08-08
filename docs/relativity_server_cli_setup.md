@@ -1,6 +1,6 @@
 # Set up Environment Watch and/or Data Grid Audit using the Relativity Server CLI
 
-![](../resources/relativity_server_cli_setup_001.png)
+![Setup Stage](../resources/enable_environmentwatch.png)
 
 Now that you have installed the required Elastic components for Environment Watch and/or Data Grid Audit, you will configure the integration between Elastic and Relativity by running the Relativity Server CLI on your Primary SQL Server. For Environment Watch, the Relativity Server CLI will also import all of the indexes, alerts, and dashboards that Relativity has developed and shipped as part of the Environment Watch product.
 

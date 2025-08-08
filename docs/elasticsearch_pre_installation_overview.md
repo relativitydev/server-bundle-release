@@ -1,4 +1,8 @@
-﻿
+﻿# Installing Elasticsearch, Kibana, and APM Server
+
+![Setup Stage](../resources/setup_stage.png)
+![](../resources/troubleshooting-images/setupstage.png)
+
 # System Requirements
 
 > [!NOTE]
@@ -15,10 +19,6 @@
 
 **APM Server Version:**
 - 8.17.3
-
-# Installing Elasticsearch, Kibana, and APM Server
-
-![Setup Stage](../resources/setup_stage.png)
 
 This first stage of the Environment Watch and/or Data Grid Audit setup involves installing required third-party software from the Elastic stack. There are three Elastic components used for these two products:
 
