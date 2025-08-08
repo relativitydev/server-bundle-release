@@ -6,7 +6,7 @@ This guide will help you resolve common issues that may arise during the install
 
 #### Issue 1: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch." error is displayed.
 
-![ew-toggle-disabled-exception.png](../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-exception.png)
+![ew-toggle-disabled-exception.png](../../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-exception.png)
 
 **Causes:**
 
@@ -18,7 +18,7 @@ This guide will help you resolve common issues that may arise during the install
 
 #### Issue 2: "This operation cannot be completed because an HTTP request to the Elasticsearch server failed. Please try again. If the issue persists, ensure that the Elasticsearch server is accessible and the configuration is correct." error is displayed.
 
-![elastic-setup-not-started-error.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-not-started-error.png)
+![elastic-setup-not-started-error.png](../../resources/relativity-alerts-troubleshooting-images/elastic-kibana-not-started-error.png)
 
 **Causes:**
 
@@ -34,8 +34,8 @@ This guide will help you resolve common issues that may arise during the install
 
 #### Issue 3: "Agent information doesn't exist." error is displayed.
 
-![alert-agent-doesnot-exist1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist1.png)
-![alert-agent-doesnot-exist2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist2.png)
+![alert-agent-doesnot-exist1.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist1.png)
+![alert-agent-doesnot-exist2.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-doesnot-exist2.png)
 
 **Causes:**
 1. You might be missing the "Alert Manager" agent. 
@@ -68,16 +68,16 @@ Please follow below steps to verify and create a new agent if needed:
 
    f. Click on Save
 
-![alert-agent-type.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-type.png)
-![testvm-hopper-instance.png](../resources/relativity-alerts-troubleshooting-images/testvm-hopper-instance.png)
-![verifyfields.png](../resources/relativity-alerts-troubleshooting-images/verifyfields.png)
+![alert-agent-type.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-type.png)
+![testvm-hopper-instance.png](../../resources/relativity-alerts-troubleshooting-images/testvm-hopper-instance.png)
+![verifyfields.png](../../resources/relativity-alerts-troubleshooting-images/verifyfields.png)
     
 <br/> Once these steps are completed, the "Alert Manager" agent should now be active and functioning correctly.
 
 #### Issue 4: "The Alert Manager agent is unable to retrieve current alert state information from Kibana. Please ensure that the Alert Manager agent is enabled. To see accurate alert state information please navigate to Kibana." error is displayed.
 
-![alert-agent-disabled1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled1.png)
-![alert-agent-disabled2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled2.png)
+![alert-agent-disabled1.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled1.png)
+![alert-agent-disabled2.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-disabled2.png)
 
 **Causes:**
 1. Your "Alert Manager" agent might be disabled.
@@ -103,16 +103,16 @@ Please follow below steps to verify and enable the agent if needed:
 
 	c. Click on 'Alert Manager' agent and click on 'Enable Agent'<br/>
 
-	![alert-agent-enabled.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png) <br/>
+	![alert-agent-enabled.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-enabled.png) <br/>
 
 
 <br/> Once these steps are completed, the "Alert Manager" agent should now be Enabled and functioning correctly.
 
 #### Issue 5: "The Alert Manager agent interval is currently set to more than 15 minutes. If you want alert state information to be retrieved from Kibana more frequently, please update the agent interval." warning is displayed.
 
-![alert-agent-interval-exceeds1.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds1.png)
+![alert-agent-interval-exceeds1.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds1.png)
 
-![alert-agent-interval-exceeds2.png](../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds2.png)
+![alert-agent-interval-exceeds2.png](../../resources/relativity-alerts-troubleshooting-images/alert-agent-interval-exceeds2.png)
 
 **Troubleshooting Steps:**
 
@@ -133,13 +133,13 @@ Your "Alert Manager" agent might have exceeded the interval. Please follow below
 	b. Filter the Name field to check 'Alert Manager' agent is present.
 
 	c. Click on 'Alert Manager' agent and Update Agent interval to a value less then 900 seconds (15 minutes). Recommended value is 30 (default).<br/>
-	![verify-alert-agent-interval.png](../resources/relativity-alerts-troubleshooting-images/verify-alert-agent-interval.png)
+	![verify-alert-agent-interval.png](../../resources/relativity-alerts-troubleshooting-images/verify-alert-agent-interval.png)
 
 #### Issue 6: "Unable to retrieve alert state information from Kibana. Please ensure that Elasticsearch and Kibana are functional." error is displayed.
 
-![elastic-kibana-down1.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down1.png)
+![elastic-kibana-down1.png](../../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down1.png)
 
-![elastic-kibana-down2.png](../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down2.png)
+![elastic-kibana-down2.png](../../resources/relativity-alerts-troubleshooting-images/elastic-kibana-down2.png)
 
 **Causes:**
 
@@ -152,7 +152,7 @@ Your "Alert Manager" agent might have exceeded the interval. Please follow below
 2. Re-run the Relativity Server CLI first-time setup. It may be necessary to execute the setup again to resolve any configuration issues or missing components related to the integration.
 
 #### Issue 7: "The user does not have permission to perform this action." error is displayed.
-![admin-permission-error.png](../resources/relativity-alerts-troubleshooting-images/admin-permission-error.png)
+![admin-permission-error.png](../../resources/relativity-alerts-troubleshooting-images/admin-permission-error.png)
 
 **Causes:**
 
@@ -163,7 +163,7 @@ Your "Alert Manager" agent might have exceeded the interval. Please follow below
 1. Please verify that user has the System Administrator permissions to perform the required actions.
 
 #### Issue 8: "Relativity Alert object data is unavailable or stale because Environment Watch is not currently enabled in this instance. Please see {doc page} for instructions on how to deploy and enable Environment Watch" error is displayed.
-![ew-toggle-disabled-error.png](../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-error.png)
+![ew-toggle-disabled-error.png](../../resources/relativity-alerts-troubleshooting-images/ew-toggle-disabled-error.png)
 
 **Causes:**
 1. Relativity Server CLI First-Time Setup not executed properly.
