@@ -126,5 +126,5 @@ During the installation process, two log files are created in the `%TEMP%` direc
 ## Handling errors
 If any errors are encountered during the installation process, please refer to the [troubleshooting guide](/docs/environment_watch_troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
 
-## Next steps
+## Next
 Click [here](relativity_alerts_installation.md) to Install Relativity Alerts Application
