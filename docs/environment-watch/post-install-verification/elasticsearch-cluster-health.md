@@ -21,7 +21,7 @@ Navigate to the Elasticsearch cluster health monitoring dashboard.
 1. Navigate to Kibana.
 2. Go to **Dashboards → Monitoring Agent Dashboard** in the navigation panel.
 3. Click on **Cluster Overview**.
-4. Alternatively, visit this direct link: http://<hostname>:5601/app/monitoring#
+4. Alternatively, visit this direct link: http://<hostname_or_ip>:5601/app/monitoring#
 
 <details>  
 <summary><strong>Expected Result</strong></summary>  
