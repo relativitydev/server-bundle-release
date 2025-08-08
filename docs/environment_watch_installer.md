@@ -1,6 +1,6 @@
 # Relativity Environment Watch installation
 
-![](../resources/Installer_current_step.png)
+![Setup Stage](../resources/stage_environmentwatch.png)
 
 ## Summary
 The Relativity Environment Watch installer package contains a monitoring agent (rel-infrawatch-agent.exe) that collects and transmits telemetry data to Elastic and a Windows service (rel-envwatch-service.exe) that is responsible for launching the monitoring agent process and enables monitoring agent auto-upgrade process. You will install this package on all hosts in your environment that you want to monitor.

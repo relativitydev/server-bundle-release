@@ -1,5 +1,7 @@
 ﻿# Development Tier
 
+![Set Up Stage](../resources/troubleshooting-images/setupstage.png)
+
 ## How to Unblock Downloaded Files
 
 > [!NOTE]
@@ -14,16 +16,16 @@ If you download a .zip or other file from the internet, Windows may block the fi
 ## Step 1: Download and Install Elasticsearch 8.17.3 on One Server
 
 
-1. **Download Elasticsearch 8.17.3**
+**1.1 Download Elasticsearch 8.17.3**
 
-   - Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
-   - Download the 8.17.3 Windows .zip version.
+- Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
+- Download the 8.17.3 Windows .zip version.
 
-   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
+- Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
-   - Extract the files to `C:\elastic`
+- Extract the files to `C:\elastic`
 
-2. **Install and Configure Elasticsearch 8.17.3**
+**1.2 Install and Configure Elasticsearch 8.17.3**
 
 - Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:
 
@@ -62,7 +64,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
   The service 'elasticsearch-service-x64' has been installed.
   ```
 
-3. **Run Elasticsearch as a Windows Service**
+**1.3 Run Elasticsearch as a Windows Service**
 
 - Open an elevated PowerShell and run the following command to start the Elasticsearch service:
 
@@ -77,42 +79,45 @@ If you download a .zip or other file from the internet, Windows may block the fi
   The service 'elasticsearch-service-x64' has been started.
   ```
 
-4. **Enable Stack Monitoring**
+**1.4 Enable Stack Monitoring**
 
-   - Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-8.17.3\config`) and open the `elasticsearch.yml` file.
-   - Add the following line to enable Stack Monitoring:
+- Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-8.17.3\config`) and open the `elasticsearch.yml` file.
+- Add the following line to enable Stack Monitoring:
 
      ```
      xpack.monitoring.collection.enabled: true
      ```
 
-   - Save the changes and restart the Elasticsearch service:
-     - Open an elevated PowerShell and run the following command:
-       ```
-       Restart-Service -Name "elasticsearch-service-x64"
-       ```
+- Save the changes and restart the Elasticsearch service:
 
-5. **Reset the Elastic (Admin) User Password**
+  - Open an elevated PowerShell and run the following command:
+    ```
+    Restart-Service -Name "elasticsearch-service-x64"
+    ```
 
-   The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
+**1.5 Reset the Elastic (Admin) User Password**
 
+- The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
+
+   - Navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-8.17.3\bin`)
    - Open an elevated PowerShell and run the following command:
 
-   ```
-   C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-reset-password -u elastic
-   ```
+     ```
+     .\elasticsearch-reset-password -u elastic
+     ```
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
-   - When you run this command, a new password will be generated and displayed in the console output.
+- When you run this command, a new password will be generated and displayed in the console output.
 > [!NOTE]
    The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
-6. **Install the 'mapper-size' plugin**
+**1.6 Install the 'mapper-size' plugin**
 
-  - Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
-
+- Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
+  ```
   C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-plugin install mapper-size
+  ```
 - To verify the 'mapper-size' plugin is installed, run:
   ```
   C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-plugin list
@@ -131,15 +136,15 @@ If you download a .zip or other file from the internet, Windows may block the fi
      WARNING: Waiting for service 'Elasticsearch 8.17.3 (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
      ```
 
-7. **Verify Elasticsearch Server**
+**1.7 Verify Elasticsearch Server**
 
-   - To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
+- To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values):
 
      ```
      curl -u <username>:<password> -k https://<hostname_or_ip>:9200
      ```
 
-   - The response should show basic cluster information in JSON format if the server is running and accessible.
+- The response should show basic cluster information in JSON format if the server is running and accessible.
 
    <details>
    <summary>Sample JSON response</summary>
@@ -167,22 +172,22 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ## Step 2: Install and Configure Kibana
 
-1. **Download Kibana 8.17.3**
+**2.1 Download Kibana 8.17.3**
     
-   - Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
+- Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
 
-   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
+- Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
-2. **Start Kibana from the command line**
+**2.2 Start Kibana from the command line**
     
-   - Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
-   - Open an elevated PowerShell and run the following command:
+- Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
+- Open an elevated PowerShell and run the following command:
 
      ```
      C:\Kibana\kibana-8.17.3\bin\kibana.bat
      ```
 
-   - If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
+- If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
 
      ```
      [INFO][server][http] http server running at http://localhost:5601
@@ -191,29 +196,28 @@ If you download a .zip or other file from the internet, Windows may block the fi
      Go to https://localhost:5601/?code=xyz to get started
      ```
 
-3. **Enroll Kibana**
+**2.3 Enroll Kibana**
     
-   - In your terminal, click the generated link to open Kibana in your browser.
-   - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
-  - In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
+- In your terminal, click the generated link to open Kibana in your browser.
+- In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
   
     [See where the enrollment token is generated.](#enrollment-token-generation)
-   - If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`):
+- If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
 
      ```
      C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-create-enrollment-token --scope kibana
      ```
-<details>
-<summary>Sample output</summary>
-eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
-</details>
+    <details>
+    <summary>Sample output</summary>
+    eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
+    </details>
 
-   - Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
-   - See the screenshot below for the login screen:
+- Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
+- See the screenshot below for the login screen:
 
      ![](/resources/elasticsearch_setup_003.png)
 
-4. **Generate Kibana encryption keys**
+**2.4 Generate Kibana encryption keys**
 
 > [!IMPORTANT]
     Skipping the steps below will cause the Relativity Server CLI to fail.
@@ -259,23 +263,32 @@ eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1
 
      ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
 
-> [!NOTE]
+> [!IMPORTANT]
 After Kibana has restarted, open a browser and go to `http://<hostname_or_ip>:5601`.
 Log in using the `elastic` username and the password you generated earlier.
 This verifies that Kibana is running and your credentials are working.
 
-   ![Kibana restart verification 2](../resources/troubleshooting-images/kibanarerun02.png)
+   ![Kibana restart](../resources/troubleshooting-images/kibanaloginpageresponse.png)
 
    - For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
-5. **Create Kibana Windows Service**
+**2.5 Create Kibana Windows Service**
+> [!IMPORTANT]
+> **Running Kibana as a Windows Service is Optional**
+> Environment Watch does NOT require Kibana to run as a Windows service, nor does it require the use of NSSM. NSSM is a commonly used open-source tool to help run applications as services, but it is not mandatory. You can run Kibana manually from the command line if you prefer, and this will work perfectly for development and most production scenarios.
+> 
+> Only use NSSM if you want Kibana to start automatically as a service on Windows. If you do not wish to use NSSM, simply run `kibana.bat` manually.
+
+    ```
+    C:\Kibana\kibana-8.17.3\bin\kibana.bat
+    ```
     
-   - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
+- Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
 > [!Note]
-Kibana does not install as a Windows service by default. We recommend using NSSM—a commonly used open-source tool—to run Kibana as a Windows service.
+Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
 
-   - Open an elevated PowerShell and run the following command:
+- Open an elevated PowerShell and run the following command:
 
      ```
      C:\nssm-2.24\win64\nssm.exe install kibana
@@ -283,69 +296,84 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 
      This will open a popup to create a Windows service for Kibana.
 
-   - In the Application tab, enter the path to `kibana.bat` and its folder as shown below:
+- In the Application tab, enter the path to `kibana.bat` and its folder as shown below:
 
      ![Kibana service application tab](../resources/troubleshooting-images/kibanaservice-applicationtab.png)
 
-> [!NOTE]
-If you accidentally press Return, the service may be installed before your configuration is complete. To edit the service properties, use:
-     
-   - Open an elevated PowerShell and run the following command:
 
-     ```
-     C:\nssm-2.24\win64\nssm.exe edit kibana
-     ```
+> [!TIP]
+> **Editing Kibana Service Properties:**
+> If you accidentally install the Kibana service before completing your configuration (for example, by pressing Return too early in the NSSM dialog), you can easily edit the service properties afterward. This allows you to update the application path, log file settings, or other options without reinstalling the service.
 
-   - In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). Copy the full log file path into the stdout and stderr sections:
+<details>
+<summary>To edit the service properties</summary>
+
+- Open an elevated PowerShell and run the following command:
+
+    ```
+    C:\nssm-2.24\win64\nssm.exe edit kibana
+    ```
+
+</details>
+
+- In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). 
+
+- Copy the full log file path into the stdout and stderr sections:
 
      ![Kibana service I/O tab](../resources/troubleshooting-images/kibanaservice-io-tab.png)
 
-   - In the File rotation tab, check all boxes and enter `10485760` bytes so a new log file is generated for every 10 MB of logs:
+- In the File rotation tab, check all boxes and enter `10485760` bytes so a new log file is generated for every 10 MB of logs:
 
      ![Kibana service file rotation tab](../resources/troubleshooting-images/kibanaservice-filerotationtab.png)
 
-   - Click the Install service button to create the Windows service for Kibana.
+- Click the Install service button to create the Windows service for Kibana.
 
-   - Go to the Services app in Windows, search for the `kibana` service, right click, and start the service.
+- Go to the Services app in Windows, search for the `kibana` service, right click, and start the service.
 
-   - Right click on the service and open Properties to change the startup type to Automatic, so Kibana runs automatically on system startup.
+- Right click on the service and open Properties to change the startup type to Automatic, so Kibana runs automatically on system startup.
 
-   - Verify that Kibana is running by opening it in your browser.
+- Verify that Kibana is running by opening it in your browser.
 
 > [!NOTE]
      It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
-6. **Verify Kibana Server**
-   - Open a browser and go to `http://<hostname_or_ip>:5601`.
-   - Log in using the `elastic` credential to verify successful access.
+**2.6 Verify Kibana Server**
+- Open a browser and go to `http://<hostname_or_ip>:5601`.
+- Log in using the `elastic` credential to verify successful access.
 
-     ![Kibana login screenshot](../resources/troubleshooting-images/kibanalogin.png)
-     ![Kibana running screenshot](../resources/troubleshooting-images/kibanarerun02.png)
+     ![Kibana Login Page](../resources/troubleshooting-images/kibanaloginpage.png)
+     ![Kibana Login Page Response](../resources/troubleshooting-images/kibanaloginpageresponse.png)
 
 ## Step 3: Install and Configure APM Server
 
-1. **Prerequisites to setup APM Server**
+**3.1 Prerequisites to setup APM Server**
 
-   - Elastic and Kibana should be configured and services should be up and running.
+- Elastic and Kibana should be configured and services should be up and running.
 
-2. **Download APM Server 8.17.3**
+**3.2 Download APM Server 8.17.3**
    
-   - Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
-   - Download and extract the 8.17.3 Windows .zip file.
-   - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
-   - Extract the files to `C:\elastic`.
+- Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
+- Download and extract the 8.17.3 Windows .zip file.
+- Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
+- Extract the files to `C:\elastic`.
 
 
-3. **Configure APM Server (`config\apm-server.yml`)**
+**3.3 Configure APM Server (`C:\apm-server-8.17.3-windows-x86_64\apm-server.yml`)**
 
 - An API key is required for configuring both APM and Beats. To create an API key:
 
   - Log in to Kibana (`http://<hostname_or_ip>:5601`) using the `elastic` credential.
+
   - Use the global search at the top of Kibana to search for "API keys" and select it from the results.
+
   - Click the **Create API key** button.
+
   - Enter a name for your API key (for example, specify if it will be used for Beats or APM).
+
   - Click the **Privileges** dropdown and select **Beats** to automatically apply the recommended permissions for Beats.
+
   - Click **Create API key**.
+  
   - Copy and securely save the generated `id` and `api_key` values.
 
   ![create-apikey](../resources/troubleshooting-images/create-apikey.png)
@@ -355,7 +383,9 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
 
 - Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
-- Open the `apm-server.yml` file in a text editor and update it to match the following sample configuration. Replace the placeholder values (`<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`) as needed for your environment.
+- Open the `apm-server.yml` file in a text editor and update it to match the following sample configuration. 
+
+- Replace the placeholder values (`<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`) as needed for your environment.
 
 - Below is a sample configuration
 
@@ -376,12 +406,8 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
     hosts:
       - "http://<apm-server-hostname_or_ip>:8200"
   ```
-
-- Once the instrumentation is set, you can verify it in Kibana as shown below:
-
-  ![verify-instrumentation](../resources/troubleshooting-images/verify-instrumentation.png)
     
-4. **Execute required scripts to install APM Server as a Windows service**
+**3.4 Execute required scripts to install APM Server as a Windows service**
    
 - Open an elevated PowerShell.
 - Run the following command to install the APM Server as a Windows service:
@@ -397,7 +423,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
   Service "apm-server" has been successfully installed.
   ```
      
-5. **Start the APM Server service**
+**3.5 Start the APM Server service**
 
 - Open an elevated PowerShell and run the following command:
 
@@ -405,7 +431,11 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
   Start-Service -Name "apm-server"
   ```
 
-6. **Verify APM Server**
+- Once the instrumentation is set, you can verify it in Kibana as shown below:
+
+  ![verify-instrumentation](../resources/troubleshooting-images/verify-instrumentation.png)
+
+**3.6 Verify APM Server**
 
 - Open an elevated Command Prompt and run the following command (replace `<hostname_or_ip>` with your actual value):
 
@@ -424,10 +454,10 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
   }
   ```
 
-## Step 4: Post Installation and Verification
+## Step 4: Additional Setup and Verification
 
 
-1. **Add Elastic APM Integration Package**
+**4.1 Add Elastic APM Integration Package**
 
 > [!IMPORTANT]
    Skipping the steps below will cause the Relativity Server CLI to fail.
@@ -452,7 +482,7 @@ Copy and save `id` and `api_key` values immediately and store them securely acco
 
      ![alt text](../resources/troubleshooting-images/agent-button.png)
 
-2. **Verify APM Data View**
+**4.2 Verify APM Data View**
    
 
 Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
@@ -463,7 +493,7 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
   ![dataview](../resources/troubleshooting-images/dataview.png)
 
-3. **Verify Cluster Health**
+**4.3 Verify Cluster Health**
     
 - Open an elevated Command Prompt and run the following command (replace `username`, `password`, and `{hostname_or_ip}` with your actual values):
 
