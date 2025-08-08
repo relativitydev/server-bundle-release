@@ -1,1 +1,1 @@
-![Port Diagram](<Elastic Stack Port Diagram.svg>)
+![alt text](<Elastic Stack Port Diagram 01.svg>)
