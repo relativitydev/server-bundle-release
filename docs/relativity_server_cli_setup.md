@@ -28,12 +28,6 @@ Before entering the Environment Watch or Data Grid Audit setup workflows, perfor
 
 ### Set up Environment Watch
 
-## Pre-requisite:
-
-1. Elastic, Kibana and APM services should be up and running <br/>
-2. Elastic APM Integration should be added. Refer [Elasticsearch setup guide](environment_watch_installer.md) Step 5-5 for steps to add elastic apm integration <br/>
-
-
 Follow these steps to configure Environment Watch using the Relativity Server CLI. If you do not need to set up Environment Watch, proceed to the ‘Set up Data Grid Audit’ section below.<br/>
 
 This only needs to be done on your SQL Primary Server.<br/>
@@ -164,4 +158,4 @@ You can see the privileges associated with the relativity_dashboard_user role by
 
 ## Next
 
-If you are setting up Environment Watch proceed to stage 3: [Install Environment Watch on all hosts](environment_watch_installer.md)
+[Click here for the next step](environment_watch_installer.md)

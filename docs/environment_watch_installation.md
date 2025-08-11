@@ -16,7 +16,7 @@ Environment Watch installation is comprised of the following four stages. **Stag
 
 <table><tbody>
 <tr>
-  <th><p><strong>Stage</strong></p></th>
+  <th><p><strong>Steps</strong></p></th>
   <th><p><strong>Name</strong></p></th>
   <th><p><strong>Applicable For</strong></p></th>
   <th><p><strong>Description</strong></p></th>
@@ -31,5 +31,5 @@ Environment Watch installation is comprised of the following four stages. **Stag
 <tr><td><p>7</p></td><td><p>Create Kibana Users and Assign Roles</p></td><td><p>Environment Watch and Data Grid Audit</p></td><td><p>Verify all components, integrations, and monitoring are working as expected. Finalize configuration and perform any required troubleshooting.</p></td><td><ul><li>N/A</li></ul></td></tr>
 </tbody></table>
 
-## Next 
-Proceed to stage 1: [Installing Elasticsearch, Kibana, and APM Server](elasticsearch_pre_installation_overview.md)
+## Next Step
+[Click here for the next step](elasticsearch_pre_installation_overview.md)

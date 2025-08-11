@@ -509,6 +509,6 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
 - The word `green` in the response means the cluster is healthy. The word `yellow` in the response means the cluster is partially healthy. If you see `yellow` or `red`, investigate further.
 
-## Next
+## Next Step
 
-After setting up Elastic proceed to stage 2: [Use the Relativity Server CLI to setup Environment Watch and/or Data Grid](relativity_server_cli_setup.md)
+[Click here for the next step](relativity_server_cli_setup.md)
