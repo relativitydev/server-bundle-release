@@ -1,4 +1,4 @@
-# Relativity Environment Watch Dashboard Post-Install Verification
+# Relativity Environment Watch Post-Install Verification
 
 ![Post-Install Verification Banner](../../resources/post-install-verification-images/Post-installation-verification.svg)
 
@@ -18,8 +18,11 @@ This documentation outlines the step-by-step procedures for verifying that the e
 > [!NOTE]
 > All Kibana dashboards are designed and optimized for **1920x1080** screen resolution to ensure optimal viewing experience and proper layout formatting.
 
-## Table of Contents
 
-- **[Elastic Cluster Dashboard Post-Install Verification](post-install-verification/elasticsearch-cluster-health.md)**  
-- **[Monitoring Agents Dashboard Post-Install Verification](post-install-verification/monitoring-agents.md)**  
-- **[Alerts Post-Install Verification](post-install-verification/alerts.md)**
+## Post-Install Verification Navigation
+
+- [Verify Elastic Cluster Health](post-install-verification/elasticsearch-cluster-health.md)
+- [Verify Monitoring Agents](post-install-verification/monitoring-agents.md)
+- [Verify Alerts Dashboard](post-install-verification/alerts.md)
+
+Next Step: [Install Relativity Application](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit)

@@ -1,4 +1,4 @@
-# Set up Environment Watch and/or Data Grid Audit using the Relativity Server CLI
+# Enable Environment Watch and/or DataGrid/Audit
 
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
