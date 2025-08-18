@@ -131,4 +131,4 @@ Ensure that the dashboard is using a custom 15-minute time range as required for
 
 ## Next Step
 
-[Click here for the next step](environment-watch/relativity_alerts_installation.md)
+[Click here for the next step](../../../docs/relativity_alerts_installation.md)
