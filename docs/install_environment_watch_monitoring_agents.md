@@ -1,4 +1,4 @@
-# Relativity Environment Watch installation
+# Install Environment Watch Monitoring Agents
 
 ![Setup Stage](../resources/stage_environmentwatch.png)
 
@@ -7,13 +7,10 @@ The Relativity Environment Watch installer package contains a monitoring agent (
 
 ## Prerequisites
 
-- Elasticsearch, Kibana, and APM Server have been fully set up in accordance with [stage 1](/docs/elasticsearch_setup.md) of the Environment Watch installation guide.
-- Environment Watch has been set up using the Relativity Server CLI and Elastic certificates are installed on all Relativity servers in accordance with [stage 2](/docs/cli_environmentwatch_setup.md) of the Environment Watch installation guide.
 - The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
 - Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting
 - SQL Primary and Distributed access
 - Relativity access
-- The minimum Relativity major version and patch is installed on all servers in the environment. See the [release bundle](https://github.com/relativitydev/server-bundle-release/releases) requirements for the minimum version required.
 
 ## Setup
 
@@ -124,7 +121,7 @@ During the installation process, two log files are created in the `%TEMP%` direc
     ![](../resources/Installer_logfiles.png)
 
 ## Handling errors
-If any errors are encountered during the installation process, please refer to the [troubleshooting guide](/docs/environment_watch_troubleshooting.md#troubleshooting-environment-watch-installer-on-windows) to resolve the issues.
+If any errors are encountered during the installation process, please refer to the [troubleshooting guide](environment_watch_troubleshooting.md) to resolve the issues.
 
 ## Next Step
-[Click here for the next step](relativity_alerts_installation.md)
+[Click here for the next step](environment_watch_install_other_integrations.md)

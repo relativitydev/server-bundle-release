@@ -1,23 +1,12 @@
-﻿# Installing Elasticsearch, Kibana, and APM Server
+﻿# Elasticsearch Pre-Installation Overview
 
-![](../resources/troubleshooting-images/setupstage.png)
-
-# System Requirements
-
-> [!NOTE]
-> This documentation and release have been tested and certified by Relativity with the following software versions. Any versions above those listed below have not been tested or certified for this release.
+![alt text](../resources/stage_environmentwatch01.png)
 
 **Relativity Server Version:**
 - Minimum required: Relativity Server 2024 Patch 1
 
-**Elasticsearch Version:**
+**Elastic Stack Version:**
 - 8.17.3 (Required for both Environment Watch and Data Grid Audit)
-
-**Kibana Version:**
-- 8.17.3
-
-**APM Server Version:**
-- 8.17.3
 
 This first stage of the Environment Watch and/or Data Grid Audit setup involves installing required third-party software from the Elastic stack. There are three Elastic components used for these two products:
 
@@ -291,7 +280,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 5. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
 
-### Installation steps
+### Next step
 
 [Click here to setup an Elastic Stack for a development environment](./elasticsearch_setup_development.md)
 

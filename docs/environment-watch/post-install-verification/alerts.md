@@ -128,3 +128,7 @@ Ensure that the dashboard is using a custom 15-minute time range as required for
 ![Screenshot: Time range 15 minutes](../../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)
 
 ---
+
+## Next Step
+
+[Click here for the next step](environment-watch/relativity_alerts_installation.md)

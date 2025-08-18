@@ -140,3 +140,6 @@ Ensure disk free space and usage metrics are visible for each node.
 
 ---
 
+## Next Step
+
+[Click here for the next step](monitoring-agents.md)
