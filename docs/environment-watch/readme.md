@@ -19,10 +19,4 @@ This documentation outlines the step-by-step procedures for verifying that the e
 > All Kibana dashboards are designed and optimized for **1920x1080** screen resolution to ensure optimal viewing experience and proper layout formatting.
 
 
-## Post-Install Verification Navigation
-
-- [Verify Elastic Cluster Health](post-install-verification/elasticsearch-cluster-health.md)
-- [Verify Monitoring Agents](post-install-verification/monitoring-agents.md)
-- [Verify Alerts Dashboard](post-install-verification/alerts.md)
-
-Next Step: [Install Relativity Application](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit)
+Next Step: [Post-Install Verification of Elastic Cluster Health](post-install-verification/elasticsearch-cluster-health.md)
