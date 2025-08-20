@@ -54,28 +54,28 @@ This instrument is used to show detailed records of events that occur within the
 
 [Open Telemetry](https://opentelemetry.io/) is an open source solution that defines industry standard APIs/SDKs/Tools to instrument virtually any software to help analyze performance and behavior​. It was developed by the Cloud Native Computing Foundation, the same outfit that developed Kubernetes/Prometheus.
 
-The term OTEL is an abbreviation for Open Telemetry and will be used within this and other documentation. Relativity Server selected OTEL for three key reasons:
+Relativity Server selected Open Telemetry for three key reasons:
 
 - No vendor lock-in; single set of APIs and conventions​
 - Proven industry standard for observability​
 - Highly scalable framework​
 
-The OTEL architecture is composed of the following key components:
+The Open Telemetry architecture is composed of the following key components:
 
-- OTEL backend
-- OTEL collector
+- Open Telemetry backend
+- Open Telemetry collector
 - Visualization frontend
 - Alert Management
 
-#### OTEL Backend
+#### Open Telemetry Backend
 
-An observability framework like OTEL demands a backend that can ingest a significant amount of unstructured data from multiple sources. The ability to quickly and efficiently visualize and evaluate alert conditions on 50M or 500M+ JSON documents requires a special backend engine. Of course, you can't just use any backend; rather, it must natively support OTEL via OTLP ([Open Telemetry Line Protocol](https://opentelemetry.io/docs/specs/otlp/)).
+An observability framework like Open Telemetry demands a backend that can ingest a significant amount of unstructured data from multiple sources. The ability to quickly and efficiently visualize and evaluate alert conditions on 50M or 500M+ JSON documents requires a special backend engine. Of course, you can't just use any backend; rather, it must natively support Open Telemetry via Open Telemetry Line protocol ([OTLP](https://opentelemetry.io/docs/specs/otlp/)).
 
-#### OTEL Collector
+#### Open Telemetry Collector
 
-The OTEL distribution includes the OTEL collector EXE and is designed to run within each monitored server to collect, process, and export the metric/log/ trace records to the OTEL backend.
+The Open Telemetry distribution includes the Open Telemetry collector EXE and is designed to run within each monitored server to collect, process, and export the metric/log/ trace records to the Open Telemetry backend.
 
-Relativity Server auto-configures the OTEL collector to not only simplify configuration but collect from standard infrastructure and Relativity specific sources including:
+Relativity Server auto-configures the Open Telemetry collector to not only simplify configuration but collect from standard infrastructure and Relativity specific sources including:
 
 - Host metrics (e.g. CPU/Memory/Disk/Network/Process)
 	- IIS/SQL Server
@@ -83,7 +83,7 @@ Relativity Server auto-configures the OTEL collector to not only simplify config
 	- Kepler service endpoints and Relativity/BCP fileshares
 	- X509 certificates
 
-The OTEL SDK is used to submit metrics to the OTEL collector from different Relativity processes including:
+The Open Telemetry SDK is used to submit metrics to the Open Telemetry collector from different Relativity processes including:
 
 - Agents
 	- Service Host
@@ -106,7 +106,7 @@ Given the large amount of metrics/traces/logs, alerts define rules to detect bot
 
 ### Environment Watch and the Elastic Stack
 
-Starting with Server 2024, the Environment Watch architecture relies on the Elastic stack to support Open Telemetry. [Elasticsearch](https://www.elastic.co/elasticsearch) delivers the backend performance required to manage high volume of metrics​, [Kibana](https://www.elastic.co/kibana) for both frontend and alert management, and [Elastic APM Server](https://www.elastic.co/guide/en/observability/current/apm-getting-started-apm-server.html) ingests metrics from the OTEL collectors deployed within each server.
+Starting with Server 2024, the Environment Watch architecture relies on the Elastic stack to support Open Telemetry. [Elasticsearch](https://www.elastic.co/elasticsearch) delivers the backend performance required to manage high volume of metrics​, [Kibana](https://www.elastic.co/kibana) for both frontend and alert management, and [Elastic APM Server](https://www.elastic.co/guide/en/observability/current/apm-getting-started-apm-server.html) ingests metrics from the Open Telemetry collectors deployed within each server.
 
 #### High-Level Architecture
 
@@ -114,27 +114,27 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 
 #### Relativity Environment Watch Windows Service
 
-The OTEL Collector provides many "out of the box" receivers to collect metrics; however each server must be carefully configured using one or more YAML files, depending on which "receivers" are required. In some cases, credentials must be exposed to the receivers in order to fetch metrics. Although the OTEL distribution provides many commonly used receivers, there are many Relativity specific use-cases that OTEL simply doesn't support. In these cases, an alternative mechanism is required use both Relativity and non-Relativity APIs to gather metrics and use the OTEL SDK to publish the results.
+The Open Telemetry Collector provides many "out of the box" receivers to collect metrics; however each server must be carefully configured using one or more YAML files, depending on which "receivers" are required. In some cases, credentials must be exposed to the receivers in order to fetch metrics. Although the Open Telemetry distribution provides many commonly used receivers, there are many Relativity specific use-cases that Open Telemetry simply doesn't support. In these cases, an alternative mechanism is required use both Relativity and non-Relativity APIs to gather metrics and use the Open Telemetry SDK to publish the results.
 
 The Relativity Environment Watch Windows Service is responsible for scheduling supported processes that perform different tasks. The Relativity InfraWatch Agent is arguably the most important process scheduled by the Environment Watch architecture as it provides the following key responsibilities:
 
-- Autoconfigures the OTEL collector
-    - Infrastructure/Relativity secrets exposed to the OTEL collector via process environment variables
-    - Manages the OTEL collector process
-    - Supports custom "scrapers" to publish metrics via OTEL SDK using Windows/Relativity APIs
+- Autoconfigures the Open Telemetry collector
+    - Infrastructure/Relativity secrets exposed to the Open Telemetry collector via process environment variables
+    - Manages the Open Telemetry collector process
+    - Supports custom "scrapers" to publish metrics via Open Telemetry SDK using Windows/Relativity APIs
     - Generates a bearer token for use by Kepler-based endpoints w/ expiration support
 
 Microsoft Installer (MSI) technology provides Relativity administrators a solution to perform both unattended and attended initial setup and upgrades. The Relativity Environment Watch Windows service and all underlying processes are built on a completely new .NET 9 platform and operates independent of Relativity. This represents a crucial architectural feature because it guarantees the monitoring solution will always function. If there's a problem within Relativity, this will never prevent the solution from obtaining metrics. Likewise, the alert architecture is sophisticated enough to fail when it doesn't receive metrics from each registered server.
 
-The appsettings.json file located within the Relativity Environment Watch installation directory can also be used to customize the OTEL collector and tweak the custom scrapers.
+The appsettings.json file located within the Relativity Environment Watch installation directory can also be used to customize the Open Telemetry collector and tweak the custom scrapers.
 
 ![](../resources/environment_watch_product_overview_004.png)
 
 #### Relativity Platform
 
-The Relativity platform has been updated to expose low-level details using the OTEL SDK from any extensibility point. Key platform enhancements include:
+The Relativity platform has been updated to expose low-level details using the Open Telemetry SDK from any extensibility point. Key platform enhancements include:
 
-- **Relativity Logging**: the existing Relativity.Logging.ILog API sends all logs to the OTEL backend
+- **Relativity Logging**: the existing Relativity.Logging.ILog API sends all logs to the Open Telemetry backend
 	- **Relativity Agents**: a trace is created for each agent execution
 	- **Kepler Services**: a trace is created for each HTTP request
 	- **Service Host**: health checks are periodically executed to ensure hosted services are working correctly
@@ -142,9 +142,9 @@ The Relativity platform has been updated to expose low-level details using the O
 
 #### Kibana Alert Manager
 
-Once each Relativity server has been setup with an InfraWatch Agent, metrics/traces/logs are continually exported to the Elastic APM Server (e.g. OTEL backend) where the data is persisted to Elasticsearch indexes. Although Kibana is often considered the front-end for Elasticsearch, it also supports the [Kibana Task Manager](https://www.elastic.co/guide/en/kibana/current/task-manager-production-considerations.html) feature to allocate resources to monitor alerts.
+Once each Relativity server has been setup with an InfraWatch Agent, metrics/traces/logs are continually exported to the Elastic APM Server (e.g. Open Telemetry backend) where the data is persisted to Elasticsearch indexes. Although Kibana is often considered the front-end for Elasticsearch, it also supports the [Kibana Task Manager](https://www.elastic.co/guide/en/kibana/current/task-manager-production-considerations.html) feature to allocate resources to monitor alerts.
 
-As the metrics are continually submitted to the OTEL backend, Kibana evaluates the conditions to determine whether the alert is active or not. Depending on the Elasticsearch license, each alert can be configured to notify via Slack, Email, or WebHook.
+As the metrics are continually submitted to the Open Telemetry backend, Kibana evaluates the conditions to determine whether the alert is active or not. Depending on the Elasticsearch license, each alert can be configured to notify via Slack, Email, or WebHook.
 
 #### Relativity Alerts
 
@@ -263,8 +263,6 @@ The following permissions and configuration settings are available for Relativit
 #### Permissions
 
 All Instance-level System Administrators can see all Alerts, the Alerts tab, and Alert notifications. There is currently no way to extend any Alert permissions to non-System Administrators, and no way to remove or adjust permissions for System Administrators.
-
-**Note** Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
 
 #### Alert Enabled for Instance
 
