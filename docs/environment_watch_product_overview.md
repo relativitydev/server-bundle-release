@@ -128,8 +128,6 @@ Microsoft Installer (MSI) technology provides Relativity administrators a soluti
 
 The appsettings.json file located within the Relativity Environment Watch installation directory can also be used to customize the Open Telemetry collector and tweak the custom scrapers.
 
-![](../resources/environment_watch_product_overview_004.png)
-
 #### Relativity Platform
 
 The Relativity platform has been updated to expose low-level details using the Open Telemetry SDK from any extensibility point. Key platform enhancements include:
@@ -162,8 +160,6 @@ Environment Watch is enabled by the technology components:
 | Relativity Alerts | Relativity application (RAP) | Provides the Relativity in-app alert experience. | Standard RAP install |
 | Monitoring Agent | Windows service and OpenTelemetry collector (known as the "InfraWatch Agent") | Collects and transmits metrics from all hosts to the telemetry backend. | Environment Watch installer run on all servers in Relativity Server environment |
 | Relativity Server CLI |     | Configures the integration between Relativity and Elastic and imports Relativity-created Kibana objects that are packaged with the Environment Watch solution. | Relativity Server CLI run on Primary SQL Server |
-
-![](../resources/environment_watch_product_overview_005.png)
 
 ## Alerts, Dashboards, and Searching in Kibana
 
