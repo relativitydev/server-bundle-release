@@ -21,7 +21,8 @@ Ensure that the `[Relativity] Alerts Overview` dashboard is successfully install
 1. Open **Microsoft Edge**.
 2. Navigate to Kibana.
 3. Go to **Observability → Dashboards**.
-4. Search for `[Relativity] Alerts Overview` in the dashboard list.
+4. Use the search bar to search for `Alerts Overview`.
+5. Select `[Relativity] Alerts Overview` from the results.
 
 <details>
 <summary><strong>Expected Result</strong></summary>
@@ -41,8 +42,8 @@ Ensure that the `[Relativity] Alerts Overview` dashboard is successfully install
 Confirm that the correct tag is applied to the dashboard for proper categorization.
 
 **Steps:**
-1. In Kibana, go to **Observability → Dashboards**.
-2. Locate `[Relativity] Alerts Overview`.
+1. In Kibana, go to **Dashboards**.
+2. Search for `Alerts Overview` and select `[Relativity] Alerts Overview`.
 3. Verify that the tag `Relativity Environment Watch` is displayed.
 
 <details>
@@ -64,7 +65,7 @@ Ensure that the health indicators section is visible at the top of the dashboard
 **Steps:**
 1. Click into `[Relativity] Alerts Overview` dashboard.
 2. Confirm that the health indicators appear at the top of the main content area.
-3. Confirm all tiles include a **title**, **subtitle ("Healthy Alerts")**, and **color status**.
+3. Confirm all tiles include a **title**, **subtitle ("Healthy")**, and **color status**.
 
 <details>
 <summary><strong>Expected Result</strong></summary>
@@ -72,7 +73,7 @@ Ensure that the health indicators section is visible at the top of the dashboard
 - Health indicators are present and aligned at the top.
 - All indicators include:
   - Title (e.g., "Agents", "Monitoring")
-  - Subtitle: *Healthy Alerts*
+  - Subtitle: *Healthy*
   - Color: Green or Red based on alert state.
 </details>
 
@@ -111,11 +112,12 @@ Verify the status and formatting of each health indicator tile, based on alert-d
 Ensure that the dashboard is using a custom 15-minute time range as required for health indicators.
 
 **Steps:**
-1. On the dashboard, locate the time filter at the top right.
-2. Click on the time range selector.
-3. Select **"Apply custom time range"**.
-4. Set the range to the **last 15 minutes**.
-5. Apply changes.
+1. On the dashboard, navigate to one of the alerts.
+2. Locate the time filter at the top right.
+3. Click on the time range selector.
+4. Select **"Apply custom time range"**.
+5. Set the range to the **last 15 minutes**.
+6. Apply changes.
 
 <details>
 <summary><strong>Expected Result</strong></summary>

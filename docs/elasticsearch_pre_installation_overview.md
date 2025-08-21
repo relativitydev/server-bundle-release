@@ -3,7 +3,7 @@
 ![alt text](../resources/stage_environmentwatch01.png)
 
 **Relativity Server Version:**
-- Minimum required: Relativity Server 2024 Patch 1
+- Minimum required: Relativity Server 2024 Patch 2
 
 **Elastic Stack Version:**
 - 8.17.3 (Required for both Environment Watch and Data Grid Audit)
@@ -268,7 +268,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 2. **Review the required ports for Elastic components** – See the [port diagram](environment-watch/port-diagram.md) for network requirements and ensure all necessary ports are open between servers hosting Elasticsearch, Kibana, and APM Server.
 
-3. **Windows *should* be updated to support long paths** - This is recommended because the Elastic Stack components have dense file paths when fully extracted. In many cases, the product apppears to function properly but certain features may fail because files may be missing or cannot be accessed because the path exceeds the max Windows character length. Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on enable the Long path.
+3. **Windows *should* be updated to support long paths** - This is recommended because the Elastic Stack components have dense file paths when fully extracted. In many cases, the product appears to function properly but certain features may fail because files may be missing or cannot be accessed because the path exceeds the max Windows character length. Run "gpedit.msc" to navigate into Local Group Policy Editor → Computer Configuration → Administrative Template → System → Filesystem. Double click on Enable Win32 Long path. Select the Enable radio button, click Apply, and then click OK.
 
 
     https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later

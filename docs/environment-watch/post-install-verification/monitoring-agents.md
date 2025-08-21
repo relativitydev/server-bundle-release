@@ -19,7 +19,8 @@ Ensure the Monitoring Agent dashboard is present.
 
 **Steps:**
 1. Login to Kibana.
-2. Navigate to **Analytics → Dashboard**.
+2. Navigate to **Dashboards** 
+3. Use the search bar to search for "Monitoring Agents".
 
 <details>
 <summary><strong>Expected Result</strong></summary>
@@ -39,8 +40,8 @@ Ensure the correct tags are assigned to the dashboard.
 
 **Steps:**
 1. Login to Kibana.
-2. Navigate to **Observability → Dashboard**.
-3. Open the Monitoring Agents dashboard.
+2. Navigate to **Dashboards**.
+3. Use the search bar to search for "Monitoring Agents" and open the dashboard.
 
 <details>
 <summary><strong>Expected Result</strong></summary>
@@ -87,11 +88,8 @@ Ensure the dashboard data is loading correctly.
 **Steps:**
 1. Login to Kibana.
 2. Open the "Monitoring Agent" dashboard.
-3. Change the time range to 15 minutes, 1 hour, 12 hours, and 24 hours.
+3. To change the time range, use the time filter at the top right, select the desired range (e.g., 15 minutes, 1 hour, 12 hours, 24 hours), and apply changes.
 4. Adjust filters to see if data updates accordingly.
-
-1. Login to Kibana.
-2. Open the "Monitoring Agent" dashboard.
 
 <details>
 <summary><strong>Expected Result</strong></summary>
@@ -136,7 +134,8 @@ Ensure dashboard data is reflected in Discover.
 
 **Steps:**
 1. Login to Kibana.
-2. Open the dashboard → Monitoring Agents table → Three dots → Explore in Discover.
+2. Open the dashboard and hover over the top right corner of the Monitoring Agents table to reveal the **Explore in Discover** option.
+3. Click **Explore in Discover**.
 
 <details>
 <summary><strong>Expected Result</strong></summary>
