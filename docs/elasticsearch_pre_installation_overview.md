@@ -2,25 +2,29 @@
 
 ![alt text](../resources/stage_environmentwatch01.png)
 
-**Relativity Server Version:**
-- Minimum required: Relativity Server 2024 Patch 2
 
-**Elastic Stack Version:**
-- 8.17.3 (Required for both Environment Watch and Data Grid Audit)
+## Install Elastic Stack Components
 
-This first stage of the Environment Watch and/or Data Grid Audit setup involves installing required third-party software from the Elastic stack. There are three Elastic components used for these two products:
+The first step of the **Environment Watch** and/or **Data Grid Audit** setup involves installing required third-party software from the **Elastic Stack**. The following Elastic components are used for these two products:
 
-| Elastic component | Environment Watch | Data Grid Audit |
-| --- | --- | --- |
-| **Elasticsearch** | Required | Required |
-| **Kibana** | Required | Recommended but optional |
-| **APM Server** | Required | Not used |
+| Elastic Component | Environment Watch | Data Grid Audit |
+|-------------------|-------------------|------------------|
+| **Elasticsearch** | Required          | Required         |
+| **Kibana**        | Required          | Recommended but optional |
+| **APM Server**    | Required          | Not used         |
 
-When you complete stage 1, there will be no integration between any of the Elastic components and Relativity when you complete this step. The integration will be set up during stage 2. Within stage 1, you will first set up and verify your Elasticsearch cluster and then proceed to set up Kibana and/or APM Server depending on whether you are configuring Environment Watch, Data Grid Audit, or both.
+> **Note:** At this stage, there is no integration between any Elastic components and Relativity. Integration will be configured during **Step 2**.
 
-Stage 1 of this installation guide covers configuring a shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit. The System Requirements section below includes additional details on software and hardware requirements based on your Relativity Server environment and whether you are setting up Environment Watch, Data Grid Audit, or both.
+In **Step 1**, you will:
+- Set up and verify your **Elasticsearch** cluster
+- Set up **Kibana** and/or **APM Server**, depending on your product configuration
 
-Before you start, we will cover some key Elastic stack concepts.
+This step covers configuring a **shared Elasticsearch cluster** to be used for both **Environment Watch** and **Data Grid Audit**.
+
+For detailed software and hardware prerequisites, refer to the [System Requirements section in the README](../README.md).
+
+Before proceeding, the following section introduces key **Elastic Stack concepts**.
+
 
 ## Elastic Key Concepts
 

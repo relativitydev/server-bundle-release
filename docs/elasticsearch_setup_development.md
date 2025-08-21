@@ -1,4 +1,4 @@
-﻿# Development Tier
+﻿# Install Elasticsearch, Kibana and APM Server - Development Environment
 
 ![Set Up Stage](../resources/troubleshooting-images/setupstage.png)
 

@@ -9,7 +9,7 @@ This bundle provides packages to set up or upgrade two optional Relativity Serve
 ## System Requirements
 
 - Minimum Relativity Server version: Server 2024 Patch 2
-- ElasticStack version: **8.17.3** (only this version has been tested)
+- ElasticStack version: **8.17.3** (Required for both Environment Watch and Data Grid Audit)
 
 ## Getting Started
 
