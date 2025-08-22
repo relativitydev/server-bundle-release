@@ -69,13 +69,11 @@ The Open Telemetry architecture is composed of the following key components:
 
 #### Open Telemetry Backend
 
-An observability framework like Open Telemetry demands a backend that can ingest a significant amount of unstructured data from multiple sources. The ability to quickly and efficiently visualize and evaluate alert conditions on 50M or 500M+ JSON documents requires a special backend engine. Of course, you can't just use any backend; rather, it must natively support Open Telemetry via Open Telemetry Line protocol ([OTLP](https://opentelemetry.io/docs/specs/otlp/)).
+OpenTelemetry requires a backend that can handle large amounts of data coming from many different sources. The backend makes it possible to analyze, visualize, and set up alerts on this data in real time. To ensure compatability, it must natively support Open Telemetry via Open Telemetry Line protocol ([OTLP](https://opentelemetry.io/docs/specs/otlp/)).
 
 #### Open Telemetry Collector
 
-The Open Telemetry distribution includes the Open Telemetry collector EXE and is designed to run within each monitored server to collect, process, and export the metric/log/ trace records to the Open Telemetry backend.
-
-Relativity Server auto-configures the Open Telemetry collector to not only simplify configuration but collect from standard infrastructure and Relativity specific sources including:
+The OpenTelemetry Collector is a lightweight service that runs on each monitored server. It gathers metrics, logs, and traces, then forwards them to the backend. Relativity Server automatically configures the Collector, making it easy to collect both infrastructure and Relativity-specific data, including:
 
 - Host metrics (e.g. CPU/Memory/Disk/Network/Process)
 	- IIS/SQL Server
@@ -108,7 +106,7 @@ Given the large amount of metrics/traces/logs, alerts define rules to detect bot
 
 Starting with Server 2024, the Environment Watch architecture relies on the Elastic stack to support Open Telemetry. [Elasticsearch](https://www.elastic.co/elasticsearch) delivers the backend performance required to manage high volume of metrics​, [Kibana](https://www.elastic.co/kibana) for both frontend and alert management, and [Elastic APM Server](https://www.elastic.co/guide/en/observability/current/apm-getting-started-apm-server.html) ingests metrics from the Open Telemetry collectors deployed within each server.
  > [!IMPORTANT]
-    > Environment Watch does not migrate existing log data. Only new log entries generated after installation are routed to Elasticsearch and visible in Kibana.
+    With Environment Watch installed, Relativity logs are no longer written to the EDDSLogging database. Instead, new log entries are sent to Elasticsearch and can be viewed in Kibana. 
 
 #### High-Level Architecture
 
