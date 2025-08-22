@@ -14,4 +14,4 @@ The Relativity Analytics Engine (CAAT) integration provides observability into A
 
 ## Next Step
 
-[Click here for the next step](environment-watch/post-install-verification/elasticsearch-cluster-health.md)
+[Click here for the next step](environment-watch/post-install-verification/environment_watch_RabbitMQ_Management_Plugin.md)
