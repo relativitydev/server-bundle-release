@@ -31,5 +31,19 @@ Environment Watch installation is comprised of the following seven steps. **Step
 <tr><td><p>7</p></td><td><p>Create Kibana Users and Assign Roles</p></td><td><p>Environment Watch and Data Grid Audit</p></td><td><p>Verify all components, integrations, and monitoring are working as expected. Finalize configuration and perform any required troubleshooting.</p></td></tr>
 </tbody></table>
 
+# Environment Watch Troubleshooting Guide
+
+If you encounter issues with Environment Watch or Data Grid Audit, start here:
+
+- **Elasticsearch, Kibana, APM, or Agent not running?** Check service status and configuration.
+- **Authentication or connection problems?** Verify credentials, URLs, and SSL certificates.
+- **Installer or CLI errors?** Review permissions and secret store setup.
+
+For step-by-step troubleshooting, see:
+- [Component Troubleshooting Guides](troubleshooting.md)
+- [Full Troubleshooting Reference](environment_watch_troubleshooting.md)
+
+For installation instructions, see the [Installation Guide](elasticsearch_pre_installation_overview.md).
+
 ## Next Step
 [Click here for the next step](elasticsearch_pre_installation_overview.md)
