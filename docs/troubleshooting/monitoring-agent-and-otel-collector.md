@@ -1,4 +1,3 @@
-
 # Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting
 
 This document provides a stepwise troubleshooting guide for the Relativity Environment Watch Windows service and the Open Telemetry Collector in Relativity environments.
@@ -9,12 +8,21 @@ This document provides a stepwise troubleshooting guide for the Relativity Envir
 
 ## Table of Contents
 
-- [Verify the Elastic Stack Servers are Running](#verify-the-elastic-stack-servers-are-running)
-- [Verify the Monitoring Agent Hosts are Present and Sending Metrics](#verify-the-monitoring-agent-hosts-are-present-and-sending-metrics)
-- [Verify the Environment Watch Service and Open Telemetry Collector](#verify-the-environment-watch-service-and-open-telemetry-collector)
-- [Verify the Open Telemetry Collector Logs](#verify-the-open-telemetry-collector-logs)
-- [Additional Pre-requisite Access Checks](#additional-pre-requisite-access-checks)
-- [Open Telemetry YAML File Auto-Generation](#open-telemetry-yaml-file-auto-generation)
+- [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](#environment-watch-monitoring-agent-and-open-telemetry-collector-troubleshooting)
+  - [Table of Contents](#table-of-contents)
+  - [Verify the Elastic Stack Servers are Running](#verify-the-elastic-stack-servers-are-running)
+  - [Verify the Monitoring Agent Hosts are Present and Sending Metrics](#verify-the-monitoring-agent-hosts-are-present-and-sending-metrics)
+  - [Verify the Environment Watch Service and Open Telemetry Collector](#verify-the-environment-watch-service-and-open-telemetry-collector)
+  - [Verify the Open Telemetry Collector Logs](#verify-the-open-telemetry-collector-logs)
+  - [Open Telemetry YAML File Auto-Generation](#open-telemetry-yaml-file-auto-generation)
+  - [Additional Pre-requisite Access Checks](#additional-pre-requisite-access-checks)
+    - [BCP Share Access Verification](#bcp-share-access-verification)
+    - [Secret Server Access Verification](#secret-server-access-verification)
+    - [Kepler (SSL Certificate) Verification](#kepler-ssl-certificate-verification)
+    - [Relativity Service Account Verification](#relativity-service-account-verification)
+  - [Installer and Service Errors](#installer-and-service-errors)
+    - [User Not in Local Security Policy](#user-not-in-local-security-policy)
+    - [Invalid Secrets](#invalid-secrets)
 
 ---
 
@@ -261,6 +269,37 @@ JSON response with secrets.
 ### Relativity Service Account Verification
 > [!NOTE]
 > For service account requirements and troubleshooting, see [Environment_Watch_Installer](../environment_watch_installer.md)
+
+---
+
+## Installer and Service Errors
+
+This section covers issues related to the Environment Watch installer and the underlying Windows services it manages.
+
+### User Not in Local Security Policy
+
+**Symptoms:**
+- The product installation fails with an error indicating the user is not added to the Local Security Policy.
+
+  ![User not in Local Security Policy](../../resources/troubleshooting-images/user-not-added-in-local-security.png)
+
+**Troubleshooting Steps:**
+1.  **Add User to Local Security Policy:**
+    - Open the **Local Security Policy** editor (`secpol.msc`).
+    - Navigate to `Local Policies` -> `User Rights Assignment`.
+    - Ensure the user account running the installer has the necessary permissions, such as "Log on as a service".
+
+    ![User added to Local Security Policy](../../resources/troubleshooting-images/useraddedtolocalsecurity.png)
+
+### Invalid Secrets
+
+**Symptoms:**
+- The installation fails with an error message "one or more secrets are invalid".
+
+  ![One or more secrets are invalid](../../resources/troubleshooting-images/one-or-more-secrets-invalid.png)
+
+**Troubleshooting Steps:**
+1.  **Verify CLI Setup:** Ensure that the one-time setup using the `relsvr.exe setup` command was executed successfully and completed without errors. This step is required to generate the necessary secrets.
 
 ---
 

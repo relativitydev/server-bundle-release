@@ -41,7 +41,6 @@ If you encounter issues with Environment Watch or Data Grid Audit, start here:
 
 For step-by-step troubleshooting, see:
 - [Component Troubleshooting Guides](troubleshooting.md)
-- [Full Troubleshooting Reference](environment_watch_troubleshooting.md)
 
 For installation instructions, see the [Installation Guide](elasticsearch_pre_installation_overview.md).
 

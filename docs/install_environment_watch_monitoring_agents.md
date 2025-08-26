@@ -90,7 +90,7 @@ During the installation process, two log files are created in the `%TEMP%` direc
 	![](../resources/Installer_logfiles.png)
 
 ## Handling errors
-If any errors are encountered during the installation process, please refer to the [troubleshooting guide](environment_watch_troubleshooting.md) to resolve the issues.
+If any errors are encountered during the installation process, please refer to the [troubleshooting guide](../docs/troubleshooting/monitoring-agent-and-otel-collector.md) to resolve the issues.
 
 ## Next Step
 [Click here for the next step](environment_watch_install_other_integrations.md)

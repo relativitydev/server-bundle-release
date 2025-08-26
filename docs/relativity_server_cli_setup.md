@@ -19,46 +19,38 @@ Before entering the Environment Watch setup workflows, perform or check the foll
 
 Follow these steps to configure Environment Watch using the Relativity Server CLI.
 
-This only needs to be done on your SQL Primary Server.
+This only needs to be done on your SQL Primary Server.<br/>
 
-1. Install Elastic certificates on your SQL Primary Server
-2. Download the CLI from [here](https://github.com/relativitydev/server-bundle-release/releases), download the release bundle.
-3. Open Command Terminal by launching Command Prompt v7 from the Start menu.
-4. Extract the CLI by navigating to the directory where the gold release bundle was downloaded to, extract the bundle and then extract Relativity.Server.Cli.YY.x.xxxx.zip.
-5. Run the Setup Command from Command Prompt, execute the following command to enter the setup workflow:
+**Step 1**: Install Elastic certificates on your SQL Primary Server<br/>
+**Step 2**: Download the CLI from [here](https://github.com/relativitydev/server-bundle-release/releases), download the release bundle.<br/>
+**Step 3**: Open Command Terminal by launching Command Prompt v7 from the Start menu.<br/>
+**Step 4**: Extract the CLI by navigating to the directory where the gold release bundle was downloaded to, extract the bundle and then extract Relativity.Server.Cli.YY.x.xxxx.zip.<br/>
+**Step 5**: Run the Setup Command from Command Prompt, execute the following command to enter the setup workflow:<br/>
     ```
     ./relsvr.exe setup
     ```
     ![cli setup options](../resources/cli-datagrid-images/clioptions.png)
-6. Select Environment Watch
+**Step 6**: Select Environment Watch<br/>
     ![selectenvironmentwatch](../resources/cli-datagrid-images/selectenvironmentwatch.png)
-7. [Only applicable if Environment Watch has been set up previously] Choose setup type – If Environment Watch has been set up on this host previously, you will be prompted to select "Upgrade" or "Rerun Setup". If you are setting up Environment Watch for the first time, you will not be prompted to make this selection and the setup process will continue to the next step.
+**Step 7**: [Only applicable if Environment Watch has been set up previously] Choose setup type – If Environment Watch has been set up on this host previously, you will be prompted to select "Upgrade" or "Rerun Setup". If you are setting up Environment Watch for the first time, you will not be prompted to make this selection and the setup process will continue to the next step.<br/>
     ![EWOptions](../resources/cli-datagrid-images/EWOptions.png)
-8. Provide Relativity parameters - Enter the Relativity admin username and password and Relativity URL.
+**Step 8**: Provide Relativity parameters - Enter the Relativity admin username and password and Relativity URL.<br/>
     ![clirelativityparameters](../resources/cli-datagrid-images/clirelativityparameters.png)
-9.  Provide Elasticsearch parameters - Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).
+**Step 9**:  Provide Elasticsearch parameters - Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).<br/>
     ![elasticparameters](../resources/cli-datagrid-images/elasticparameters.png)
-10.   Provide APM Server parameters - Enter your Elasticsearch APM Server Endpoint URL.
-11.   Provide Kibana parameters – Enter your Elasticsearch Kibana server Endpoint URL.
+**Step 10**:   Provide APM Server parameters - Enter your Elasticsearch APM Server Endpoint URL.<br/>
+**Step 11**:   Provide Kibana parameters – Enter your Elasticsearch Kibana server Endpoint URL.<br/>
     ![apm-kibanaparameters](../resources/cli-datagrid-images/apm-kibanaparameters.png)
-12.   Verify the setup is completed successfully
+**Step 12**:   Verify the setup is completed successfully<br/>
     ![clisetupsuccessfull](../resources/cli-datagrid-images/clisetupsuccessfull.png)
-13.   Install Elastic certificates on all Web Servers in your environment. Restart services on each host after installing the certificates
-14.   Install Elastic certificates on all Agent Servers in your environment. Restart services on each host after installing the certificates
+**Step 13**:   Install Elastic certificates on all Web Servers in your environment. Restart services on each host after installing the certificates<br/>
+**Step 14**:   Install Elastic certificates on all Agent Servers in your environment. Restart services on each host after installing the certificates<br/>
 
 If the setup completes successfully, Environment Watch is now configured for your environment. If you encountered any errors while entering Relativity or Elastic parameters, you will have three retry attempts before the CLI forces an exit and you must restart the setup process.
 
-Refer to the [Troubleshooting Guide](environment_watch_troubleshooting.md) if you encounter any issues.
+Refer to the [Troubleshooting Guide](../docs/troubleshooting/relativity-server-cli.md) if you encounter any issues.
 
 [Click here to set up Data Grid Audit](datagrid_audit_setup.md)
-
-### Elastic relativity_dashboard_user role
-
-After you complete all five steps of this installation guide and have Environment Watch fully set up in your environment, you need to provide any user that should have access to the alerts and dashboards in Kibana with Elastic access credentials. You will do this by creating users in Kibana. When you create users in Kibana, you will need to assign them a ‘role’. When you run the Environment Watch or Data Grid setup workflow, the Relativity Server CLI will create a security role called ‘relativity_dashboard_user’. We recommend using this role for any users in your organization that should be able to access alerts and dashboards. The role has least privileges to ensure they can see all dashboards and alerts but with permissions restrictions to prevent them from creating or editing alerts, dashboards, and indexes.
-
-You can see the privileges associated with the relativity_dashboard_user role by navigating to Stack Management > Roles > relativity_dashboard_user in Kibana.
-
-**Note:** In order to extend the ability to export saved searches, go to the kibana.yml file on the server where Kibana is installed, update **xpack.reporting.roles.enabled** to "false", and then restart the Kibana service.
 
 ## Next
 
