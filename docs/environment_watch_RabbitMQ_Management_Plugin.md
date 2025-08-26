@@ -111,4 +111,4 @@ curl -i -u <username>:<password> http://<hostname/ipaddress>:15672/api/permissio
 
 ## Next Step
 
-[Click here for the next step](environment-watch/post-install-verification/elasticsearch-cluster-health.md)
+[Click here for the next step](environment-watch/post-install-verification.md)
