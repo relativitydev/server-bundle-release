@@ -7,10 +7,10 @@ The Relativity Environment Watch installer package contains a monitoring agent (
 
 ## Prerequisites
 
-- The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
-- Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting
-- SQL Primary and Distributed access
-- Relativity access
+- The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.<br/>
+- Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.<br/>
+- SQL Primary and Distributed access.<br/>
+- Relativity access.<br/>
 
 ## Setup
 
@@ -24,25 +24,24 @@ The objective is to first ensure that SQL Primary monitoring is working and conf
 
 ### Steps to install Environment Watch
 
-1. Navigate directly to the network (UNC) path where the installer is located (e.g., \\fileserver\share\Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe) using File Explorer, and double-click the installer to launch it.
+1. Navigate directly to the network (UNC) path where the installer is located (e.g., \\fileserver\share\Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe) using File Explorer, and double-click the installer to launch it.<br/>
 
 	![](../resources/Installer_welcome.png)
 
-2. Provide Relativity Service Account details
+2. Provide Relativity Service Account details<br/>
    
-	a. If any Relativity product(s) have already been installed on the host, existing Relativity Service Account details can be used. In this case, entering the details can be skipped.
+	a. If any Relativity product(s) have already been installed on the host, existing Relativity Service Account details can be used. In this case, entering the details can be skipped.<br/>
 
-3. To specify an installation location, follow the below steps
-	a. Click on **Options**
+3. To specify an installation location, follow the below steps<br/>
+	a. Click on **Options**<br/>
 	![](../resources/Installer_diff_location.png)
-	b. Click **Browse** to select a directory for the application installation
-	c. Click **OK**.
+	
+	b. Click **Browse** to select a directory for the application installation<br/>
+	c. Click **OK**.<br/>
 
-4. Agree Relativity Environment Watch **license terms and conditions**
-5. Click **Install** on the setup wizard to start the installation.
-6. Click **Close** when the installation has been completed.
-
-## Verification
+4. Agree Relativity Environment Watch **license terms and conditions**<br/>
+5. Click **Install** on the setup wizard to start the installation.<br/>
+6. Click **Close** when the installation has been completed.<br/>## Verification
 Upon successful installation, it will create a Relativity Environment Watch windows service and it will start automatically.
 
   1. The service status should be Running.

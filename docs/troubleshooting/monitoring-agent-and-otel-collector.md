@@ -304,5 +304,5 @@ This section covers issues related to the Environment Watch installer and the un
 ---
 
 For additional troubleshooting, refer to the main documentation:  
-[Environment_Watch_Installer](../environment_watch_installer.md)
+[Environment_Watch_Installer](../environment_watch_installation.md)
 

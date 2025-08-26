@@ -25,7 +25,7 @@ To install the Relativity Alerts application on your Relativity instance:
 	![relativity_alerts_installation_005](../resources/relativity_alerts_installation_005.png)
 	![relativity_alerts_installation_006](../resources/relativity_alerts_installation_006.png)
 
-A list of common install issues and their resolutions are available at the [troubleshooting guide](relativity_alerts_troubleshooting.md).
+A list of common install issues and their resolutions are available at the [troubleshooting guide](../docs/troubleshooting/relativity_alerts_troubleshooting.md).
 
 ## Verification
 1. Navigate to the Alerts tab, you should see all alerts available in Kibana.<br/>
@@ -59,7 +59,7 @@ A list of common install issues and their resolutions are available at the [trou
 	g. While on Agents tab, please remember to enable the "File Deletion Manager" agent.
 
 
-If any of the previous steps have failed, or any errors were displayed, please see [troubleshooting guide](relativity_alerts_troubleshooting.md) for more information.
+If any of the previous steps have failed, or any errors were displayed, please see [troubleshooting guide](../docs/troubleshooting/relativity_alerts_troubleshooting.md) for more information.
 
 ## Next Step
 
