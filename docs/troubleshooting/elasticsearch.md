@@ -7,19 +7,21 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ## Table of Contents
 
-- [1. Windows Service Issues](#1-windows-service-issues)
-  - [1.1 Elasticsearch Service Not Starting](#11-elasticsearch-service-not-starting)
-  - [1.2 Service Crashes or Stops Unexpectedly](#12-service-crashes-or-stops-unexpectedly)
-- [2. Port Configuration Issues](#2-port-configuration-issues)
-  - [2.1 Port Conflicts](#21-port-conflicts)
-  - [2.2 Network Connectivity Problems](#22-network-connectivity-problems)
-- [3. Memory Issues](#3-memory-issues)
-  - [3.1 Insufficient Memory Allocation](#31-insufficient-memory-allocation)
-- [4. Authentication Issues](#4-authentication-issues)
-  - [4.1 Username/Password Authentication Problems](#41-usernamepassword-authentication-problems)
-  - [4.2 SSL/TTLS Certificate Issues](#42-ssltls-certificate-issues)
-- [5. Service Verification](#5-service-verification)
-  - [5.1 Verifying Elasticsearch Health](#51-verifying-elasticsearch-health)
+- [Elasticsearch Troubleshooting](#elasticsearch-troubleshooting)
+  - [Table of Contents](#table-of-contents)
+  - [1. Windows Service Issues](#1-windows-service-issues)
+    - [1.1 Elasticsearch Service Not Starting](#11-elasticsearch-service-not-starting)
+    - [1.2 Service Crashes or Stops Unexpectedly](#12-service-crashes-or-stops-unexpectedly)
+  - [2. Port Configuration Issues](#2-port-configuration-issues)
+    - [2.1 Port Conflicts](#21-port-conflicts)
+    - [2.2 Network Connectivity Problems](#22-network-connectivity-problems)
+  - [3. Memory Issues](#3-memory-issues)
+    - [3.1 Insufficient Memory Allocation](#31-insufficient-memory-allocation)
+  - [4. Authentication Issues](#4-authentication-issues)
+    - [4.1 Username/Password Authentication Problems](#41-usernamepassword-authentication-problems)
+    - [4.2 SSL/TLS Certificate Issues](#42-ssltls-certificate-issues)
+  - [5. Service Verification](#5-service-verification)
+    - [5.1 Verifying Elasticsearch Health](#51-verifying-elasticsearch-health)
 
 ---
 
@@ -368,11 +370,55 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 > [!NOTE]
 > Also verify that the URL you are using is `https://<username>:9200/`
 
-### 4.2 SSL/TTLS Certificate Issues
+### 4.2 SSL/TLS Certificate Issues
+
+**Symptoms:**
+- SSL handshake failures
+- "certificate verify failed" errors
+- Unable to establish secure connections
+- Browser shows "not secure" warning for Elasticsearch URL
 
 **Troubleshooting Steps:**
 
-* **Verify Certificate Location:**
+* **Install SSL Certificate in Trusted Store**
+
+   If your browser shows a "not secure" warning when accessing the Elasticsearch URL, you may need to install the certificate into your trusted store.
+
+    a. In your browser, view the certificate details and export the root certificate authority (CA) certificate. Save it to a local directory.
+    
+    b. Double-click the downloaded certificate file and click **Install Certificate**.
+    
+    ![Install Certificate](../../resources/troubleshooting-images/installcertificate.png)
+
+    c. Select **Local Machine** and click **Next**.
+    
+    ![Select Local Machine](../../resources/troubleshooting-images/localmachine.png)
+
+    d. Select **Place all certificates in the following store**, click **Browse**, and select **Trusted Root Certification Authorities**. Click **OK**, then **Next**, and **Finish**.
+    
+    e. To confirm, open the Microsoft Management Console (MMC):
+        i. Run `mmc.exe`.
+        ii. Go to **File > Add/Remove Snap-in...**.
+        iii. Select **Certificates** and click **Add**.
+    
+    ![Add/Remove Snap-in](../../resources/troubleshooting-images/Add-removesnipin.png)
+    
+    ![Add Certificates Snap-in](../../resources/troubleshooting-images/addcerts.png)
+
+    f. Choose **Computer account** and click **Next**, then **Finish**, and **OK**.
+    
+    ![Select Computer Account](../../resources/troubleshooting-images/clickcomputeraccount.png)
+
+    g. Expand **Certificates (Local Computer) > Trusted Root Certification Authorities > Certificates** and verify your certificate is listed.
+
+    h. Close your browser and reopen the Elasticsearch URL. It should now show as secure.
+
+    ![Secure Connection](../../resources/troubleshooting-images/sslenabled.png)
+
+* **Verify Certificate Path in `elasticsearch.yml`**
+
+  Ensure the `elasticsearch.yml` file points to the correct certificate files.
+
   - Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
     ```yaml
     xpack.security.transport.ssl:
@@ -380,62 +426,9 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
       truststore.path: certs/transport.p12
     ```
 
-![SSL Issue Example](../../resources/troubleshooting-images/sslissue.png)
-
-**Troubleshooting Steps:**
-
-1. While logging into ElasticSearch URL, if it shows not secure. Export that certificate of the highest hierarchy and save to your local directory.<br/>
-   
-2. Go to that directory where you saved the certificate. Double click on the certificate and then click Install Certificate<br/>
-
-![alt text](../../resources/troubleshooting-images/installcertificate.png)
-
-3. Select Local Machine<br/>
-
-![alt text](../../resources/troubleshooting-images/localmachine.png)
-
-4. Select Next, Click yes<br/>
-   
-5. Select Place all the certificates in the following store<br/>
-   
-6. Click on Browse, select Enterprise Trust<br/>
-   
-7. Select Next, It should get imported<br/>
-   
-8. Open MMC, go to files and click on Add/Remove Snap-IN<br/>
-
-![alt text](../../resources/troubleshooting-images/Add-removesnipin.png)
-
-9.  Add Certificates<br/>
-
-![alt text](../../resources/troubleshooting-images/addcerts.png)
-
-10. Click Computer Account<br/>
-
-![alt text](../../resources/troubleshooting-images/clickcomputeraccount.png)
-
-11. Click Next -> Finish<br/>
-    
-12. On the left side bar click the dropdown under Certificates<br/>
-    
-13. Right Click on Trusted Root Certification Authorities, All Task → Import<br/>
-
-![alt text](../../resources/troubleshooting-images/alltask-import.png)
-
-14. Select the Certificate which being saved few steps earlier under browse and click on Finish<br/>
-    
-15. Import certificate for all the selected folders below.<br/>
-
-![alt text](../../resources/troubleshooting-images/importcerts.png)
-
-16.  Close all search engine and re-login to ElasticSearch URL<br/>
-
-![alt text](../../resources/troubleshooting-images/sslenabled.png)
-
-
-* **Check Elasticsearch Logs for SSL Errors:**
-  - Navigate to `C:\elastic\elasticsearch\logs\`
-  - Review the Elasticsearch log file (`elasticsearch.log`) for SSL-related errors
+* **Check Elasticsearch Logs for SSL Errors**
+  - Navigate to `C:\elastic\elasticsearch\logs\`.
+  - Review the `elasticsearch.log` file for any SSL-related errors.
   - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
 
 ---
