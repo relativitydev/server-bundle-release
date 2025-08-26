@@ -14,4 +14,4 @@ The Relativity Analytics Engine (CAAT) integration provides observability into A
 
 ## Next Step
 
-[Click here for the next step](environment_watch_RabbitMQ_Management_Plugin.md)
+[Click here for the next step](environment_watch_rabbitmq_management_plugin.md)
