@@ -285,7 +285,7 @@ This verifies that Kibana is running and your credentials are working.
     
 - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
-> [!Note]
+> [!NOTE]
 Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
 
 - Open an elevated PowerShell and run the following command:

@@ -22,8 +22,7 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 
 1. [APM Integration and Data View](#1-apm-integration-and-data-view)
 2. [Kibana Encryption Keys Issues](#2-kibana-encryption-keys-issues)
-3. [Prerequisite Access Verification](#3-prerequisite-access-verification)
-4. [Common CLI Errors](#4-common-cli-errors)
+3. [Common CLI Errors](#3-common-cli-errors)
 
 ---
 
@@ -115,11 +114,11 @@ See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and tro
 
 ---
 
-## 4. Common CLI Errors
+## 3. Common CLI Errors
 
 This section covers common errors encountered during the Environment Watch and Data Grid Audit setup workflows.
 
-### 4.1 Unauthorized Access
+### 3.1 Unauthorized Access
 
 **Symptoms:**
 - The CLI returns an "Unauthorized" error for Relativity or Elasticsearch credentials.
@@ -132,7 +131,7 @@ This section covers common errors encountered during the Environment Watch and D
 1.  **Verify Relativity Credentials:** Ensure the Relativity admin username and password are correct.
 2.  **Verify Elasticsearch Credentials:** Ensure the Elasticsearch admin username and password are correct.
 
-### 4.2 Incorrect Server URLs
+### 3.2 Incorrect Server URLs
 
 **Symptoms:**
 - The CLI returns an error indicating that a server URL is incorrect.
@@ -145,7 +144,7 @@ This section covers common errors encountered during the Environment Watch and D
 **Troubleshooting Steps:**
 1.  **Verify URLs:** Check the URLs for Relativity, Elasticsearch, APM, and Kibana to ensure they are correct and accessible.
 
-### 4.3 Incorrect Elasticsearch Server Credentials
+### 3.3 Incorrect Elasticsearch Server Credentials
 
 **Symptoms:**
 - The CLI specifically flags Elasticsearch credentials as incorrect.
@@ -156,7 +155,7 @@ This section covers common errors encountered during the Environment Watch and D
 **Troubleshooting Steps:**
 1.  **Verify Elasticsearch Credentials and URL:** Double-check the Elasticsearch admin username, password, and server URL.
 
-### 4.4 Retry Limit Reached
+### 3.4 Retry Limit Reached
 
 **Symptoms:**
 - The CLI exits after multiple failed attempts to enter correct parameters.

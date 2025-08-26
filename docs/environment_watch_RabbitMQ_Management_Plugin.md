@@ -20,6 +20,7 @@ This guide provides information on integrating various Relativity components wit
 ```powershell
 # Enable the management plugin
 rabbitmq-plugins enable rabbitmq_management
+
 ```
 
 **Note:** Node restart is not required after plugin activation.

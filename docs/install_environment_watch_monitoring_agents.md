@@ -73,7 +73,8 @@ The following sequence is suggested:
 3. Agent servers
 4. Other (Fileshare, Analytics, Message Broker, Worker, etc.)
 
-<div class="note">Any Windows-based OS can be monitored, regardless of whether a Relativity product is installed, as long as the prerequisites have been met.</div>
+> [!NOTE]
+> Any Windows-based OS can be monitored, regardless of whether a Relativity product is installed, as long as the prerequisites have been met.
 
 ## Repairing or removing Environment Watch installation
 The installer can also be run to repair or remove an existing installation of Environment Watch. Run the installer on a machine where the application is installed. Select one of the following options:

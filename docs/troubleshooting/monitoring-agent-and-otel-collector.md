@@ -268,7 +268,7 @@ JSON response with secrets.
 
 ### Relativity Service Account Verification
 > [!NOTE]
-> For service account requirements and troubleshooting, see [Environment_Watch_Installer](../environment_watch_installer.md)
+> For service account requirements and troubleshooting, see [Environment_Watch_Installer](../environment_watch_installation.md)
 
 ---
 
