@@ -370,11 +370,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ### 4.2 SSL/TTLS Certificate Issues
 
-**Symptoms:**
-- SSL handshake failures
-- "certificate verify failed" errors
-- Unable to establish secure connections
-
 **Troubleshooting Steps:**
 
 * **Verify Certificate Location:**
@@ -385,6 +380,57 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
       truststore.path: certs/transport.p12
     ```
 
+![SSL Issue Example](../../resources/troubleshooting-images/sslissue.png)
+
+**Troubleshooting Steps:**
+
+1. While logging into ElasticSearch URL, if it shows not secure. Export that certificate of the highest hierarchy and save to your local directory.<br/>
+   
+2. Go to that directory where you saved the certificate. Double click on the certificate and then click Install Certificate<br/>
+
+![alt text](../../resources/troubleshooting-images/installcertificate.png)
+
+3. Select Local Machine<br/>
+
+![alt text](../../resources/troubleshooting-images/localmachine.png)
+
+4. Select Next, Click yes<br/>
+   
+5. Select Place all the certificates in the following store<br/>
+   
+6. Click on Browse, select Enterprise Trust<br/>
+   
+7. Select Next, It should get imported<br/>
+   
+8. Open MMC, go to files and click on Add/Remove Snap-IN<br/>
+
+![alt text](../../resources/troubleshooting-images/Add-removesnipin.png)
+
+9.  Add Certificates<br/>
+
+![alt text](../../resources/troubleshooting-images/addcerts.png)
+
+10. Click Computer Account<br/>
+
+![alt text](../../resources/troubleshooting-images/clickcomputeraccount.png)
+
+11. Click Next -> Finish<br/>
+    
+12. On the left side bar click the dropdown under Certificates<br/>
+    
+13. Right Click on Trusted Root Certification Authorities, All Task → Import<br/>
+
+![alt text](../../resources/troubleshooting-images/alltask-import.png)
+
+14. Select the Certificate which being saved few steps earlier under browse and click on Finish<br/>
+    
+15. Import certificate for all the selected folders below.<br/>
+
+![alt text](../../resources/troubleshooting-images/importcerts.png)
+
+16.  Close all search engine and re-login to ElasticSearch URL<br/>
+
+![alt text](../../resources/troubleshooting-images/sslenabled.png)
 
 
 * **Check Elasticsearch Logs for SSL Errors:**
