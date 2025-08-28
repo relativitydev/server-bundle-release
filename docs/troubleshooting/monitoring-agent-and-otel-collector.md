@@ -17,7 +17,7 @@ This document provides a stepwise troubleshooting guide for the Relativity Envir
   - [Open Telemetry YAML File Auto-Generation](#open-telemetry-yaml-file-auto-generation)
   - [Additional Pre-requisite Access Checks](#additional-pre-requisite-access-checks)
     - [BCP Share Access Verification](#bcp-share-access-verification)
-    - [Secret Server Access Verification](#secret-server-access-verification)
+    - [Secret Store Access Verification](#secret-store-access-verification)
     - [Kepler (SSL Certificate) Verification](#kepler-ssl-certificate-verification)
     - [Relativity Service Account Verification](#relativity-service-account-verification)
   - [Installer and Service Errors](#installer-and-service-errors)
@@ -229,12 +229,13 @@ True
 *(If the path is accessible; otherwise, False.)*
 </details>
 
-### Secret Server Access Verification
+### Secret Store Access Verification
+
 ```powershell
 Test-NetConnection -ComputerName <hostname_or_ip> -Port 443
 ```
-<details>
-<summary>Expected output</summary>
+
+**Expected output:**
 
 ```
 ComputerName     : <hostname_or_ip>
@@ -242,17 +243,60 @@ RemoteAddress    : <ip>
 RemotePort       : 443
 TcpTestSucceeded : True
 ```
-</details>
 
-Test API access:
-```powershell
-curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/api/v1/secrets"
-```
-<details>
-<summary>Expected output</summary>
+**Test API access:**
 
-JSON response with secrets.
-</details>
+- Navigate to the Relativity Secret Store folder (e.g., `C:\Relativity Secret Store`).
+- Open an elevated PowerShell and run:
+
+  ```powershell
+  .\secretstore.exe secret list /
+  ```
+
+  The output will look similar to:
+  ```
+  Secret Store URL: https://<hostname_or_ip>:9090/
+  Client Certificate Thumbprint: 20F8F2516EC86EBF993075F64B0C6EA6777A4F83
+  ```
+
+- Copy the Client Certificate Thumbprint and Secret Store URL.
+
+- To check the seal status, run:
+
+  ```powershell
+  $thumbprint = "<insert-secret-store-client-certificate-thumbprint-here>"
+  $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("My", "LocalMachine")
+  $store.Open("ReadOnly")
+  $cert = $store.Certificates | Where-Object { $_.Thumbprint -eq $thumbprint }
+
+  if (-not $cert) {
+    Write-Error "Certificate with thumbprint $thumbprint not found."
+    $store.Close()
+    return
+  }
+
+  if (-not $cert.HasPrivateKey) {
+    Write-Error "Certificate does not have a private key."
+    $store.Close()
+    return
+  }
+
+  $uri = "https://<insert-secret-store-url>:9090/v1/system/seal-status"
+  try {
+    $response = Invoke-RestMethod -Uri $uri -Method Get -Certificate $cert
+    Write-Output "Seal status: $response"
+  } catch {
+    Write-Error "API call failed: $($_.Exception.Message)"
+  }
+  finally {
+    $store.Close()   
+  }
+  ```
+
+  The output will look similar to:
+  ```
+  Seal status: False
+  ```
 
 ### Kepler (SSL Certificate) Verification
 - The required web certificate must be installed on the server (check with your certificate management process or MMC snap-in for Certificates).
