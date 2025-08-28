@@ -35,14 +35,14 @@ For a first-time setup of Data Grid Audit, the Audit application will also need 
 
 Follow these steps to set up Data Grid Audit using the Relativity Server CLI. All setup will occur on the SQL Primary server.
 
-**Step 1 - Run the Setup Command**
+**Step 1** - Run the Setup Command
 Execute the following command in an elevated Command/Powershell to enter the setup workflow.
 ```powershell
 ./relsvr.exe setup
 ```
 
-**Step 2 - Select Data Grid**
-A prompt will appear to select a feature to set up. Select **DataGrid**.
+**Step 2** - Select Data Grid
+
 ```
 What would you like to setup?
 > DataGrid
@@ -50,7 +50,7 @@ What would you like to setup?
   Exit
 ```
 
-**Step 3 - Choose Setup Type (if applicable)**
+**Step 3**- Choose Setup Type (if applicable)
 If Data Grid Audit has been set up on this host previously using the CLI, a prompt will appear to select **Rerun Setup**. For a first-time setup, this step will be skipped.
 ```
 You have already set up Data Grid on this machine. Would you like to rerun setup?
@@ -58,24 +58,20 @@ You have already set up Data Grid on this machine. Would you like to rerun setup
   Exit
 ```
 
-**Step 4 - Enter Relativity Parameters**
-Provide the requested Relativity parameters.
+**Step 4** - Enter Relativity and Elasticsearch Parameters
+
 ```
 Enter the Relativity admin username (relativity.admin@kcura.com): relativity.admin@kcura.com
 Enter the Relativity admin password: *********
 Enter the Relativity instance url (https://emttest/Relativity): https://emttest/Relativity
 Relativity instance is verified
-```
-
-**Step 5 - Enter Elasticsearch Parameters**
-Provide the parameters for the Elasticsearch environment.
-```
 Enter the Elasticsearch admin username (elastic): elastic
 Enter the Elasticsearch admin password: *********
 Enter the Elasticsearch cluster endpoint URL (https://emttest:9200): https://emttest:9200
+
 ```
 
-**Step 6 - Verify API Key Generation**
+**Step 6** - Verify API Key Generation
 The CLI will confirm that the API keys have been created.
 ```
 API Key creation and validation completed ------------------------- 100%
@@ -83,32 +79,32 @@ OAuth2 client exists -------------------------------------------- 100%
 ```
 To manually verify, navigate to `/app/management/security/api_keys` in Kibana and confirm that an API key for `rel-datagrid` is present. This key must be refreshed every six months.
 
-**Step 7 - Restart Relativity Services**
+**Step 7** - Restart Relativity Services
 Restart the Relativity services on all machines for the changes to take effect.
 
 > [!NOTE]
 > The following steps are only for users cutting over from the legacy custom realms authentication.
 
-**Step 8 - Verify API Key Authentication**
+**Step 8** - Verify API Key Authentication
 Execute the following queries against the EDDS database to verify that API key authentication is enabled.
 ```sql
 SELECT TOP(50) FROM [EDDSLogging].[eddsdbo].[RelativityLogs] WHERE message LIKE '%elastic api key authentication%' ORDER BY 1 DESC
 SELECT * FROM [EDDS].[eddsdbo].[Toggle] WHERE name = 'ElasticAPIKeyAuthenticationToggle'
 ```
 
-**Step 9 - Verify Audit Dashboard**
+**Step 9** - Verify Audit Dashboard
 Navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
 
-**Step 10 - Update License Key**
+**Step 10** - Update License Key
 In Kibana, navigate to **Stack Management > License Management** and update the license to the free/open tier or a different Platinum/Enterprise license not provided by Relativity.
 
-**Step 11 - Install Certificates (if needed)**
+**Step 11** - Install Certificates (if needed)
 If not already done, install the Elastic certificates on all Web and Agent Servers, then restart their services.
 
 > [!NOTE]
 > The final step is only for users performing a first-time setup of Audit.
 
-**Step 12 - Install Audit Application and Agents**
+**Step 12** - Install Audit Application and Agents
 Install the Audit application into workspaces and add the required Audit agents. For more information, see the [Audit documentation](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit).
 
 If the setup completes successfully, the integration is configured. If any errors are encountered, there will be three retry attempts before the CLI exits.

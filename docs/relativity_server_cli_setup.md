@@ -13,14 +13,13 @@
 
 ### Set up instructions
 
-**Step 1 - Run the Setup Command**
-Execute the following command in an elevated Command/Powershell to enter the setup workflow.
+**Step 1** - Execute the following command in an elevated Command/Powershell to enter the setup workflow.
 ```powershell
 ./relsvr.exe setup
 ```
 
-**Step 2 - Select Environment Watch**
-A prompt will appear to select a feature to set up. Select **Environment watch**.
+**Step 2** - Select Environment Watch
+
 ```
 Relativity Server CLI - 24.0.1182
 Copyright (c) 2025, Relativity ODA LLC
@@ -31,8 +30,8 @@ DataGrid
 Exit
 ```
 
-**Step 3 - Enter Relativity Parameters**
-Confirm the setup and provide the requested Relativity parameters.
+**Step 3** - Enter Relativity Parameters
+
 ```
 Confirm you would like to perform the 'Environment Watch' setup [y/n] (y): y
 
@@ -43,8 +42,8 @@ Enter the Relativity instance url (https://emttest/Relativity): https://emttest/
 Relativity instance is verified
 ```
 
-**Step 4 - Enter Elastic Stack Parameters**
-Provide the parameters for the Elastic Stack environment.
+**Step 4** - Enter Elastic Stack Parameters
+
 ```
 Enter the Elasticsearch admin username (elastic): elastic
 Enter the Elasticsearch admin password: *********
@@ -53,7 +52,7 @@ Elasticsearch cluster endpoint URL is verified
 Enter the Elasticsearch APM Server endpoint URL (http://emttest:8200): http://emttest:8200
 ```
 
-**Step 5 - Wait for Setup to Complete**
+**Step 5** - Wait for Setup to Complete
 The CLI will now complete the setup process.
 ```
 API Key creation and validation completed ------------------------- 100%
