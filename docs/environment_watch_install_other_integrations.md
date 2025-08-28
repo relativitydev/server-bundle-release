@@ -12,6 +12,12 @@ The Relativity Analytics Engine (CAAT) integration provides observability into A
 
 - [Setting Up OpenTelemetry Java Agent for Relativity Analytics Engine](analytics/caat_environment_watch_setup.md)
 
+### RabbitMQ Integration
+
+The RabbitMQ integration enables monitoring of RabbitMQ queues, exchanges, and nodes.
+
+- [Setting Up RabbitMQ Integration](rabbitmq/rabbitmq_integration.md)
+
 ## Next Step
 
-[Click here for the next step](environment_watch_rabbitmq_management_plugin.md)
+[Click here for the next step](post-install-verification.md)

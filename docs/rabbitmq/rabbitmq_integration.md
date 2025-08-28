@@ -1,8 +1,6 @@
-# Install Other Integrations
+# RabbitMQ Integration
 
-![](../resources/caat_environment_watch_setup.png)
-
-This guide provides information on integrating various Relativity components with Environment Watch. These integrations extend observability capabilities across your environment, enabling comprehensive monitoring and performance analysis.
+This guide provides information on integrating RabbitMQ with Environment Watch.
 
 
 ### RabbitMQ Management Plugin
@@ -107,9 +105,3 @@ curl -i -u <username>:<password> http://<hostname/ipaddress>:15672/api/permissio
 | **management** | Basic access | Manage own virtual hosts only |
 
 **Note:** Virtual host `/` is encoded as `%2F` in URLs.
-
-
-
-## Next Step
-
-[Click here for the next step](environment-watch/post-install-verification.md)

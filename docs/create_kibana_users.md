@@ -24,4 +24,4 @@ To create a Kibana user and assign the custom Kibana role:
 
 ### Congratulations!
 
-You have reached the end of the setup process. If you are still running into any issues, please refer to the  [Troubleshooting Guides](/docs/troubleshooting.md) for further assistance.
+You have reached the end of the setup process. If you are still running into any issues, please refer to the  [Troubleshooting Guides](/docs/environment_watch_troubleshooting.md) for further assistance.
