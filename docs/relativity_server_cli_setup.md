@@ -8,7 +8,7 @@
 ### Prerequisites
 
 1. Elastic Stack Certificates are installed on all Servers
-2. Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for     Secret Store access. Please see here for information on whitelisting.)
+2. Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for     Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
 3. The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
 
 ### Set up instructions
