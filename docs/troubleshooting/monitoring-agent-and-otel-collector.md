@@ -85,9 +85,9 @@ If a specific host is not reporting, check that the Environment Watch Windows se
    <summary>Expected output</summary>
 
    ```
-   Status   StartType Name
-   ------   --------- ----
-   Running  Automatic Relativity Environment Watch
+   Status   Name               Display Name
+   ------   ----               ---------
+   Running  Relativity Envi... Relativity Environment Watch
    ```
    </details>
 2. If not running, restart the service:
@@ -219,6 +219,7 @@ If the above steps do not resolve the issue, verify the following access and con
 $cred = Get-Credential # use the Relativity Service Account
 Start-Process "powershell.exe" -Credential $cred -ArgumentList '-NoExit'
 # In the new PowerShell session window, run:
+# Example: Replace with your actual BCP share path
 Test-Path "\\bcp-share\relativity-data"
 ```
 <details>
