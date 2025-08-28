@@ -105,6 +105,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      ```
      .\elasticsearch-reset-password -u elastic
      ```
+   - When prompted, press 'Y' to confirm and reset the password
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 

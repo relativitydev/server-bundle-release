@@ -20,7 +20,7 @@ Ensure that the `[Relativity] Alerts Overview` dashboard is successfully install
 **Steps:**
 1. Open **Microsoft Edge**.
 2. Navigate to Kibana.
-3. Go to **Observability → Dashboards**.
+3. In Kibana, go to **Dashboards**.
 4. Use the search bar to search for `Alerts Overview`.
 5. Select `[Relativity] Alerts Overview` from the results.
 
