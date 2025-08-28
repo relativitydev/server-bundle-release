@@ -17,5 +17,4 @@ This bundle provides packages to set up or upgrade two optional Relativity Serve
 ## Getting Started
 
 - [Environment Watch and Data Grid Audit Installation](docs/environment_watch_installation.md)
-- [Environment Watch Product Overview](docs/environment_watch_product_overview.md)
 - [Troubleshooting Guide](/docs/environment_watch_troubleshooting.md)
