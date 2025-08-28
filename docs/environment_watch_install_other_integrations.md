@@ -20,4 +20,4 @@ The RabbitMQ integration enables monitoring of RabbitMQ queues, exchanges, and n
 
 ## Next Step
 
-[Click here for the next step](post-install-verification.md)
+[Click here for the next step](./environment-watch/post-install-verification.md)

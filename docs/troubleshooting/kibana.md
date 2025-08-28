@@ -355,19 +355,23 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ### 7.1 Configuration Validation
 
-* **Validate YAML syntax**
+
+**Validate YAML syntax**
   ```powershell
-  C:\elastic\kibana\bin\kibana.bat --validate-config
+  C:\elastic\kibana\bin\kibana.bat 
   ```
   <details>
   <summary>Expected output</summary>
 
   ```
-  Configuration is valid
+  # There is no built-in --validate-config option in Kibana 8.x.
+  # Configuration is validated when Kibana starts.
+  # If there are errors in kibana.yml, they will be shown in the console output and Kibana will fail to start.
   ```
   </details>
 
-* **Check current configuration**
+
+**Check current configuration**
   ```powershell
   C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
   ```
@@ -376,18 +380,7 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
   ```
   Configuration loaded successfully
-  ```
-  </details>
-
-* **Check current configuration**
-  ```powershell
-  C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
-  ```
-  <details>
-  <summary>Expected output</summary>
-
-  ```
-  Configuration loaded successfully
+  # If there are configuration errors, they will be shown in the console output.
   ```
   </details>
 
