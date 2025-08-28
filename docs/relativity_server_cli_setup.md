@@ -13,10 +13,15 @@
 
 ### Set up instructions
 
-**Step 1 - Execute the following command in Command Prompt, to enter the setup workflow and Select Environment Watch**
+**Step 1 - Run the Setup Command**
+Execute the following command in an elevated Command/Powershell to enter the setup workflow.
+```powershell
+./relsvr.exe setup
 ```
-C:\Relativity.Server.Cli>relsvr.exe setup
 
+**Step 2 - Select Environment Watch**
+A prompt will appear to select a feature to set up. Select **Environment watch**.
+```
 Relativity Server CLI - 24.0.1182
 Copyright (c) 2025, Relativity ODA LLC
 
@@ -26,13 +31,9 @@ DataGrid
 Exit
 ```
 
-**Step 2 - Enter Relativity Parameters**
+**Step 3 - Enter Relativity Parameters**
+Confirm the setup and provide the requested Relativity parameters.
 ```
-C:\Relativity.Server.Cli>relsvr.exe setup
-
-Relativity Server CLI - 24.0.1180
-Copyright (c) 2025, Relativity ODA LLC
-
 Confirm you would like to perform the 'Environment Watch' setup [y/n] (y): y
 
 Retrieved existing settings
@@ -42,7 +43,8 @@ Enter the Relativity instance url (https://emttest/Relativity): https://emttest/
 Relativity instance is verified
 ```
 
-**Step 3 - Enter Elastic Stack Parameters**
+**Step 4 - Enter Elastic Stack Parameters**
+Provide the parameters for the Elastic Stack environment.
 ```
 Enter the Elasticsearch admin username (elastic): elastic
 Enter the Elasticsearch admin password: *********
@@ -51,13 +53,14 @@ Elasticsearch cluster endpoint URL is verified
 Enter the Elasticsearch APM Server endpoint URL (http://emttest:8200): http://emttest:8200
 ```
 
-**Step 4 - Wait until the Setup Has Completed**
+**Step 5 - Wait for Setup to Complete**
+The CLI will now complete the setup process.
 ```
 API Key creation and validation completed ------------------------- 100%
 OAuth2 client exists -------------------------------------------- 100%
 ```
 
-If the setup completes successfully, Environment Watch is now configured for your environment. If you encountered any errors while entering Relativity or Elastic parameters, you will have three retry attempts before the CLI forces an exit and you must restart the setup process.
+If the setup completes successfully, Environment Watch is now configured for the environment. If any errors are encountered while entering Relativity or Elastic parameters, there will be three retry attempts before the CLI forces an exit, at which point the setup process must be restarted.
 
 Refer to the [Troubleshooting Guide](troubleshooting/relativity-server-cli.md) if you encounter any issues.
 

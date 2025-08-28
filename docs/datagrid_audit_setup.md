@@ -2,114 +2,116 @@
 
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
-Now that you have installed the required Elastic components for Data Grid Audit, you will configure the integration between Elastic and Relativity by running the Relativity Server CLI on your Primary SQL Server.
+After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI on the Primary SQL Server.
 
-For customers already using Data Grid Audit prior to upgrading to Relativity Server 2024, please see the **_Important information for existing Data Grid Audit customers section_** below for additional context on what will happen when you run the ‘Set up Data Grid’ workflow using the Relativity Server CLI for the first time.
+For customers already using Data Grid Audit prior to upgrading to Relativity Server 2024, refer to the **_Important information for existing Data Grid Audit customers section_** for additional context on what happens when running the ‘Set up Data Grid’ workflow using the Relativity Server CLI for the first time.
 
-### Before you start
-
-Before entering the Data Grid Audit setup workflows, perform or check the following:<br/>
+### Prerequisites
 
 > [!NOTE]
-> Ensuring that you are on the minimum supported version of Elasticsearch for Data Grid Audit as specified in the release bundle is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit.<br/>
+> Ensuring the minimum supported version of Elasticsearch for Data Grid Audit is installed, as specified in the release bundle, is especially important for existing Data Grid Audit customers that may be running legacy versions of Elasticsearch. Existing Data Grid Audit users must be on Elasticsearch 7.17 when initially running the Data Grid Audit setup using the Relativity Server CLI. After successfully configuring Data Grid Audit using the Relativity Server CLI, an upgrade to Elasticsearch 8.17 in any cluster being used for Data Grid Audit can be performed.
 
-    While 7.17 is the minimum supported version for the initial release of the Relativity Server CLI in Server 2024 Patch 1, you should always check the minimum version requirements in the specific Environment Watch release bundle that you are using.
+    While 7.17 is the minimum supported version for the initial release of the Relativity Server CLI in Server 2024 Patch 1, it is recommended to always check the minimum version requirements in the specific Environment Watch release bundle being used.
 
-2. [Data Grid Audit only] Install the mapper-size plugin on all nodes in your Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). You also must restart the Elasticsearch service after installing the plugin.<br/>
+1. [Data Grid Audit only] Install the mapper-size plugin on all nodes in the Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). The Elasticsearch service must also be restarted after installing the plugin.
 
-3. [Data Grid Audit only] Before upgrading to Elasticsearch 8.17.3, the ESIndexCreationSetting may need to be updated. For further details, please refer to the [Instance settings' descriptions - Server2024](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).<br/>
+2. [Data Grid Audit only] Before upgrading to Elasticsearch 8.17.3, the ESIndexCreationSetting may need to be updated. For further details, refer to the [Instance settings' descriptions - Server2024](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
 
-
-5. Verify that the InfraWatch Services application is installed in your Relativity instance (this RAP is delivered as part of the base Relativity Server 2024 installation package).<br/>
+3. The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
+   
+4. Verify that the InfraWatch Services application is installed in the Relativity instance (this RAP is delivered as part of the base Relativity Server 2024 installation package).
 
 ### Set up Data Grid Audit
 
 This section covers the steps for configuring the integration between Relativity and Elasticsearch for Data Grid Audit.
 
-If you are setting up Data Grid Audit for the first time, you will also need to install the Audit application to workspaces and add the Audit agents. See [here](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit) for more information about the Audit agents.
+For a first-time setup of Data Grid Audit, the Audit application will also need to be installed to workspaces and the Audit agents added. See [here](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit) for more information about the Audit agents.
 
+### Important information for existing Data Grid Audit customers
 > [!NOTE]
-> If you are an existing Data Grid Audit user, you must be on Elasticsearch 7.17 when you initially run the Data Grid Audit setup using the Relativity Server CLI. After you successfully configure Data Grid Audit using the Relativity Server CLI, you can then upgrade to Elasticsearch 8.17.3 in any cluster being used for Data Grid Audit.
+> Existing Data Grid Audit users must be on Elasticsearch 7.17 when initially running the Data Grid Audit setup using the Relativity Server CLI. After successfully configuring Data Grid Audit using the Relativity Server CLI, an upgrade to Elasticsearch 8.17.3 in any cluster being used for Data Grid Audit can be performed.
 
 #### Set up instructions
 
-Follow these steps to set up Data Grid Audit using the Relativity Server CLI.
+Follow these steps to set up Data Grid Audit using the Relativity Server CLI. All setup will occur on the SQL Primary server.
 
-**All setup will occur on the SQL Primary server.**
+**Step 1 - Run the Setup Command**
+Execute the following command in an elevated Command/Powershell to enter the setup workflow.
+```powershell
+./relsvr.exe setup
+```
 
-> [!NOTE]
-> If you have already run the ‘Set up Environment Watch’ workflow on this host, you do not need to repeat steps 1-2 below.
+**Step 2 - Select Data Grid**
+A prompt will appear to select a feature to set up. Select **DataGrid**.
+```
+What would you like to setup?
+> DataGrid
+  Environment watch
+  Exit
+```
 
-**Step 1:**<br/>
-Install Elastic certificate on SQL Primary Server<br/>
-**Step 2:**<br/>
-Download the CLI – From [here](https://github.com/relativitydev/server-bundle-release/releases), download the release bundle.<br/>
-**Step 3:**<br/>
-Open Command Terminal - Launch Command Terminal v7 from the Start menu.<br/>
-**Step 4:**<br/>
-Extract the CLI - Navigate to the directory where the release bundle was downloaded to and extract the Relativity.Server.Cli.YY.x.xxxx.zip.<br/>
-**Step 5:**<br/>
-Run the Setup Command – From Command Prompt, execute the following command to enter the setup workflow:<br/>
-    ```
-    ./relsvr.exe setup
-    ```
+**Step 3 - Choose Setup Type (if applicable)**
+If Data Grid Audit has been set up on this host previously using the CLI, a prompt will appear to select **Rerun Setup**. For a first-time setup, this step will be skipped.
+```
+You have already set up Data Grid on this machine. Would you like to rerun setup?
+> Rerun Setup
+  Exit
+```
 
-**Step 6:**<br/>
-Select DataGrid<br/>
-   ![datagridcli-options](../resources/cli-datagrid-images/datagridcli-options.png)
-**Step 7:**<br/>
-[Only applicable if Data Grid Audit has been set up previously using the Relativity Server CLI] Choose setup type – If Data Grid Audit has been set up on this host previously, you will be prompted to select "Rerun Setup" or "Exit". If you are using the Relativity Server CLI to set up Data Grid Audit on this host for the first time (even if you began adopting Data Grid Audit before the Relativity Server CLI was initially released), you will not be prompted to make this selection and the setup process will continue to the next step.<br/>
-   ![datagrid-options2](../resources/cli-datagrid-images/datagrid-options2.png)
-**Step 8:**<br/>
-Provide Relativity parameters – Enter the Relativity admin username and password and Relativity URL.<br/>
-   ![datagrid-relativityparameters](../resources/cli-datagrid-images/datagrid-relativityparameters.png)
-**Step 9:**<br/>
-Provide Elasticsearch parameters - Enter the Elasticsearch admin username and password and Elasticsearch cluster endpoint URL (any node in your cluster will work, but we recommend providing the node URL for the master node where you first installed Elasticsearch in step 1 of this installation guide).<br/>
-**Step 10:**<br/>
-Verify the generated API keys – To verify that the API keys used for authenticating Elastic to Relativity were generated:<br/>
-    a. Open Kibana<br/>
-    b. Navigate to the path: /app/management/security/api_keys<br/>
-    c. Verify that API keys for rel-datagrid is present.<br/> 
-	> [!NOTE]
-> This API key will need to be refreshed every six months.<br/>
-    ![datagridsetupsuccessfull](../resources/cli-datagrid-images/datagridsetupsuccessfull.png)
-**Step 11:**<br/>
-Restart Relativity services<br/>
+**Step 4 - Enter Relativity Parameters**
+Provide the requested Relativity parameters.
+```
+Enter the Relativity admin username (relativity.admin@kcura.com): relativity.admin@kcura.com
+Enter the Relativity admin password: *********
+Enter the Relativity instance url (https://emttest/Relativity): https://emttest/Relativity
+Relativity instance is verified
+```
 
-> [!NOTE]
-> Steps 12-15 are only applicable if you are running the CLI setup workflow to cut over from the legacy custom realms-based authentication to API key-based authentication.<br/>
+**Step 5 - Enter Elasticsearch Parameters**
+Provide the parameters for the Elasticsearch environment.
+```
+Enter the Elasticsearch admin username (elastic): elastic
+Enter the Elasticsearch admin password: *********
+Enter the Elasticsearch cluster endpoint URL (https://emttest:9200): https://emttest:9200
+```
 
-**Step 12:**<br/>
-Verify that API key authentication is being used – Execute the below query at the EDDS database level to verify that Elastic API key authentication is enabled.<br/>
-       
-        ```
-        SELECT TOP(50) FROM [EDDSLogging][eddsdbo][RelativityLogs] where message like '%elastic api key authentication%' ORDER by 1 desc
-        SELECT * FROM [EDDS].[eddsdbo].[Toggle] where name ='ElasticAPIKeyAuthenticationToggle'
-        ```
+**Step 6 - Verify API Key Generation**
+The CLI will confirm that the API keys have been created.
+```
+API Key creation and validation completed ------------------------- 100%
+OAuth2 client exists -------------------------------------------- 100%
+```
+To manually verify, navigate to `/app/management/security/api_keys` in Kibana and confirm that an API key for `rel-datagrid` is present. This key must be refreshed every six months.
 
-**Step 13:**<br/>
-Verify that the Audit dashboard is functional<br/>
-    a. Navigate to the Audit tab in your Relativity environment.<br/>
-    b. Verify that the Audit dashboard graphs and data is loading.<br/>
-**Step 14:**<br/>
-Update license key – After successfully running the Data Grid setup and verifying that API key authentication is now being used, you need to update your license to free/open or a different Platinum or Enterprise license that is not the one previously provided by Relativity.<br/>
-    a. Open Kibana and navigate to Stack Management -> License management<br/>
-    b. Update your license<br/>
+**Step 7 - Restart Relativity Services**
+Restart the Relativity services on all machines for the changes to take effect.
 
 > [!NOTE]
-> Steps 15-16 are only applicable if you have not already installed Elastic certificates on Web and Agent Servers during Environment Watch setup or a previous Data Grid Audit setup.<br/>
+> The following steps are only for users cutting over from the legacy custom realms authentication.
 
-**Step 15:**<br/>
-Install Elastic certificates on all Web Servers in your environment. Restart services on each host after installing the certificates.<br/>
-**Step 16:**<br/>
-Install Elastic certificates on all Agent Servers in your environment. Restart services on each host after installing the certificates.<br/>
+**Step 8 - Verify API Key Authentication**
+Execute the following queries against the EDDS database to verify that API key authentication is enabled.
+```sql
+SELECT TOP(50) FROM [EDDSLogging].[eddsdbo].[RelativityLogs] WHERE message LIKE '%elastic api key authentication%' ORDER BY 1 DESC
+SELECT * FROM [EDDS].[eddsdbo].[Toggle] WHERE name = 'ElasticAPIKeyAuthenticationToggle'
+```
+
+**Step 9 - Verify Audit Dashboard**
+Navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
+
+**Step 10 - Update License Key**
+In Kibana, navigate to **Stack Management > License Management** and update the license to the free/open tier or a different Platinum/Enterprise license not provided by Relativity.
+
+**Step 11 - Install Certificates (if needed)**
+If not already done, install the Elastic certificates on all Web and Agent Servers, then restart their services.
+
 > [!NOTE]
-> Step 17 is only applicable if you are doing a first-time setup of Audit in your Relativity instance.<br/>
+> The final step is only for users performing a first-time setup of Audit.
 
-**Step 17:**<br/>
-Install Audit application and agents - If you are setting up Data Grid Audit for the first time, you will also need to install the Audit application to workspaces and add the Audit agents. See [here](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit) for more information about the Audit agents.<br/>
+**Step 12 - Install Audit Application and Agents**
+Install the Audit application into workspaces and add the required Audit agents. For more information, see the [Audit documentation](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit).
 
-If the setup completes successfully, the integration between Elasticsearch and Relativity for Data Grid Audit is now configured for your environment. If you encountered any errors while entering Relativity or Elasticsearch parameters, you will have three retry attempts before the CLI forces an exit and you must restart the setup process.
+If the setup completes successfully, the integration is configured. If any errors are encountered, there will be three retry attempts before the CLI exits.
 
 ## Next
 

@@ -6,8 +6,11 @@ This document outlines the steps to install the Environment Watch monitoring age
 
 ### Prerequisites
 
-- Environment Watch has been set up using the Relativity Server CLI 
-- The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
+1. Elastic Stack Certificates are installed on all Servers
+2. Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for     Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
+3. The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
+4. Environment Watch has been set up using the Relativity Server CLI 
+5. The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
 
 
 ### Step 1: Install the Monitoring Agent
