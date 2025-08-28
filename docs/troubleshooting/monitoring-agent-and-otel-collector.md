@@ -262,7 +262,7 @@ TcpTestSucceeded : True
 
 - Copy the Client Certificate Thumbprint and Secret Store URL.
 
-- To check the seal status, run:
+- To check the seal status, open an elevated Powershell and run:
 
   ```powershell
   $thumbprint = "<insert-secret-store-client-certificate-thumbprint-here>"
