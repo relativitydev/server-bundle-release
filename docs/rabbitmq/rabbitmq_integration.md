@@ -43,8 +43,7 @@ Expected output should show the management plugin listening on port 15672:
 The management UI can be accessed at: `http://<hostname/ipaddress>:15672/`
 
 ## User Management with curl Commands
-> [!NOTE] For best compatibility on Windows, execute the following curl commands in Command Prompt (cmd.  
-> exe), not PowerShell. This ensures proper handling of double quotes and JSON payloads.
+> **Note:** For best compatibility on Windows, execute the following curl commands in Command Prompt (`cmd.exe`), not PowerShell. This ensures proper handling of double quotes and JSON payloads.
 
 ### Create Administrative User
 
