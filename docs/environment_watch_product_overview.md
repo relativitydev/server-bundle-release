@@ -149,6 +149,15 @@ Once each Relativity server has been setup with an InfraWatch Agent, metrics/tra
 
 As the metrics are continually submitted to the Open Telemetry backend, Kibana evaluates the conditions to determine whether the alert is active or not. Depending on the Elasticsearch license, each alert can be configured to notify via Slack, Email, or WebHook.
 
+#### Elastic Index Lifecycle Management
+
+By default, Elasticsearch sets up [Index Lifecycle Management (ILM) Policies](https://www.elastic.co/docs/solutions/observability/apm/index-lifecycle-management)
+- Logs: 10 days
+- Metrics: 40 days
+- Traces: 10 days
+These defaults can be customized in Elasticsearch or Kibana to meet your organization's data retention requirements. 
+
+
 #### Relativity Alerts
 
 Although alerts can be viewed within Kibana, Environment Watch uses a new Relativity Alerts application to integrate the alerts directly within the main Relativity UI. A new Alert Manager agent periodically uses a Kibana REST API to fetch alert details and update the "bell" header with the number of active alerts. Additional details about the Relativity Alerts application are provided below.
@@ -163,8 +172,8 @@ Environment Watch is enabled by the technology components:
 | Kibana | Third-party software (Elastic) | Alert and dashboard creation and management. | Installed and configured by customer on own infrastructure |
 | APM Server | Third-party software (Elastic) | Receives telemetry data from monitored hosts. | Installed and configured by customer on own infrastructure |
 | Relativity Alerts | Relativity application (RAP) | Provides the Relativity in-app alert experience. | Standard RAP install |
-| Monitoring Agent | Windows service and OpenTelemetry collector (known as the "InfraWatch Agent") | Collects and transmits metrics from all hosts to the telemetry backend. | Environment Watch installer run on all servers in Relativity Server environment |
-| Relativity Server CLI |     | Configures the integration between Relativity and Elastic and imports Relativity-created Kibana objects that are packaged with the Environment Watch solution. | Relativity Server CLI run on Primary SQL Server |
+| Monitoring Agent | Relativity application (MSI) | Collects and transmits metrics from all hosts to the telemetry backend. | Environment Watch installer run on all servers in Relativity Server environment |
+| Relativity Server CLI | Relativity application (CLI) | Configures the integration between Relativity and Elastic and imports Relativity-created Kibana objects that are packaged with the Environment Watch solution. | Relativity Server CLI run on Primary SQL Server |
 
 ## Alerts, Dashboards, and Searching in Kibana
 
