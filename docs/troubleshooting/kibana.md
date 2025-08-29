@@ -370,20 +370,6 @@ This document provides troubleshooting guidance for common Kibana issues encount
   ```
   </details>
 
-
-**Check current configuration**
-  ```powershell
-  C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
-  ```
-  <details>
-  <summary>Expected output</summary>
-
-  ```
-  Configuration loaded successfully
-  # If there are configuration errors, they will be shown in the console output.
-  ```
-  </details>
-
 ---
 
 ## 8. Installation Issues

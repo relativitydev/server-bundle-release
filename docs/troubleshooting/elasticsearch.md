@@ -33,7 +33,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 >
 > **Check all required services:**
 > ```powershell
-> Get-Service -Name elasticsearch, kibana, apm-server | Format-Table -AutoSize
+> Get-Service -Name elasticsearch-service-x64, kibana, apm-server | Format-Table -AutoSize
 > ```
 > <details>
 > <summary>Expected output</summary>
@@ -62,7 +62,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 * **Check Service Status:**
    ```powershell
-   Get-Service -Name elasticsearch | Select-Object Status, StartType, Name
+   Get-Service -Name elasticsearch-service-x64 | Select-Object Status, StartType, Name
    ```
    <details>
    <summary>Expected output</summary>
@@ -76,7 +76,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 * **Verify Service Configuration:**
    ```powershell
-   (Get-CimInstance Win32_Service -Filter "Name = 'elasticsearch'").StartName
+   (Get-CimInstance Win32_Service -Filter "Name = 'elasticsearch-service-x64'").StartName
    ```
    <details>
    <summary>Expected output</summary>
@@ -102,7 +102,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 * **Start Service Manually:**
    ```powershell
-   Start-Service elasticsearch
+   Start-Service elasticsearch-service-x64
    ```
    <details>
    <summary>Expected output</summary>

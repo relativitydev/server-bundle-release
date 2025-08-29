@@ -41,7 +41,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
    ```
    Status   Name        DisplayName
    ------   ----        -----------
-   Stopped  apm-server  Elastic APM Server
+   Running  apm-server  Elastic APM Server
    ```
    </details>
 
@@ -67,8 +67,6 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 **Verify Configuration File:**
    ```powershell
-   # Stop Windows service first, then test configuration syntax
-   Stop-Service apm-server
    C:\elastic\apm-server\apm-server.exe test config -c "C:\elastic\apm-server\apm-server.yml"
    ```
    <details>
@@ -78,11 +76,6 @@ This document provides troubleshooting guidance for common APM Server issues enc
    Config OK
    ```
    </details>
-
-**Start Service Manually:**
-   ```powershell
-   Start-Service apm-server
-   ```
 
 ---
 
@@ -190,7 +183,7 @@ This document provides troubleshooting guidance for common APM Server issues enc
     <summary>Expected response</summary>
 
     ```
-    (No output if port is available. If you see LISTENING, port is in use.)
+    (No output if port is available. If you see LISTENING, ESTABLISHED, port is in use.)
     ```
     </details>
 
@@ -202,7 +195,15 @@ This document provides troubleshooting guidance for common APM Server issues enc
   <summary>Expected response</summary>
 
   ```
-  (No results if port is available. If results are returned, another process is using port 8200.)
+  # results if port is available. 
+  Get-NetTCPConnection : No matching MSFT_NetTCPConnection objects found by CIM query for instances of the
+  ROOT/StandardCimv2/MSFT_NetTCPConnection class on the  CIM server: SELECT * FROM MSFT_NetTCPConnection  WHERE
+  ((LocalPort = 8200)) AND ((State = 2)). Verify query parameters and retry.
+
+  # results if another process is using port 8200
+  LocalAddress                        LocalPort RemoteAddress                       RemotePort State       AppliedSetting
+  ------------                        --------- -------------                       ---------- -----       --------------
+  10.0.2.2                            8200      0.0.0.0                             0          Listen
   ```
   </details>
 
@@ -268,8 +269,6 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
 * **Check Elasticsearch Connection:**
    ```powershell
-   # Stop Windows service first, then test output connectivity
-   Stop-Service apm-server
    C:\elastic\apm-server\apm-server.exe test output -c "C:\elastic\apm-server\apm-server.yml"
    ```
    <details>
@@ -311,6 +310,16 @@ This document provides troubleshooting guidance for common APM Server issues enc
     ```powershell
     Restart-Service apm-server
     ```
+
+    <details>
+   <summary>Expected response</summary>
+
+   ```
+   WARNING: Waiting for service 'apm-server
+   (apm-server)' to stop...
+   ```
+   </details>
+
   - Check Kibana to verify that APM Server metrics are being collected
 
 
