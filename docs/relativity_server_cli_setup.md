@@ -11,15 +11,16 @@
 ### Prerequisites
 
 1. Elastic Stack Certificates are installed on all Servers
-2. Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
-3. The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
+2. Verify that the Elastic Stack services (Elasticsearch, Kibana, and APM) are    running
+3. Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
+4. The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
 
 ### Set up instructions
 
-**Step 1** - Run the `setup` command from an elevated Command/Powershell to enter the setup workflow. Select **Environment Watch** when prompted.
+**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the CLI is extracted, and run "relsvr.exe setup"
 
-```powershell
-C:\Server.Bundle.x.y.z> ./relsvr.exe setup
+```
+C:\Server.Bundle.x.y.z> relsvr.exe setup
 
 Relativity Server CLI - 24.0.1196
 Copyright (c) 2025, Relativity ODA LLC
@@ -30,19 +31,22 @@ What would you like to setup?
   Exit
 ```
 
-**Step 2** - Enter the required Relativity parameters.
-
+**Step 2** - Confirm the Environment Watch setup.
 ```
 Confirm you would like to perform the 'Environment Watch' setup [y/n] (y): y
+```
 
-Retrieved existing settings
+**Step 3** - Enter the required Relativity parameters.
+
+```
+Existing settings do not exist
 Enter the Relativity admin username (relativity.admin@kcura.com): relativity.admin@kcura.com
 Enter the Relativity admin password: *********
 Enter the Relativity instance url (https://emttest/Relativity): https://emttest/Relativity
 Relativity instance is verified
 ```
 
-**Step 3** - Enter the required Elastic Stack parameters.
+**Step 4** - Enter the required Elastic Stack parameters.
 
 ```
 Enter the Elasticsearch admin username (elastic): elastic
@@ -53,8 +57,7 @@ Enter the Elasticsearch APM Server endpoint URL (http://emttest:8200): http://em
 Enter the Elasticsearch Kibana endpoint URL (http://emttest:5601): http://emttest:5601
 ```
 
-**Step 4** - Wait for Setup to Complete
-The CLI will complete the setup process.
+**Step 5** - The CLI will now apply the necessary configurations. Please wait for the process to finish.
 
 ```
 Elasticsearch Kibana URL is verified
@@ -78,7 +81,7 @@ The Environment Watch setup has been completed. The Relativity Environment Watch
 
 ```
 
-If the setup completes successfully, Environment Watch is now configured for the environment. If any errors are encountered while entering Relativity or Elastic parameters, there will be three retry attempts before the CLI forces an exit, at which point the setup process must be restarted.
+Successful completion indicates that Environment Watch is configured. The setup process will automatically retry three times on parameter entry errors before exiting. If it exits, the process must be restarted..
 
 Refer to the [Troubleshooting Guide](troubleshooting/relativity-server-cli.md) if you encounter any issues.
 
