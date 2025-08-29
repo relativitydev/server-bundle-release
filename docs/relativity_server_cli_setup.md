@@ -17,7 +17,7 @@
 
 ### Set up instructions
 
-**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the CLI is extracted, and run ".\relsvr.exe setup"
+**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the CLI is extracted, and run ".\relsvr.exe setup". Select Environment Watch
 
 ```
 C:\Server.Bundle.x.y.z> .\relsvr.exe setup
