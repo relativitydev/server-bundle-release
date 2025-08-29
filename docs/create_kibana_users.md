@@ -2,10 +2,8 @@
 
 ![Setup stage](../resources/createuserssetupstage.png)
 
-<div style="padding: 10px 15px; background-color: #e7f3fe; border-inline-start: 5px solid #0b69da; color: #000000;">
-This section applies to Environment Watch Only.
-</div>
-<br>
+> [!NOTE]
+> This section applies to Environment Watch Only.
 
 To access Kibana dashboards and saved searches, a new account must be created for each user and be assigned to the custom Kibana role that was installed during the Environment Watch CLI setup.
 

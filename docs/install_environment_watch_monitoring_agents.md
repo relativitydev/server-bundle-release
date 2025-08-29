@@ -2,10 +2,8 @@
 
 ![Setup Stage](../resources/stage_environmentwatch.png)
 
-<div style="padding: 10px 15px; background-color: #e7f3fe; border-inline-start: 5px solid #0b69da; color: #000000;">
-This section applies to Environment Watch Only.
-</div>
-<br>
+> [!NOTE]
+> This section applies to Environment Watch Only.
 
 
 This document outlines the steps to install the Environment Watch monitoring agent. It is recommended to first install the agent on the SQL Primary server, verify the installation, and then repeat the steps for all other servers in the environment.

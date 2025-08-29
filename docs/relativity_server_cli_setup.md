@@ -2,10 +2,8 @@
 
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
-<div style="padding: 10px 15px; background-color: #e7f3fe; border-inline-start: 5px solid #0b69da; color: #000000;">
-This section applies to Environment Watch Only.
-</div>
-<br>
+> [!NOTE]
+> This section applies to Environment Watch Only.
 
 # Set up Environment Watch using the Relativity Server CLI
 
@@ -61,7 +59,7 @@ The CLI will complete the setup process.
 ```
 Elasticsearch Kibana URL is verified
 API Key creation and validation completed ------------------------- 100%
-OAuth2 client exists -------------------------------------------- 100%
+OAuth2 client exists ---------------------------------------------- 100%
 Relativity secret store updated ----------------------------------- 100%
 Relativity logging updated ---------------------------------------- 100%
 Relativity toggles updated ---------------------------------------- 100%

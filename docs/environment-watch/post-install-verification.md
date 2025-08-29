@@ -2,6 +2,9 @@
 
 ![Post-Install Verification Banner](../../resources/post-install-verification-images/Post-installation-verification.svg)
 
+> [!NOTE]
+> This section applies to Environment Watch Only.
+
 ## Prerequisites
 
 > [!IMPORTANT]

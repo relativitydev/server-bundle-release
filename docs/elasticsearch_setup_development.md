@@ -2,10 +2,9 @@
 
 ![Set Up Stage](../resources/troubleshooting-images/setupstage.png)
 
-<div style="padding: 10px 15px; background-color: #e7f3fe; border-inline-start: 5px solid #0b69da; color: #000000;">
-This section applies to Environment Watch and Datagrid.
-</div>
-<br>
+> [!NOTE]
+> This section applies to Environment Watch and Datagrid.
+
 ## How to Unblock Downloaded Files
 
 > [!NOTE]
