@@ -48,14 +48,14 @@ If the Elastic Stack is running, check that your monitoring agent hosts are pres
    - Open Kibana and navigate to the **Monitoring Agents** dashboard.
    - Confirm the "Last Check-In" field is updating for each monitored server.
    - **Expected:** The "Last Check-In" timestamp updates regularly.
-   - Confirm the **Version Installed** column is displayed for all hosts and shows the same version for every host.
-   - **Expected:** The "Version Installed" value should be the same for all hosts and visible for each host.
+   - Confirm the **Agent Version** column value is displayed for all hosts and shows the same version for every host.
+   - **Expected:** The "Agent Version" column value should be the same for all hosts and visible for each host.
    ![Monitoring_Agent](../../resources/troubleshooting-images/Monitoring_Agent.png)
 
 2. **Host Infrastructure Overview**
    - Open Kibana and navigate to the **Host Infrastructure Overview** dashboard.
-   - Confirm metrics are present for each host.
-   - **Expected:** Metrics and graphs are populated for the host.
+   - Confirm CPU Utilization, RAM Utilization and Disk Utilization column values are present for each host.
+   - **Expected:** CPU Utilization, RAM Utilization and Disk Utilization column values are populated for the host.
    ![Host_Infrastructure](../../resources/troubleshooting-images/Host_Infrastructure.png)
 
 3. **Discover Query**

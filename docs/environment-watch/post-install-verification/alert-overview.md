@@ -3,11 +3,13 @@
 
 ## Table of Contents
 
-- [Verify Dashboard Exists](#verify-dashboard-exists)  
-- [Verify Dashboard Tag](#verify-dashboard-tag)  
-- [Verify Health Indicators Are Displayed](#verify-health-indicators-are-displayed)  
-- [Verify Individual Health Indicator Status](#verify-individual-health-indicator-status)  
-- [Verify Dashboard in a Time Range](#verify-dashboard-in-a-time-range)
+- [Post-Install Verification for Alerts](#post-install-verification-for-alerts)
+  - [Table of Contents](#table-of-contents)
+  - [Verify Dashboard Exists](#verify-dashboard-exists)
+  - [Verify Dashboard Tag](#verify-dashboard-tag)
+  - [Verify Health Indicators Are Displayed](#verify-health-indicators-are-displayed)
+  - [Verify Individual Health Indicator Status](#verify-individual-health-indicator-status)
+  - [Verify Dashboard in a Time Range](#verify-dashboard-in-a-time-range)
 
 ---
 > [!NOTE]
@@ -129,8 +131,3 @@ Ensure that the dashboard is using a custom 15-minute time range as required for
 **Screenshot:**  
 ![Screenshot: Time range 15 minutes](../../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)
 
----
-
-## Next Step
-
-[Click here for the next step](../../../docs/relativity_alerts_installation.md)

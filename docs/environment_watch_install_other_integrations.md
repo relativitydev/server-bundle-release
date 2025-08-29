@@ -2,6 +2,11 @@
 
 ![](../resources/caat_environment_watch_setup.png)
 
+<div style="padding: 10px 15px; background-color: #e7f3fe; border-inline-start: 5px solid #0b69da; color: #000000;">
+This section applies to Environment Watch Only.
+</div>
+<br>
+
 This guide provides information on integrating various Relativity components with Environment Watch. These integrations extend observability capabilities across your environment, enabling comprehensive monitoring and performance analysis.
 
 ## Available Integrations

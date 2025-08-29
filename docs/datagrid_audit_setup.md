@@ -2,6 +2,11 @@
 
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
+<div style="padding: 10px 15px; background-color: #e7f3fe; border-inline-start: 5px solid #0b69da; color: #000000;">
+This section applies to Datagrid Only.
+</div>
+<br>
+
 After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI on the Primary SQL Server.
 
 For customers already using Data Grid Audit prior to upgrading to Relativity Server 2024, refer to the **_Important information for existing Data Grid Audit customers section_** for additional context on what happens when running the ‘Set up Data Grid’ workflow using the Relativity Server CLI for the first time.
@@ -35,32 +40,24 @@ For a first-time setup of Data Grid Audit, the Audit application will also need 
 
 Follow these steps to set up Data Grid Audit using the Relativity Server CLI. All setup will occur on the SQL Primary server.
 
-**Step 1** - Run the Setup Command
-Execute the following command in an elevated Command/Powershell to enter the setup workflow.
+**Step 1** - Select Data Grid Setup Option
+Run the `setup` command from an elevated Command/Powershell to enter the setup workflow. Select **DataGrid** when prompted.
+
 ```powershell
-./relsvr.exe setup
-```
+C:\Server.Bundle.x.y.z> ./relsvr.exe setup
 
-**Step 2** - Select Data Grid
-
-```
 What would you like to setup?
 > DataGrid
   Environment watch
   Exit
 ```
 
-**Step 3**- Choose Setup Type (if applicable)
-If Data Grid Audit has been set up on this host previously using the CLI, a prompt will appear to select **Rerun Setup**. For a first-time setup, this step will be skipped.
-```
-You have already set up Data Grid on this machine. Would you like to rerun setup?
-> Rerun Setup
-  Exit
-```
-
-**Step 4** - Enter Relativity and Elasticsearch Parameters
+**Step 2** - Enter the required Relativity and Elasticsearch parameters.
 
 ```
+Confirm you would like to perform the 'DataGrid' setup [y/n] (y): y
+
+Existing settings do not exist
 Enter the Relativity admin username (relativity.admin@kcura.com): relativity.admin@kcura.com
 Enter the Relativity admin password: *********
 Enter the Relativity instance url (https://emttest/Relativity): https://emttest/Relativity
@@ -71,43 +68,28 @@ Enter the Elasticsearch cluster endpoint URL (https://emttest:9200): https://emt
 
 ```
 
-**Step 6** - Verify API Key Generation
-The CLI will confirm that the API keys have been created.
+**Step 3** - Wait for Setup to Complete.
+
 ```
+Elasticsearch cluster endpoint URL is verified
+Elasticsearch plugin verified
+
 API Key creation and validation completed ------------------------- 100%
-OAuth2 client exists -------------------------------------------- 100%
+Relativity instance setting validation completed ------------------ 100%
+Relativity secret store updated ----------------------------------- 100%
+Elastic Stack settings validation completed ----------------------- 100%
+Relativity toggles validation completed --------------------------- 100%
+
+The Relativity Data Grid setup has been completed. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance to complete the setup.
 ```
-To manually verify, navigate to `/app/management/security/api_keys` in Kibana and confirm that an API key for `rel-datagrid` is present. This key must be refreshed every six months.
+If the setup completes successfully, Datagrid is now configured for the environment.
 
-**Step 7** - Restart Relativity Services
-Restart the Relativity services on all machines for the changes to take effect.
+**Step 4** - Restart the Relativity services on all machines for the changes to take effect.
 
-> [!NOTE]
-> The following steps are only for users cutting over from the legacy custom realms authentication.
 
-**Step 8** - Verify API Key Authentication
-Execute the following queries against the EDDS database to verify that API key authentication is enabled.
-```sql
-SELECT TOP(50) FROM [EDDSLogging].[eddsdbo].[RelativityLogs] WHERE message LIKE '%elastic api key authentication%' ORDER BY 1 DESC
-SELECT * FROM [EDDS].[eddsdbo].[Toggle] WHERE name = 'ElasticAPIKeyAuthenticationToggle'
-```
-
-**Step 9** - Verify Audit Dashboard
+**Step 5** - Verify Audit Dashboard
 Navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
 
-**Step 10** - Update License Key
-In Kibana, navigate to **Stack Management > License Management** and update the license to the free/open tier or a different Platinum/Enterprise license not provided by Relativity.
-
-**Step 11** - Install Certificates (if needed)
-If not already done, install the Elastic certificates on all Web and Agent Servers, then restart their services.
-
-> [!NOTE]
-> The final step is only for users performing a first-time setup of Audit.
-
-**Step 12** - Install Audit Application and Agents
-Install the Audit application into workspaces and add the required Audit agents. For more information, see the [Audit documentation](https://help.relativity.com/Server2024/Content/Relativity/Audit/Audit.htm#InstallingandconfiguringAudit).
-
-If the setup completes successfully, the integration is configured. If any errors are encountered, there will be three retry attempts before the CLI exits.
 
 ## Next
 
