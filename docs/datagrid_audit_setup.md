@@ -10,7 +10,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 > [!NOTE]
 > Please review the following important information before proceeding:
 > * **For Existing Data Grid Audit Customers:** You must be on Elasticsearch 7.17 when initially running this setup. After the setup is complete, you can upgrade to Elasticsearch 8.17.3.
-> * Before upgrading to Elasticsearch 8.17.3, the `ESIndexCreationSetting` may need to be updated. For details, refer to the [Instance settings' descriptions](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
+> * Before upgrading to Elasticsearch 8.17.3, the `ESIndexCreationSetting` may need to be updated. For details, refer to the [Instance setting Details](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
 > * Always verify the minimum required Elasticsearch version in your specific release bundle, as it may differ from the versions mentioned here.
 
 ### Prerequisites 
@@ -28,13 +28,13 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 Follow these steps to set up Data Grid Audit using the Relativity Server CLI. All setup will occur on the SQL Primary server.
 
-**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the CLI is extracted, and run "relsvr.exe setup"
+**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the CLI is extracted, and run ".\relsvr.exe setup"
 
 Select **DataGrid** when prompted.
 
-```powershell
-C:\Server.Bundle.x.y.z> ./relsvr.exe setup
+C:\Server.Bundle.x.y.z> .\relsvr.exe setup
 
+```
 What would you like to setup?
 > DataGrid
   Environment watch

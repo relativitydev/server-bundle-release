@@ -17,10 +17,10 @@
 
 ### Set up instructions
 
-**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the CLI is extracted, and run "relsvr.exe setup"
+**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the CLI is extracted, and run ".\relsvr.exe setup"
 
 ```
-C:\Server.Bundle.x.y.z> relsvr.exe setup
+C:\Server.Bundle.x.y.z> .\relsvr.exe setup
 
 Relativity Server CLI - 24.0.1196
 Copyright (c) 2025, Relativity ODA LLC
