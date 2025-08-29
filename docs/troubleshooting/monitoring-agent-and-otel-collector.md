@@ -14,7 +14,6 @@ This document provides a stepwise troubleshooting guide for the Relativity Envir
   - [Verify the Monitoring Agent Hosts are Present and Sending Metrics](#verify-the-monitoring-agent-hosts-are-present-and-sending-metrics)
   - [Verify the Environment Watch Service and Open Telemetry Collector](#verify-the-environment-watch-service-and-open-telemetry-collector)
   - [Verify the Open Telemetry Collector Logs](#verify-the-open-telemetry-collector-logs)
-  - [Open Telemetry YAML File Auto-Generation](#open-telemetry-yaml-file-auto-generation)
   - [Additional Pre-requisite Access Checks](#additional-pre-requisite-access-checks)
     - [BCP Share Access Verification](#bcp-share-access-verification)
     - [Secret Store Access Verification](#secret-store-access-verification)
@@ -55,7 +54,7 @@ If the Elastic Stack is running, check that your monitoring agent hosts are pres
 2. **Host Infrastructure Overview**
    - Open Kibana and navigate to the **Host Infrastructure Overview** dashboard.
    - Confirm CPU Utilization, RAM Utilization and Disk Utilization column values are present for each host.
-   - **Expected:** CPU Utilization, RAM Utilization and Disk Utilization column values are populated for the host.
+   - **Expected result:** CPU Utilization, RAM Utilization and Disk Utilization column values are populated for the host.
    ![Host_Infrastructure](../../resources/troubleshooting-images/Host_Infrastructure.png)
 
 3. **Discover Query**
@@ -65,7 +64,7 @@ If the Elastic Stack is running, check that your monitoring agent hosts are pres
      ```
      service.name: "relsvr_infrawatch_agent" and host.hostname: "<hostname_or_ip>"
      ```
-   - **Expected result:** You should see logs, metrics, and traces from the Open Telemetry Collector for the specified host.
+   - **Expected result:** You should see logs, data, and traces from the Open Telemetry Collector for the specified host.
    ![Discover](../../resources/troubleshooting-images/EW_Discover.png)
 
 ---
@@ -90,7 +89,7 @@ If a specific host is not reporting, check that the Environment Watch Windows se
    Running  Relativity Envi... Relativity Environment Watch
    ```
    </details>
-2. If not running, restart the service:
+2. If status is not running, restart the service:
    ```powershell
    Restart-Service -Name "Relativity Environment Watch"
    ```
@@ -117,13 +116,27 @@ If a specific host is not reporting, check that the Environment Watch Windows se
 4. Check port status:
    ```powershell
    netstat -an | findstr ":4318"
-   Get-NetTCPConnection -LocalPort 4318 -State Listen
    ```
    <details>
    <summary>Expected output</summary>
 
    ```
    TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
+   ```
+   (Only present when service is running; no output if stopped.)
+   </details>
+
+   ```powershell
+   Get-NetTCPConnection -LocalPort 4318 -State Listen
+   ```
+   <details>
+   <summary>Expected output</summary>
+
+   ```
+   LocalAddress LocalPort RemoteAddress RemotePort State
+   ------------ --------- ------------- ---------- -----
+   ::           4318      ::            0          Listen
+   0.0.0.0      4318      0.0.0.0       0          Listen
    ```
    (Only present when service is running; no output if stopped.)
    </details>
@@ -143,7 +156,7 @@ If a specific host is not reporting, check that the Environment Watch Windows se
      <details>
      <summary>Expected output</summary>
 
-     The YAML file exists and contains valid configuration for the Open Telemetry Collector.
+     The YAML file exists and contains configuration for the Open Telemetry Collector.
      </details>
 
 > [!NOTE]
@@ -158,8 +171,8 @@ If a specific host is not reporting, check that the Environment Watch Windows se
 If the service and collector are running but data is still missing, check the logs for errors or misconfiguration.
 
 > [!IMPORTANT]
-> The most important log entry to confirm successful operation is:
-> **Everything is ready**
+> The most important log entry to confirm successful operation is
+> "**Everything is ready**"
 > If you do not see this message in the logs or Windows Event Viewer, the Open Telemetry Collector is almost certainly not working correctly.
 
 > [!WARNING]
@@ -168,17 +181,45 @@ If the service and collector are running but data is still missing, check the lo
 **How to check:**
 
 > [!NOTE]
-> The below log files will be available from September 8th 2025 release.
+> The below log files will be available in v2025.08.27 EW BUNDLE RELEASE.
 * All logs are written to:
   - `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs\otelcol-relativity-stderr.log` (errors)
   - `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs\otelcol-relativity-stdout.log` (general logs)
 * All information and error log entries are also written to the Windows event log:
   - `Relativity.EnvironmentWatch`
-* Use PowerShell to check logs:
+* Use PowerShell to check error logs:
   ```powershell
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Error" }
+  ```
+  <details>
+  <summary>Expected output</summary>
+
+  ```
+  Index Time          EntryType   Source                        InstanceID Message
+  ----- ----          ---------   ------                        ---------- -------
+  123   7/29/2025     Error       Relativity.EnvironmentWatch   ...        [Error details]
+  ```
+  (No output if no errors are present.)
+  </details>
+
+* Use PowerShell to check information logs:
+  ```powershell
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.EntryType -eq "Information" }
+  ```
+  <details>
+  <summary>Expected output</summary>
+
+  ```
+  Index Time          EntryType   Source                        InstanceID Message
+  ----- ----          ---------   ------                        ---------- -------
+  124   7/29/2025     Information Relativity.EnvironmentWatch   ...        [Info details]
+  ```
+  </details>
+
+* Use PowerShell to check for "Everything is ready" message:
+  ```powershell
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.Message -like "*Everything is ready*" }
+  ```
   ```
   <details>
   <summary>Expected output</summary>
@@ -197,13 +238,6 @@ If the service and collector are running but data is still missing, check the lo
   ![EventViewer_RelativityEnvironmentWatch](../../resources/troubleshooting-images/EventViewer_RelativityEnvironmentWatch.png)
   
 ---
-
-
-## Open Telemetry YAML File Auto-Generation
-
-> [!NOTE]
-> The Open Telemetry YAML file is automatically created by the Environment Watch Windows service at:  
-> C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml
 
 ---
 
@@ -247,11 +281,10 @@ TcpTestSucceeded : True
 
 **Test API access:**
 
-- Navigate to the Relativity Secret Store folder (e.g., `C:\Relativity Secret Store`).
-- Open an elevated PowerShell and run:
+- Open in an elevated PowerShell and run the following command:
 
   ```powershell
-  .\secretstore.exe secret list /
+  C:\Relativity Secret Store\secretstore.exe secret list /
   ```
 
   The output will look similar to:
@@ -262,7 +295,7 @@ TcpTestSucceeded : True
 
 - Copy the Client Certificate Thumbprint and Secret Store URL.
 
-- To check the seal status, open an elevated Powershell and run:
+- To check the seal status, open in an elevated PowerShell ISE  and run the following script:
 
   ```powershell
   $thumbprint = "<insert-secret-store-client-certificate-thumbprint-here>"
@@ -306,9 +339,9 @@ TcpTestSucceeded : True
   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/relativity.rest/api/relativity-infrawatch-services/v1/infrawatch-manager/getkeplerstatusasync"
   ```
   <details>
-  <summary>Expected output</summary>
+  <summary>Expected Result</summary>
 
-  JSON response with "status": "Healthy".
+  JSON response with `"status": "OK"`.
   </details>
 
 ### Relativity Service Account Verification

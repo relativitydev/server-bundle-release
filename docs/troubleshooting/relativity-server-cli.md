@@ -33,18 +33,16 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 
 The Elastic APM integration package must be added and configured in Kibana before running the CLI setup.
 
-* Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
-* In the top right, select the **Add Elastic APM** button.
-* Add an Integration name and for server configuration. Update APM hostname and APM URL.  
-  Example:  
-  Host: `<hostname_or_ip>:8200`  
-  URL: `http://<hostname_or_ip>:8200`
-* Click on **Save and Continue**.
-* Select **Add Elastic Agent later** button as Agent is not required for the initial setups.
+**Troubleshooting Steps:**
 
-![Add APM Integration](../../resources/troubleshooting-images/add-apm-integration.png)
-![APM Integration Host Name](../../resources/troubleshooting-images/apm-integration-host-name.png)
-![Agent Button](../../resources/troubleshooting-images/agent-button.png)
+1. **Verify if APM Integration is already installed:**
+   - Login to Kibana and navigate to **Management** > **Integrations**.
+   - Search for "Elastic APM" in the search bar.
+   - Check if "Elastic APM" appears under **Installed integrations**.
+
+   - If APM integration is not installed, follow the detailed setup instructions in the [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#step-4-additional-setup-and-verification).
+
+![Installed_Integrations](../../resources/troubleshooting-images/installed_integrations.png)
 
 > [!NOTE]
 > If you encounter errors such as "Package not found" or installation timeouts during APM integration package installation, refer to the official [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#elastic-apm-integration-package).
