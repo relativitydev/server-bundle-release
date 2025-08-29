@@ -111,6 +111,10 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 #### High-Level Architecture
 
 ![](../resources/environment_watch_product_overview_003.png)
+> [!Note]
+> Ensure inbound/outbound ports are open for this Elastic stack component.
+
+[See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
 #### Relativity Environment Watch Windows Service
 
