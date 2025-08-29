@@ -83,13 +83,12 @@ The OpenTelemetry Collector is a lightweight service that runs on each monitored
 
 The Open Telemetry SDK is used to submit metrics to the Open Telemetry collector from different Relativity processes including:
 
-- Agents
-	- Service Host
-	- Kepler services
-	- Custom Pages
-	- Invariant Queue Manager
-	- Invariant Worker
-
+- Environment Watch Monitoring Agent
+- Service Host
+- Kepler services
+- Custom Pages
+- Invariant Queue Manager/Worker
+	
 #### Visualization Frontend
 
 In a highly distributed environment, millions of JSON records are generated each day. With so much unstructured data, the frontend solution must provide a way to monitor, search, and analyze the metrics.
@@ -155,12 +154,20 @@ By default, Elasticsearch sets up [Index Lifecycle Management (ILM) Policies](ht
 - Logs: 10 days
 - Metrics: 40 days
 - Traces: 10 days
-These defaults can be customized in Elasticsearch or Kibana to meet your organization's data retention requirements. 
+  
+These defaults can be customized in Elasticsearch to meet your organization's data retention requirements. 
 
 
 #### Relativity Alerts
 
 Although alerts can be viewed within Kibana, Environment Watch uses a new Relativity Alerts application to integrate the alerts directly within the main Relativity UI. A new Alert Manager agent periodically uses a Kibana REST API to fetch alert details and update the "bell" header with the number of active alerts. Additional details about the Relativity Alerts application are provided below.
+
+> [!Note]
+> Relativity Alerts are distinct from Kibana alerts.
+> 
+>  - **Kibana alerts** define rules in Elastic.
+>  - **Relativity Alerts (RDOs)** interface with Kibana alerts and surface the information in the Relativity UI.
+> - Only alerts packaged by Relativity have corresponding RDOs. 
 
 ## System Overview
 
