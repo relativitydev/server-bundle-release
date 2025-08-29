@@ -526,5 +526,3 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 
 ---
-
-[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

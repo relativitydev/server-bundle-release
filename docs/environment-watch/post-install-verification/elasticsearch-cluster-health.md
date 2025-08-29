@@ -139,5 +139,3 @@ Ensure disk free space and usage metrics are visible for each node.
 
 **Screenshot:**  
 ![Screenshot: Disk and Storage Utilization](../../../resources/post-install-verification-images/elasticsearch-cluster-health/disk-storage-utilization.png)
-
-[Click here for the next step](monitoring-agents.md)

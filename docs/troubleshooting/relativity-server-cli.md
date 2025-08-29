@@ -7,7 +7,7 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 > [!IMPORTANT]
 > Before running the CLI, you must have access to all of the following:
 > - **Relativity Admin account**
-> - **Secret Server**
+> - **Secret Store**
 > - **Kepler (SSL certificate)**
 > - **Elasticsearch**
 > - **Kibana**
@@ -174,4 +174,3 @@ This section covers common errors encountered during the Environment Watch and D
 
 For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
 
-[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

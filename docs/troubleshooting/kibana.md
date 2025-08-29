@@ -399,5 +399,3 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 2.  **Re-extract the Kibana zip file:**
     After enabling long path support, attempt to extract the `kibana-8.xx.x-windows-x86_64.zip` file again.
-
-[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

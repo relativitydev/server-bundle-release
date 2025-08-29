@@ -298,12 +298,12 @@ This document provides troubleshooting guidance for common APM Server issues enc
 **Troubleshooting Steps:**
 
 > [!NOTE]
-> For detailed self-instrumentation configuration steps, see the [Development Tier Setup Guide](../elasticsearch_setup_development.md#step-3-install-and-configure-apm-server).
+> For detailed self-instrumentation configuration steps, see the [Install and Configure APM Server](../elasticsearch_setup_development.md#step-3-install-and-configure-apm-server).
 
 * **Enable Self-Instrumentation:**
-  - Self-instrumentation allows APM Server to monitor its own performance
-  - This feature is configured in the `apm-server.yml` file
-  - Refer to Step 3 in the [elasticsearch_setup_development.md](../elasticsearch_setup_development.md) guide for complete configuration details
+  - Self-instrumentation allows APM Server to monitor its own performance.
+  - This feature is configured in the `apm-server.yml` file.
+  - Refer to Step 3 in the [Install Elasticsearch, Kibana and APM Server - Development Environment](../elasticsearch_setup_development.md) guide for complete configuration details.
 
 * **Verify Self-Instrumentation:**
   - After configuration, restart the APM Server service:
@@ -322,4 +322,3 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
   - Check Kibana to verify that APM Server metrics are being collected
 
-[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

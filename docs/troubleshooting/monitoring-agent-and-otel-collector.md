@@ -76,28 +76,37 @@ If a specific host is not reporting, check that the Environment Watch Windows se
 **How to check:**
 
 1. Open PowerShell and run:
-   ```powershell
-   Get-Service 'Relativity Environment Watch'
-   ```
-   <details>
-   <summary>Expected output</summary>
+    - ```powershell
+      Get-Service 'Relativity Environment Watch'
+      ```
+      <details>
+      <summary>Expected output</summary>
 
-   ```
-   Status   Name               Display Name
-   ------   ----               ---------
-   Running  Relativity Envi... Relativity Environment Watch
-   ```
-   </details>
+      ```
+      Status   Name               Display Name
+      ------   ----               ---------
+      Running  Relativity Envi... Relativity Environment Watch
+      ```
+      </details>
 2. If status is not running, restart the service:
-   ```powershell
-   Restart-Service -Name "Relativity Environment Watch"
-   ```
-   <details>
-   <summary>Expected output</summary>
+    - ```powershell
+      Restart-Service -Name "Relativity Environment Watch"
+      ```
+      <details>
+      <summary>Expected output</summary>
 
-   No output if successful. Service status will be "Running" after execution.
-   </details>
-3. Open Task Manager and look for `otelcol-relativity.exe` under the Processes tab.
+      No output if successful. Service status will be "Running" after execution.
+      </details>
+3. Verify logs are being generated:
+   - Check the directory:  
+     `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs`
+   - Ensure files like `otelcol-relativity-stderr.log` and `otelcol-relativity-stdout.log` are present and updating.
+     <details>
+     <summary>Expected output</summary>
+
+     Log files are present and their timestamps are updating as new data is written.
+     </details>
+4. Open Task Manager and look for `otelcol-relativity.exe` under the Processes tab.
    - Alternatively, use PowerShell:
      ```powershell
      Get-Process -Name otelcol-relativity
@@ -112,51 +121,33 @@ If a specific host is not reporting, check that the Environment Watch Windows se
      ```
      *(If not running, no output.)*
      </details>
-4. Check port status:
-   ```powershell
-   netstat -an | findstr ":4318"
-   ```
-   <details>
-   <summary>Expected output</summary>
+5. Check port status:
+    - ```powershell
+       netstat -an | findstr ":4318"
+      ```
+      <details>
+      <summary>Expected output</summary>
 
-   ```
-   TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
-   ```
-   (Only present when service is running; no output if stopped.)
-   </details>
+      ```
+      TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
+      ```
+      (Only present when service is running; no output if stopped.)
+      </details>
 
-   ```powershell
-   Get-NetTCPConnection -LocalPort 4318 -State Listen
-   ```
-   <details>
-   <summary>Expected output</summary>
+      ```powershell
+      Get-NetTCPConnection -LocalPort 4318 -State Listen
+      ```
+      <details>
+      <summary>Expected output</summary>
 
-   ```
-   LocalAddress LocalPort RemoteAddress RemotePort State
-   ------------ --------- ------------- ---------- -----
-   ::           4318      ::            0          Listen
-   0.0.0.0      4318      0.0.0.0       0          Listen
-   ```
-   (Only present when service is running; no output if stopped.)
-   </details>
-5. Verify logs are being generated:
-   - Check the directory:  
-     `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs`
-   - Ensure files like `otelcol-relativity-stderr.log` and `otelcol-relativity-stdout.log` are present and updating.
-     <details>
-     <summary>Expected output</summary>
-
-     Log files are present and their timestamps are updating as new data is written.
-     </details>
-6. Check if the auto-generated YAML file exists:
-   - Verify the file:  
-     `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\otelcol-config-auto-generated.yaml`
-   - The file should exist and contain configuration details for the Open Telemetry Collector.
-     <details>
-     <summary>Expected output</summary>
-
-     The YAML file exists and contains configuration for the Open Telemetry Collector.
-     </details>
+      ```
+      LocalAddress LocalPort RemoteAddress RemotePort State
+      ------------ --------- ------------- ---------- -----
+      ::           4318      ::            0          Listen
+      0.0.0.0      4318      0.0.0.0       0          Listen
+      ```
+      (Only present when service is running; no output if stopped.)
+      </details>
 
 > [!NOTE]
 > When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
@@ -330,7 +321,7 @@ TcpTestSucceeded : True
   Seal status: False
   ```
 
-### Kepler (SSL Certificate) Verification
+### Kepler & Web (SSL Certificate) Verification
 - The required web certificate must be installed on the server (check with your certificate management process or MMC snap-in for Certificates).
 - Verify Kepler API status:
   ```powershell
@@ -382,4 +373,3 @@ This section covers issues related to the Environment Watch installer and the un
 For additional troubleshooting, refer to the main documentation:  
 [Environment_Watch_Installer](../environment_watch_installation.md)
 
-[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

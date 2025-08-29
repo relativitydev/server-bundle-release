@@ -151,4 +151,3 @@ Ensure dashboard data is reflected in Discover.
 
 ## Next Step
 
-[Click here for the next step](alert-overview.md)
