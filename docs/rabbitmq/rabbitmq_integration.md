@@ -93,7 +93,7 @@ The management UI can be accessed at: `http://<hostname/ipaddress>:15672/`
 
 ```
 # Create admin user with full access
-curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/admin_user -d "{\"password\":\"Test1234!\",\"tags\":\"administrator\"}"
+curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/admin_user -d "{\"password\":\"<password>\",\"tags\":\"administrator\"}"
 ```
 
 <details>
@@ -131,7 +131,7 @@ vary: accept, accept-encoding, origin
 
 ```
 # Create monitoring user
-curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/monitoring_user -d "{\"password\":\"monitor_password_456\",\"tags\":\"monitoring\"}"
+curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/monitoring_user -d "{\"password\":\"<password>\",\"tags\":\"monitoring\"}"
 ```
 
 <details>
@@ -169,7 +169,7 @@ vary: accept, accept-encoding, origin
 
 ```
 # Create management user
-curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/mgmt_user -d "{\"password\":\"management_password_789\",\"tags\":\"management\"}"
+curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/mgmt_user -d "{\"password\":\"<password>\",\"tags\":\"management\"}"
 ```
 
 <details>
