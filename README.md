@@ -15,7 +15,7 @@ This bundle provides packages to set up two optional Relativity Server features:
 | --------------------------------- | --------------------------------------------------------- |
 | Relativity Server                 | Server 2024 Patch 2                                       |
 | Elastic Stack                     | 8.17.3 is required for Environment Watch.<br/>7.17.x can be used but for Data Grid Audit only. |
-| Network Ports                     | Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](environment-watch/port-diagram.md) for full network configuration details. |
+| Network Ports                     | Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](./environment-watch/port-diagram.md) for full network configuration details. |
 
 
 ## Getting Started
