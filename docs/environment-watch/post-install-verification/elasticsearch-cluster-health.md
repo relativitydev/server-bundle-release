@@ -3,11 +3,12 @@
 
 ## Table of Contents
 
-* [Verify Dashboard Exists](#verify-dashboard-exists)
-* [Verify Cluster Health Summary](#verify-cluster-health-summary)  
-* [Verify Node Metrics](#verify-node-metrics)  
-* [Verify Index Statistics](#verify-index-statistics) 
-* [Verify Disk and Storage Utilization](#verify-disk-and-storage-utilization)
+- [Post-Install Verification for Elastic Cluster Health](#post-install-verification-for-elastic-cluster-health)
+  - [Verify Dashboard Exists](#verify-dashboard-exists)
+  - [Verify Cluster Health Summary](#verify-cluster-health-summary)
+  - [Verify Node Metrics](#verify-node-metrics)
+  - [Verify Index Statistics](#verify-index-statistics)
+  - [Verify Disk and Storage Utilization](#verify-disk-and-storage-utilization)
 
 ---
 > [!NOTE]
@@ -18,8 +19,9 @@
 Navigate to the Elasticsearch cluster health monitoring dashboard.
 
 **Steps:**  
-1. Navigate to Kibana.
-2. Go to **Dashboards → Monitoring Agent Dashboard** in the navigation panel.
+1. Login to Kibana.
+2. Navigate to **Dashboards**
+2. Use the search bar to search for "Monitoring Agents" and open the dashboard
 3. Click on **Cluster Overview**.
 4. Alternatively, visit this direct link: http://<hostname_or_ip>:5601/app/monitoring#
 
@@ -137,6 +139,3 @@ Ensure disk free space and usage metrics are visible for each node.
 
 **Screenshot:**  
 ![Screenshot: Disk and Storage Utilization](../../../resources/post-install-verification-images/elasticsearch-cluster-health/disk-storage-utilization.png)
-
----
-

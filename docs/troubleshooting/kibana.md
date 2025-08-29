@@ -22,6 +22,8 @@ This document provides troubleshooting guidance for common Kibana issues encount
 - [6. Service Verification](#6-service-verification)
   - [6.1 Verifying Kibana Health and Status](#61-verifying-kibana-health-and-status)
 - [7. Additional Diagnostic Commands](#7-additional-diagnostic-commands)
+- [8. Installation Issues](#8-installation-issues)
+  - [8.1 Long Path Issues During Extraction](#81-long-path-issues-during-extraction)
 
 ---
 
@@ -353,39 +355,47 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ### 7.1 Configuration Validation
 
-* **Validate YAML syntax**
+
+**Validate YAML syntax**
   ```powershell
-  C:\elastic\kibana\bin\kibana.bat --validate-config
+  C:\elastic\kibana\bin\kibana.bat 
   ```
   <details>
   <summary>Expected output</summary>
 
   ```
-  Configuration is valid
+  # There is no built-in --validate-config option in Kibana 8.x.
+  # Configuration is validated when Kibana starts.
+  # If there are errors in kibana.yml, they will be shown in the console output and Kibana will fail to start.
   ```
   </details>
 
-* **Check current configuration**
-  ```powershell
-  C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
-  ```
-  <details>
-  <summary>Expected output</summary>
+---
 
-  ```
-  Configuration loaded successfully
-  ```
-  </details>
+## 8. Installation Issues
 
-* **Check current configuration**
-  ```powershell
-  C:\elastic\kibana\bin\kibana.bat --config-path="C:\elastic\kibana\config\kibana.yml" --dry-run
-  ```
-  <details>
-  <summary>Expected output</summary>
+### 8.1 Long Path Issues During Extraction
 
-  ```
-  Configuration loaded successfully
-  ```
-  </details>
+**Symptoms:**
+- Errors when extracting the `kibana-8.xx.x-windows-x86_64.zip` file.
+- The extraction process fails due to file paths exceeding the Windows default limit.
 
+**Troubleshooting Steps:**
+
+1.  **Enable Long Paths in Windows:**
+    Windows must be configured to support long file paths. This can be enabled via the Local Group Policy Editor.
+
+    a. Run `gpedit.msc` to open the Local Group Policy Editor.
+
+    ![gpedit.msc](../../resources/troubleshooting-images/gpedit.png)
+
+    b. Navigate to `Computer Configuration` → `Administrative Templates` → `System` → `Filesystem`.
+
+    ![Filesystem settings in Group Policy Editor](../../resources/troubleshooting-images/administrativetemplate.png)
+
+    c. Double-click on `Enable Win32 long paths` and set it to **Enabled**.
+
+    ![Enable long paths policy](../../resources/troubleshooting-images/kibanaextract.png)
+
+2.  **Re-extract the Kibana zip file:**
+    After enabling long path support, attempt to extract the `kibana-8.xx.x-windows-x86_64.zip` file again.

@@ -1,4 +1,3 @@
-
 # Relativity Server CLI Troubleshooting
 
 This document provides troubleshooting guidance for common Relativity Server CLI issues encountered during Environment Watch and Data Grid Audit setup, configuration, and operation.
@@ -8,7 +7,7 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 > [!IMPORTANT]
 > Before running the CLI, you must have access to all of the following:
 > - **Relativity Admin account**
-> - **Secret Server**
+> - **Secret Store**
 > - **Kepler (SSL certificate)**
 > - **Elasticsearch**
 > - **Kibana**
@@ -23,7 +22,7 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 
 1. [APM Integration and Data View](#1-apm-integration-and-data-view)
 2. [Kibana Encryption Keys Issues](#2-kibana-encryption-keys-issues)
-3. [Prerequisite Access Verification](#3-prerequisite-access-verification)
+3. [Common CLI Errors](#3-common-cli-errors)
 
 ---
 
@@ -34,18 +33,16 @@ This document provides troubleshooting guidance for common Relativity Server CLI
 
 The Elastic APM integration package must be added and configured in Kibana before running the CLI setup.
 
-* Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
-* In the top right, select the **Add Elastic APM** button.
-* Add an Integration name and for server configuration. Update APM hostname and APM URL.  
-  Example:  
-  Host: `<hostname_or_ip>:8200`  
-  URL: `http://<hostname_or_ip>:8200`
-* Click on **Save and Continue**.
-* Select **Add Elastic Agent later** button as Agent is not required for the initial setups.
+**Troubleshooting Steps:**
 
-![Add APM Integration](../../resources/troubleshooting-images/add-apm-integration.png)
-![APM Integration Host Name](../../resources/troubleshooting-images/apm-integration-host-name.png)
-![Agent Button](../../resources/troubleshooting-images/agent-button.png)
+1. **Verify if APM Integration is already installed:**
+   - Login to Kibana and navigate to **Management** > **Integrations**.
+   - Search for "Elastic APM" in the search bar.
+   - Check if "Elastic APM" appears under **Installed integrations**.
+
+   - If APM integration is not installed, follow the detailed setup instructions in the [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#step-4-additional-setup-and-verification).
+
+![Installed_Integrations](../../resources/troubleshooting-images/installed_integrations.png)
 
 > [!NOTE]
 > If you encounter errors such as "Package not found" or installation timeouts during APM integration package installation, refer to the official [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#elastic-apm-integration-package).
@@ -115,5 +112,65 @@ See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and tro
 
 ---
 
+## 3. Common CLI Errors
+
+This section covers common errors encountered during the Environment Watch and Data Grid Audit setup workflows.
+
+### 3.1 Unauthorized Access
+
+**Symptoms:**
+- The CLI returns an "Unauthorized" error for Relativity or Elasticsearch credentials.
+
+  ![Relativity Unauthorized Error](../../resources/EWRelativityUnauthorized.png)
+  ![Elasticsearch Unauthorized Error](../../resources/EWElasticUnauthorized.png)
+  ![DataGrid Unauthorized Error](../../resources/Issue1-Unauthorized.png)
+
+**Troubleshooting Steps:**
+1.  **Verify Relativity Credentials:** Ensure the Relativity admin username and password are correct.
+2.  **Verify Elasticsearch Credentials:** Ensure the Elasticsearch admin username and password are correct.
+
+### 3.2 Incorrect Server URLs
+
+**Symptoms:**
+- The CLI returns an error indicating that a server URL is incorrect.
+
+  ![Incorrect Relativity URL](../../resources/EWRelativityUrlIncorrect.png)
+  ![Incorrect Elasticsearch URL](../../resources/EWElasticUrlIncorrect.png)
+  ![Incorrect APM URL](../../resources/EWAPMUrlIncorrect.png)
+  ![Incorrect Kibana URL](../../resources/EWKibanaUrlIncorrect.png)
+
+**Troubleshooting Steps:**
+1.  **Verify URLs:** Check the URLs for Relativity, Elasticsearch, APM, and Kibana to ensure they are correct and accessible.
+
+### 3.3 Incorrect Elasticsearch Server Credentials
+
+**Symptoms:**
+- The CLI specifically flags Elasticsearch credentials as incorrect.
+
+  ![Invalid Elasticsearch Credentials](../../resources/troubleshooting-images/invalidelasticcreds.png)
+  ![DataGrid Elasticsearch Credentials Error](../../resources/Issue2-ElasticUrlCredentialsWrong.png)
+
+**Troubleshooting Steps:**
+1.  **Verify Elasticsearch Credentials and URL:** Double-check the Elasticsearch admin username, password, and server URL.
+
+### 3.4 Retry Limit Reached
+
+**Symptoms:**
+- The CLI exits after multiple failed attempts to enter correct parameters.
+
+  ![Relativity Max Attempts Reached](../../resources/EWRelativityMaxAttempts.png)
+  ![Elasticsearch Max Attempts Reached](../../resources/EWElasticMaxAttempts.png)
+  ![APM Max Attempts Reached](../../resources/EWAPMMaxAttempts.png)
+  ![Kibana Max Attempts Reached](../../resources/EWKibanaMaxAttempts.png)
+  ![DataGrid Retry Limit Reached](../../resources/Issue3-RetryLimit-Reached.png)
+
+**Troubleshooting Steps:**
+1.  **Restart the CLI:** The maximum number of attempts has been reached. Rerun the setup command:
+    ```
+    relsvr.exe setup
+    ```
+
+---
+
 For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
- 
+

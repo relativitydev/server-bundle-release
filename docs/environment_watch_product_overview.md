@@ -232,7 +232,8 @@ When you have Relativity Alerts installed and Environment Watch is fully configu
   - **Alert State Updated** – When did the alert last change from inactive to active or active to inactive?
   - **Dashboard or Tab Jump Link** – Alerts are "generalized" in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
 	
-**Note** - Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
+> [!NOTE]
+> Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
 
 - **Alert Enabled for Instance** – If set to No, Relativity will stop querying Kibana for updated alert state information
     - **Feature Domain** – Alerts are grouped by feature domain. You can see a list of all feature domains [here](https://github.com/relativityone/server-relativity-docs/blob/main/environment-watch/feature-domains.md).
@@ -264,7 +265,8 @@ The following permissions and configuration settings are available for Relativit
 
 All Instance-level System Administrators can see all Alerts, the Alerts tab, and Alert notifications. There is currently no way to extend any Alert permissions to non-System Administrators, and no way to remove or adjust permissions for System Administrators.
 
-**Note** Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
+> [!NOTE]
+> Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
 
 #### Alert Enabled for Instance
 
