@@ -3,7 +3,7 @@
 ![](../resources/relativity_alerts_installation_step.png)
 
 > [!NOTE]
-> This section applies to Environment Watch Only.
+> This step is required for Environment Watch.
 
 ## Summary
 The Relativity Alerts application is a new application as part of the Relativity Environment Watch suite. Its main functionality is to alert Relativity System Administrators to a variety of Environmental and Application related issues on a Relativity instance within Relativity web interface. It replaces a previous "Legacy Alerts" functionality with a new Open Telemetry based implementation with Elastic Stack backend. It allows in real time to notify Relativity System Administrators about issues, redirect them to easily readable dashboards with performance and health information, as well as accompanied by a comprehensive resolution guidelines.

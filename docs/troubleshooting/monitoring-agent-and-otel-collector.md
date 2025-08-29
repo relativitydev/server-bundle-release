@@ -9,7 +9,6 @@ This document provides a stepwise troubleshooting guide for the Relativity Envir
 ## Table of Contents
 
 - [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](#environment-watch-monitoring-agent-and-open-telemetry-collector-troubleshooting)
-  - [Table of Contents](#table-of-contents)
   - [Verify the Elastic Stack Servers are Running](#verify-the-elastic-stack-servers-are-running)
   - [Verify the Monitoring Agent Hosts are Present and Sending Metrics](#verify-the-monitoring-agent-hosts-are-present-and-sending-metrics)
   - [Verify the Environment Watch Service and Open Telemetry Collector](#verify-the-environment-watch-service-and-open-telemetry-collector)
@@ -220,7 +219,6 @@ If the service and collector are running but data is still missing, check the lo
   ```powershell
   Get-EventLog Relativity.EnvironmentWatch | Where { $_.Message -like "*Everything is ready*" }
   ```
-  ```
   <details>
   <summary>Expected output</summary>
 
@@ -284,7 +282,7 @@ TcpTestSucceeded : True
 - Open in an elevated PowerShell and run the following command:
 
   ```powershell
-  C:\Relativity Secret Store\secretstore.exe secret list /
+  C:\Program Files\Relativity Secret Store\Client\secretstore.exe secret list /
   ```
 
   The output will look similar to:
@@ -384,3 +382,4 @@ This section covers issues related to the Environment Watch installer and the un
 For additional troubleshooting, refer to the main documentation:  
 [Environment_Watch_Installer](../environment_watch_installation.md)
 
+[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

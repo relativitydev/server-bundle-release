@@ -174,3 +174,4 @@ This section covers common errors encountered during the Environment Watch and D
 
 For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
 
+[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

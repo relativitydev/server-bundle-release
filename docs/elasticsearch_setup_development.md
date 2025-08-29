@@ -3,7 +3,7 @@
 ![Set Up Stage](../resources/troubleshooting-images/setupstage.png)
 
 > [!NOTE]
-> This section applies to Environment Watch and Datagrid.
+> This step is required for both Environment Watch and Data Grid Audit
 
 ## How to Unblock Downloaded Files
 

@@ -3,7 +3,7 @@
 ![](../resources/caat_environment_watch_setup.png)
 
 > [!NOTE]
-> This section applies to Environment Watch Only.
+> This step is required for Environment Watch.
 
 This guide provides information on integrating various Relativity components with Environment Watch. These integrations extend observability capabilities across your environment, enabling comprehensive monitoring and performance analysis.
 

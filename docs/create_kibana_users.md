@@ -3,7 +3,7 @@
 ![Setup stage](../resources/createuserssetupstage.png)
 
 > [!NOTE]
-> This section applies to Environment Watch Only.
+> This step is required for Environment Watch.
 
 To access Kibana dashboards and saved searches, a new account must be created for each user and be assigned to the custom Kibana role that was installed during the Environment Watch CLI setup.
 

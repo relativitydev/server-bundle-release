@@ -3,7 +3,7 @@
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
 > [!NOTE]
-> This section applies to Environment Watch Only.
+> This step is required for Environment Watch.
 
 # Set up Environment Watch using the Relativity Server CLI
 

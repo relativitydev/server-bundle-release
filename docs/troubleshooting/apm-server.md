@@ -322,4 +322,4 @@ This document provides troubleshooting guidance for common APM Server issues enc
 
   - Check Kibana to verify that APM Server metrics are being collected
 
-
+[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)

@@ -4,14 +4,12 @@
 ## Table of Contents
 
 - [Post-Install Verification for Monitoring Agents](#post-install-verification-for-monitoring-agents)
-  - [Table of Contents](#table-of-contents)
   - [Verify Monitoring Agent Dashboard Exists](#verify-monitoring-agent-dashboard-exists)
   - [Verify Monitoring Agents Dashboard Tags](#verify-monitoring-agents-dashboard-tags)
   - [Verify Dashboard Filters Populate with Data](#verify-dashboard-filters-populate-with-data)
   - [Verify Data Population by Changing Filters and Time Ranges](#verify-data-population-by-changing-filters-and-time-ranges)
   - [Verify Hosts and Agent Versions](#verify-hosts-and-agent-versions)
   - [Verify Data in Discover](#verify-data-in-discover)
-  - [Next Step](#next-step)
 
 ---
 

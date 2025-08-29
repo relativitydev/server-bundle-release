@@ -3,7 +3,7 @@
 ![Setup Stage](../resources/stage_environmentwatch.png)
 
 > [!NOTE]
-> This section applies to Environment Watch Only.
+> This step is required for Environment Watch.
 
 
 This document outlines the steps to install the Environment Watch monitoring agent. It is recommended to first install the agent on the SQL Primary server, verify the installation, and then repeat the steps for all other servers in the environment.
@@ -20,7 +20,11 @@ This document outlines the steps to install the Environment Watch monitoring age
 ### Step 1: Install the Monitoring Agent
 
 1.  From the extracted Server Bundle, run `Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe`.
-2.  If prompted, provide the Relativity Service Account credentials. This may be skipped if other Relativity products are already installed.
+2.  If prompted, enter the Relativity Service Account credentials as:
+    - **Username:** `domain\Username`
+    - **Password:** <password>
+    
+    This step may be skipped if other Relativity products are already installed.
 3.  (Optional) To specify a custom installation path, click **Options**, browse to your desired directory, and click **OK**.
 4.  Accept the license terms and click **Install**.
 5.  Once the installation is complete, click **Close**.
@@ -33,12 +37,18 @@ This document outlines the steps to install the Environment Watch monitoring age
     *   `rel-infrawatch-agent.exe`
     *   `otelcol-relativity.exe`
 3.  Check for new log files in `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs`.
+4.  Verify that the `otelcol-config-auto-generated.yaml` configuration file is generated in:
+    `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\`
 
 ### Step 3: Verify Metrics in Kibana
 
 1.  In Kibana, navigate to **Dashboards** and open the **[Relativity] Host Infrastructure Overview** dashboard.
 2.  Confirm that CPU, RAM, and Disk metrics are visible for the newly added host.
     ![Host metrics visible in Kibana](../resources/Installer_hostmetric.png)
+3.  Navigate to the **[Relativity] Monitoring Agent** dashboard to verify:
+    - The installed monitoring agent version is displayed correctly
+    - Host information and other important fields are properly reflected
+    - Agent status and health metrics are showing current data
 
 ### Step 4: Repeat Installation
 

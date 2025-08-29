@@ -4,7 +4,6 @@
 ## Table of Contents
 
 - [Post-Install Verification for Alerts](#post-install-verification-for-alerts)
-  - [Table of Contents](#table-of-contents)
   - [Verify Dashboard Exists](#verify-dashboard-exists)
   - [Verify Dashboard Tag](#verify-dashboard-tag)
   - [Verify Health Indicators Are Displayed](#verify-health-indicators-are-displayed)
@@ -131,3 +130,4 @@ Ensure that the dashboard is using a custom 15-minute time range as required for
 **Screenshot:**  
 ![Screenshot: Time range 15 minutes](../../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)
 
+[Back to Post Install Verification](../post-install-verification.md)

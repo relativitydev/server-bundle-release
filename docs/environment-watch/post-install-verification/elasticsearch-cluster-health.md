@@ -4,7 +4,6 @@
 ## Table of Contents
 
 - [Post-Install Verification for Elastic Cluster Health](#post-install-verification-for-elastic-cluster-health)
-  - [Table of Contents](#table-of-contents)
   - [Verify Dashboard Exists](#verify-dashboard-exists)
   - [Verify Cluster Health Summary](#verify-cluster-health-summary)
   - [Verify Node Metrics](#verify-node-metrics)
@@ -140,3 +139,5 @@ Ensure disk free space and usage metrics are visible for each node.
 
 **Screenshot:**  
 ![Screenshot: Disk and Storage Utilization](../../../resources/post-install-verification-images/elasticsearch-cluster-health/disk-storage-utilization.png)
+
+[Click here for the next step](monitoring-agents.md)

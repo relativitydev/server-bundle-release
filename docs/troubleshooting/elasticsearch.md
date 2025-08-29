@@ -8,7 +8,6 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 ## Table of Contents
 
 - [Elasticsearch Troubleshooting](#elasticsearch-troubleshooting)
-  - [Table of Contents](#table-of-contents)
   - [1. Windows Service Issues](#1-windows-service-issues)
     - [1.1 Elasticsearch Service Not Starting](#11-elasticsearch-service-not-starting)
     - [1.2 Service Crashes or Stops Unexpectedly](#12-service-crashes-or-stops-unexpectedly)
@@ -512,3 +511,4 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 ---
 
+[Back to EnvironmentWatch Troubleshooting guide](../environment_watch_troubleshooting.md)
