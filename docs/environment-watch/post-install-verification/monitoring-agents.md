@@ -149,5 +149,3 @@ Ensure dashboard data is reflected in Discover.
 ![Screenshot: Discover view 02](../../../resources/post-install-verification-images/monitoring-agents/discover-view.png)
 ---
 
-## Next Step
-

@@ -29,7 +29,7 @@ This document provides a stepwise troubleshooting guide for the Relativity Envir
 
 First, ensure that the core Elastic Stack components (Elasticsearch, Kibana, and APM Server) are running and accessible. If you are not seeing any data in dashboards, this strongly suggests a problem with the Elastic Stack itself.
 
-- For connectivity and troubleshooting, see:
+- For port-related issues, see the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
   - [ElasticSearch Troubleshooting](elasticsearch.md)
   - [Kibana Troubleshooting](kibana.md)
   - [APM-Server Troubleshooting](apm-server.md)
@@ -121,33 +121,7 @@ If a specific host is not reporting, check that the Environment Watch Windows se
      ```
      *(If not running, no output.)*
      </details>
-5. Check port status:
-    - ```powershell
-       netstat -an | findstr ":4318"
-      ```
-      <details>
-      <summary>Expected output</summary>
-
-      ```
-      TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
-      ```
-      (Only present when service is running; no output if stopped.)
-      </details>
-
-      ```powershell
-      Get-NetTCPConnection -LocalPort 4318 -State Listen
-      ```
-      <details>
-      <summary>Expected output</summary>
-
-      ```
-      LocalAddress LocalPort RemoteAddress RemotePort State
-      ------------ --------- ------------- ---------- -----
-      ::           4318      ::            0          Listen
-      0.0.0.0      4318      0.0.0.0       0          Listen
-      ```
-      (Only present when service is running; no output if stopped.)
-      </details>
+5. Check port status in the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
 
 > [!NOTE]
 > When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
@@ -371,5 +345,5 @@ This section covers issues related to the Environment Watch installer and the un
 ---
 
 For additional troubleshooting, refer to the main documentation:  
-[Environment_Watch_Installer](../environment_watch_installation.md)
+[Environment Watch Installer](../environment_watch_installation.md)
 
