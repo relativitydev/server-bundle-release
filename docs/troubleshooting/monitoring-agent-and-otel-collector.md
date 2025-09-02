@@ -8,26 +8,70 @@ This document provides a stepwise troubleshooting guide for the Relativity Envir
 
 ## Table of Contents
 
-- [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](#environment-watch-monitoring-agent-and-open-telemetry-collector-troubleshooting)
-  - [Verify the Elastic Stack Servers are Running](#verify-the-elastic-stack-servers-are-running)
-  - [Verify the Monitoring Agent Hosts are Present and Sending Metrics](#verify-the-monitoring-agent-hosts-are-present-and-sending-metrics)
-  - [Verify the Environment Watch Service and Open Telemetry Collector](#verify-the-environment-watch-service-and-open-telemetry-collector)
-  - [Verify the Open Telemetry Collector Logs](#verify-the-open-telemetry-collector-logs)
-  - [Additional Pre-requisite Access Checks](#additional-pre-requisite-access-checks)
-    - [BCP Share Access Verification](#bcp-share-access-verification)
-    
-    - [Kepler (SSL Certificate) Verification](#kepler-ssl-certificate-verification)
-    - [Relativity Service Account Verification](#relativity-service-account-verification)
-  - [Installer and Service Errors](#installer-and-service-errors)
-    - [User Not in Local Security Policy](#user-not-in-local-security-policy)
-    - [Invalid Secrets](#invalid-secrets)
+1. [Verify the Elastic Stack Servers are Running](#1-verify-the-elastic-stack-servers-are-running)
+2. [Verify the Monitoring Agent Hosts are Present and Sending Metrics](#2-verify-the-monitoring-agent-hosts-are-present-and-sending-metrics)
+3. [Verify the Environment Watch Service and Open Telemetry Collector](#3-verify-the-environment-watch-service-and-open-telemetry-collector)
+4. [Verify the Open Telemetry Collector Logs](#4-verify-the-open-telemetry-collector-logs)
+5. [Additional Pre-requisite Access Checks](#5-additional-pre-requisite-access-checks)
+   - 5.1. [BCP Share Access Verification](#51-bcp-share-access-verification)
+   - 5.2. [Kepler and Web (SSL Certificate) Verification](#52-kepler-and-web-ssl-certificate-verification)
+   - 5.3. [Relativity Service Account Verification](#53-relativity-service-account-verification)
+6. [Installer and Service Errors](#6-installer-and-service-errors)
+   - 6.1. [User Not in Local Security Policy](#61-user-not-in-local-security-policy)
+   - 6.2. [Invalid Secrets](#62-invalid-secrets)
 
 ---
 
 
-## Verify the Elastic Stack Servers are Running
+## 1. Verify the Elastic Stack Servers are Running
 
 First, ensure that the core Elastic Stack components (Elasticsearch, Kibana, and APM Server) are running and accessible. If you are not seeing any data in dashboards, this strongly suggests a problem with the Elastic Stack itself.
+
+**Check Service Status:**
+   ```powershell
+   Get-Service -Name apm-server
+   ```
+   <details>
+   <summary>Expected output</summary>
+
+   ```
+   Status   Name        DisplayName
+   ------   ----        -----------
+   Running  apm-server  Elastic APM Server
+   ```
+   </details>
+   
+   ```powershell
+   Get-Service -Name kibana
+   ```
+   <details>
+   <summary>Expected output</summary>
+
+   ```
+   Status   Name   DisplayName
+   ------   ----   -----------
+   Running  kibana Kibana
+   ```
+   </details>
+
+**If services are not running, restart them:**
+ ```powershell
+  Restart-Service -Name "apm-server"
+  ```
+  <details>
+  <summary>Expected output</summary>
+
+  No output if successful. Service status will be "Running" after execution.
+  </details>
+
+ ```powershell
+  Restart-Service -Name "kibana"
+  ```
+  <details>
+  <summary>Expected output</summary>
+
+  No output if successful. Service status will be "Running" after execution.
+  </details>
 
 - For port-related issues, see the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
   - [ElasticSearch Troubleshooting](elasticsearch.md)
@@ -36,7 +80,7 @@ First, ensure that the core Elastic Stack components (Elasticsearch, Kibana, and
 
 ---
 
-## Verify the Monitoring Agent Hosts are Present and Sending Metrics
+## 2. Verify the Monitoring Agent Hosts are Present and Sending Metrics
 
 If the Elastic Stack is running, check that your monitoring agent hosts are present in Kibana and are sending metrics. If hosts are missing or not updating, the issue may be with the agent or host configuration.
 
@@ -69,59 +113,59 @@ If the Elastic Stack is running, check that your monitoring agent hosts are pres
 ---
 
 
-## Verify the Environment Watch Service and Open Telemetry Collector
+## 3. Verify the Environment Watch Service and Open Telemetry Collector
 
 If a specific host is not reporting, check that the Environment Watch Windows service is running on that host. This service is responsible for managing the Open Telemetry Collector. Also verify that the Open Telemetry Collector process is running, its port is listening, logs are being generated, and the auto-generated YAML file exists.
 
 **How to check:**
 
-1. Open PowerShell and run:
-    - ```powershell
-      Get-Service 'Relativity Environment Watch'
+1.  Open PowerShell and run the following to check the service status:
+    ```powershell
+    Get-Service 'Relativity Environment Watch'
+    ```
+    <details>
+    <summary>Expected output</summary>
+
+    ```
+    Status   Name               Display Name
+    ------   ----               ---------
+    Running  Relativity Envi... Relativity Environment Watch
+    ```
+    </details>
+    If the service is not running, restart it:
+    ```powershell
+    Restart-Service -Name "Relativity Environment Watch"
+    ```
+    <details>
+    <summary>Expected output</summary>
+
+    No output if successful. Service status will be "Running" after execution.
+    </details>
+2.  Verify logs are being generated:
+    - Check the directory:
+      `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs`
+    - Ensure files like `otelcol-relativity-stderr.log` and `otelcol-relativity-stdout.log` are present and updating.
+      <details>
+      <summary>Expected output</summary>
+
+      Log files are present and their timestamps are updating as new data is written.
+      </details>
+3.  Open Task Manager and look for `otelcol-relativity.exe` under the Processes tab.
+    - Alternatively, use PowerShell:
+      ```powershell
+      Get-Process -Name otelcol-relativity
       ```
       <details>
       <summary>Expected output</summary>
 
       ```
-      Status   Name               Display Name
-      ------   ----               ---------
-      Running  Relativity Envi... Relativity Environment Watch
+      Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
+      -------  ------    -----      -----     ------     --  -- -----------
+      ...      ...       ...        ...       ...        ... ... otelcol-relativity
       ```
+      *(If not running, no output.)*
       </details>
-2. If status is not running, restart the service:
-    - ```powershell
-      Restart-Service -Name "Relativity Environment Watch"
-      ```
-      <details>
-      <summary>Expected output</summary>
-
-      No output if successful. Service status will be "Running" after execution.
-      </details>
-3. Verify logs are being generated:
-   - Check the directory:  
-     `C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\Logs`
-   - Ensure files like `otelcol-relativity-stderr.log` and `otelcol-relativity-stdout.log` are present and updating.
-     <details>
-     <summary>Expected output</summary>
-
-     Log files are present and their timestamps are updating as new data is written.
-     </details>
-4. Open Task Manager and look for `otelcol-relativity.exe` under the Processes tab.
-   - Alternatively, use PowerShell:
-     ```powershell
-     Get-Process -Name otelcol-relativity
-     ```
-     <details>
-     <summary>Expected output</summary>
-
-     ```
-     Handles  NPM(K)    PM(K)      WS(K)     CPU(s)     Id  SI ProcessName
-     -------  ------    -----      -----     ------     --  -- -----------
-     ...      ...       ...        ...       ...        ... ... otelcol-relativity
-     ```
-     *(If not running, no output.)*
-     </details>
-5. Check port status in the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
+4.  Check port status in the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
 
 > [!NOTE]
 > When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
@@ -130,7 +174,7 @@ If a specific host is not reporting, check that the Environment Watch Windows se
 
 
 
-## Verify the Open Telemetry Collector Logs
+## 4. Verify the Open Telemetry Collector Logs
 
 If the service and collector are running but data is still missing, check the logs for errors or misconfiguration.
 
@@ -204,11 +248,11 @@ If the service and collector are running but data is still missing, check the lo
 
 ---
 
-## Additional Pre-requisite Access Checks
+## 5. Additional Pre-requisite Access Checks
 
 If the above steps do not resolve the issue, verify the following access and configuration requirements:
 
-### BCP Share Access Verification
+### 5.1. BCP Share Access Verification
 > [!NOTE]
 > If you are not logged in as the Relativity Service Account, use the commands below.
 
@@ -230,7 +274,7 @@ True
 > [!NOTE]
 > For troubleshooting steps related to the Relativity Secret Store, please refer to the [Secret Store Troubleshooting](./secret-store-troubleshooting.md) guide.
 
-### Kepler & Web (SSL Certificate) Verification
+### 5.2. Kepler and Web (SSL Certificate) Verification
 - The required web certificate must be installed on the server (check with your certificate management process or MMC snap-in for Certificates).
 - Verify Kepler API status:
   ```powershell
@@ -242,17 +286,17 @@ True
   JSON response with `"status": "OK"`.
   </details>
 
-### Relativity Service Account Verification
+### 5.3. Relativity Service Account Verification
 > [!NOTE]
 > For service account requirements and troubleshooting, see [Environment_Watch_Installer](../environment_watch_installation.md)
 
 ---
 
-## Installer and Service Errors
+## 6. Installer and Service Errors
 
 This section covers issues related to the Environment Watch installer and the underlying Windows services it manages.
 
-### User Not in Local Security Policy
+### 6.1. User Not in Local Security Policy
 
 **Symptoms:**
 - The product installation fails with an error indicating the user is not added to the Local Security Policy.
@@ -267,7 +311,7 @@ This section covers issues related to the Environment Watch installer and the un
 
     ![User added to Local Security Policy](../../resources/troubleshooting-images/useraddedtolocalsecurity.png)
 
-### Invalid Secrets
+### 6.2. Invalid Secrets
 
 **Symptoms:**
 - The installation fails with an error message "one or more secrets are invalid".
