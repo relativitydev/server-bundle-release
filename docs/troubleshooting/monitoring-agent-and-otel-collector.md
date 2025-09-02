@@ -27,59 +27,47 @@ This document provides a stepwise troubleshooting guide for the Relativity Envir
 
 First, ensure that the core Elastic Stack components (Elasticsearch, Kibana, and APM Server) are running and accessible. If you are not seeing any data in dashboards, this strongly suggests a problem with the Elastic Stack itself.
 
-**Check Service Status:**
-   ```powershell
-   Get-Service -Name apm-server
-   ```
-   <details>
-   <summary>Expected output</summary>
 
-   ```
-   Status   Name        DisplayName
-   ------   ----        -----------
-   Running  apm-server  Elastic APM Server
-   ```
-   </details>
-   
-   ```powershell
-   Get-Service -Name kibana
-   ```
-   <details>
-   <summary>Expected output</summary>
+**Check Service Accessibility:**
 
-   ```
-   Status   Name   DisplayName
-   ------   ----   -----------
-   Running  kibana Kibana
-   ```
-   </details>
-
-**If services are not running, restart them:**
- ```powershell
-  Restart-Service -Name "apm-server"
+- **Elasticsearch:**
+  ```powershell
+  curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
   ```
   <details>
   <summary>Expected output</summary>
-
-  No output if successful. Service status will be "Running" after execution.
+  
+  A JSON response with cluster details indicates success.
   </details>
 
- ```powershell
-  Restart-Service -Name "kibana"
+- **Kibana:**
+  ```powershell
+  curl.exe -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status"
   ```
   <details>
   <summary>Expected output</summary>
-
-  No output if successful. Service status will be "Running" after execution.
+  
+  A JSON response with `"level": "available"` indicates success.
   </details>
 
-- For port-related issues, see the [Port Configuration Troubleshooting](port-configuration-troubleshooting.md) guide.
-  - [ElasticSearch Troubleshooting](elasticsearch.md)
-  - [Kibana Troubleshooting](kibana.md)
-  - [APM-Server Troubleshooting](apm-server.md)
+- **APM Server:**
+  ```powershell
+  curl.exe -k "http://<hostname_or_ip>:8200/"
+  ```
+  <details>
+  <summary>Expected output</summary>
+  
+  A JSON response with version details indicates success.
+  </details>
 
----
+**If a service is not running, refer to its specific troubleshooting guide:**
+- [Elasticsearch Troubleshooting](elasticsearch.md)
+- [Kibana Troubleshooting](kibana.md)
+- [APM Server Troubleshooting](apm-server.md)
 
+
+- For port-related issues, see the [Pre-requisite Troubleshooting](pre-requisite-troubleshooting.md) guide.
+  
 ## 2. Verify the Monitoring Agent Hosts are Present and Sending Metrics
 
 If the Elastic Stack is running, check that your monitoring agent hosts are present in Kibana and are sending metrics. If hosts are missing or not updating, the issue may be with the agent or host configuration.
@@ -272,10 +260,10 @@ True
 </details>
 
 > [!NOTE]
-> For troubleshooting steps related to the Relativity Secret Store, please refer to the [Secret Store Troubleshooting](./secret-store-troubleshooting.md) guide.
+> For troubleshooting steps related to the Relativity Secret Store, please refer to the [Pre-requisite Troubleshooting](pre-requisite-troubleshooting.md) guide.
 
 ### 5.2. Kepler and Web (SSL Certificate) Verification
-- The required web certificate must be installed on the server (check with your certificate management process or MMC snap-in for Certificates).
+- The required web certificate must be installed on the server. For certificate troubleshooting, see the [Pre-requisite Troubleshooting](pre-requisite-troubleshooting.md) guide.
 - Verify Kepler API status:
   ```powershell
   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>/relativity.rest/api/relativity-infrawatch-services/v1/infrawatch-manager/getkeplerstatusasync"
