@@ -71,11 +71,11 @@ The Open Telemetry architecture is composed of the following key components:
 
 #### Open Telemetry Backend
 
-OpenTelemetry requires a backend that can handle large amounts of data coming from many different sources. The backend makes it possible to analyze, visualize, and set up alerts on this data in real time. To ensure compatability, it must natively support Open Telemetry via Open Telemetry Line protocol ([OTLP](https://opentelemetry.io/docs/specs/otlp/)).
+Open Telemetry requires a backend that can handle large amounts of data coming from many different sources. The backend makes it possible to analyze, visualize, and set up alerts on this data in real time. To ensure compatability, it must natively support Open Telemetry via Open Telemetry Line protocol ([OTLP](https://opentelemetry.io/docs/specs/otlp/)).
 
 #### Open Telemetry Collector
 
-The OpenTelemetry Collector is a lightweight service that runs on each monitored server. It gathers metrics, logs, and traces, then forwards them to the backend. Relativity Server automatically configures the Collector, making it easy to collect both infrastructure and Relativity-specific data, including:
+The Open Telemetry Collector is a lightweight service that runs on each monitored server. It gathers metrics, logs, and traces, then forwards them to the backend. Relativity Server automatically configures the Collector, making it easy to collect both infrastructure and Relativity-specific data, including:
 
 - Host metrics (e.g. CPU/Memory/Disk/Network/Process)
 	- IIS/SQL Server
@@ -165,10 +165,10 @@ These defaults can be customized in Elasticsearch to meet your organization's da
 Although alerts can be viewed within Kibana, Environment Watch uses a new Relativity Alerts application to integrate the alerts directly within the main Relativity UI. A new Alert Manager agent periodically uses a Kibana REST API to fetch alert details and update the "bell" header with the number of active alerts. Additional details about the Relativity Alerts application are provided below.
 
 > [!Note]
-> Relativity Alerts are distinct from Kibana alerts.
+> Relativity Alerts reflect the state of Kibana alerts within the Relativity UI. A Relativity agent periodically synchronizes the RDOs with the corresponding Kibana alerts, updating their state and trigger information.
 > 
 >  - **Kibana alerts** define rules in Elastic.
->  - **Relativity Alerts (RDOs)** interface with Kibana alerts and surface the information in the Relativity UI.
+>  - **Relativity Alerts (RDOs)** surface the corresponding Kibana alert information in the Relativity UI.
 > - Only alerts packaged by Relativity have corresponding RDOs. 
 
 ## System Overview
