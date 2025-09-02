@@ -1,7 +1,7 @@
 
 # Server Bundle Release
 
-This bundle provides packages to set up two optional Relativity Server features:
+This release bundle contains packages that are required to set up or upgrade two optional Relativity Server features:
 
 - **Environment Watch**: [Click here to learn more about Environment Watch](docs/environment_watch_product_overview.md)
   
