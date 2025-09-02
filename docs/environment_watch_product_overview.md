@@ -8,7 +8,7 @@ Environment Watch offers the following out-of-the-box capabilities and benefits:
 
 - **Alerts** that indicate an active or potential issue in your environment. These alerts cover service and application health, host metrics (CPU/disk/RAM), file share/SQL connectivity, RabbitMQ health, agent processes, billing data transmission issues, and much more.
 - **Dashboards** to explore and help investigate issues related to system health and activity.
-- **New in-app alerts experience** - In addition to the alerts and dashboards built on and accessible via Kibana UI, an integration with Relativity provides real-time alerting within Relativity.
+- **New in-app alerts experience** - In addition to the alerts and dashboards built on and accessible via Kibana UI, an integration with Relativity provides real-time alerting within Relativity. This experience replaces the web-based Alerts in Instance Details and delivers all previous functionality along with additional enhancements.
 - **Log searching** – Logs for Relativity, Invariant, Windows, and more to come (e.g. RabbitMQ, CAAT) logs are easily accessible, searchable, and exportable via Kibana.
 - **Metrics stored in a common structure and accessible programmatically** - All metrics captured by Environment Watch are stored in a common Open Telemetry based structured and accessible via the Elasticsearch APIs.
 
@@ -234,7 +234,7 @@ Running the Relativity Server CLI will also import Kibana Saved Searches created
 
 ## Relativity Alerts application
 
-The Relativity Alerts application enables system administrators to monitor their environment within Relativity, providing real-time notifications and resolution guidance for system issues. By integrating with Kibana, the application retrieves alert information and displays it within the Relativity user interface, allowing users to quickly identify and address potential problems.
+The Relativity Alerts application enables system administrators to monitor their environment within Relativity, providing real-time notifications and resolution guidance for system issues. By integrating with Kibana, the application retrieves alert information and displays it within the Relativity user interface, allowing users to quickly identify and address potential problems. 
 
 Each Kibana alert that Relativity has packaged in Environment Watch has a corresponding Relativity Alert Relativity Dynamic Object (RDO) that stores key information about the alert including current state, feature domain, resolution guidance, relevant Relativity tab or Kibana dashboard, and more. Alert RDOs are only created for Kibana alerts that are created and packaged into Environment Watch by Relativity. These alerts are stamped with a "CreatedBy:Relativity" tag in Kibana.
 
@@ -265,9 +265,12 @@ Relativity Alerts provides you with in-app notifications when an alert is active
 
 #### Alert Notification Bell
 
-The alert notification bell in the top right corner of the screen will show you how many alerts are currently active, and when they became active. For each active alert, you can open a link to resolution guidance or the Relativity tab or Kibana dashboard jump link for the alert.
+The alert notification bell in the top right corner of the screen will show you how many alerts are currently active, and when they became active. For each active alert, you can open a link to resolution guidance or the Relativity tab or Kibana dashboard jump link for the alert. 
 
 ![](../resources/environment_watch_product_overview_013.png)
+
+Once Relativity Alerts is installed in an instance, it replaces the **Alerts** feature in Instance Details [referred to as legacy Alerts](https://help.relativity.com/Server2024/Content/Relativity/Instance_details.htm). 
+Relativity Alerts provides all functionality available in legacy Alerts, along with additional enhancements. Legacy Alerts remain available where Environment Watch is not used.
 
 #### User Notification Preferences
 
