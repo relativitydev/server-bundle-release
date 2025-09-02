@@ -12,10 +12,10 @@ This section guides you through upgrading Environment Watch using the Relativity
 
 ### Upgrade Instructions
 
-**Step 1** - Open elevated command prompt/powershell. Navigate to the directory where the new CLI is extracted, and run ".\relsvr.exe setup". Select Environment Watch.
+**Step 1** - Open elevated command prompt/powershell. Run the below command. Select Environment Watch.
 
 ```
-C:\Server.Bundle.x.y.z> .\relsvr.exe setup
+C:\Server.Bundle.x.y.z\relsvr.exe setup
 
 Relativity Server CLI - 24.0.1196
 Copyright (c) 2025, Relativity ODA LLC
