@@ -40,6 +40,8 @@ This instrument is used to show the flow of requests through the system, helping
 - ETL service that transforms and imports data
 - Worker service that converts documents
 
+![](../resources/environment_watch_product_overview_004.png)
+
 #### Logs
 
 This instrument is used to show detailed records of events that occur within the system, capturing information such as error messages and user activities.​ Examples include:
