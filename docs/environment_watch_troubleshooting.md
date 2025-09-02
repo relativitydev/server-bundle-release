@@ -1,4 +1,4 @@
-# EnvironmentWatch Troubleshooting Guide
+# Environment Watch Troubleshooting Guide
 
 This document provides quick reference links to detailed troubleshooting guides for all components in the Relativity Server Bundle environment.
 

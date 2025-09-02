@@ -5,21 +5,29 @@ This document provides a centralized guide for troubleshooting port-related issu
 > [!NOTE]
 > Click here to view the latest port diagram that includes the Elastic Stack [Port Diagram](../environment-watch/port-diagram.md)
 
+## Default Port Reference
+
+The following table summarizes the default ports used by the Elastic Stack and Environment Watch components.
+
+| Component | Port | Protocol | Purpose |
+| :--- | :--- | :--- | :--- |
+| Elasticsearch | 9200 | HTTP | Client communication, REST API |
+| Elasticsearch | 9300 | TCP | Inter-node communication (Transport) |
+| Kibana | 5601 | HTTP | Kibana web interface |
+| APM Server | 8200 | HTTP | APM agent data ingestion |
+| OpenTelemetry Collector | 4318 | HTTP | OTLP data reception |
+
 ## Table of Contents
 
-- [1. Elasticsearch Port Issues](#1-elasticsearch-port-issues)
-- [2. Kibana Port Issues](#2-kibana-port-issues)
-- [3. APM Server Port Issues](#3-apm-server-port-issues)
-- [4. OpenTelemetry Collector Port Issues](#4-opentelemetry-collector-port-issues)
-- [5. General Port Troubleshooting](#5-general-port-troubleshooting)
+  [1. Elasticsearch Port Issues](#1-elasticsearch-port-issues) <br>
+  [2. Kibana Port Issues](#2-kibana-port-issues) <br>
+  [3. APM Server Port Issues](#3-apm-server-port-issues)<br>
+  [4. OpenTelemetry Collector Port Issues](#4-opentelemetry-collector-port-issues) <br>
+  [5. General Port Troubleshooting](#5-general-port-troubleshooting)<br>
 
 ---
 
 ## 1. Elasticsearch Port Issues
-
-**Default Ports:**
-- **HTTP:** 9200
-- **Transport:** 9300
 
 **Symptoms:**
 - Elasticsearch fails to bind to default ports.
@@ -65,9 +73,6 @@ This document provides a centralized guide for troubleshooting port-related issu
 
 ## 2. Kibana Port Issues
 
-**Default Port:**
-- **HTTP:** 5601
-
 **Symptoms:**
 - Kibana fails to bind to the default port.
 - "EADDRINUSE" errors in logs.
@@ -101,9 +106,6 @@ This document provides a centralized guide for troubleshooting port-related issu
 ---
 
 ## 3. APM Server Port Issues
-
-**Default Port:**
-- **APM Server:** 8200
 
 **Symptoms:**
 - APM Server fails to bind to the default port.
@@ -150,9 +152,6 @@ This document provides a centralized guide for troubleshooting port-related issu
 ---
 
 ## 4. OpenTelemetry Collector Port Issues
-
-**Default Port:**
-- **OTLP HTTP Receiver:** 4318
 
 **Symptoms:**
 - The `otelcol-relativity.exe` process is running, but no data is being sent.
