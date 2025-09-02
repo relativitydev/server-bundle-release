@@ -2,12 +2,6 @@
 
 This document provides a centralized guide for troubleshooting issues related to the Relativity Secret Store.
 
-## Table of Contents
-
-[1. Secret Store Access Verification](#1-secret-store-access-verification)
-
----
-
 ## 1. Secret Store Access Verification
 
 ### 1.1. Network Connectivity Test

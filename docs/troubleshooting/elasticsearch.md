@@ -158,7 +158,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    </details>
 
 > [!NOTE]
-> For port-related issues, see the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
+> For port-related issues, see the [Port Configuration Troubleshooting](port-configuration-troubleshooting.md) guide.
 
 ---
 

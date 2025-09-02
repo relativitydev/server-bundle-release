@@ -16,7 +16,7 @@ This document provides quick reference links to detailed troubleshooting guides 
 
 ### [Relativity Alerts Troubleshooting →](troubleshooting/relativity_alerts_troubleshooting.md)
 
-### [Port Troubleshooting →](troubleshooting/port-troubleshooting.md)
+### [Port Configuration Troubleshooting →](troubleshooting/port-configuration-troubleshooting.md)
 
 ### [Secret Store Troubleshooting →](troubleshooting/secret-store-troubleshooting.md)
 

@@ -73,7 +73,7 @@ First, ensure that the core Elastic Stack components (Elasticsearch, Kibana, and
   No output if successful. Service status will be "Running" after execution.
   </details>
 
-- For port-related issues, see the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
+- For port-related issues, see the [Port Configuration Troubleshooting](port-configuration-troubleshooting.md) guide.
   - [ElasticSearch Troubleshooting](elasticsearch.md)
   - [Kibana Troubleshooting](kibana.md)
   - [APM-Server Troubleshooting](apm-server.md)
@@ -165,7 +165,7 @@ If a specific host is not reporting, check that the Environment Watch Windows se
       ```
       *(If not running, no output.)*
       </details>
-4.  Check port status in the [Port Configuration Troubleshooting](port-troubleshooting.md) guide.
+4.  Check port status in the [Port Configuration Troubleshooting](port-configuration-troubleshooting.md) guide.
 
 > [!NOTE]
 > When running, both `rel-envwatch-service` and `otelcol-relativity` processes are present. When stopped, neither process is present. Port 4318 is listening only when service is running.
