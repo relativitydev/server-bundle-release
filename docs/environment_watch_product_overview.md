@@ -286,6 +286,8 @@ The following permissions and configuration settings are available for Relativit
 
 All Instance-level System Administrators can see all Alerts, the Alerts tab, and Alert notifications. There is currently no way to extend any Alert permissions to non-System Administrators, and no way to remove or adjust permissions for System Administrators.
 
+> [!NOTE]
+> Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
 #### Alert Enabled for Instance
 
 System Administrators can adjust this field on individual Alert RDOs to turn an alert on or off for the instance. When turned off, the respective Alert RDO will stop querying Kibana for updated alert state information.

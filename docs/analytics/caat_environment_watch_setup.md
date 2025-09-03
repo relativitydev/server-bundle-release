@@ -59,6 +59,6 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 
 ---
 
-**Note:**  
-This documentation uses the active document as context because you have the checkmark checked.  
-You can include additional context using **#** references. Typing **#** opens a completion list of available context.
+> [!NOTE]
+> This documentation uses the active document as context because you have the checkmark checked.  
+> You can include additional context using **#** references. Typing **#** opens a completion list of available context.

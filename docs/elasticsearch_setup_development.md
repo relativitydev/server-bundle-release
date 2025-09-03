@@ -1,6 +1,9 @@
-﻿# Development Tier
+﻿# Install Elasticsearch, Kibana and APM Server - Development Environment
 
 ![Set Up Stage](../resources/troubleshooting-images/setupstage.png)
+
+> [!NOTE]
+> This step is required for both Environment Watch and Data Grid Audit
 
 ## How to Unblock Downloaded Files
 
@@ -105,6 +108,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
      ```
      .\elasticsearch-reset-password -u elastic
      ```
+   - When prompted, press 'Y' to confirm and reset the password
 
   ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
@@ -124,7 +128,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
   ```
 
 - Restart the Elasticsearch Service:   
-  - To restart the Elasticsearch service, run the following an elevated PowerShell:
+  - To restart the Elasticsearch service, run the following in an elevated PowerShell session:
 
      ```
      Restart-Service -Name "elasticsearch-service-x64"
@@ -199,7 +203,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 **2.3 Enroll Kibana**
     
 - In your terminal, click the generated link to open Kibana in your browser.
-- In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the button to connect your Kibana instance with Elasticsearch.
+- In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the Configure Elastic button to connect your Kibana instance with Elasticsearch.
   
     [See where the enrollment token is generated.](#enrollment-token-generation)
 - If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
@@ -285,7 +289,7 @@ This verifies that Kibana is running and your credentials are working.
     
 - Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
-> [!Note]
+> [!NOTE]
 Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
 
 - Open an elevated PowerShell and run the following command:
@@ -355,7 +359,7 @@ Kibana does not install as a Windows service by default. We recommend using NSSM
 - Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
 - Download and extract the 8.17.3 Windows .zip file.
 - Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
-- Extract the files to `C:\elastic`.
+- Extract the files to `C:\`.
 
 
 **3.3 Configure APM Server (`C:\apm-server-8.17.3-windows-x86_64\apm-server.yml`)**
@@ -489,6 +493,7 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
 - Open a browser and go to http://<hostname_or_ip>:5601
 - Log in using elastic credentials
+- Navigate to `Discover`, or type `Discover` in the search bar.   
 - Confirm the APM Data View is present:
 
   ![dataview](../resources/troubleshooting-images/dataview.png)
@@ -507,8 +512,8 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
   1690219200 10:00:00 elasticsearch green 1 1 0 0 0 0 0 0 - 100.0%
   ```
 
-- The word `green` in the response means the cluster is healthy. The word `yellow` in the response means the cluster is partially healthy. If you see `yellow` or `red`, investigate further.
+- The word `green` in the response means the cluster is healthy. The word `yellow` in the response means the cluster is partially healthy. If you see `red`, investigate further.
 
-## Next
+## Next Step
 
-After setting up Elastic proceed to stage 2: [Use the Relativity Server CLI to setup Environment Watch and/or Data Grid](relativity_server_cli_setup.md)
+[Click here for the next step](relativity_server_cli_setup.md)
