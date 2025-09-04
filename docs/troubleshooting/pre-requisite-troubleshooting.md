@@ -15,13 +15,13 @@ This document provides troubleshooting steps for common pre-requisites like port
 ### Default Port Reference
 The following table summarizes the default ports used by the Elastic Stack and Environment Watch components.
 
-| Component | Port | Protocol | Purpose |
-| :--- | :--- | :--- | :--- |
-| Elasticsearch | 9200 | HTTP | Client communication, REST API |
-| Elasticsearch | 9300 | TCP | Inter-node communication (Transport) |
-| Kibana | 5601 | HTTP | Kibana web interface |
-| APM Server | 8200 | HTTP | APM agent data ingestion |
-| OpenTelemetry Collector | 4318 | HTTP | OTLP data reception |
+| Component | Port | Protocol | Direction | Purpose |
+| :--- | :--- | :--- | :--- | :--- |
+| Elasticsearch | 9200 | HTTP/HTTPS | Inbound & Outbound | Client communication and REST API |
+| | 9300 | TCP | Inbound & Outbound | Inter-node communication |
+| Kibana | 5601 | HTTP/HTTPS | Inbound | Kibana web interface |
+| APM Server | 8200 | HTTP/HTTPS | Inbound | APM agent data ingestion |
+| OTEL Collector | 4318 | HTTP | Inbound | OTLP data reception (HTTP). Used for local communication on the collector's machine; ensure this port is free. |
 
 ---
 
@@ -294,6 +294,28 @@ $response | ConvertTo-Json
 
 ---
 
+### URL Mismatch in Secret Store and Certificate
+
+#### Symptoms:
+- TLS handshake errors in application logs when connecting to Elasticsearch.
+- Certificate validation errors indicating a name mismatch.
+- Components like Kibana or APM Server fail to connect to Elasticsearch over a secure connection.
+
+#### Troubleshooting Steps:
+
+1.  **Verify the Elasticsearch URL in Secret Store:**
+    - Check the secret entry that stores the Elasticsearch URL. Ensure the hostname in the URL is correct.
+
+2.  **Inspect the Elasticsearch SSL/TLS Certificate:**
+    - Examine the certificate to identify the Common Name (CN) and any Subject Alternative Names (SANs). The URL in the secret store **must** match one of these names.
+    - You can use a web browser by navigating to `https://<your-elasticsearch-host>:9200` and inspecting the certificate details, or use OpenSSL if available.
+
+3.  **Correct the Mismatch:**
+    - If the URL in the secret store is incorrect, update it to match the CN or a SAN from the certificate.
+    - If the certificate does not contain the correct hostname, you may need to regenerate the certificate with the correct names.
+
+---
+
 ## Certificate Troubleshooting
 
 ### SSL/TLS Certificate Issues
@@ -305,6 +327,10 @@ $response | ConvertTo-Json
 - Browser shows "not secure" warning for Elasticsearch URL
 
 #### Troubleshooting Steps:
+
+* **Verify Secure URL**
+  - The master node domain name URL should be secure for Elasticsearch node servers, agent servers, and web servers.
+  - The data node domain name URL should be secured for Elasticsearch node servers.
 
 * **Install SSL Certificate in Trusted Store**
 
@@ -356,3 +382,47 @@ $response | ConvertTo-Json
   - Navigate to `C:\elastic\elasticsearch\logs\`.
   - Review the `elasticsearch.log` file for any SSL-related errors.
   - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
+
+---
+
+### TLS Version Mismatch
+
+#### Symptoms:
+- **Connection Failure**: Cannot connect to the Elasticsearch endpoint.
+- **Log Errors**: Logs on the application's server indicate a failure to establish a secure connection or mention outdated TLS versions (like TLSv1.0 or TLSv1.1).
+- **"Elasticsearch endpoint not accessible"** errors during installation or runtime.
+
+#### Cause:
+The machine's .NET Framework is not configured to use strong cryptography, preventing it from negotiating a secure connection with modern servers that require TLS 1.2 or higher. By default, some .NET applications may attempt to use older, insecure TLS versions.
+
+#### Troubleshooting Steps:
+
+To resolve this, the .NET Framework on the machine must be configured to use the system's default security protocols, which allows it to use newer versions like TLS 1.2/1.3.
+
+1.  **Open Registry Editor**:
+    - Press `Win + R`, type `regedit`, and press Enter.
+
+2.  **Navigate to .NET Framework Registry Keys**:
+    A new value will need to be added in two locations.
+
+    - **For 64-bit applications:**
+      ```
+      HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\v4.0.30319
+      ```
+    - **For 32-bit applications running on a 64-bit machine:**
+      ```
+      HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319
+      ```
+
+3.  **Create the `SchUseStrongCrypto` Value**:
+    - In each of the keys mentioned above, right-click in the right-hand pane and select **New > DWORD (32-bit) Value**.
+    - Name the new value `SchUseStrongCrypto`.
+    - Double-click the new value and set its **Value data** to `1`. Click **OK**.
+
+    > **Note:** This registry key forces .NET 4.x applications to use strong cryptography, enabling support for newer TLS versions.
+
+4.  **Reboot the System**:
+    - A system reboot is required for the changes to take effect.
+
+5.  **Verify the Fix**:
+    - After rebooting, re-run the Environment Watch installer or restart the application. The connection to Elasticsearch should now succeed.
