@@ -21,7 +21,7 @@ The following table summarizes the default ports used by the Elastic Stack and E
 | | 9300 | TCP | Inbound & Outbound | Inter-node communication |
 | Kibana | 5601 | HTTP/HTTPS | Inbound | Kibana web interface |
 | APM Server | 8200 | HTTP/HTTPS | Inbound | APM agent data ingestion |
-| OTEL Collector | 4318 | HTTP | Inbound | OTLP data reception (HTTP). Used for local communication on the collector's machine; ensure this port is free. |
+| OTEL Collector | 4318 | HTTP | Inbound (Local Only)| OTLP data reception (HTTP). Used for local communication on the collector's machine |
 
 ---
 
@@ -292,29 +292,6 @@ $response | ConvertTo-Json
 ```
 </details>
 
----
-
-### URL Mismatch in Secret Store and Certificate
-
-#### Symptoms:
-- TLS handshake errors in application logs when connecting to Elasticsearch.
-- Certificate validation errors indicating a name mismatch.
-- Components like Kibana or APM Server fail to connect to Elasticsearch over a secure connection.
-
-#### Troubleshooting Steps:
-
-1.  **Verify the Elasticsearch URL in Secret Store:**
-    - Check the secret entry that stores the Elasticsearch URL. Ensure the hostname in the URL is correct.
-
-2.  **Inspect the Elasticsearch SSL/TLS Certificate:**
-    - Examine the certificate to identify the Common Name (CN) and any Subject Alternative Names (SANs). The URL in the secret store **must** match one of these names.
-    - You can use a web browser by navigating to `https://<your-elasticsearch-host>:9200` and inspecting the certificate details, or use OpenSSL if available.
-
-3.  **Correct the Mismatch:**
-    - If the URL in the secret store is incorrect, update it to match the CN or a SAN from the certificate.
-    - If the certificate does not contain the correct hostname, you may need to regenerate the certificate with the correct names.
-
----
 
 ## Certificate Troubleshooting
 
@@ -388,12 +365,13 @@ $response | ConvertTo-Json
 ### TLS Version Mismatch
 
 #### Symptoms:
-- **Connection Failure**: Cannot connect to the Elasticsearch endpoint.
+- **Connection Failure**: During installation of Environment Watch Installer, an error pop-up may appear with a message like:
+  > The HTTP request submitted to the server `https://<hostname>:9200/` failed because of an unexpected error. Verify the server is accessible and URL is correct. Check the logs for more details or refer to the following troubleshooting guide.
 - **Log Errors**: Logs on the application's server indicate a failure to establish a secure connection or mention outdated TLS versions (like TLSv1.0 or TLSv1.1).
-- **"Elasticsearch endpoint not accessible"** errors during installation or runtime.
+- "SSLHandshakeException: client requested protocol TLSv1 is not enabled or supported in server context"
 
 #### Cause:
-The machine's .NET Framework is not configured to use strong cryptography, preventing it from negotiating a secure connection with modern servers that require TLS 1.2 or higher. By default, some .NET applications may attempt to use older, insecure TLS versions.
+The machine's .NET Framework is not configured to use strong cryptography, preventing it from negotiating a secure connection with modern servers that require TLS 1.2 or higher. By default, some .NET applications may attempt to use older, insecure TLS versions. Default TLS version supported by Elasticsearch is TLSv1.2 and TLSv1.3, hence causing issue
 
 #### Troubleshooting Steps:
 
