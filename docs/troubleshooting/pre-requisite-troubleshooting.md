@@ -377,10 +377,13 @@ The machine's .NET Framework is not configured to use strong cryptography, preve
 
 To resolve this, the .NET Framework on the machine must be configured to use the system's default security protocols, which allows it to use newer versions like TLS 1.2/1.3.
 
-1.  **Open Registry Editor**:
+1.  **Verify TLS Settings**: 
+    - Navigate to **Control Panel > Network and Internet > Internet Options > Advanced**, ensure that **Use TLS 1.2** and **Use TLS 1.3** are checked.
+
+2.  **Open Registry Editor**:
     - Press `Win + R`, type `regedit`, and press Enter.
 
-2.  **Navigate to .NET Framework Registry Keys**:
+3.  **Navigate to .NET Framework Registry Keys**:
     A new value will need to be added in two locations.
 
     - **For 64-bit applications:**
@@ -392,15 +395,15 @@ To resolve this, the .NET Framework on the machine must be configured to use the
       HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319
       ```
 
-3.  **Create the `SchUseStrongCrypto` Value**:
+4.  **Create the `SchUseStrongCrypto` Value**:
     - In each of the keys mentioned above, right-click in the right-hand pane and select **New > DWORD (32-bit) Value**.
     - Name the new value `SchUseStrongCrypto`.
     - Double-click the new value and set its **Value data** to `1`. Click **OK**.
 
     > **Note:** This registry key forces .NET 4.x applications to use strong cryptography, enabling support for newer TLS versions.
 
-4.  **Reboot the System**:
+5.  **Reboot the System**:
     - A system reboot is required for the changes to take effect.
 
-5.  **Verify the Fix**:
+6.  **Verify the Fix**:
     - After rebooting, re-run the Environment Watch installer or restart the application. The connection to Elasticsearch should now succeed.
