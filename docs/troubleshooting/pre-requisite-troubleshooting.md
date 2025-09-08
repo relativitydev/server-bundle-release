@@ -21,7 +21,7 @@ The following table summarizes the default ports used by the Elastic Stack and E
 | | 9300 | TCP | Inbound & Outbound | Inter-node communication |
 | Kibana | 5601 | HTTP/HTTPS | Inbound | Kibana web interface |
 | APM Server | 8200 | HTTP/HTTPS | Inbound | APM agent data ingestion |
-| OTEL Collector | 4318 | HTTP | Inbound (Local Only)| OTLP data reception (HTTP). Used for local communication on the collector's machine |
+| OTEL Collector | 4318 | HTTP | Inbound (Local Only)| OTLP data reception (HTTP). This deployment uses the agent model, with a collector on each server. See the [OpenTelemetry agent documentation](https://opentelemetry.io/docs/collector/deployment/agent/) for more details. |
 
 ---
 
