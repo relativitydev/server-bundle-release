@@ -15,13 +15,13 @@ This document provides troubleshooting steps for common pre-requisites like port
 ### Default Port Reference
 The following table summarizes the default ports used by the Elastic Stack and Environment Watch components.
 
-| Component | Port | Protocol | Direction | Purpose |
-| :--- | :--- | :--- | :--- | :--- |
-| Elasticsearch | 9200 | HTTP/HTTPS | Inbound & Outbound | Client communication and REST API |
-| | 9300 | TCP | Inbound & Outbound | Inter-node communication |
-| Kibana | 5601 | HTTP/HTTPS | Inbound | Kibana web interface |
-| APM Server | 8200 | HTTP/HTTPS | Inbound | APM agent data ingestion |
-| OTEL Collector | 4318 | HTTP | Inbound (Local Only)| OTLP data reception (HTTP). This deployment uses the agent model, with a collector on each server. See the [OpenTelemetry agent documentation](https://opentelemetry.io/docs/collector/deployment/agent/) for more details. |
+| Component | Port | Protocol | Inbound | Outbound | Purpose |
+| :--- | :--- | :--- | :---: | :---: | :--- |
+| Elasticsearch | 9200 | HTTP/HTTPS | ✅ | ✅ | Client communication and REST API |
+| | 9300 | TCP | ✅ | ✅ | Inter-node communication |
+| Kibana | 5601 | HTTP/HTTPS | ✅ | | Kibana web interface |
+| APM Server | 8200 | HTTP/HTTPS | ✅ | | APM agent data ingestion |
+| OTEL Collector | 4318 | HTTP |  | | OTLP data reception (HTTP). This deployment uses the agent model, with a collector on each server. See the [OpenTelemetry agent documentation](https://opentelemetry.io/docs/collector/deployment/agent/) for more details. |
 
 ---
 
