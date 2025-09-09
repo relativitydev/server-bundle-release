@@ -12,18 +12,16 @@ This document provides troubleshooting guidance for common Kibana issues encount
   - [1.2 Service Crashes or Stops Unexpectedly](#12-service-crashes-or-stops-unexpectedly)
 - [2. Authentication Issues](#2-authentication-issues)
   - [2.1 Username/Password Authentication Issues](#21-usernamepassword-authentication-issues)
-- [3. Port Configuration Issues](#3-port-configuration-issues)
-  - [3.1 Port Conflicts](#31-port-conflicts)
-  - [3.2 Network Binding Problems](#32-network-binding-problems)
-- [4. Memory Issues](#4-memory-issues)
-  - [4.1 Insufficient Memory Allocation](#41-insufficient-memory-allocation)
-- [5. Kibana Encryption Keys Configuration](#5-kibana-encryption-keys-configuration)
-  - [5.1 Missing or Invalid Encryption Keys](#51-missing-or-invalid-encryption-keys)
-- [6. Service Verification](#6-service-verification)
-  - [6.1 Verifying Kibana Health and Status](#61-verifying-kibana-health-and-status)
-- [7. Additional Diagnostic Commands](#7-additional-diagnostic-commands)
-- [8. Installation Issues](#8-installation-issues)
-  - [8.1 Long Path Issues During Extraction](#81-long-path-issues-during-extraction)
+- [3. Memory Issues](#3-memory-issues)
+  - [3.1 Insufficient Memory Allocation](#31-insufficient-memory-allocation)
+- [4. Kibana Encryption Keys Configuration](#4-kibana-encryption-keys-configuration)
+  - [4.1 Missing or Invalid Encryption Keys](#41-missing-or-invalid-encryption-keys)
+- [5. Service Verification](#5-service-verification)
+  - [5.1 Verifying Kibana Health and Status](#51-verifying-kibana-health-and-status)
+- [6. Additional Diagnostic Commands](#6-additional-diagnostic-commands)
+  - [6.1 Configuration Validation](#61-configuration-validation)
+- [7. Installation Issues](#7-installation-issues)
+  - [7.1 Long Path Issues During Extraction](#71-long-path-issues-during-extraction)
 
 ---
 
@@ -172,86 +170,14 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 
 
----
-
-## 3. Port Configuration Issues
-
-### 3.1 Port Conflicts
-
-**Symptoms:**
-- Kibana fails to bind to default port
-- "EADDRINUSE" errors in logs
-- Cannot access Kibana web interface
-
-**Troubleshooting Steps:**
-
-* **Check Default Port:**
-  - Default Kibana port: 5601
-  - Verify port availability:
-    ```powershell
-    netstat -an | findstr ":5601"
-    ```
-    <details>
-    <summary>Expected output</summary>
-
-    ```
-    TCP    0.0.0.0:5601           0.0.0.0:0              LISTENING
-    ```
-    </details>
-
-* **Test Kibana Connectivity:**
-   ```powershell
-   (curl.exe -s -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status" | ConvertFrom-Json).status.overall | ConvertTo-Json -Depth 10
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "level": "available",
-     "summary": "All services and plugins are available"
-   }
-   ```
-   </details>
-
-
-
-* **Update Firewall Rules:**
-   ```powershell
-   New-NetFirewallRule -DisplayName "Kibana Web Interface" -Direction Inbound -Protocol TCP -LocalPort 5601 -Action Allow
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```
-   (No output if successful. Rule will appear in Windows Firewall.)
-   ```
-   </details>
-
-### 3.2 Network Binding Problems
-
-**Symptoms:**
-- Cannot access Kibana from remote hosts
-- Connection refused errors
-- Kibana only accessible from localhost
-
-**Troubleshooting Steps:**
-
-* **Verify Network Configuration:**
-  - Check `C:\elastic\kibana\config\kibana.yml` configuration:
-    ```yaml
-    server.host: "0.0.0.0"  # For all interfaces
-    # or
-    server.host: "<hostname_or_ip>"
-    ```
-
-
+> [!NOTE]
+> For port-related issues, see the [Port Configuration Troubleshooting](port-configuration-troubleshooting.md) guide.
 
 ---
 
-## 4. Memory Issues
+## 3. Memory Issues
 
-### 4.1 Insufficient Memory Allocation
+### 3.1 Insufficient Memory Allocation
 
 **Symptoms:**
 - Kibana becomes unresponsive
@@ -285,9 +211,9 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
-## 5. Kibana Encryption Keys Configuration
+## 4. Kibana Encryption Keys Configuration
 
-### 5.1 Missing or Invalid Encryption Keys
+### 4.1 Missing or Invalid Encryption Keys
 
 **Symptoms:**
 - Kibana fails to start with encryption-related errors
@@ -316,9 +242,9 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
-## 6. Service Verification
+## 5. Service Verification
 
-### 6.1 Verifying Kibana Health and Status
+### 5.1 Verifying Kibana Health and Status
 
 **Symptoms:**
 - Need to confirm Kibana is operating correctly
@@ -351,9 +277,9 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
-## 7. Additional Diagnostic Commands
+## 6. Additional Diagnostic Commands
 
-### 7.1 Configuration Validation
+### 6.1 Configuration Validation
 
 
 **Validate YAML syntax**
@@ -372,9 +298,9 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ---
 
-## 8. Installation Issues
+## 7. Installation Issues
 
-### 8.1 Long Path Issues During Extraction
+### 7.1 Long Path Issues During Extraction
 
 **Symptoms:**
 - Errors when extracting the `kibana-8.xx.x-windows-x86_64.zip` file.

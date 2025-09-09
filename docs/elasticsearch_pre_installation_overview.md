@@ -16,9 +16,9 @@ The first step of the **Environment Watch** and/or **Data Grid Audit** setup inv
 > [!NOTE]
 > At this stage, there is no integration between any Elastic components and Relativity. Integration will be configured during **Step 2**.
 
-In **Step 1**, you will:
-- Set up and verify your **Elasticsearch** cluster
-- Set up **Kibana** and/or **APM Server**, depending on your product configuration
+In **Step 1**, the following actions are performed:
+- Set up and verify the **Elasticsearch** cluster
+- Set up **Kibana** and/or **APM Server**, depending on the product configuration
 
 This step covers configuring a **shared Elasticsearch cluster** to be used for both **Environment Watch** and **Data Grid Audit**.
 
@@ -49,7 +49,7 @@ See below for more information on Elasticsearch cluster configuration and high a
 
 #### Elasticsearch Nodes
 
-An Elasticsearch node is a single server that is a part of a cluster. If you are running a single node of Elasticsearch, then you have a cluster of one node. A node can have one or many roles that define the role(s) it plays within the cluster. You define a node’s roles in the elasticsearch.yml file. The node role(s) is defined within the elasticsearch.yml . If you don’t set roles, the node is assigned to most available roles.
+An Elasticsearch node is a single server that is a part of a cluster. If a single node of Elasticsearch is running, then there is a cluster of one node. A node can have one or many roles that define the role(s) it plays within the cluster. The node role(s) is defined within the elasticsearch.yml . If roles are not set, the node is assigned to most available roles.
 
 See [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html#node-name-settings) for more information on Elasticsearch node settings and roles.
 
@@ -70,7 +70,7 @@ Every Elasticsearch cluster requires at least one node designated master and dat
 
 [See the port diagram for network requirements.](environment-watch/port-diagram.md)
 
-Kibana is a user interface that lets you visualize your Elasticsearch data and navigate the Elastic stack. See below for more information on Kibana.
+Kibana is a user interface that lets users visualize Elasticsearch data and navigate the Elastic stack. See below for more information on Kibana.
 
 - [What is Kibana?](https://www.elastic.co/guide/en/kibana/current/introduction.html)
 - [Kibana key concepts](https://www.elastic.co/guide/en/kibana/current/kibana-concepts-analysts.html)
@@ -89,9 +89,9 @@ See [here](https://www.elastic.co/guide/en/observability/current/apm.html) for m
 ## System Requirements and Licensing
 
 > [!NOTE]
-> The documentation below includes several links to instructions in Elastic’s official documentation. Whenever you are jumping into Elastic documentation, ensure the proper Elasticsearch, Kibana, or APM Server documentation version is selected.
+> The documentation below includes several links to instructions in Elastic’s official documentation. Whenever jumping into Elastic documentation, ensure the proper Elasticsearch, Kibana, or APM Server documentation version is selected.
 
-Setting up your Elastic stack components will require you to install Elastic software on one or more servers. This installation guide covers configuring a shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit. The **_Hardware Recommendations by Environment Size_** section below provides hardware guidance for different deployment scenarios and reference environments.
+Setting up the Elastic stack components will require installing Elastic software on one or more servers. This installation guide covers configuring a shared Elasticsearch cluster to use for both Environment Watch and Data Grid Audit. The **_Hardware Recommendations by Environment Size_** section below provides hardware guidance for different deployment scenarios and reference environments.
 
 ![](../resources/elasticsearch_setup_002.png)
 
@@ -105,16 +105,16 @@ Any server being used to host Elastic components requires:
 
 ### Hardware Recommendations by Environment Size
 
-The number of servers and hardware specifications that you need to host the Elastic components will vary depending on the size of your Relativity instance and whether you intend to use the cluster for Environment Watch, Data Grid Audit, or both. Below you will find recommendations based on four Relativity Server environment sizes. These are only recommendations. You can adjust the node counts and role blends for your environment based on observed and desired performance and reliability needs.
+The number of servers and hardware specifications needed to host the Elastic components will vary depending on the size of the Relativity instance and whether the cluster is intended for Environment Watch, Data Grid Audit, or both. Below are recommendations based on four Relativity Server environment sizes. These are only recommendations. The node counts and role blends can be adjusted for the environment based on observed and desired performance and reliability needs.
 
 **A few other key notes and reminders:**
 
-- **Tuning for speed** – Review Elastic’s guidance on how to tune your environment for speed [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html).
-- **Hosting Elastic** – While the guidance below recommends installing the Elastic components on many dedicated servers, there are no hard requirements to isolate Elasticsearch, Kibana, or APM Server on dedicated hosts. As evident with the Development environment specifications, you can deploy the full Elastic stack on a single host if that server can meet your storage needs.
+- **Tuning for speed** – Review Elastic’s guidance on how to tune the environment for speed [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html).
+- **Hosting Elastic** – While the guidance below recommends installing the Elastic components on many dedicated servers, there are no hard requirements to isolate Elasticsearch, Kibana, or APM Server on dedicated hosts. As evident with the Development environment specifications, the full Elastic stack can be deployed on a single host if that server can meet the storage needs.
   - **Kibana and APM Server hosting:**
-    - For Small environments, we recommend dedicated servers for Kibana and APM Server, but you can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node for development and very small environments.
+    - For Small environments, we recommend dedicated servers for Kibana and APM Server, but can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node for development and very small environments.
     - For Medium environments and above, we strongly recommend installing Kibana and APM Server each on dedicated servers.
-- **Nodes in a shared Environment Watch/Data Grid cluster** – In a cluster being used for both Environment Watch and Data Grid Audit, you are not required to designate data nodes for one or the other. Any node in the cluster can support operations for either product, though dedicated node assignments may be needed for certain workloads.
+- **Nodes in a shared Environment Watch/Data Grid cluster** – In a cluster being used for both Environment Watch and Data Grid Audit, data nodes are not required to be designated for one or the other. Any node in the cluster can support operations for either product, though dedicated node assignments may be needed for certain workloads.
 
 **Environment Size**
 

@@ -1,19 +1,23 @@
-# EnvironmentWatch Troubleshooting Guide
+# Environment Watch Troubleshooting Guide
 
 This document provides quick reference links to detailed troubleshooting guides for all components in the Relativity Server Bundle environment.
 
 ## Component Troubleshooting Guides
 
-### [Elasticsearch Troubleshooting →](troubleshooting/elasticsearch.md)
+### [Pre-requisite Troubleshooting](troubleshooting/pre-requisite-troubleshooting.md)
 
-### [Kibana Troubleshooting →](troubleshooting/kibana.md)
+### [Elasticsearch Troubleshooting](troubleshooting/elasticsearch.md)
 
-### [APM Server Troubleshooting →](troubleshooting/apm-server.md)
+### [Kibana Troubleshooting](troubleshooting/kibana.md)
 
-### [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting →](troubleshooting/monitoring-agent-and-otel-collector.md)
+### [APM Server Troubleshooting](troubleshooting/apm-server.md)
 
-### [Relativity Server CLI Troubleshooting →](troubleshooting/relativity-server-cli.md)
+### [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](troubleshooting/monitoring-agent-and-otel-collector.md)
 
-### [Relativity Alerts Troubleshooting →](troubleshooting/relativity_alerts_troubleshooting.md)
+### [Relativity Server CLI Troubleshooting](troubleshooting/relativity-server-cli.md)
+
+### [Relativity Alerts Troubleshooting](troubleshooting/relativity_alerts_troubleshooting.md)
+
+
 
 
