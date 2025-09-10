@@ -5,7 +5,10 @@
 > [!NOTE]
 > This section applies to Datagrid Only.
 
-After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI on the Primary SQL Server.
+After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI. It is recommended to run the CLI from the Primary SQL Server.
+
+> [!NOTE]
+> The Data Grid Audit setup via CLI should be run only once per environment.
 
 > [!NOTE]
 > Please review the following important information before proceeding:

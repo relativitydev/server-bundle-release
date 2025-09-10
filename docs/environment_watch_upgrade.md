@@ -4,7 +4,10 @@ This document provides the necessary steps to upgrade the Environment Watch comp
 
 ## Upgrade CLI
 
-This section guides you through upgrading Environment Watch using the Relativity Server CLI.
+This section guides you through upgrading Environment Watch using the Relativity Server CLI. It is recommended to run the CLI from the Primary SQL Server.
+
+> [!NOTE]
+> The Environment Watch upgrade via CLI should be run only once per environment. The upgrade performs tasks such as importing and updating Kibana resources—including alerts, dashboards, saved searches—and defect fixes.
 
 ### Prerequisites
 

@@ -17,7 +17,7 @@ The following table summarizes the default ports used by the Elastic Stack and E
 
 | Component | Port | Protocol | Inbound | Outbound | Purpose |
 | :--- | :--- | :--- | :---: | :---: | :--- |
-| Elasticsearch | 9200 | HTTP/HTTPS | ✅ | ✅ | Client communication and REST API |
+| Elasticsearch | 9200 | HTTP/HTTPS | ✅ |  | Client communication and REST API |
 | | 9300 | TCP | ✅ | ✅ | Inter-node communication |
 | Kibana | 5601 | HTTP/HTTPS | ✅ | | Kibana web interface |
 | APM Server | 8200 | HTTP/HTTPS | ✅ | | APM agent data ingestion |
