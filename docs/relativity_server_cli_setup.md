@@ -10,7 +10,7 @@
 It is recommended to run the CLI from the Primary SQL Server.
 
 > [!NOTE]
-> The Environment Watch setup via CLI should be run only once per environment. The setup performs tasks such as importing and updating Kibana resources—including alerts, dashboards, saved searches—and defect fixes.
+> The Environment Watch setup via CLI should be run only once per environment. The setup performs tasks such as importing and updating Kibana resources including alerts, dashboards, saved searches and defect fixes.
 
 ### Prerequisites
 
