@@ -4,9 +4,9 @@
 
 > [!NOTE]
 > This step is required for Environment Watch.
+>The Environment Watch monitoring agent installation should start on the SQL Primary server, verify the installation, and then be applied to other servers in the environment. This ensures proper setup and validation before deploying across all servers.
 
-
-This document outlines the steps to install the Environment Watch monitoring agent. It is recommended to first install the agent on the SQL Primary server, verify the installation, and then repeat the steps for all other servers in the environment.
+This document outlines the steps to install the Environment Watch monitoring agent.
 
 ### Prerequisites
 

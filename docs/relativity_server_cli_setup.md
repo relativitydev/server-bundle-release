@@ -3,10 +3,11 @@
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
 > [!NOTE]
-> This step is required for Environment Watch.
+> This step is required for Environment Watch. The Environment Watch setup via CLI should be run only **once** per environment. The setup performs tasks such as importing and updating Kibana resources including alerts, dashboards, saved searches and defect fixes.
 
 # Set up Environment Watch using the Relativity Server CLI
 
+It is recommended to run the CLI from the Primary SQL Server.
 
 ### Prerequisites
 

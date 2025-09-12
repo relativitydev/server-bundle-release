@@ -4,7 +4,10 @@ This document provides the necessary steps to upgrade the Environment Watch comp
 
 ## Upgrade CLI
 
-This section guides you through upgrading Environment Watch using the Relativity Server CLI.
+This section guides you through upgrading Environment Watch using the Relativity Server CLI. It is recommended to run the CLI from the Primary SQL Server.
+
+> [!NOTE]
+> The Environment Watch upgrade via CLI should be run only once per environment. The upgrade performs tasks such as importing and updating Kibana resources including alerts, dashboards, saved searches and defect fixes.
 
 ### Prerequisites
 
@@ -72,7 +75,10 @@ Refer to the [Troubleshooting Guide](troubleshooting/relativity-server-cli.md) i
 
 ## Upgrade Environment Watch Installer
 
-This document outlines the steps to upgrade the Environment Watch monitoring agent. It is recommended to first upgrade the agent on the SQL Primary server, verify the installation, and then repeat the steps for all other servers in the environment.
+> [!NOTE]
+> The Environment Watch installer upgrade should start on the SQL Primary server and then be applied to other servers in the environment. This ensures proper upgrade sequence and validation before deploying across all servers.
+
+This document outlines the steps to upgrade the Environment Watch monitoring agent.
 
 ### Prerequisites
 
