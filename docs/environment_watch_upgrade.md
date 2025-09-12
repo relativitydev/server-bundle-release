@@ -75,7 +75,10 @@ Refer to the [Troubleshooting Guide](troubleshooting/relativity-server-cli.md) i
 
 ## Upgrade Environment Watch Installer
 
-This document outlines the steps to upgrade the Environment Watch monitoring agent. It is recommended to first upgrade the agent on the SQL Primary server, verify the installation, and then repeat the steps for all other servers in the environment.
+> [!NOTE]
+> The Environment Watch installer upgrade should start on the SQL Primary server and then be applied to other servers in the environment. This ensures proper upgrade sequence and validation before deploying across all servers.
+
+This document outlines the steps to upgrade the Environment Watch monitoring agent.
 
 ### Prerequisites
 
