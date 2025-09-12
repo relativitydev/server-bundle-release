@@ -3,18 +3,13 @@
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
 > [!NOTE]
-> This section applies to Datagrid Only.
-
-After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI. It is recommended to run the CLI from the Primary SQL Server.
-
-> [!NOTE]
-> The Data Grid Audit setup via CLI should be run only once per environment.
-
-> [!NOTE]
+> This section applies to Datagrid Only and the Audit setup via CLI should be run only once per environment.
 > Please review the following important information before proceeding:
 > * **For Existing Data Grid Audit Customers:** You must be on Elasticsearch 7.17 when initially running this setup. After the setup is complete, you can upgrade to Elasticsearch 8.17.3.
 > * Before upgrading to Elasticsearch 8.17.3, the `ESIndexCreationSetting` may need to be updated. For details, refer to the [Instance setting Details](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
 > * Always verify the minimum required Elasticsearch version in your specific release bundle, as it may differ from the versions mentioned here.
+
+After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI. It is recommended to run the CLI from the Primary SQL Server.
 
 ### Prerequisites 
 
