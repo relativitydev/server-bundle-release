@@ -1,15 +1,8 @@
 # Elasticsearch Upgrade
 
-This ### Step 3: Environment Setup
+This document provides comprehensive steps to upgrade Elasticsearch from 7.x to 8.x across multiple DataGrid servers, including master and data node configurations.
 
-**3.1 Configure Java Environment Variables**
-
-Configure the Java environment variables for Elasticsearch. While Elasticsearch includes a bundled Java runtime, proper environment configuration ensures optimal performance.
-
-For Java configuration troubleshooting and advanced setup, refer to the [Elasticsearch Troubleshooting Guide](troubleshooting/elasticsearch.md#1-windows-service-issues).
-
-   ![Environment Variables Setup](../resources/elasticsearch_setup_002.png)provides comprehensive steps to upgrade Elasticsearch from 7.x to 8.x across multiple DataGrid servers, including master and data node configurations.
-
+![Elasticsearch Setup](../resources/elasticsearch_setup_001.png)
 
 > [!NOTE]
 > This upgrade process should be performed when transitioning Elasticsearch from version 7.x to 8.x in a multi-node cluster environment with dedicated master and data nodes.
@@ -27,37 +20,33 @@ Before starting the upgrade process, ensure the following requirements are met:
 
 Perform the following steps on **all node servers** one by one:
 
-### Step 1: Download Elasticsearch
-
-Download the latest Elasticsearch 8.x version from the official website.
-
-### Step 2: Extract and Place Elasticsearch
+### Step 1: Extract and Place Elasticsearch
 
 1. Extract the Elasticsearch download archive
 2. Place the extracted Elasticsearch folder on a suitable drive
 
    **Example**: `C:\Elastic\elasticsearch-8.x.x`
 
-### Step 3: Environment Setup
+### Step 2: Environment Setup
 
-**3.1 Configure Java Environment Variables**
+**2.1 Configure Java Environment Variables**
 
-Elasticsearch includes a bundled Java runtime, so separate Java configuration is typically not required. However, if you need to use a specific Java version, configure the environment variables as needed.
+Configure the Java environment variables for Elasticsearch. While Elasticsearch includes a bundled Java runtime, proper environment configuration ensures optimal performance.
 
 For Java configuration troubleshooting and advanced setup, refer to the [Elasticsearch Troubleshooting Guide](troubleshooting/elasticsearch.md#1-windows-service-issues).
 
    ![Environment Variables Setup](../resources/elasticsearch_setup_002.png)
 
-### Step 4: Install Elasticsearch Service
+### Step 3: Install Elasticsearch Service
 
-**4.1 Prepare Installation Environment**
+**3.1 Prepare Installation Environment**
 
 1. Open **PowerShell** or **Command Prompt** in administrator mode
 2. Navigate to Elasticsearch bin directory
    
    **Example**: `C:\Elastic\elasticsearch-8.x.x\bin`
 
-**4.2 Remove Existing Elasticsearch Service (if present)**
+**3.2 Remove Existing Elasticsearch Service (if present)**
 
 1. **Stop the service**:
    - Right-click on **Elasticsearch 7.x.x** in Services
@@ -68,7 +57,7 @@ For Java configuration troubleshooting and advanced setup, refer to the [Elastic
    .\elasticsearch-service.bat remove Elasticsearch
    ```
 
-**4.3 Install New Elasticsearch Service**
+**3.3 Install New Elasticsearch Service**
 
 Execute the following commands in sequence from the Elasticsearch bin directory:
 
@@ -93,15 +82,15 @@ Execute the following commands in sequence from the Elasticsearch bin directory:
    > [!NOTE]
    > If the service fails to start through command, try starting manually from the Services window. If command fails with cluster unhealthy exit code 69, restart Elasticsearch Windows Service, restart PowerShell, and try again. If issues persist, restart the server and execute the command.
 
-**4.4 Verify Service Installation**
+**3.4 Verify Service Installation**
 
 1. Open **Local Services**
 2. Verify the **Elasticsearch service** (with the recently installed version) is running
 3. If not running, right-click on the Elasticsearch service and select **Start**
 
-### Step 5: Configuration and Verification
+### Step 4: Configuration and Verification
 
-**5.1 Configure elasticsearch.yml**
+**4.1 Configure elasticsearch.yml**
 
 1. Navigate to the Elasticsearch config folder
    
@@ -141,7 +130,7 @@ Execute the following commands in sequence from the Elasticsearch bin directory:
    #transport.host: 0.0.0.0
    ```
 
-**5.2 Enable Stack Monitoring**
+**4.2 Enable Stack Monitoring**
 
 Add the following line to `elasticsearch.yml` to enable built-in Stack Monitoring dashboard:
 
@@ -151,7 +140,7 @@ xpack.monitoring.collection.enabled: true
 
 Save changes and restart the Elasticsearch service.
 
-**5.3 Verify Elasticsearch Accessibility**
+**4.3 Verify Elasticsearch Accessibility**
 
 1. Access Elasticsearch at: `https://domain_server_name:9200/`
 
@@ -162,7 +151,7 @@ Save changes and restart the Elasticsearch service.
    - Query the domain to verify HSTS entries are removed
    - Try accessing the URL again
 
-**5.4 Reset Elasticsearch Password**
+**4.4 Reset Elasticsearch Password**
 
 Reset the elastic user password using:
 
@@ -170,7 +159,7 @@ Reset the elastic user password using:
 .\elasticsearch-reset-password.bat -i -u elastic
 ```
 
-### Step 6: JVM Heap Configuration
+### Step 5: JVM Heap Configuration
 
 Configure JVM heap memory (8-10 GB recommended):
 
@@ -188,9 +177,9 @@ Configure JVM heap memory (8-10 GB recommended):
 6. **Restart** the Elasticsearch Windows service
 7. **Verify** the `java.exe` process memory usage is within the specified range
 
-### Step 7: Troubleshooting and Additional Operations
+### Step 6: Troubleshooting and Additional Operations
 
-**7.1 Password Management**
+**6.1 Password Management**
 
 To change or reset passwords:
 
@@ -201,7 +190,7 @@ To change or reset passwords:
 - Confirm with **Y** to change or **N** to keep current password
 - Enter new password and re-enter for confirmation
 
-**7.2 Service Management Commands**
+**6.2 Service Management Commands**
 
 - **Start service**:
   ```powershell
@@ -218,7 +207,7 @@ To change or reset passwords:
   .\elasticsearch-service.bat remove Elasticsearch
   ```
 
-**7.3 SSL Certificate Configuration**
+**6.3 SSL Certificate Configuration**
 
 For each node server where Elasticsearch URL is not secure, follow the certificate import procedures detailed in the [Certificate Troubleshooting Guide](troubleshooting/pre-requisite-troubleshooting.md#certificate-troubleshooting).
 
