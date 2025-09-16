@@ -2,8 +2,6 @@
 
 This document provides comprehensive steps to upgrade Elasticsearch from 7.x to 8.x across multiple DataGrid servers, including master and data node configurations.
 
-![Elasticsearch Setup](../resources/elasticsearch_setup_001.png)
-
 > [!NOTE]
 > This upgrade process should be performed when transitioning Elasticsearch from version 7.x to 8.x in a multi-node cluster environment with dedicated master and data nodes.
 
