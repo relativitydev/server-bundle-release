@@ -8,7 +8,7 @@ Environment Watch offers the following out-of-the-box capabilities and benefits:
 
 - **Alerts** that indicate an active or potential issue in your environment. These alerts cover service and application health, host metrics (CPU/disk/RAM), file share/SQL connectivity, RabbitMQ health, agent processes, billing data transmission issues, and much more.
 - **Dashboards** to explore and help investigate issues related to system health and activity.
-- **New in-app alerts experience** - In addition to the alerts and dashboards built on and accessible via Kibana UI, an integration with Relativity provides real-time alerting within Relativity. This replaces the web-based Alerts in Instance Details and delivers all existing functionality plus enhanced capabilities.
+- **New in-app alerts experience** - In addition to the alerts and dashboards built on and accessible via Kibana UI, an integration with Relativity provides real-time alerting within Relativity. When deployed, this replaces the existing Alerts (hereandafter 'legacy Alerts') from Instance Details page and includes all existing alerts plus new alerts and enhanced notification and handling experience.
 - **Log searching** – Logs for Relativity, Invariant, Windows, and more to come (e.g. RabbitMQ, CAAT) logs are easily accessible, searchable, and exportable via Kibana.
 - **Metrics stored in a common structure and accessible programmatically** - All metrics captured by Environment Watch are stored in a common Open Telemetry based structured and accessible via the Elasticsearch APIs.
 
@@ -286,8 +286,6 @@ The following permissions and configuration settings are available for Relativit
 
 All Instance-level System Administrators can see all Alerts, the Alerts tab, and Alert notifications. There is currently no way to extend any Alert permissions to non-System Administrators, and no way to remove or adjust permissions for System Administrators.
 
-> [!NOTE]
-> Relativity intends to implement an enhanced permissions model for Environment Watch for the General Availability (GA) release in Q3 2025.
 #### Alert Enabled for Instance
 
 System Administrators can adjust this field on individual Alert RDOs to turn an alert on or off for the instance. When turned off, the respective Alert RDO will stop querying Kibana for updated alert state information.
