@@ -8,7 +8,7 @@ Environment Watch offers the following out-of-the-box capabilities and benefits:
 
 - **Alerts** that indicate an active or potential issue in your environment. These alerts cover service and application health, host metrics (CPU/disk/RAM), file share/SQL connectivity, RabbitMQ health, agent processes, billing data transmission issues, and much more.
 - **Dashboards** to explore and help investigate issues related to system health and activity.
-- **New in-app alerts experience** - In addition to the alerts and dashboards built on and accessible via Kibana UI, an integration with Relativity provides real-time alerting within Relativity. When deployed, this replaces the existing Alerts (hereandafter 'legacy Alerts') from Instance Details page and includes all existing alerts plus new alerts and enhanced notification and handling experience.
+- **New in-app alerts experience** - In addition to the alerts and dashboards built on and accessible via Kibana UI, an integration with Relativity provides real-time alerting within Relativity. When deployed, this replaces the existing Alerts on the Instance Details page, which are now referred to as "legacy Alerts". It includes all existing alerts, adds new ones, and enhances the notification and handling experience.
 - **Log searching** – Logs for Relativity, Invariant, Windows, and more to come (e.g. RabbitMQ, CAAT) logs are easily accessible, searchable, and exportable via Kibana.
 - **Metrics stored in a common structure and accessible programmatically** - All metrics captured by Environment Watch are stored in a common Open Telemetry based structured and accessible via the Elasticsearch APIs.
 
