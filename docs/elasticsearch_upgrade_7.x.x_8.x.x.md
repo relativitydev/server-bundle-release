@@ -55,7 +55,7 @@ For Java configuration troubleshooting and advanced setup, refer to the [Elastic
 
 2. **Remove the service**:
    ```powershell
-   .\elasticsearch-service.bat remove Elasticsearch
+   .\elasticsearch-service.bat remove elasticsearch-service-x64
    ```
 
 **3.3 Install New Elasticsearch Service**
@@ -98,7 +98,7 @@ Execute the following commands in sequence from the Elasticsearch bin directory:
    **Example**: `C:\Elastic\elasticsearch-8.x.x\config`
 
 2. Open the `elasticsearch.yml` file
-3. Add the following security configuration at the end of the file:
+3. Verify the following security configuration is added at the end of the file:
 
    ```yaml
    # Enable security features
@@ -145,12 +145,12 @@ Save changes and restart the Elasticsearch service.
 
 1. Access Elasticsearch at: `https://domain_server_name:9200/`
 
-2. **Chrome Certificate Issue Resolution** (if needed):
+2. **Chrome Certificate Issue Resolution** :
    - Navigate to `chrome://net-internals/#hsts`
    - Type `domain_server_name` in the input field next to Delete button
    - Press **Delete** button
    - Query the domain to verify HSTS entries are removed
-   - Try accessing the URL again
+   - Restart browser and try accessing the URL again
 
 **4.4 Reset Elasticsearch Password**
 
@@ -178,35 +178,6 @@ Configure JVM heap memory (8-10 GB recommended):
 6. **Restart** the Elasticsearch Windows service
 7. **Verify** the `java.exe` process memory usage is within the specified range
 
-### Step 6: Troubleshooting and Additional Operations
-
-**6.1 Password Management**
-
-To change or reset passwords:
-
-```powershell
-.\elasticsearch-reset-password.bat -i -u elastic
-```
-
-- Confirm with **Y** to change or **N** to keep current password
-- Enter new password and re-enter for confirmation
-
-**6.2 Service Management Commands**
-
-- **Start service**:
-  ```powershell
-  .\elasticsearch-service.bat start Elasticsearch
-  ```
-
-- **Stop service**:
-  ```powershell
-  .\elasticsearch-service.bat stop Elasticsearch
-  ```
-
-- **Remove service**:
-  ```powershell
-  .\elasticsearch-service.bat remove Elasticsearch
-  ```
 
 **6.3 SSL Certificate Configuration**
 
