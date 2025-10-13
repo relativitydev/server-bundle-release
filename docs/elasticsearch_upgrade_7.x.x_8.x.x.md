@@ -1,4 +1,4 @@
-# Elasticsearch Upgrade
+# Elasticsearch Upgrade from 7.x to 8.x across multiple DataGrid servers.
 
 This document provides comprehensive steps to upgrade Elasticsearch from 7.x to 8.x across multiple DataGrid servers, including master and data node configurations.
 
@@ -188,6 +188,10 @@ For each node server where Elasticsearch URL is not secure, follow the certifica
 > [!NOTE]
 > The installation steps apply to both master nodes and data nodes. Use the same installation procedure for all types of nodes in your Elasticsearch cluster.
 
+The cluster name must be the same across all node servers.
+The value of the cluster.initial_master_nodes parameter should be the domain name of the master node server.
+The discovery.seed_hosts parameter should include the domain names of all servers where Elasticsearch will be set up.
+
 ### Master Node Configuration
 
 Update the `elasticsearch.yml` file on the master node with the following parameters:
@@ -208,10 +212,6 @@ http.host: 0.0.0.0
 transport.host: 0.0.0.0
 network.host: 0.0.0.0
 
-# Additional settings
-ingest.geoip.downloader.enabled: false
-transport.compress: true
-transport.port: 9300
 ```
 
 ### Data Node Configuration
@@ -238,10 +238,7 @@ network.host: 0.0.0.0
 path.data: X:/ElasticData
 path.logs: X:/ElasticLogs
 
-# Additional settings
-ingest.geoip.downloader.enabled: false
-transport.compress: true
-transport.port: 9300
+
 ```
 
 > [!NOTE]
@@ -282,7 +279,32 @@ During execution:
 4. **Repeat** for each node in the cluster
 5. **Copy** each certificate to its respective node server in the same directory
 
-### Step 3: Configure Keystore for Password Management
+### Step 3: Update Certificate Paths in Configuration
+
+After copying the certificates to each node server, update the `elasticsearch.yml` file to reference the correct certificate paths:
+
+1. Navigate to the Elasticsearch config folder
+   
+   **Example**: `C:\Elastic\elasticsearch-8.x.x\config`
+
+2. Open the `elasticsearch.yml` file
+3. Update the transport SSL configuration with the correct certificate paths:
+
+   ```yaml
+   # Enable encryption and mutual authentication between cluster nodes
+   xpack.security.transport.ssl:
+     enabled: true
+     verification_mode: certificate
+     keystore.path: certs/transport.p12
+     truststore.path: certs/transport.p12
+   ```
+
+   > [!NOTE]
+   > Replace `transport.p12` with the actual certificate file name for each respective node.
+
+4. Save the configuration file
+
+### Step 4: Configure Keystore for Password Management
 
 Perform on **all DataGrid servers** using the same password:
 
@@ -302,13 +324,13 @@ Perform on **all DataGrid servers** using the same password:
 
 Enter the password created during certificate generation for both prompts.
 
-### Step 4: Clean Node Data Folders
+### Step 5: Clean Node Data Folders
 
 1. Navigate to Elasticsearch data folder
 2. **Delete** all subfolders and files within the data directory
 3. If deletion fails, restart the server and try again
 
-### Step 5: Configure User Authentication
+### Step 6: Configure User Authentication
 
 **Check existing users**:
 
@@ -324,7 +346,7 @@ Enter the password created during certificate generation for both prompts.
 
 Type **y** when prompted and save the generated credentials securely.
 
-### Step 6: Install Mapper Plugin
+### Step 7: Install Mapper Plugin
 
 **With internet connection**:
 
@@ -358,39 +380,3 @@ https://<master-node-domain>:9200/_cat/nodes
 ```
 
 This displays a list of all connected nodes in the cluster.
-
-## Advanced Configuration
-
-### Specific Data Type Allocation
-
-To allocate specific index types to particular nodes:
-
-**Step 1**: Add the following parameter to `elasticsearch.yml` for the target node:
-
-```yaml
-node.attr.audit: true
-```
-
-**Step 2**: Restart the Elasticsearch service
-
-**Step 3**: In Relativity UI, navigate to **Instance Settings** → **ESIndexCreationSettings**
-
-**Step 4**: Add the following key-value under settings:
-
-```json
-"routing.allocation.require.audit": "true"
-```
-
-This configuration ensures indexes starting with "audit" are allocated to the specified node.
-
-## Next Steps
-
-After completing the Elasticsearch upgrade:
-
-1. **Verify cluster health** using the `_cat/health` API
-2. **Test connectivity** from all application servers
-3. **Update Relativity configurations** to point to the new Elasticsearch cluster
-4. **Restart Relativity services** on all servers
-5. **Monitor cluster performance** and adjust configurations as needed
-
-For troubleshooting issues during or after the upgrade, refer to the [Troubleshooting Guide](troubleshooting/pre-requisite-troubleshooting.md).
