@@ -1,9 +1,9 @@
-# Elasticsearch Upgrade from 7.x to 8.x across multiple DataGrid servers.
+# Elasticsearch Upgrade across multiple DataGrid servers.
 
-This document provides comprehensive steps to upgrade Elasticsearch from 7.x to 8.x across multiple DataGrid servers, including master and data node configurations.
+This document provides comprehensive steps to upgrade Elasticsearch across multiple DataGrid servers, including master and data node configurations.
 
 > [!NOTE]
-> This upgrade process should be performed when transitioning Elasticsearch from version 7.x to 8.x in a multi-node cluster environment with dedicated master and data nodes.
+> This upgrade process should be performed when transitioning Elasticsearch in a multi-node cluster environment with dedicated master and data nodes.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ Perform the following steps on **all node servers** one by one:
 1. Extract the Elasticsearch download archive
 2. Place the extracted Elasticsearch folder on a suitable drive
 
-   **Example**: `C:\Elastic\elasticsearch-8.x.x`
+   **Example**: `C:\Elastic\elasticsearch-x.x.x`
 
 ### Step 2: Environment Setup
 
@@ -45,13 +45,13 @@ For Java configuration troubleshooting and advanced setup, refer to the [Elastic
 1. Open **PowerShell** or **Command Prompt** in administrator mode
 2. Navigate to Elasticsearch bin directory
    
-   **Example**: `C:\Elastic\elasticsearch-8.x.x\bin`
+   **Example**: `C:\Elastic\elasticsearch-x.x.x\bin`
 
 **3.2 Remove Existing Elasticsearch Service (if present)**
 
 1. **Identify the existing service name**:
    - Open **Services** (services.msc)
-   - Look for Elasticsearch service (common names: `Elasticsearch`, `elasticsearch-service-x64`, or `Elasticsearch-7.x.x`)
+   - Look for Elasticsearch service (common names: `Elasticsearch`, `elasticsearch-service-x64`, or `Elasticsearch-x.x.x`)
    - Note the exact service name for use in removal command
 
 2. **Stop the service**:
@@ -114,7 +114,7 @@ Execute the following commands in sequence from the Elasticsearch bin directory:
 
 1. Navigate to the Elasticsearch config folder
    
-   **Example**: `C:\Elastic\elasticsearch-8.x.x\config`
+   **Example**: `C:\Elastic\elasticsearch-x.x.x\config`
 
 2. Open the `elasticsearch.yml` file
 3. Verify the following security configuration is added at the end of the file:
@@ -227,6 +227,11 @@ cluster.name: your-cluster-name
 node.roles: [ master ]
 node.name:  ["master_node_domain"]
 
+# Data and log paths (avoid C: drive or temporary storage)
+path.data: <specify drive name apart from C: drive>:/ElasticData
+path.logs: <specify drive name apart from C: drive>:/ElasticLogs
+
+
 # Discovery configuration
 discovery.seed_hosts: ["master_node_domain", "data_node1_domain", "data_node2_domain"]
 cluster.initial_master_nodes: ["master_node_domain"]
@@ -247,7 +252,7 @@ Update the `elasticsearch.yml` file on each data node with the following paramet
 cluster.name: your-cluster-name
 
 # Data node role
-node.roles: [ data ]
+node.roles: [ data, ingest ]
 node.name:  ["data_node_domain"]
 
 # Discovery configuration
@@ -260,14 +265,14 @@ transport.host: 0.0.0.0
 network.host: 0.0.0.0
 
 # Data and log paths (avoid C: drive or temporary storage)
-path.data: X:/ElasticData
-path.logs: X:/ElasticLogs
+path.data: <specify drive name apart from C: drive>:/ElasticData
+path.logs: <specify drive name apart from C: drive>:/ElasticLogs
 
 
 ```
 
 > [!NOTE]
-> Replace `X:` with an appropriate drive letter that is not the C: drive or temporary storage drive.
+> Replace `<specify drive name apart from C: drive>` with an appropriate drive letter (e.g., D:, E:, F:) that is not the C: drive or temporary storage drive.
 
 ## Certificate and Security Setup
 
@@ -310,7 +315,7 @@ After copying the certificates to each node server, update the `elasticsearch.ym
 
 1. Navigate to the Elasticsearch config folder
    
-   **Example**: `C:\Elastic\elasticsearch-8.x.x\config`
+   **Example**: `C:\Elastic\elasticsearch-x.x.x\config`
 
 2. Open the `elasticsearch.yml` file
 3. Update the transport SSL configuration with the correct certificate paths:
@@ -365,7 +370,10 @@ Enter the password created during certificate generation for both prompts.
 
 Type **y** when prompted and save the generated credentials securely.
 
-### Step 7: Install Mapper Plugin
+> [!NOTE]
+> This is done only on the master node. The same password can be used for elastic login on data nodes.
+> 
+### Step 7: Install Mapper Plugin in all the nodes
 
 **Check existing plugins**:
 
@@ -380,8 +388,8 @@ Type **y** when prompted and save the generated credentials securely.
 ```
 
 **For offline installation**:
-1. Download: `https://artifacts.elastic.co/downloads/elasticsearch-plugins/mapper-size/mapper-size-8.x.x.zip`
-2. Extract to: `C:\elasticsearch-8.x.x-windows-x86_64\elasticsearch-8.x.x\plugins` folder
+1. Download: `https://artifacts.elastic.co/downloads/elasticsearch-plugins/mapper-size/mapper-size-x.x.x.zip`
+2. Extract to: `C:\elasticsearch-x.x.x-windows-x86_64\elasticsearch-x.x.x\plugins` folder
 3. Adjust version number accordingly
 
 ## Cluster Startup and Verification
