@@ -4,6 +4,7 @@ This document provides comprehensive steps to upgrade Elasticsearch across multi
 
 > [!NOTE]
 > This upgrade process should be performed when transitioning Elasticsearch in a multi-node cluster environment with dedicated master and data nodes.
+> The installation steps below apply to both master nodes and data nodes. Use the same installation procedure for all types of nodes in your Elasticsearch cluster.
 
 ## Prerequisites
 
@@ -18,8 +19,6 @@ Before starting the upgrade process, ensure the following requirements are met:
 
 Perform the following steps on **all node servers** one by one:
 
-> [!NOTE]
-> The installation steps below apply to both master nodes and data nodes. Use the same installation procedure for all types of nodes in your Elasticsearch cluster.
 
 ### Step 1: Extract and Place Elasticsearch
 
