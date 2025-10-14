@@ -49,13 +49,25 @@ For Java configuration troubleshooting and advanced setup, refer to the [Elastic
 
 **3.2 Remove Existing Elasticsearch Service (if present)**
 
-1. **Stop the service**:
-   - Right-click on **Elasticsearch 7.x.x** in Services
+1. **Identify the existing service name**:
+   - Open **Services** (services.msc)
+   - Look for Elasticsearch service (common names: `Elasticsearch`, `elasticsearch-service-x64`, or `Elasticsearch-7.x.x`)
+   - Note the exact service name for use in removal command
+
+2. **Stop the service**:
+   - Right-click on the **Elasticsearch service** in Services
    - Select **Stop**
 
-2. **Remove the service**:
+3. **Remove the service**:
+   ```powershell
+   .\elasticsearch-service.bat remove <service-name>
+   ```
+   
+   **Examples**:
    ```powershell
    .\elasticsearch-service.bat remove elasticsearch-service-x64
+   # OR
+   .\elasticsearch-service.bat remove Elasticsearch
    ```
 
 **3.3 Install New Elasticsearch Service**
@@ -67,8 +79,15 @@ Execute the following commands in sequence from the Elasticsearch bin directory:
    .\elasticsearch.bat
    ```
    
+   **Expected Output - Token Generation:**
+
+    ```
+   • Copy the following enrollment token and start new Elasticsearch nodes with `bin/elasticsearch --enrollment-token <token>` (valid for the next 30 minutes):
+     eyJ2ZXIiOiI4LjEuNCIsImFkciI6WyIxOTIuMTY4LjEuMjQ6OTMwMCJdLCJmZ3IiOiJmOGExN2Y2NTM0Yjc...
+   ```
+   
    > [!NOTE]
-   > Elasticsearch token gets generated during this step, indicating completion. Terminate execution by typing `Ctrl+C` to gracefully stop, then confirm batch job termination.
+   > Save the generated elastic enrollment token securely. Terminate execution by typing `Ctrl+C` to gracefully stop, then confirm batch job termination.
 
 2. **Install Elasticsearch service**:
    ```powershell
@@ -143,7 +162,7 @@ Save changes and restart the Elasticsearch service.
 
 **4.3 Verify Elasticsearch Accessibility**
 
-1. Access Elasticsearch at: `https://domain_server_name:9200/`
+1. Access Elasticsearch at: `https://<insert_hostname>:9200/`
 
 2. **Chrome Certificate Issue Resolution** :
    - Navigate to `chrome://net-internals/#hsts`
@@ -206,6 +225,7 @@ cluster.name: your-cluster-name
 
 # Master node role
 node.roles: [ master ]
+node.name:  ["master_node_domain"]
 
 # Discovery configuration
 discovery.seed_hosts: ["master_node_domain", "data_node1_domain", "data_node2_domain"]
@@ -228,6 +248,7 @@ cluster.name: your-cluster-name
 
 # Data node role
 node.roles: [ data ]
+node.name:  ["data_node_domain"]
 
 # Discovery configuration
 discovery.seed_hosts: ["master_node_domain", "data_node1_domain", "data_node2_domain"]
@@ -346,7 +367,13 @@ Type **y** when prompted and save the generated credentials securely.
 
 ### Step 7: Install Mapper Plugin
 
-**With internet connection**:
+**Check existing plugins**:
+
+```powershell
+.\elasticsearch-plugin list
+```
+
+**If mapper-size plugin does not exist, install using below command**:
 
 ```powershell
 .\elasticsearch-plugin install mapper-size
