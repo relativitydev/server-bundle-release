@@ -162,17 +162,21 @@ Reset the elastic user password using:
 
 ### Step 5: JVM Heap Configuration
 
-Configure JVM heap memory (8-10 GB recommended):
+Configure JVM heap memory based on available system RAM:
 
 1. **Stop** the Elasticsearch Windows service
 2. Navigate to `.\config\jvm.options.d` directory in Elasticsearch installation
 3. Create a new file with `.options` extension (e.g., `elasticsearch.options`)
 4. Add the following content:
 
+   **For servers with 32GB RAM**:
    ```
-   -Xms8g
-   -Xmx10g
+   -Xms16g
+   -Xmx16g
    ```
+
+   > [!NOTE]
+   > Set both `-Xms` and `-Xmx` to the same value for optimal performance. For a 32GB RAM server, allocate 16GB (50% of total RAM) to Elasticsearch. Never exceed 32GB heap size due to compressed OOPs limitations.
 
 5. **Save** the file
 6. **Restart** the Elasticsearch Windows service
@@ -332,13 +336,7 @@ Enter the password created during certificate generation for both prompts.
 
 ### Step 6: Configure User Authentication
 
-**Check existing users**:
-
-```powershell
-.\elasticsearch-users list
-```
-
-**Generate user credentials** (if no users found):
+**Generate user credentials**:
 
 ```powershell
 .\elasticsearch-setup-passwords auto
