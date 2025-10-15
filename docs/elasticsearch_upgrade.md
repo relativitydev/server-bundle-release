@@ -207,12 +207,12 @@ For each node server where Elasticsearch URL is not secure, follow the certifica
 
 ## Multi-Node Cluster Configuration
 
-> [!NOTE]
-> The installation steps apply to both master nodes and data nodes. Use the same installation procedure for all types of nodes in your Elasticsearch cluster.
-
-The cluster name must be the same across all node servers.
-The value of the cluster.initial_master_nodes parameter should be the domain name of the master node server.
-The discovery.seed_hosts parameter should include the domain names of all servers where Elasticsearch will be set up.
+> [!IMPORTANT]
+> - The installation steps apply to both master nodes and data nodes
+> - The cluster name must be the same across all node servers
+> - The `cluster.initial_master_nodes` parameter should contain the domain name of the master node server
+> - The `discovery.seed_hosts` parameter should include the domain names of all servers where Elasticsearch will be set up
+> - Ensure Elasticsearch services are **stopped** on all node servers before proceeding with certificate setup
 
 ### Master Node Configuration
 
@@ -229,7 +229,6 @@ node.name:  ["master_node_domain"]
 # Data and log paths (avoid C: drive or temporary storage)
 path.data: <specify drive name apart from C: drive>:/ElasticData
 path.logs: <specify drive name apart from C: drive>:/ElasticLogs
-
 
 # Discovery configuration
 discovery.seed_hosts: ["master_node_domain", "data_node1_domain", "data_node2_domain"]
@@ -371,7 +370,7 @@ Type **y** when prompted and save the generated credentials securely.
 
 > [!NOTE]
 > This is done only on the master node. The same password can be used for elastic login on data nodes.
-> 
+
 ### Step 7: Install Mapper Plugin in all the nodes
 
 **Check existing plugins**:
