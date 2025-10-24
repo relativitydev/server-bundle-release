@@ -5,24 +5,8 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 > [!NOTE]
 > This guide assumes a default Elasticsearch installation path of `C:\elastic\elasticsearch`. Adjust paths according to your actual installation directory.
 
-## Table of Contents
+## Windows service issues
 
-- [Elasticsearch Troubleshooting](#elasticsearch-troubleshooting)
-  - [1. Windows Service Issues](#1-windows-service-issues)
-    - [1.1 Elasticsearch Service Not Starting](#11-elasticsearch-service-not-starting)
-    - [1.2 Service Crashes or Stops Unexpectedly](#12-service-crashes-or-stops-unexpectedly)
-  - [2. Memory Issues](#2-memory-issues)
-    - [2.1 Insufficient Memory Allocation](#21-insufficient-memory-allocation)
-  - [3. Authentication Issues](#3-authentication-issues)
-    - [3.1 Username/Password Authentication Problems](#31-usernamepassword-authentication-problems)
-    
-  - [4. Service Verification](#4-service-verification)
-    - [4.1 Verifying Elasticsearch Health](#41-verifying-elasticsearch-health)
-
----
-
-
-## 1. Windows Service Issues
 
 > [!IMPORTANT]
 > Before troubleshooting Elasticsearch, verify that all required Elastic Stack services are running. If any of these are not running, other troubleshooting steps may be irrelevant.
@@ -35,8 +19,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 > ```powershell
 > Get-Service -Name elasticsearch, kibana, apm-server | Format-Table -AutoSize
 > ```
-> <details>
-> <summary>Expected output</summary>
+> Expected output:
 >
 > ```
 > Status   Name           DisplayName
@@ -45,13 +28,12 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 > Running  kibana         kibana
 > Running  apm-server     apm-server
 > ```
-> </details>
 >
 > - The `kibana` Windows service may not exist if Kibana was not installed as a Windows service (e.g., via NSSM). NSSM is not required; Kibana can be run manually or as a scheduled task. Only check for the `kibana` service if you have installed it as a service.
 > - If Kibana is not in running state, [click here for Kibana troubleshooting](../troubleshooting/kibana.md).
 > - If APM is not in running state, [click here for APM troubleshooting](apm-server.md)
 
-### 1.1 Elasticsearch Service Not Starting
+### Elasticsearch service not starting
 
 **Symptoms:**
 - Elasticsearch service fails to start
@@ -60,7 +42,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 **Troubleshooting Steps:**
 
-* **Check Service Status:**
+1. Check Service Status:
    ```powershell
    Get-Service -Name elasticsearch-service-x64 | Select-Object Status, StartType, Name
    ```
@@ -68,17 +50,15 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    Get-Service -Name elasticsearch | Select-Object Status, StartType, Name
    ```
-   <details>
-   <summary>Expected output</summary>
-
+   
+   Expected output:
    ```
    Status   StartType Name
    ------   --------- ----
    Running  Automatic elasticsearch
    ```
-   </details>
 
-* **Verify Service Configuration:**
+2. Verify Service Configuration:
    ```powershell
    (Get-CimInstance Win32_Service -Filter "Name = 'elasticsearch-service-x64'").StartName
    ```
@@ -86,29 +66,24 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    (Get-CimInstance Win32_Service -Filter "Name = 'elasticsearch'").StartName
    ```
-   <details>
-   <summary>Expected output</summary>
-
+   
+   Expected output:
    ```
    LocalSystem
    ```
-   </details>
 
-* **Check Elasticsearch Logs:**
-  - Navigate to the log directory (default: `C:\elastic\elasticsearch-8.17.3\logs\`).
-  - Review the Elasticsearch log file (`elasticsearch.log`) for error messages.
-  - Check the slow logs and garbage collection logs if present.
-  - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
+3. Check Elasticsearch Logs:
+    1. Navigate to the log directory (default: `C:\elastic\elasticsearch-8.17.3\logs\`).
+    2. Review the Elasticsearch log file (`elasticsearch.log`) for error messages.
+    3. Check the slow logs and garbage collection logs if present.
+    4. For every error in the Elasticsearch log, provide troubleshooting for that specific error.
 
-> [!TIP]
-> For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
+    > - For detailed logging information, refer to the [official Elasticsearch logging documentation](https://www.elastic.co/guide/en/elasticsearch/reference/8.17/logging.html)
+    > - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
+    > - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.
+    > - If you want to use a specific Java version, ensure `JAVA_HOME` is set correctly.
 
-> [!NOTE]
-> - Elasticsearch includes a bundled Java runtime, so a separate Java installation is not required.
-> - If the `JAVA_HOME` environment variable is defined, Elasticsearch will use the specified Java version instead of the bundled one.
-> - If you want to use a specific Java version, ensure `JAVA_HOME` is set correctly.
-
-* **Start Service Manually:**
+4. Start Service Manually:
    ```powershell
    Start-Service elasticsearch-service-x64
    ```
@@ -116,15 +91,13 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```powershell
    Start-Service elasticsearch
    ```
-   <details>
-   <summary>Expected output</summary>
-   
+  
+   Expected output:
    ```
    (No output if successful. Service status will be "Running" after execution.)
    ```
-   </details>
 
-### 1.2 Service Crashes or Stops Unexpectedly
+### Service crashes or stops unexpectedly
 
 **Symptoms:**
 - Elasticsearch service starts but stops after a short period
@@ -132,39 +105,33 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 **Troubleshooting Steps:**
 
-* **Check Elasticsearch Logs:**
-  - Navigate to `C:\elastic\elasticsearch\logs\`
-  - Review the Elasticsearch log file (`elasticsearch.log`) for errors
-  - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
-> [!NOTE] 
-> Always check the latest error in the Elasticsearch log and troubleshoot accordingly. This approach should be followed everywhere.
+1. Check Elasticsearch Logs:
+    1. Navigate to `C:\elastic\elasticsearch\logs\`
+    2. Review the Elasticsearch log file (`elasticsearch.log`) for errors
+    3. For every error in the Elasticsearch log, provide troubleshooting for that specific error.
+       > Always check the latest error in the Elasticsearch log and troubleshoot accordingly. This approach should be followed everywhere.
 
-* **Verify Disk Space:**
-  - Ensure sufficient disk space on data and log directories (minimum 15% free)
-  - Verify data and log files are on separate drives from the Operating System drive. If you store Elasticsearch data on a network share, ensure the share is accessible and has sufficient free space. Some environments may not use mapped drives.
-  ```powershell
-  # Check disk space
-  Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="FreeSpace(%)";Expression={[math]::Round(($_.FreeSpace/$_.Size)*100,2)}}
-  ```
-   <details>
-   <summary>Expected output</summary>
+2. Verify Disk Space:
+    1. Ensure sufficient disk space on data and log directories (minimum 15% free)
+    2. Verify data and log files are on separate drives from the Operating System drive. If you store Elasticsearch data on a network share, ensure the share is accessible and has sufficient free space. Some environments may not use mapped drives.
+       ```powershell
+       # Check disk space
+       Get-WmiObject -Class Win32_LogicalDisk | Select-Object DeviceID, @{Name="FreeSpace(%)";Expression={[math]::Round(($_.FreeSpace/$_.Size)*100,2)}}
+       ```
+      
+       Expected output:
+       ```
+       DeviceID FreeSpace(%)
+       -------- ------------
+       C:       22.15
+       D:       48.92
+       ```
 
-   ```
-   DeviceID FreeSpace(%)
-   -------- ------------
-   C:       22.15
-   D:       48.92
-   ```
-   </details>
+> For port-related issues, see the [Port Configuration Troubleshooting](pre-requisite-troubleshooting.md) guide.
 
-> [!NOTE]
-> For port-related issues, see the [Port Configuration Troubleshooting](port-configuration-troubleshooting.md) guide.
+## Memory issues
 
----
-
-## 2. Memory Issues
-
-### 2.1 Insufficient Memory Allocation
+### Insufficient memory allocation
 
 **Symptoms:**
 - OutOfMemoryError in Elasticsearch logs
@@ -173,45 +140,41 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 **Troubleshooting Steps:**
 
-* **Check Current Memory Usage:**
+1. Check Current Memory Usage:
    ```powershell
    Get-WmiObject -Class Win32_PhysicalMemory | Measure-Object -Property Capacity -Sum
    ```
-   <details>
-   <summary>Expected output</summary>
-
+   
+   Expected output:
    ```
    Count    : 2
    Average  :
    Sum      : 34359738368
    Property : Capacity
    ```
-   </details>
-> [!NOTE]
-> `Sum` is the total RAM in bytes (e.g., 34359738368 bytes = 32 GB).
 
-* **Review JVM Heap Settings:**
-  - Edit `C:\elastic\elasticsearch\config\jvm.options` file:
-  - If the file does not exist, create it.
-  ```
-  # Recommended: Set Xms and Xmx to same value
-  # Example for system with 8GB+ RAM:
-  -Xms4g
-  -Xmx4g
-  ```
-> [!IMPORTANT]
-> Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
+    > `Sum` is the total RAM in bytes (e.g., 34359738368 bytes = 32 GB).
 
-* **Check for Memory Leaks:**
-  - Monitor heap usage over time
-  - Look for continuously increasing memory consumption
-  - Review application logs for memory-related warnings
+2. Review JVM Heap Settings:
+    1. Edit `C:\elastic\elasticsearch\config\jvm.options` file. (If the file does not exist, create it.)
+        ```
+        # Recommended: Set Xms and Xmx to same value
+        # Example for system with 8GB+ RAM:
+        -Xms4g
+        -Xmx4g
+        ```
 
----
+    > Set heap to 50% of available RAM, maximum 32GB. Monitor current memory usage before making changes.
 
-## 3. Authentication Issues
+3. Check for Memory Leaks:
+    1. Monitor heap usage over time
+    2. Look for continuously increasing memory consumption
+    3. Review application logs for memory-related warnings
 
-### 3.1 Username/Password Authentication Problems
+
+## Authentication issues
+
+### Username/Password authentication issues
 
 **Symptoms:**
 - Login failures
@@ -220,13 +183,12 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 **Troubleshooting Steps:**
 
-* **Verify User Exists:**
+1. Verify User Exists:
    ```powershell
    curl.exe -k -X GET "https://<hostname_or_ip>:9200/_security/user/<username>" -u <username>:<password>
    ```
-   <details>
-   <summary>Expected output</summary>
 
+   Expected output:
    ```json
    {
      "<username>": {
@@ -238,34 +200,30 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
      }
    }
    ```
-   </details>
 
-* **Reset Password:**
+2. Reset Password:
    ```powershell
    C:\elastic\elasticsearch\bin\elasticsearch-reset-password.bat -u <username>
    ```
-   <details>
-   <summary>Expected output</summary>
-
+   
+   Expected output:
    ```
    Password for the [<username>] user successfully reset.
-   ```
-   </details>
+   ```  
 
-* **Verify Security Configuration:**
-  - Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
-    ```yaml
-    xpack.security.enabled: true
-    ```
-> [!NOTE]
-> Also verify that the URL you are using is `https://<username>:9200/`
+3. Verify Security Configuration:
+    1. Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
+        ```yaml
+        xpack.security.enabled: true
+        ```
+    > Also verify that the URL you are using is `https://<username>:9200/`
 
 
----
 
-## 4. Service Verification
 
-### 4.1 Verifying Elasticsearch Health
+## Service verification
+
+### Verifying Elasticsearch health
 
 **Symptoms:**
 - Uncertainty about cluster status
@@ -274,70 +232,63 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
 
 **Troubleshooting Steps:**
 
-* **Check Cluster Health:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health?pretty"
-   ```
-   <details>
-   <summary>Expected response for healthy cluster</summary>
+1. Check Cluster Health:
+    ```powershell
+    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cluster/health?pretty"
+    ```
 
-   ```json
-   {
-     "cluster_name": "elasticsearch",
-     "status": "green",
-     "timed_out": false,
-     "number_of_nodes": 3,
-     "number_of_data_nodes": 3
-   }
-   ```
-   </details>
+    Expected response for healthy cluster: :
+ 
+    ```json
+    {
+      "cluster_name": "elasticsearch",
+      "status": "green",
+      "timed_out": false,
+      "number_of_nodes": 3,
+      "number_of_data_nodes": 3
+    }
+    ```   
 
-* **Verify Node Status:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/nodes?v"
-   ```
-   <details>
-   <summary>Expected output</summary>
+2. Verify Node Status:
+    ```powershell
+    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/nodes?v"
+    ```
 
-   ```
-   ip            heap.percent ram.percent cpu load_1m load_5m load_15m     node.role      master name
-   <ip address>            14          95  28                          cdfhilmrstw *      <node name>
-   ```
-   </details>
+    Expected output:
+    ```
+    ip            heap.percent ram.percent cpu load_1m load_5m load_15m     node.role      master name
+    <ip>          14           95          28                               cdfhilmrstw *  <node name>
+    ```
 
-* **Check Index Health:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/indices?v"
-   ```
-   <details>
-   <summary>Expected output</summary>
+3. Check Index Health:
+    ```powershell
+    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_cat/indices?v"
+    ```
+   
+    Expected output:
+    ```
+    health status index    uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+    green  open   myindex  1a2b3c4d5e6f7g8h9i0j   1   1   1000       0            1.2mb      600kb
+    ```
 
+4. Monitor Performance:
+    ```powershell
+    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_nodes/stats?pretty"
+    ```
+   
+    Expected output:
+    ```json
+    {
+      "nodes": {
+        "node_id": {
+          "name": "node-1",
+          "host": "10.0.0.1",
+          ...
+        }
+      }
+    }
    ```
-   health status index    uuid                   pri rep docs.count docs.deleted store.size pri.store.size
-   green  open   myindex  1a2b3c4d5e6f7g8h9i0j   1   1   1000       0            1.2mb      600kb
-   ```
-   </details>
-
-* **Monitor Performance:**
-   ```powershell
-   curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/_nodes/stats?pretty"
-   ```
-   <details>
-   <summary>Expected output</summary>
-
-   ```json
-   {
-     "nodes": {
-       "node_id": {
-         "name": "node-1",
-         "host": "10.0.0.1",
-         ...
-       }
-     }
-   }
-   ```
-   </details>
 
 
 
----
+

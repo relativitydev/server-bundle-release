@@ -4,20 +4,10 @@ This document provides quick reference links to detailed troubleshooting guides 
 
 ## Component Troubleshooting Guides
 
-### [Pre-requisite Troubleshooting](troubleshooting/pre-requisite-troubleshooting.md)
-
-### [Elasticsearch Troubleshooting](troubleshooting/elasticsearch.md)
-
-### [Kibana Troubleshooting](troubleshooting/kibana.md)
-
-### [APM Server Troubleshooting](troubleshooting/apm-server.md)
-
-### [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](troubleshooting/monitoring-agent-and-otel-collector.md)
-
-### [Relativity Server CLI Troubleshooting](troubleshooting/relativity-server-cli.md)
-
-### [Relativity Alerts Troubleshooting](troubleshooting/relativity_alerts_troubleshooting.md)
-
-
-
-
+- [Pre-requisite Troubleshooting](troubleshooting/pre-requisite-troubleshooting.md)
+- [Elasticsearch Troubleshooting](troubleshooting/elasticsearch.md)
+- [Kibana Troubleshooting](troubleshooting/kibana.md)
+- [APM Server Troubleshooting](troubleshooting/apm-server.md)
+- [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](troubleshooting/monitoring-agent-and-otel-collector.md)
+- [Relativity Server CLI Troubleshooting](troubleshooting/relativity-server-cli.md)
+- [Relativity Alerts Troubleshooting](troubleshooting/relativity_alerts_troubleshooting.md)

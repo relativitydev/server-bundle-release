@@ -7,19 +7,19 @@
 
 ## Prerequisites
 
-> [!IMPORTANT]
-> After installation, wait 10–15 minutes before starting the verification process. This allows time for:
-> - All system services to fully initialize and become available
-> - Data collection agents to begin exporting telemetry to Elasticsearch
-> - Dashboard visualizations to populate with accurate status information
-> - Health indicators to show accurate statuses
+
+After installation, wait 10–15 minutes before starting the verification process. This allows time for:
+- All system services to fully initialize and become available
+- Data collection agents to begin exporting telemetry to Elasticsearch
+- Dashboard visualizations to populate with accurate status information
+- Health indicators to show accurate statuses
 
 ## Overview
 
 This documentation outlines the step-by-step procedures for verifying that the entire Relativity Environment Watch system is functioning properly after installation. The verification process confirms that the Elastic Stack cluster is healthy, all monitoring agents are exporting telemetry to Elasticsearch, and the integration with Relativity (e.g. Relativity Alerts) is working correctly.
 
 
-## Verification Steps
+## Verification steps
 
 ### 1. Elastic Cluster Health
 This section guides through verifying the health and proper functioning of the Elasticsearch cluster.
@@ -39,7 +39,6 @@ This section covers how to ensure that the alerting mechanism is working as expe
 > [!NOTE]
 > All Kibana dashboards are designed and optimized for **1920x1080** screen resolution to ensure optimal viewing experience and proper layout formatting.
 
----
 
 ## Next Step
 

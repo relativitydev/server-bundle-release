@@ -3,16 +3,17 @@
 ![Setup Stage](../resources/enable_environmentwatch.png)
 
 > [!NOTE]
-> This section applies to Datagrid Only and the Audit setup via CLI should be run only once per environment.
+> This section applies to Datagrid Only.
+
+After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI on the Primary SQL Server.
+
+
 > Please review the following important information before proceeding:
 > * **For Existing Data Grid Audit Customers:** You must be on Elasticsearch 7.17 when initially running this setup. After the setup is complete, you can upgrade to Elasticsearch 8.17.3.
 > * Before upgrading to Elasticsearch 8.17.3, the `ESIndexCreationSetting` may need to be updated. For details, refer to the [Instance setting Details](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
 > * Always verify the minimum required Elasticsearch version in your specific release bundle, as it may differ from the versions mentioned here.
 
-After installing the required Elastic components for Data Grid Audit, the integration between Elastic and Relativity is configured by running the Relativity Server CLI. It is recommended to run the CLI from the Primary SQL Server.
-
 ### Prerequisites 
-
 
 1. Install the mapper-size plugin on all nodes in the Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). The Elasticsearch service must also be restarted after installing the plugin.
 
@@ -22,61 +23,59 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 
 
-#### Set up instructions
+### Set up instructions
 
 Follow these steps to set up Data Grid Audit using the Relativity Server CLI. All setup will occur on the SQL Primary server.
 
-**Step 1** - Open elevated command prompt/powershell. Run below command. Select Datagrid
+1. Open elevated command prompt/powershell. Run below command. Select **Datagrid**
+    ```
+    C:\Server.Bundle.x.y.z\relsvr.exe setup
+    Relativity Server CLI - 24.0.1196
+    Copyright (c) 2025, Relativity ODA LLC
 
-```
-C:\Server.Bundle.x.y.z\relsvr.exe setup
+    What would you like to setup?
+    > DataGrid
+      Environment watch
+      Exit
+    ```
 
-Relativity Server CLI - 24.0.1196
-Copyright (c) 2025, Relativity ODA LLC
+2. Enter the required Relativity and Elasticsearch parameters.
 
-What would you like to setup?
-> DataGrid
-  Environment watch
-  Exit
-```
+    ```
+    Confirm you would like to perform the 'DataGrid' setup [y/n] (y): y
 
-**Step 2** - Enter the required Relativity and Elasticsearch parameters.
+    Existing settings do not exist
+    Enter the Relativity admin username (relativity.admin@kcura.com): relativity.admin@kcura.com
+    Enter the Relativity admin password: *********
+    Enter the Relativity instance url (https://emttest/Relativity): https://emttest/Relativity
+    Relativity instance is verified
+    Enter the Elasticsearch admin username (elastic): elastic
+    Enter the Elasticsearch admin password: *********
+    Enter the Elasticsearch cluster endpoint URL (https://emttest:9200): https://emttest:9200
 
-```
-Confirm you would like to perform the 'DataGrid' setup [y/n] (y): y
+    ```
 
-Existing settings do not exist
-Enter the Relativity admin username (relativity.admin@kcura.com): relativity.admin@kcura.com
-Enter the Relativity admin password: *********
-Enter the Relativity instance url (https://emttest/Relativity): https://emttest/Relativity
-Relativity instance is verified
-Enter the Elasticsearch admin username (elastic): elastic
-Enter the Elasticsearch admin password: *********
-Enter the Elasticsearch cluster endpoint URL (https://emttest:9200): https://emttest:9200
+3. Wait for Setup to Complete.
 
-```
+    ```
+    Elasticsearch cluster endpoint URL is verified
+    Elasticsearch plugin verified
 
-**Step 3** - Wait for Setup to Complete.
+    API Key creation and validation completed ------------------------- 100%
+    Relativity instance setting validation completed ------------------ 100%
+    Relativity secret store updated ----------------------------------- 100%
+    Elastic Stack settings validation completed ----------------------- 100%
+    Relativity toggles validation completed --------------------------- 100%
 
-```
-Elasticsearch cluster endpoint URL is verified
-Elasticsearch plugin verified
+    The Relativity Data Grid setup has been completed. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance to complete the setup.
+    ```
+    
+    If the setup completes successfully, Datagrid is now configured for the environment.
 
-API Key creation and validation completed ------------------------- 100%
-Relativity instance setting validation completed ------------------ 100%
-Relativity secret store updated ----------------------------------- 100%
-Elastic Stack settings validation completed ----------------------- 100%
-Relativity toggles validation completed --------------------------- 100%
-
-The Relativity Data Grid setup has been completed. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance to complete the setup.
-```
-If the setup completes successfully, Datagrid is now configured for the environment.
-
-**Step 4** - Restart the Relativity services on all machines for the changes to take effect.
+4. Restart the Relativity services on all machines for the changes to take effect.
 
 
-**Step 5** - Verify Audit Dashboard
-Navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
+5. Verify Audit Dashboard - navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
 
 
 ## Next

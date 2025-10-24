@@ -3,9 +3,9 @@
 This guide provides information on integrating RabbitMQ with Environment Watch.
 
 
-### RabbitMQ Management Plugin
+## RabbitMQ Management Plugin
 
-## Prerequisites
+### Prerequisites
 
 - RabbitMQ server installed and running
 - Administrative access to the RabbitMQ server
@@ -13,7 +13,7 @@ This guide provides information on integrating RabbitMQ with Environment Watch.
 - Default admin user credentials (default: `guest`/`guest` for localhost only)
 - For production: Create a dedicated admin user for API access
 
-## Enable the Management Plugin
+### Enable the Management Plugin
 
 ```powershell
 # Enable the management plugin
@@ -21,9 +21,9 @@ rabbitmq-plugins enable rabbitmq_management
 
 ```
 
-**Note:** Node restart is not required after plugin activation.
+> Node restart is not required after plugin activation.
 
-## Verify Plugin Status
+### Verify plugin status
 
 ```powershell
 # Check if the plugin is enabled
@@ -32,9 +32,7 @@ rabbitmq-plugins list
 # Check listening ports
 rabbitmq-diagnostics -s listeners
 ```
-
-<details>
-<summary>Expected output</summary>
+**Expected Output:**
 
 ```
 Listing plugins with pattern ".*" ...
@@ -78,27 +76,24 @@ Listing plugins with pattern ".*" ...
 [  ] rabbitmq_web_stomp                3.13.7
 [  ] rabbitmq_web_stomp_examples       3.13.7
 ```
-**Note:** You should see `[E ] rabbitmq_management` indicating the plugin is enabled.
-</details>.
+> You should see `[E ] rabbitmq_management` indicating the plugin is enabled.
 
 ## Access the Management UI
 
 The management UI can be accessed at: `http://<hostname/ipaddress>:15672/`
 
 ## User Management with curl Commands
-> [!NOTE] 
+ 
 > For best compatibility on Windows, execute the following curl commands in Command Prompt (`cmd.exe`), not PowerShell. This ensures proper handling of double quotes and JSON payloads.
 
 ### Create Administrative User
-
+**Create admin user with full access**
 ```
 # Create admin user with full access
 curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/admin_user -d "{\"password\":\"<password>\",\"tags\":\"administrator\"}"
 ```
 
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 201 Created
 content-length: 0
@@ -107,16 +102,13 @@ date: Fri, 29 Aug 2025 07:56:44 GMT
 server: Cowboy
 vary: accept, accept-encoding, origin
 ```
-</details>
-
+**Grant full permissions on default virtual host**
 ```
 # Grant full permissions on default virtual host
 curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/permissions/%2F/admin_user -d "{\"configure\":\".*\",\"write\":\".*\",\"read\":\".*\"}"
 ```
 
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 201 Created
 content-length: 0
@@ -125,18 +117,16 @@ date: Fri, 29 Aug 2025 08:08:00 GMT
 server: Cowboy
 vary: accept, accept-encoding, origin
 ```
-</details>
 
 ### Create Monitoring User (Read-Only)
 
+**Create monitoring user**
 ```
 # Create monitoring user
 curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/monitoring_user -d "{\"password\":\"<password>\",\"tags\":\"monitoring\"}"
 ```
 
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 201 Created
 content-length: 0
@@ -145,16 +135,14 @@ date: Fri, 29 Aug 2025 08:08:32 GMT
 server: Cowboy
 vary: accept, accept-encoding, origin
 ```
-</details>
 
+**Grant empty permissions**
 ```
 # Grant empty permissions (monitoring access without resource permissions)
 curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/permissions/%2F/monitoring_user -d "{\"configure\":\"^$\",\"write\":\"^$\",\"read\":\"^$\"}"
 ```
 
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 201 Created
 content-length: 0
@@ -163,18 +151,16 @@ date: Fri, 29 Aug 2025 08:09:01 GMT
 server: Cowboy
 vary: accept, accept-encoding, origin
 ```
-</details>
 
 ### Create Management User (Basic Access)
 
+**Create management user**
 ```
 # Create management user
 curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/users/mgmt_user -d "{\"password\":\"<password>\",\"tags\":\"management\"}"
 ```
 
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 201 Created
 content-length: 0
@@ -183,16 +169,13 @@ date: Fri, 29 Aug 2025 08:09:33 GMT
 server: Cowboy
 vary: accept, accept-encoding, origin
 ```
-</details>
 
+**Grant specific permissions**
 ```
 # Grant specific permissions
 curl -i -u <username>:<password> -H "content-type:application/json" -X PUT http://<hostname/ipaddress>:15672/api/permissions/%2F/mgmt_user -d "{\"configure\":\"^specific_queue.*\",\"write\":\"^specific_queue.*\",\"read\":\"^specific_queue.*\"}"
 ```
-
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 201 Created
 content-length: 0
@@ -201,18 +184,16 @@ date: Fri, 29 Aug 2025 08:10:08 GMT
 server: Cowboy
 vary: accept, accept-encoding, origin
 ```
-</details>
 
 ## Verify User Setup
 
+**List all users**
 ```
 # List all users
 curl -i -u <username>:<password> http://<hostname/ipaddress>:15672/api/users
 ```
 
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 200 OK
 cache-control: no-cache
@@ -225,16 +206,14 @@ vary: accept, accept-encoding, origin
 
 [{"hashing_algorithm":"rabbit_password_hashing_sha256","limits":{},"name":"admin","password_hash":"R1rPwt+kCnp/dBAl38a97mFvzxBPHVKSsrMbhcwCOjgBmHsC","tags":["administrator"]},{"hashing_algorithm":"rabbit_password_hashing_sha256","limits":{},"name":"admin_user","password_hash":"xxDctOHpGvwpwX4dHNtSfoo47crYYLL7b6LKnPlKbBQOmbOa","tags":["administrator"]},{"hashing_algorithm":"rabbit_password_hashing_sha256","limits":{},"name":"guest","password_hash":"LPKa7nr7nwIeUa4lGWtjG5Og6fi1JPFWbnjXVL3d2ReTCYsj","tags":["administrator"]},{"hashing_algorithm":"rabbit_password_hashing_sha256","limits":{},"name":"mgmt_user","password_hash":"K1tIRGiroPcXAw80MzKksRf4yBwcvAXBsnW/GgMsNrQB1GL1","tags":["management"]},{"hashing_algorithm":"rabbit_password_hashing_sha256","limits":{},"name":"monitoring_user","password_hash":"hZLpi5Ql5y+k28FVL0UdcMUPbMM0y9o/ZXtbZQCjFtjhhNM+","tags":["monitoring"]}]
 ```
-</details>
 
+**Check specific user permissions**
 ```
 # Check specific user permissions
 curl -i -u <username>:<password> http://<hostname/ipaddress>:15672/api/permissions/%2F/admin_user
 ```
 
-<details>
-<summary>Expected output</summary>
-
+**Expected Output:**
 ```
 HTTP/1.1 200 OK
 cache-control: no-cache
@@ -247,7 +226,6 @@ vary: accept, accept-encoding, origin
 
 {"user":"admin_user","vhost":"/","configure":".*","write":".*","read":".*"}
 ```
-</details>
 
 ## User Permission Tags
 
@@ -257,4 +235,4 @@ vary: accept, accept-encoding, origin
 | **monitoring** | Read-only | View all data, no modifications |
 | **management** | Basic access | Manage own virtual hosts only |
 
-**Note:** Virtual host `/` is encoded as `%2F` in URLs.
+> Virtual host `/` is encoded as `%2F` in URLs.
