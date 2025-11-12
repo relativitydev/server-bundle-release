@@ -7,12 +7,6 @@ This document provides troubleshooting guidance for common Kibana issues encount
 
 ## Windows service issues
 
-
----
-
-
-## 1. Windows Service Issues
-
 > [!IMPORTANT]
 > The following troubleshooting steps apply **only if Kibana was set up as a Windows service** (e.g., using NSSM or a similar tool). If you did not install Kibana as a Windows service, you must ensure that `kibana.bat` is running in a command prompt or as a scheduled task.
 
@@ -280,4 +274,5 @@ This document provides troubleshooting guidance for common Kibana issues encount
         ![Enable long paths policy](../../resources/troubleshooting-images/kibanaextract.png)
 
 2.  Re-extract the Kibana zip file:
+
     1. After enabling long path support, attempt to extract the `kibana-8.xx.x-windows-x86_64.zip` file again.
