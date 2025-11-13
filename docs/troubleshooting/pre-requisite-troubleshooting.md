@@ -2,14 +2,6 @@
 
 This document provides troubleshooting steps for common pre-requisites like port configuration and Secret Store access.
 
-## Table of Contents
-
-- [Port Configuration](#port-configuration-troubleshooting)
-- [Secret Store](#secret-store-troubleshooting)
-- [Certificate](#certificate-troubleshooting)
-
----
-
 ## Port Configuration Troubleshooting
 
 ### Default Port Reference
@@ -23,163 +15,144 @@ The following table summarizes the default ports used by the Elastic Stack and E
 | APM Server | 8200 | HTTP/HTTPS | ✅ | | APM agent data ingestion |
 | OTEL Collector | 4318 | HTTP | | | OTLP data reception (HTTP) for local traffic (localhost). This deployment uses the agent model, with a collector on each server. See the [OpenTelemetry agent documentation](https://opentelemetry.io/docs/collector/deployment/agent/) for more details. |
 
----
+
 
 ### Elasticsearch Port Issues
 
-#### Symptoms:
+**Symptoms:**
 - Elasticsearch fails to bind to default ports.
 - "Address already in use" errors in logs.
 - Cannot access Elasticsearch via HTTP/HTTPS.
 
-#### Troubleshooting Steps:
+**Troubleshooting Steps:**
 
-* **Check if Ports are in Use:**
-  Verify that ports 9200 and 9300 are listening.
-  ```powershell
-  netstat -an | findstr ":9200"
-  netstat -an | findstr ":9300"
-  ```
-  <details>
-  <summary>Expected output</summary>
+1. Check if Ports are in use:
+    Verify that ports 9200 and 9300 are listening.
+    ```powershell
+    netstat -an | findstr ":9200"
+    netstat -an | findstr ":9300"
+    ```
 
-  ```
-  TCP    0.0.0.0:9200           0.0.0.0:0              LISTENING
-  TCP    0.0.0.0:9300           0.0.0.0:0              LISTENING
-  ```
-  </details>
+    Expected output:
+    ```
+    TCP    0.0.0.0:9200           0.0.0.0:0              LISTENING
+    TCP    0.0.0.0:9300           0.0.0.0:0              LISTENING
+    ```
 
-* **Identify Conflicting Processes:**
-  If a port is in use by another application, identify the process.
-  ```powershell
-  Get-NetTCPConnection -LocalPort 9200 -State Listen
-  Get-NetTCPConnection -LocalPort 9300 -State Listen
-  ```
+2. Identify Conflicting Processes. If a port is in use by another application, identify the process.
+    ```powershell
+    Get-NetTCPConnection -LocalPort 9200 -State Listen
+    Get-NetTCPConnection -LocalPort 9300 -State Listen
+    ```
 
-* **Test Elasticsearch Connectivity:**
-  ```powershell
-  curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
-  ```
+3. Test Elasticsearch Connectivity:
+    ```powershell
+    curl.exe -k -u <username>:<password> -X GET "https://<hostname_or_ip>:9200/"
+    ```
 
-* **Verify Network Binding:**
-  Check `C:\elastic\elasticsearch\config\elasticsearch.yml` configuration:
-  ```yaml
-  network.host: 0.0.0.0  # For all interfaces
-  ```
-
----
+4. Verify Network Binding:
+    Check `C:\elastic\elasticsearch\config\elasticsearch.yml` configuration:
+    ```yaml
+    network.host: 0.0.0.0  # For all interfaces
+    ```
 
 ### Kibana Port Issues
 
-#### Symptoms:
+**Symptoms:**
 - Kibana fails to bind to the default port.
 - "EADDRINUSE" errors in logs.
 - Cannot access Kibana web interface.
 
-#### Troubleshooting Steps:
+**Troubleshooting Steps:**
 
-* **Check if Port is in Use:**
-  ```powershell
-  netstat -an | findstr ":5601"
-  ```
-  <details>
-  <summary>Expected output</summary>
+1. Check if Port is in Use:
+    ```powershell
+    netstat -an | findstr ":5601"
+    ```
+      
+    Expected output:
+    ```
+    TCP    0.0.0.0:5601           0.0.0.0:0              LISTENING
+    ```
 
-  ```
-  TCP    0.0.0.0:5601           0.0.0.0:0              LISTENING
-  ```
-  </details>
+2. Test Kibana Connectivity:
+    ```powershell
+    (curl.exe -s -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status" | ConvertFrom-Json).status.overall | ConvertTo-Json -Depth 10
+    ```
 
-* **Test Kibana Connectivity:**
-  ```powershell
-  (curl.exe -s -k -u <username>:<password> -X GET "http://<hostname_or_ip>:5601/api/status" | ConvertFrom-Json).status.overall | ConvertTo-Json -Depth 10
-  ```
+3. Verify Network Binding. Check `C:\elastic\kibana\config\kibana.yml` configuration:
+    ```yaml
+    server.host: "0.0.0.0"  # For all interfaces
+    ```
 
-* **Verify Network Binding:**
-  Check `C:\elastic\kibana\config\kibana.yml` configuration:
-  ```yaml
-  server.host: "0.0.0.0"  # For all interfaces
-  ```
-
----
 
 ### APM Server Port Issues
 
-#### Symptoms:
+**Symptoms:**
 - APM Server fails to bind to the default port.
 - "Address already in use" errors in logs.
 - APM agents cannot connect to the server.
 
-#### Troubleshooting Steps:
+**Troubleshooting Steps:**
 
-* **Check if Port is in Use:**
-  ```powershell
-  netstat -an | findstr ":8200"
-  ```
-  <details>
-  <summary>Expected output</summary>
+1. Check if Port is in Use:
+    ```powershell
+    netstat -an | findstr ":8200"
+    ```
+  
+    Expected output:
+    ```
+    TCP    0.0.0.0:8200           0.0.0.0:0              LISTENING
+    ```
+  
+2. Test APM Server Connectivity:
+    ```powershell
+    curl.exe -k "http://<hostname_or_ip>:8200/"
+    ```
+  
+    Expected output:
 
-  ```
-  TCP    0.0.0.0:8200           0.0.0.0:0              LISTENING
-  ```
-  </details>
+    ```json
+    {
+      "build_date": "...",
+      "build_sha": "...",
+      "publish_ready": true,
+      "version": "8.17.3"
+    }
+    ```
 
-* **Test APM Server Connectivity:**
-  ```powershell
-  curl.exe -k "http://<hostname_or_ip>:8200/"
-  ```
-  <details>
-  <summary>Expected output</summary>
-
-  ```json
-  {
-    "build_date": "...",
-    "build_sha": "...",
-    "publish_ready": true,
-    "version": "8.17.3"
-  }
-  ```
-  </details>
-
-* **Verify Network Binding:**
-  Check `C:\elastic\apm-server\apm-server.yml` configuration:
-  ```yaml
-  host: "0.0.0.0:8200"
-  ```
-
----
+3. Verify Network Binding. Check `C:\elastic\apm-server\apm-server.yml` configuration:
+    ```yaml
+    host: "0.0.0.0:8200"
+    ```
 
 ### OpenTelemetry Collector Port Issues
 
-#### Symptoms:
+**Symptoms:**
 - The `otelcol-relativity.exe` process is running, but no data is being sent.
 - Port 4318 is not in a listening state.
 
-#### Troubleshooting Steps:
+**Troubleshooting Steps:**
 
-* **Check if Port is in Use:**
-  This port is used by the OpenTelemetry Collector to receive data. The `Relativity Environment Watch` service must be running.
-  ```powershell
-  netstat -an | findstr ":4318"
-  ```
-  <details>
-  <summary>Expected output</summary>
+1. Check if Port is in Use. This port is used by the OpenTelemetry Collector to receive data. The `Relativity Environment Watch` service must be running.
+    ```powershell
+    netstat -an | findstr ":4318"
+    ```
+  
+    Expected output:
+    ```
+    TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
+    ```
 
-  ```
-  TCP    0.0.0.0:4318           0.0.0.0:0              LISTENING
-  ```
-  </details>
+    You can also use `Get-NetTCPConnection`:
+    ```powershell
+    Get-NetTCPConnection -LocalPort 4318 -State Listen
+    ```
 
-  You can also use `Get-NetTCPConnection`:
-  ```powershell
-  Get-NetTCPConnection -LocalPort 4318 -State Listen
-  ```
-
----
 
 ### General Port Troubleshooting
 
-#### Firewall Rules:
+#### Firewall Rules
   Ensure that Windows Firewall or any other network security software is not blocking the required ports. You may need to create inbound rules to allow traffic on these ports.
 
   **Example for Kibana (port 5601):**
@@ -187,23 +160,21 @@ The following table summarizes the default ports used by the Elastic Stack and E
   New-NetFirewallRule -DisplayName "Kibana Web Interface" -Direction Inbound -Protocol TCP -LocalPort 5601 -Action Allow
   ```
 
-#### Network Connectivity:
+#### Network Connectivity
   Use `Test-NetConnection` to verify that a remote server can reach the port.
   ```powershell
   Test-NetConnection -ComputerName <hostname_or_ip> -Port <port_number>
   ```
-  <details>
-  <summary>Expected output</summary>
-
+  
+  Expected output:
   ```
   ComputerName     : <hostname_or_ip>
   RemoteAddress    : <ip>
   RemotePort       : <port_number>
   TcpTestSucceeded : True
   ```
-  </details>
 
----
+
 
 ## Secret Store Troubleshooting
 
@@ -217,8 +188,7 @@ Verify that the Secret Store host is reachable on port 443.
 Test-NetConnection -ComputerName <hostname_or_ip> -Port 443
 ```
 
-<details>
-<summary>Expected output</summary>
+Expected output:
 
 ```
 ComputerName     : <hostname_or_ip>
@@ -226,7 +196,6 @@ RemoteAddress    : <ip>
 RemotePort       : 443
 TcpTestSucceeded : True
 ```
-</details>
 
 #### API Access Test
 
@@ -248,8 +217,8 @@ TcpTestSucceeded : True
 
 To check the seal status of the Secret Store, run the following script in an elevated PowerShell ISE.
 
-1.  Replace `<insert-secret-store-client-certificate-thumbprint-here>` with the thumbprint you copied.
-2.  Replace `<insert-secret-store-url-here>` with the URL you copied.
+- Replace `<insert-secret-store-client-certificate-thumbprint-here>` with the thumbprint you copied.
+- Replace `<insert-secret-store-url-here>` with the URL you copied.
 
 ```powershell
 $thumbprint = "<insert-secret-store-client-certificate-thumbprint-here>"
@@ -270,8 +239,7 @@ $response = Invoke-RestMethod -Uri "$url/v1/sys/seal-status" -Certificate $cert
 $response | ConvertTo-Json
 ```
 
-<details>
-<summary>Expected output (for a healthy, unsealed store)</summary>
+Expected output (for a healthy, unsealed store):
 
 ```json
 {
@@ -290,120 +258,116 @@ $response | ConvertTo-Json
     "storage_type": "raft"
 }
 ```
-</details>
 
 
 ## Certificate Troubleshooting
 
 ### SSL/TLS Certificate Issues
 
-#### Symptoms:
+**Symptoms:**
 - SSL handshake failures
 - "certificate verify failed" errors
 - Unable to establish secure connections
 - Browser shows "not secure" warning for Elasticsearch URL
 
-#### Troubleshooting Steps:
+**Troubleshooting Steps:**
 
-* **Verify Secure URL**
-  - The master node domain name URL should be secure for Elasticsearch node servers, agent servers, and web servers.
-  - The data node domain name URL should be secured for Elasticsearch node servers.
+1. Verify Secure URL
+    1. The master node domain name URL should be secure for Elasticsearch node servers, agent servers, and web servers.
+    2. The data node domain name URL should be secured for Elasticsearch node servers.
 
-* **Install SSL Certificate in Trusted Store**
+2. Install SSL Certificate in Trusted Store
 
    If your browser shows a "not secure" warning when accessing the Elasticsearch URL, you may need to install the certificate into your trusted store.
 
-    a. In your browser, view the certificate details and export the root certificate authority (CA) certificate. Save it to a local directory.
+    1. In your browser, view the certificate details and export the root certificate authority (CA) certificate. Save it to a local directory.
     
-    b. Double-click the downloaded certificate file and click **Install Certificate**.
+    2. Double-click the downloaded certificate file and click **Install Certificate**.
     
-    ![Install Certificate](../../resources/troubleshooting-images/installcertificate.png)
+        ![Install Certificate](../../resources/troubleshooting-images/installcertificate.png)
 
-    c. Select **Local Machine** and click **Next**.
+    3. Select **Local Machine** and click **Next**.
     
-    ![Select Local Machine](../../resources/troubleshooting-images/localmachine.png)
+        ![Select Local Machine](../../resources/troubleshooting-images/localmachine.png)
 
-    d. Select **Place all certificates in the following store**, click **Browse**, and select **Trusted Root Certification Authorities**. Click **OK**, then **Next**, and **Finish**.
+    4. Select **Place all certificates in the following store**, click **Browse**, and select **Trusted Root Certification Authorities**. Click **OK**, then **Next**, and **Finish**.
     
-    e. To confirm, open the Microsoft Management Console (MMC):
+    5. To confirm, open the Microsoft Management Console (MMC):
         i. Run `mmc.exe`.
         ii. Go to **File > Add/Remove Snap-in...**.
         iii. Select **Certificates** and click **Add**.
     
-    ![Add/Remove Snap-in](../../resources/troubleshooting-images/Add-removesnipin.png)
+            ![Add/Remove Snap-in](../../resources/troubleshooting-images/Add-removesnipin.png)
     
-    ![Add Certificates Snap-in](../../resources/troubleshooting-images/addcerts.png)
+            ![Add Certificates Snap-in](../../resources/troubleshooting-images/addcerts.png)
 
-    f. Choose **Computer account** and click **Next**, then **Finish**, and **OK**.
+    6. Choose **Computer account** and click **Next**, then **Finish**, and **OK**.
     
-    ![Select Computer Account](../../resources/troubleshooting-images/clickcomputeraccount.png)
+        ![Select Computer Account](../../resources/troubleshooting-images/clickcomputeraccount.png)
 
-    g. Expand **Certificates (Local Computer) > Trusted Root Certification Authorities > Certificates** and verify your certificate is listed.
+    7. Expand **Certificates (Local Computer) > Trusted Root Certification Authorities > Certificates** and verify your certificate is listed.
 
-    h. Close your browser and reopen the Elasticsearch URL. It should now show as secure.
+    8. Close your browser and reopen the Elasticsearch URL. It should now show as secure.
 
-    ![Secure Connection](../../resources/troubleshooting-images/sslenabled.png)
+        ![Secure Connection](../../resources/troubleshooting-images/sslenabled.png)
 
-* **Verify Certificate Path in `elasticsearch.yml`**
+3. Verify Certificate Path in `elasticsearch.yml`.
+    1. Ensure the `elasticsearch.yml` file points to the correct certificate files.
 
-  Ensure the `elasticsearch.yml` file points to the correct certificate files.
+    2. Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
+        ```yaml
+        xpack.security.transport.ssl:
+        keystore.path: certs/transport.p12
+        truststore.path: certs/transport.p12
+        ```
 
-  - Check `C:\elastic\elasticsearch\config\elasticsearch.yml`:
-    ```yaml
-    xpack.security.transport.ssl:
-      keystore.path: certs/transport.p12
-      truststore.path: certs/transport.p12
-    ```
+4. Check Elasticsearch Logs for SSL Errors
+    1. Navigate to `C:\elastic\elasticsearch\logs\`.
+    2. Review the `elasticsearch.log` file for any SSL-related errors.
+    3. For every error in the Elasticsearch log, provide troubleshooting for that specific error.
 
-* **Check Elasticsearch Logs for SSL Errors**
-  - Navigate to `C:\elastic\elasticsearch\logs\`.
-  - Review the `elasticsearch.log` file for any SSL-related errors.
-  - For every error in the Elasticsearch log, provide troubleshooting for that specific error.
-
----
 
 ### TLS Version Mismatch
 
-#### Symptoms:
+**Symptoms:**
 - **Connection Failure**: During installation of Environment Watch Installer, an error pop-up may appear with a message like:
   > The HTTP request submitted to the server `https://<hostname>:9200/` failed because of an unexpected error. Verify the server is accessible and URL is correct. Check the logs for more details or refer to the following troubleshooting guide.
 - **Log Errors**: Logs on the application's server indicate a failure to establish a secure connection or mention outdated TLS versions (like TLSv1.0 or TLSv1.1).
 - "SSLHandshakeException: client requested protocol TLSv1 is not enabled or supported in server context"
 
-#### Cause:
+**Cause:**
 The machine's .NET Framework is not configured to use strong cryptography, preventing it from negotiating a secure connection with modern servers that require TLS 1.2 or higher. By default, some .NET applications may attempt to use older, insecure TLS versions. Default TLS version supported by Elasticsearch is TLSv1.2 and TLSv1.3, hence causing issue
 
-#### Troubleshooting Steps:
+**Troubleshooting Steps:**
 
 To resolve this, the .NET Framework on the machine must be configured to use the system's default security protocols, which allows it to use newer versions like TLS 1.2/1.3.
 
 1.  **Verify TLS Settings**: 
-    - Navigate to **Control Panel > Network and Internet > Internet Options > Advanced**, ensure that **Use TLS 1.2** and **Use TLS 1.3** are checked.
+    1. Navigate to **Control Panel > Network and Internet > Internet Options > Advanced**, ensure that **Use TLS 1.2** and **Use TLS 1.3** are checked.
 
 2.  **Open Registry Editor**:
-    - Press `Win + R`, type `regedit`, and press Enter.
+    1. Press `Win + R`, type `regedit`, and press Enter.
 
 3.  **Navigate to .NET Framework Registry Keys**:
     A new value will need to be added in two locations.
 
-    - **For 64-bit applications:**
-      ```
-      HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\v4.0.30319
-      ```
-    - **For 32-bit applications running on a 64-bit machine:**
-      ```
-      HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319
-      ```
+    1. **For 64-bit applications:**
+          ```
+          HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework\v4.0.30319
+          ```
+    2. **For 32-bit applications running on a 64-bit machine:**
+          ```
+          HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319
+          ```
 
 4.  **Create the `SchUseStrongCrypto` Value**:
-    - In each of the keys mentioned above, right-click in the right-hand pane and select **New > DWORD (32-bit) Value**.
-    - Name the new value `SchUseStrongCrypto`.
-    - Double-click the new value and set its **Value data** to `1`. Click **OK**.
+    1. In each of the keys mentioned above, right-click in the right-hand pane and select **New > DWORD (32-bit) Value**.
+    2. Name the new value `SchUseStrongCrypto`.
+    3. Double-click the new value and set its **Value data** to `1`. Click **OK**.
 
-    > **Note:** This registry key forces .NET 4.x applications to use strong cryptography, enabling support for newer TLS versions.
+    > This registry key forces .NET 4.x applications to use strong cryptography, enabling support for newer TLS versions.
 
-5.  **Reboot the System**:
-    - A system reboot is required for the changes to take effect.
+5.  **Reboot the System**. A system reboot is required for the changes to take effect.
 
 6.  **Verify the Fix**:
-    - After rebooting, re-run the Environment Watch installer or restart the application. The connection to Elasticsearch should now succeed.
+    1. After rebooting, re-run the Environment Watch installer or restart the application. The connection to Elasticsearch should now succeed.

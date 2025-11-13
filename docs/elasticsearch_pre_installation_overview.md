@@ -127,9 +127,7 @@ The environment size is defined by the number of Web, Agent, and Worker servers 
 | Medium          | 2-4           | 5-9           | 2-9     |
 | Large           | 5+            | 10+           | 10+     |
 
-<div style="border:2px solid #0078D4; background-color:#E6F4FF; padding:12px; margin-block-end:12px; font-size:1.1em; font-weight:bold; color:#0078D4; text-align:center;">
-Each Elasticsearch server should have at least <b>4 vCPU</b> and <b>32 GB RAM</b>.
-</div>
+> Each Elasticsearch server should have at least <b>4 vCPU</b> and <b>32 GB RAM</b>.
 
 #### Environment Size – Development
 
@@ -230,8 +228,8 @@ Each Elasticsearch server should have at least <b>4 vCPU</b> and <b>32 GB RAM</b
 
 #### Environment Size – Large
 
-<div class="note">For a large environment, Elasticsearch is scaled horizontally by adding more nodes to the cluster(s).</div>
-<br />
+> [!NOTE]
+> For a large environment, Elasticsearch is scaled horizontally by adding more nodes to the cluster(s).
 
 | Elastic Stack Component                   | Server Count           |
 | ----------------------------------------- | ---------------------- |
@@ -286,7 +284,7 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 3. **Verify the minimum supported version of Elastic** -  All Relativity products have been certified with Elastic Stack 8.17.x, though Data Grid Audit alone is supported on 7.17.x. If you intend to use a single cluster for both, you must install the same version of Elasticsearch on all nodes in the cluster, and that version must be the higher of the minimum versions for Environment Watch and Data Grid Audit, if different. 
 
-4. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [System Requirements](/README.md) for the minimum version required.
+4. **At least the minimum Relativity major version and patch** specified in the Environment Watch bundle you intend to deploy is installed on all servers in the environment. See the [System Requirements](../README.md) for the minimum version required.
 
 5. **At least the minimum supported version of Windows Server** for the major version of Relativity installed in your environment is installed on each target server in your cluster (see [here](https://help.relativity.com/Server2024/Content/System_Guides/Workstation_Configuration/User_hardware_and_software_requirements.htm)).
 

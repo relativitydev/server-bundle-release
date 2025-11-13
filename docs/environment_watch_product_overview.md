@@ -112,7 +112,7 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 #### High-Level Architecture
 
 ![](../resources/environment_watch_product_overview_003.png)
-> [!Note]
+> [!NOTE]
 > Ensure inbound/outbound ports are open for this Elastic stack component.
 
 [See the port diagram for network requirements.](environment-watch/port-diagram.md)
@@ -164,7 +164,7 @@ These defaults can be customized in Elasticsearch to meet your organization's da
 
 Although alerts can be viewed within Kibana, Environment Watch uses a new Relativity Alerts application to integrate the alerts directly within the main Relativity UI. A new Alert Manager agent periodically uses a Kibana REST API to fetch alert details and update the "bell" header with the number of active alerts. Additional details about the Relativity Alerts application are provided below.
 
-> [!Note]
+> [!NOTE]
 > Relativity Alerts reflect the state of Kibana alerts within the Relativity UI. A Relativity agent periodically synchronizes the RDOs with the corresponding Kibana alerts, updating their state and trigger information.
 > 
 >  - **Kibana alerts** define rules in Elastic.
@@ -176,7 +176,7 @@ Although alerts can be viewed within Kibana, Environment Watch uses a new Relati
 Environment Watch is enabled by the technology components:
 
 | Component | Type | Used for | Setup |
-| --- | --- | --- | --- |
+| - | - | - | - |
 | Elasticsearch | Third-party software (Elastic) | NoSQL document storage | Installed and configured by customer on own infrastructure |
 | Kibana | Third-party software (Elastic) | Alert and dashboard creation and management. | Installed and configured by customer on own infrastructure |
 | APM Server | Third-party software (Elastic) | Receives telemetry data from monitored hosts. | Installed and configured by customer on own infrastructure |
@@ -251,7 +251,7 @@ When you have Relativity Alerts installed and Environment Watch is fully configu
   - **Alert State Updated** – When did the alert last change from inactive to active or active to inactive?
   - **Dashboard or Tab Jump Link** – Alerts are "generalized" in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
 	
-**Note** - Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
+> Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
 
 - **Alert Enabled for Instance** – If set to No, Relativity will stop querying Kibana for updated alert state information
     - **Feature Domain** – Alerts are grouped by feature domain. You can see a list of all feature domains [here](https://github.com/relativityone/server-relativity-docs/blob/main/environment-watch/feature-domains.md).
