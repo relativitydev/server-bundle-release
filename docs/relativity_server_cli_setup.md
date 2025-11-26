@@ -14,6 +14,80 @@
 - Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
 - The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
 
+### Steps for changing license
+
+If you need to change the Elasticsearch license from platinum to basic, follow these steps:
+
+1. **Check the current license status**
+
+   Verify the current license type by accessing the Elasticsearch license endpoint. Replace `<hostname_or_ip>` with your Elasticsearch hostname or IP address:
+
+   ```
+   https://<hostname_or_ip>:9200/_license
+   ```
+
+   Example response for platinum license:
+   ```json
+   {
+     "license" : {
+       "status" : "active",
+       "uid" : "a523a4e6-9cec-4f97-a922-eadb0d7c8fda",
+       "type" : "platinum",
+       "issue_date" : "2025-04-16T00:00:00.000Z",
+       "issue_date_in_millis" : 1744761600000,
+       "expiry_date" : "2026-04-30T23:59:59.999Z",
+       "expiry_date_in_millis" : 1777593599999,
+       "max_nodes" : 72,
+       "max_resource_units" : null,
+       "issued_to" : "kCura Corporation (non-production environments)",
+       "issuer" : "API",
+       "start_date_in_millis" : 1744761600000
+     }
+   }
+   ```
+
+2. **Change license to basic using Kibana Dev Tools**
+
+   Navigate to Kibana Dev Tools and execute the following API call:
+
+   ```
+   POST /_license/start_basic?acknowledge=true
+   ```
+
+   Expected response:
+   ```json
+   {
+     "acknowledged": true,
+     "basic_was_started": true
+   }
+   ```
+
+3. **Verify the license change**
+
+   Confirm that the license has been successfully changed to basic by checking the license status again:
+
+   ```
+   https://<hostname_or_ip>:9200/_license
+   ```
+
+   Example response for basic license:
+   ```json
+   {
+     "license" : {
+       "status" : "active",
+       "uid" : "3c332613-ef4f-4fcf-8505-982551476532",
+       "type" : "basic",
+       "issue_date" : "2025-11-26T09:22:27.879Z",
+       "issue_date_in_millis" : 1764148947879,
+       "max_nodes" : 1000,
+       "max_resource_units" : null,
+       "issued_to" : "elasticsearch",
+       "issuer" : "elasticsearch",
+       "start_date_in_millis" : -1
+     }
+   }
+   ```
+
 ### Set up instructions
 
 1. Open elevated command prompt/powershell. Run the below command. Select Environment Watch
