@@ -78,6 +78,83 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 5. Verify Audit Dashboard - navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
 
 
+## Elasticsearch License Configuration
+
+Relativity Server customers are currently using the platinum license for authentication between Relativity and Elasticsearch for the Audit application. From Elasticsearch 8.x onwards, authentication will use API keys instead of the platinum license.
+
+If you need to change the Elasticsearch license from platinum to basic, follow these steps:
+
+1. **Check the current license status**
+
+   Verify the current license type by accessing the Elasticsearch license endpoint. Replace `<hostname_or_ip>` with your Elasticsearch hostname or IP address:
+
+   ```
+   https://<hostname_or_ip>:9200/_license
+   ```
+
+   Example response for platinum license:
+   ```json
+   {
+     "license" : {
+       "status" : "active",
+       "uid" : "a523a4e6-9cec-4f97-a922-eadb0d7c8fda",
+       "type" : "platinum",
+       "issue_date" : "2025-04-16T00:00:00.000Z",
+       "issue_date_in_millis" : 1744761600000,
+       "expiry_date" : "2026-04-30T23:59:59.999Z",
+       "expiry_date_in_millis" : 1777593599999,
+       "max_nodes" : 72,
+       "max_resource_units" : null,
+       "issued_to" : "kCura Corporation (non-production environments)",
+       "issuer" : "API",
+       "start_date_in_millis" : 1744761600000
+     }
+   }
+   ```
+
+2. **Change license to basic using Kibana Dev Tools**
+
+   Navigate to Kibana Dev Tools and execute the following API call:
+
+   ```
+   POST /_license/start_basic?acknowledge=true
+   ```
+
+   Expected response:
+   ```json
+   {
+     "acknowledged": true,
+     "basic_was_started": true
+   }
+   ```
+
+3. **Verify the license change**
+
+   Confirm that the license has been successfully changed to basic by checking the license status again:
+
+   ```
+   https://<hostname_or_ip>:9200/_license
+   ```
+
+   Example response for basic license:
+   ```json
+   {
+     "license" : {
+       "status" : "active",
+       "uid" : "3c332613-ef4f-4fcf-8505-982551476532",
+       "type" : "basic",
+       "issue_date" : "2025-11-26T09:22:27.879Z",
+       "issue_date_in_millis" : 1764148947879,
+       "max_nodes" : 1000,
+       "max_resource_units" : null,
+       "issued_to" : "elasticsearch",
+       "issuer" : "elasticsearch",
+       "start_date_in_millis" : -1
+     }
+   }
+   ```
+
+
 ## Next
 
 [Click here for the next step](install_environment_watch_monitoring_agents.md)
