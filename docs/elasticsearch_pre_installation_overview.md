@@ -118,149 +118,27 @@ The number of servers and hardware specifications needed to host the Elastic com
 
 **Environment Size**
 
-The environment size is defined by the number of Web, Agent, and Worker servers within the instance.
+| Environment Size              | Web Servers | Agent Servers | Worker Servers | SQL Distributed Servers |
+| ----------------------------- | ----------- | ------------- | -------------- | ----------------------- |
+| Development                   | 1           | 2             | 1              | 1                       |
+| Small                         | 2           | 10            | 2              | 2                       |
+| Medium                        | 8           | 20            | 6              | 6                       |
+| Large                         | 12          | 40            | 10             | 12                      |
+| X-Large                       | 24          | 80            | 10             | 16                      |
 
-| Environment Size| Web Servers   | Agent Servers | Workers |
-| --------------- | ------------- | ------------- | ------- |
-| Development     | 1             | 1             | 1       |
-| Small           | 1             | 4             | 1       |
-| Medium          | 2-4           | 5-9           | 2-9     |
-| Large           | 5+            | 10+           | 10+     |
+#### Elastic Stack Infrastructure Recommendations
 
-> Each Elasticsearch server should have at least <b>4 vCPU</b> and <b>32 GB RAM</b>.
+| Environment Size              | DG/Audit Data Nodes | Environment Watch Data Nodes | APM Servers | Kibana Servers |
+| ----------------------------- | ------------------- | ---------------------------- | ----------- | -------------- |
+| Development                   | 1 / 500 GB          | 1 / 1 TB                     | 1           | 1              |
+| Small                         | 1 / 1 TB            | 1 / 2 TB                     | 1           | 1              |
+| Medium                        | 2 / 2 TB            | 2 / 3 TB                     | 1           | 1              |
+| Large                         | 5 / 16 TB           | 3 / 8 TB                     | 2           | 2              |
+| X-Large                       | 10 / 32 TB          | 5 / 16 TB                    | 3           | 3              |
 
-#### Environment Size – Development
-
-> [!NOTE]
-> For a development environment, all Elasticsearch components are installed within a single server to minimize complexity and get up and running as quickly as possible. <b>There are no data upgrades performed for this environment.</b>
-<br />
-
-| Elastic Stack Component                   | Server Count |
-| ----------------------------------------- | ------------ |
-| **Environment Watch Only**                |              |
-| Elasticsearch/Kibana/APM Server           | 1            |
-| **Data Grid Audit Only**                  |              |
-| Elasticsearch/Kibana (optional)           | 1            |
-| **Environment Watch and Data Grid Audit** |              |
-| Elasticsearch/Kibana/APM Server           | 1            |
-
-| Elastic Stack Component                   | Server Count | Disk (TB) |
-| ----------------------------------------- | ------------ | ---------- |
-| **Environment Watch Only**                |              |            |
-| Elasticsearch/Kibana/APM Server           | 1            | 1          |
-| **Data Grid Audit Only**                  |              |            |
-| Elasticsearch/Kibana (optional)           | 1            | 1          |
-| **Environment Watch and Data Grid Audit** |              |            |
-| Elasticsearch/Kibana/APM Server           | 1            | 1          |
-
-#### Environment Size – Small
-
-> [!NOTE]
-> For a small environment, we recommend dedicated Kibana and APM Server server, but can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node.
-<br />
-
-| Elastic Stack Component                   | Server Count |
-| ----------------------------------------- | ------------ |
-| **Environment Watch Only**                |              |
-| Elasticsearch nodes                       | 2            |
-| Kibana                                    | 1            |
-| APM Server                                | 1            |
-| **Data Grid Audit Only**                  |              |
-| Elasticsearch nodes                       | 2            |
-| Kibana (optional)                         | 1            |
-| APM Server                                | N/A          |
-| **Environment Watch and Data Grid Audit** |              |
-| Elasticsearch nodes                       | 3            |
-| Kibana                                    | 1            |
-| APM Server                                | 1            |
-
-| Elastic Stack Component                   | Server Count | Disk (TB) |
-| ----------------------------------------- | ------------ | ---------- |
-| **Environment Watch Only**                |              |            |
-| Elasticsearch nodes                       | 2            | 1          |
-| Kibana                                    | 1            | 1          |
-| APM Server                                | 1            | 1          |
-| **Data Grid Audit Only**                  |              |            |
-| Elasticsearch nodes                       | 2            | 1          |
-| Kibana (optional)                         | 1            | 1          |
-| APM Server                                | N/A          | -          |
-| **Environment Watch and Data Grid Audit** |              |            |
-| Elasticsearch nodes                       | 3            | 1          |
-| Kibana                                    | 1            | 1          |
-| APM Server                                | 1            | 1          |
-
-#### Environment Size – Medium
-
-> [!NOTE]
-> For a medium environment, a few additional nodes are added to the Elasticsearch cluster(s).
-<br />
-
-| Elastic Stack Component                   | Server Count |
-| ----------------------------------------- | ------------ |
-| **Environment Watch Only**                |              |
-| Elasticsearch nodes                       | 3            |
-| Kibana                                    | 1            |
-| APM Server                                | 1            |
-| **Data Grid Audit Only**                  |              |
-| Elasticsearch nodes                       | 3            |
-| Kibana (optional)                         | 1            |
-| APM Server                                | N/A          |
-| **Environment Watch and Data Grid Audit** |              |
-| Elasticsearch nodes                       | 6            |
-| Kibana                                    | 1            |
-| APM Server                                | 1            |
-
-| Elastic Stack Component                   | Server Count | Disk (TB) |
-| ----------------------------------------- | ------------ | ---------- |
-| **Environment Watch Only**                |              |            |
-| Elasticsearch nodes                       | 3            | 2          |
-| Kibana                                    | 1            | 2          |
-| APM Server                                | 1            | 2          |
-| **Data Grid Audit Only**                  |              |            |
-| Elasticsearch nodes                       | 3            | 2          |
-| Kibana (optional)                         | 1            | 2          |
-| APM Server                                | N/A          | -          |
-| **Environment Watch and Data Grid Audit** |              |            |
-| Elasticsearch nodes                       | 6            | 2          |
-| Kibana                                    | 1            | 2          |
-| APM Server                                | 1            | 2          |
-
-
-#### Environment Size – Large
-
-> [!NOTE]
-> For a large environment, Elasticsearch is scaled horizontally by adding more nodes to the cluster(s).
-
-| Elastic Stack Component                   | Server Count           |
-| ----------------------------------------- | ---------------------- |
-| **Environment Watch Only**                |                        |
-| Elasticsearch nodes                       | 4                      |
-| Kibana                                    | 1                      |
-| APM Server                                | 1                      |
-| **Data Grid Audit Only**                  |                        |
-| Elasticsearch nodes                       | 1-15 (scale on demand) |
-| Kibana (optional)                         | 1                      |
-| APM Server                                | N/A                    |
-| **Environment Watch and Data Grid Audit** |                        |
-| Elasticsearch nodes                       | 4-18 (scale on demand) |
-| Kibana                                    | 1                      |
-| APM Server                                | 1                      |
-
-| Elastic Stack Component                   | Server Count           | Disk (TB) |
-| ----------------------------------------- | ---------------------- | ---------- |
-| **Environment Watch Only**                |                        |            |
-| Elasticsearch nodes                       | 4                      | 4          |
-| Kibana                                    | 1                      | 4          |
-| APM Server                                | 1                      | 4          |
-| **Data Grid Audit Only**                  |                        |            |
-| Elasticsearch nodes                       | 1-15 (scale on demand) | 4          |
-| Kibana (optional)                         | 1                      | 4          |
-| APM Server                                | N/A                    | -          |
-| **Environment Watch and Data Grid Audit** |                        |            |
-| Elasticsearch nodes                       | 4-18 (scale on demand) | 4          |
-| Kibana                                    | 1                      | 4          |
-| APM Server                                | 1                      | 4          |
-
+- Separate Elastic clusters is supported when using both Audit/Environment Watch but not required 
+- APM/Kibana servers can be load balanced
+- Each Elasticsearch node should have at least <b>4 vCPU</b> and <b>32 GB RAM</b>.
 
 ### Licensing
 
