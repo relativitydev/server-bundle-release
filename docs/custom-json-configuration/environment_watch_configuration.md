@@ -1,4 +1,4 @@
-# Environment Watch Configuration
+# Custom JSON Configuration
 
 This document provides an overview of the custom JSON configuration for Environment Watch, allowing user to monitor Windows services and certificates from a shared path for any host, and to send alerts to a Slack channel based on the specified Slack settings.
 
@@ -176,7 +176,7 @@ Monitors the availability of specified SQL Server instances.
 				"include": [ "Host\\INSTANCE01" ]
 			  }
 ```
-## Alert Notification Handlers
+## Alert Notification Handlers [Preview Feature]
 
 The `alertNotificationHandlers` section configures integrations for sending alerts when monitored resources meet specified conditions. This enables automated notifications to external systems such as Slack.
 

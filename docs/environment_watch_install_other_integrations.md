@@ -21,6 +21,12 @@ The RabbitMQ integration enables monitoring of RabbitMQ queues, exchanges, and n
 
 - [Setting Up RabbitMQ Integration](rabbitmq/rabbitmq_integration.md)
 
+### Custom-JSON Integration
+
+The Custom-JSON integration enables monitoring of windows services, certificates and sending slack alert notification.
+
+- [Setting Up Custom-JSON Integration](custom-json-configuration/environment_watch_configuration.md)
+
 ## Next Step
 
 [Click here for the next step](./environment-watch/post-install-verification.md)
