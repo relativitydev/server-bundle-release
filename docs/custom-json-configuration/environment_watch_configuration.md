@@ -99,7 +99,7 @@ Monitors the status of specified Windows services configured to ensure they are 
 ```
 ### Certificates
 
-Monitors the presence and validity of specified certificates in Windows certificate stores.
+Monitors the presence and validity of specified certificates in Windows certificate stores.There are certificates by default monitored without configuration and they are based on installed product.
 
 **Default Certificates**
 | Certificate Name                  | Description                                      |
@@ -363,3 +363,4 @@ The Slack handler allows alerts to be sent to a designated Slack channel. Config
 		}
 	}
 }
+```

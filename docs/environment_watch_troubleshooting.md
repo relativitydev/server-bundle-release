@@ -11,3 +11,4 @@ This document provides quick reference links to detailed troubleshooting guides 
 - [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](troubleshooting/monitoring-agent-and-otel-collector.md)
 - [Relativity Server CLI Troubleshooting](troubleshooting/relativity-server-cli.md)
 - [Relativity Alerts Troubleshooting](troubleshooting/relativity_alerts_troubleshooting.md)
+- [Custom JSON Troubleshooting](troubleshooting/custom-json-troubleshooting.md)
