@@ -110,11 +110,6 @@ The number of servers and hardware specifications needed to host the Elastic com
 **A few other key notes and reminders:**
 
 - **Tuning for speed** – Review Elastic’s guidance on how to tune the environment for speed [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/tune-for-search-speed.html).
-- **Hosting Elastic** – While the guidance below recommends installing the Elastic components on many dedicated servers, there are no hard requirements to isolate Elasticsearch, Kibana, or APM Server on dedicated hosts. As evident with the Development environment specifications, the full Elastic stack can be deployed on a single host if that server can meet the storage needs.
-  - **Kibana and APM Server hosting:**
-    - For Small environments, we recommend dedicated servers for Kibana and APM Server, but can consider installing Kibana and/or APM Server on a single server or even on the same server being used as an Elasticsearch node for development and very small environments.
-    - For Medium environments and above, we strongly recommend installing Kibana and APM Server each on dedicated servers.
-- **Nodes in a shared Environment Watch/Data Grid cluster** – In a cluster being used for both Environment Watch and Data Grid Audit, data nodes are not required to be designated for one or the other. Any node in the cluster can support operations for either product, though dedicated node assignments may be needed for certain workloads.
 
 **Environment Size**
 
