@@ -309,3 +309,47 @@ processors:
         converted_type: int
 ```
 
+## Verification in Kibana
+
+After configuring IIS logging and ensuring the Environment Watch monitoring agent is running, verify that logs are being ingested into Elasticsearch:
+
+### Step 1: Log into Kibana
+
+1. Open your web browser and navigate to Kibana (default: `https://<elasticsearch-host>:5601`)
+2. Log in with your Elasticsearch credentials
+
+### Step 2: Navigate to Discover
+
+1. Click on the **Discover** menu item in the left navigation panel
+2. select data view logs-*
+
+### Step 3: Set the Time Range
+
+1. In the top right corner, click the time filter
+2. Select **Last 15 minutes** or **Last 1 hour** to view recent logs
+3. Click **Apply**
+
+### Step 4: Search for IIS Logs
+
+In the search bar, enter the following query to filter for IIS logs:
+
+```
+iis_log_http_request_method:*
+```
+
+Or search for a specific field:
+
+```
+iis_log_http_target:"/Relativity*"
+```
+
+### Step 5: Verify Fields are Populated
+
+1. Expand one of the log entries by clicking the arrow icon
+2. Verify that all IIS log fields are present and populated:
+   - `iis_log_date_time`
+   - `iis_log_hostname`
+   - `iis_log_http_request_method`
+   - `iis_log_http_target`
+   - `iis_log_http_server_status`
+   - `iis_log_http_server_duration` and all other mapped fields
