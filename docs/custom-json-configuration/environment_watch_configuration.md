@@ -61,103 +61,13 @@ This section describes the main types of sources that can be monitored using the
 
 ### Windows Services
 
-Monitors the status of specified Windows services configured to ensure they are running as expected. There are windows services by default monitored without configuration and they are based on installed product. 
+Refer - [Windows Service Configuration](windows_services_configuration.md)
 
-**Default Services**
-
-| Service Display Name                  | Description                                      |
-|---------------------------------------|--------------------------------------------------|
-| apm-server                           | Elastic Stack APM Server                         |
-| Elasticsearch                        | Elastic Stack Elasticsearch Service              |
-| W3SVC                                 | Internet Information Services (IIS)              |
-| QueueManager                         | Invariant Queue Manager                          |
-| RabbitMQ                             | RabbitMQ Message Broker                          |
-| kCura EDDS Agent Manager             | Relativity Agent Manager                         |
-| Relativity Analytics Engine           | Relativity Analytics Engine (CAAT)               |
-| Relativity Secret Store               | Relativity Secret Store                          |
-| kCura Service Host Manager           | Relativity Service Host Manager                  |
-| kCura EDDS Web Processing Manager    | Relativity Web Processing Manager                |
-
-**Properties Table**
-
-| Property    | Type     | Description                                                      |
-|-------------|----------|------------------------------------------------------------------|
-| `enabled`   | boolean  | Enables or disables monitoring for Windows services.              |
-| `include`   | array    | List of Windows service names to monitor (e.g., `"WinDefend"`).  |
-
-**Example**---
-```json
-{
-	"windowsServices": {
-		"enabled": true,
-		"include": [
-			"WindowsAzureGuestAgent",
-			"mpssvc"
-		]
-	}
-}
-```
 ### Certificates
 
-Monitors the presence and validity of specified certificates in Windows certificate stores.There are certificates by default monitored without configuration and they are based on installed product.
-
-**Default Certificates**
-| Certificate Name                  | Description                                      |
-|-----------------------------------|--------------------------------------------------|
-|Relativity Secret Store            | Certificate for Relativity Secret Store.         |
-
-**Properties Table**
-
-| Property      | Type     | Description                                                      |
-|---------------|----------|------------------------------------------------------------------|
-| `enabled`     | boolean  | Enables or disables monitoring for certificates.                 |
-| `include`     | array    | List of certificate objects to monitor.                          |
-| `StoreName`   | string   | Name of the certificate store (e.g., `"My"`).                    |
-| `StoreLocation`| string  | Location of the store (e.g., `"LocalMachine"`).                  |
-| `Thumbprint`  | string   | Certificate thumbprint to identify the certificate.              |
+Refer - [Certificates Configuration](certificates_configuration.md)
 
 
-#### StoreLocation Enum Values
-
-The `StoreLocation` Field specifies the location of the X.509 certificate store to use.
-
-**Possible Values**
-
-| Value         | Description                                                    |
-|---------------|----------------------------------------------------------------|
-| CurrentUser   | The X.509 certificate store is located in the current user's profile. |
-| LocalMachine  | The X.509 certificate store is located in the local computer's profile. |
-
-#### StoreName Enum Values
-
-The `StoreName` Field specifies name of the Windows certificate store where the X.509 certificate is located.
-
-**Possible Values**
-
-| Value                | Description                                   |
-|----------------------|-----------------------------------------------|
-| AddressBook          | Other people                                  |
-| AuthRoot             | Third party trusted roots                     |
-| CertificateAuthority | Intermediate CAs                              |
-| Disallowed           | Revoked certificates                          |
-| My                   | Personal certificates                         |
-| Root                 | Trusted root CAs                              |
-| TrustedPeople        | Trusted people (used in EFS)                  |
-| TrustedPublisher     | Trusted publishers (used in Authenticode)     |
-
-**Example**
-```json
-"certificates": {
-					"enabled": true,
-					"include": [
-						{
-							"StoreName": "My",
-							"StoreLocation": "LocalMachine",
-							"Thumbprint": "A54225760344699530649239D175BAA73C70DC1B"
-						}
-					]
-				}
-```
 ### SQL Services
 
 Monitors the availability of specified SQL Server instances.
@@ -169,6 +79,7 @@ Monitors the availability of specified SQL Server instances.
 | `enabled`   | boolean  | Enables or disables monitoring for SQL services.                 |
 | `include`   | array    | List of SQL Server instance names to monitor (e.g., `"VIRTSQL\\INSTANCE01"`). |
 
+
 **Example**
 ```json
 "sqlServers": {
@@ -176,81 +87,10 @@ Monitors the availability of specified SQL Server instances.
 				"include": [ "Host\\INSTANCE01" ]
 			  }
 ```
-## Alert Notification Handlers [Preview Feature]
 
-The `alertNotificationHandlers` section configures integrations for sending alerts when monitored resources meet specified conditions. This enables automated notifications to external systems such as Slack.
+### Alert Notification Handler
 
-### Slack Handler
-
-The Slack handler allows alerts to be sent to a designated Slack channel. Configuration options include:
-
-| Property                   | Description                                                                 |
-|----------------------------|-----------------------------------------------------------------------------|
-| `accessToken`              | The Slack API token used for authentication.                                |
-| `acknowledgeAlertEnabled`  | Boolean flag to enable/disable alert acknowledgment in Slack. This is by dafault false since implementation is not done.               |
-| `channel`                  | The Slack channel ID where alerts will be posted.                         |
-| `enabled`                  | Boolean flag to enable/disable Slack notifications.                         |
-| `messageIntervalSeconds`   | Interval (in seconds) between alert messages sent to Slack. It should be more than or equal to  min slack interval in seconds i.e. 180               |
-
-
----
-
-## Configure Slack Channel
-
-### Create a Slack App
-
-Step 1 : Go to Slack API website:
-Open your browser and go to: https://api.slack.com/apps
-
-
-Step 2 : Click "Create New App"
-
-![Create Slack App](../../resources/slackalerts-images/CreateSlackApp.png)
-
-Step 3 : Choose "From scratch"
-
-Step 4 : Name the AppName and Pick your workspace from the dropdown.Click `Create App`
-
-![Pick Workspace](../../resources/slackalerts-images/PickAworkspace.png)
-
-### Get Access Token
-
-Go To Settings of Channel. Select `OAuth & Permissions`. Copy Bot User Auth Token and assign it to access token.
-
-![OAuth Token](../../resources/slackalerts-images/OAuthToken.png)
-
-
-### Create Slack Channel
-
-Step 1 : Click on 3 horizontal lines on the extreme left side of the slack. Click `File` and then `New Channel` 
-
-![New Channel](../../resources/slackalerts-images/NewChannel.png)
-
-Step 2 : Enter Channel Name 
-
-![New Channel](../../resources/slackalerts-images/createachannel.png)
-
-Step 3 : Make the channel visibility `Public`. click on `Create`.
-
-![Channel Visibility](../../resources/slackalerts-images/CreateChannelVisibility.png)
-
-### Map Channel to Slack App
-
-go to the required channel aand type below command and Enter
-
-/invite @appname 
-
-where appname is slack app name.
-
-### Get Channel Id
-
-Go to required channel and in About copy channel Id and assign it to channel in slack configuration.
-
-![New Channel](../../resources/slackalerts-images/ChannelId.png)
-
-### Slack Notofication Example
-
-![Slack Example](../../resources/slackalerts-images/SlackNotification.png)
+Refer - [Alert Notification Handlers](alert_notification_handlers_configuration.md)
 
 
 ## Example Configuration

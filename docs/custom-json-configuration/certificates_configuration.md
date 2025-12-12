@@ -52,6 +52,16 @@ The `StoreName` Field specifies name of the Windows certificate store where the 
 | TrustedPeople        | Trusted people (used in EFS)                  |
 | TrustedPublisher     | Trusted publishers (used in Authenticode)     |
 
+**Get certificate thumbprint**
+
+Depending on the Store Location and Store Name, run the following command on the host. For `LocalMachine` and `My`, use:
+
+> ```powershell
+> Get-ChildItem Cert:\LocalMachine\My
+
+You will get table with Thumprint and Subject. Select the Thumprint for the certificate required and assign it as shown in the example. Based on the Store Name and Store Location command changes and the values in the json too.
+
+
 **Example**
 ```json
 "certificates": {
