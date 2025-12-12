@@ -250,7 +250,7 @@ Go to required channel and in About copy channel Id and assign it to channel in 
 
 ### Slack Notofication Example
 
-![Slack Example](../../resources/slackalerts-images/ChannelId.png)
+![Slack Example](../../resources/slackalerts-images/SlackNotification.png)
 
 
 ## Example Configuration
