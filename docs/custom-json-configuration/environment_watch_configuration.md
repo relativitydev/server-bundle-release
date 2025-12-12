@@ -68,9 +68,9 @@ Refer - [Windows Service Configuration](windows_services_configuration.md)
 Refer - [Certificates Configuration](certificates_configuration.md)
 
 
-### SQL Services
+### SQL Cluster Instances
 
-Monitors the availability of specified SQL Server instances.
+Refer - [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md)
 
 **Properties Table**
 

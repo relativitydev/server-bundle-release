@@ -4,6 +4,19 @@ This section describes the configuration of windows services in the `environment
 
 ---
 
+## Custom JSON Configuration Structure
+
+To monitor Windows Services, configure the Windows Services details in a custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`. An example of the BCPPath and folder structure is shown below:
+
+![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
+
+The custom JSON file includes the following key sections:
+- Monitoring by Instance
+- Monitoring by Installed Product
+- Monitoring by Host
+
+For details about the custom JSON structure, refer to the [Custom JSON Configuration Structure](./environment_watch_configuration.md) document.
+
 ## Overview
 
 Monitors the status of specified Windows services configured to ensure they are running as expected. There are windows services by default monitored without configuration and they are based on installed product. 

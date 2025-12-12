@@ -21,11 +21,29 @@ The RabbitMQ integration enables monitoring of RabbitMQ queues, exchanges, and n
 
 - [Setting Up RabbitMQ Integration](rabbitmq/rabbitmq_integration.md)
 
-### Custom-JSON Integration
+### Windows Services Using Custom-JSON Integration
 
-The Custom-JSON integration enables monitoring of windows services, certificates and sending slack alert notification.
+The Custom-JSON integration enables monitoring of Windows services, allowing you to track their status and performance.
 
-- [Setting Up Custom-JSON Integration](custom-json-configuration/environment_watch_configuration.md)
+- [Setting Up Windows Service Custom-JSON Integration](custom-json-configuration/windows_services_configuration.md)
+
+### Certificates Using Custom-JSON Integration
+
+The Custom-JSON integration enables monitoring of certificate expiration dates, allowing you to ensure timely renewals, monitoring of certificate status in Kibana alerts/dashboard and maintain system security.
+
+- [Setting Up Certificate Custom-JSON Integration](custom-json-configuration/certificates_configuration.md)
+
+### Kibana Alerts - Slack Notification Using Custom-JSON Integration
+
+The Custom-JSON integration enables monitoring of Kibana alerts and sending notifications to Slack channels.
+
+- [Setting Up Kibana Alerts - Slack Notification Custom-JSON Integration](custom-json-configuration/alert_notification_handlers_configuration.md)
+
+### SQL Cluster Instance Using Custom-JSON Integration
+
+The Custom-JSON integration enables monitoring of SQL Cluster instances, allowing to receive metrics and performance data from SQL clusters instances in Kibana dashboards.
+
+- [Setting Up SQL Cluster Instance Custom-JSON Integration](sql-cluster-configuration/sql-cluster-configuration.md)
 
 ## Next Step
 

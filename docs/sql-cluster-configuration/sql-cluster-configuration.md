@@ -17,7 +17,7 @@ The custom JSON file includes the following key sections:
 - Monitoring by Installed Product
 - Monitoring by Host
 
-More details about this sections will be available in an upcoming https://github.com/relativitydev/server-bundle-release/pull/45 PR, once it is merged a link to the document will be provided here.
+For details about the custom JSON structure, refer to the [Custom JSON Configuration Structure](../custom-json-configuration/environment_watch_configuration.md) document.
 
 ---
 
