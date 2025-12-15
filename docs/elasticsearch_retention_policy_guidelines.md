@@ -4,7 +4,7 @@
 
 ### Purpose
 
-This guidelines defines retention policies for logs, metrics, and traces collected in Elasticsearch and viewed through Kibana. Proper retention management is critical for:
+These guidelines define retention policies for logs, metrics, and traces collected in Elasticsearch and viewed through Kibana. Proper retention management is critical for:
 
 - **Storage Optimization** – Prevents excessive disk usage by automatically removing outdated data
 - **Performance Maintenance** – Keeps query response times fast by limiting the volume of searchable data

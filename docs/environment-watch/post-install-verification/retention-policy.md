@@ -1,4 +1,4 @@
-# Post-Install Verification for Rentension Policy
+# Post-Install Verification for Retention Policy
 ![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 # Verify Retention Policy Configuration
