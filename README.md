@@ -14,7 +14,10 @@ This release bundle contains packages that are required to set up or upgrade two
 | **Requirement**   | **Version/Details (Relativity Server 2024 Patch 2)**      | **Version/Details (Relativity Server 2025)**   |
 | :---------------- | :-------------------------------------------------------- | :--------------------------------------------- |
 | Elastic Stack     | 8.17.3 is required for Environment Watch.<br/>7.17.x can be used but for Data Grid Audit only. | Compatible with Elastic Stack 8.17.3 and 9.1.3 for Environment Watch.<br/>9.1.3 is recommended. |
-| Network Ports     | Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](docs/environment-watch/port-diagram.md) for full network configuration details. | Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](docs/environment-watch/port-diagram.md) for full network configuration details. |
+
+**Network Ports**: Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](docs/environment-watch/port-diagram.md) for full network configuration details.
+
+---
 
 > **Note**: Relativity Server 2025 and Relativity Server 2024 Patch 2 include visualization of the Environment Watch Catalog for easier monitoring and management. For more details, see the [Environment Watch Catalog](https://github.com/relativityone/server-relativity-docs/blob/main/environment-watch/environment-watch-catalog/readme.md).
 
