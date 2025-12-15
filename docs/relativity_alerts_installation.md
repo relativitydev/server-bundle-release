@@ -21,12 +21,11 @@ To install the Relativity Alerts application on your Relativity instance:
 	![relativity_alerts_installation_001](../resources/relativity_alerts_installation_001.png)
 4. Click **Select File**.<br/>
 	![relativity_alerts_installation_002](../resources/relativity_alerts_installation_002.png)
-5. The [Environment Watch bundle](https://github.com/relativitydev/server-bundle-release/releases) contains a RAPs folder with two subfolders:
-	- `/RAPs/Server2024` - Contains the Relativity Alerts RAP for Relativity Server 2024.
-	- `/RAPs/Server2025` - Contains the Relativity Alerts RAP for Relativity Server 2025.
+5. The [Environment Watch bundle](https://github.com/relativitydev/server-bundle-release/releases) contains a RAPs folder with subfolders organized by Relativity Server version. Each subfolder **Server202X** contains the corresponding Relativity Alerts RAP file for that Relativity Server version.
+	
 	![relativity_alerts_installation_007](../resources/relativity_alerts_installation_007.png)
 	
-	Navigate to the appropriate subfolder based on your Relativity Server version, select the Relativity Alerts RAP file from the latest [Environment Watch Bundle](https://github.com/relativitydev/server-bundle-release/releases), and then click **Open**.<br/>
+	Navigate to the subfolder that matches your Relativity Server version, select the Relativity Alerts RAP file, and then click **Open**.<br/>
 	![relativity_alerts_installation_003](../resources/relativity_alerts_installation_003.png)
 6. Click **Save** to upload the file to the Application Library.<br/>
 	![relativity_alerts_installation_004](../resources/relativity_alerts_installation_004.png)
