@@ -14,13 +14,13 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     ![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
 
-### Step 1: Download and Install Elasticsearch 8.17.3 on one server
-1. Download Elasticsearch 8.17.3
+### Step 1: Download and Install Elasticsearch 8.x/9.x on one server
+1. Download Elasticsearch 8.x/9.x
     1. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
-    2. Download the 8.17.3 Windows .zip version.
+    2. Download the 8.x/9.x Windows .zip version.
     3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
     4. Extract the files to `C:\elastic`
-2. Install and Configure Elasticsearch 8.17.3
+2. Install and Configure Elasticsearch 8.x/9.x
     1. Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:     
 		```
 		C:\elastic\elasticsearch-8.17.3\bin\elasticsearch.bat
@@ -100,7 +100,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
         ```
         The output will look similar to:
         ```
-        WARNING: Waiting for service 'Elasticsearch 8.17.3 (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
+        WARNING: Waiting for service 'Elasticsearch 8.x/9.x (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
         ```
 
 7. Verify Elasticsearch Server
@@ -137,8 +137,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ### Step 2: Install and Configure Kibana
 
-1. Download Kibana 8.17.3
-    1. Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
+1. Download Kibana 8.x/9.x
+    1. Download and extract the 8.x/9.x Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
     2. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
 2. Start Kibana from the command line
@@ -285,9 +285,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 1. Prerequisites to setup APM Server
     - Elastic and Kibana should be configured and services should be up and running.
 
-2. Download APM Server 8.17.3
+2. Download APM Server 8.x/9.x
     1. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
-    2. Download and extract the 8.17.3 Windows .zip file.
+    2. Download and extract the 8.x/9.x Windows .zip file.
     3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
     4. Extract the files to `C:\`.
 
