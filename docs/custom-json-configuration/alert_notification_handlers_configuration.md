@@ -71,7 +71,7 @@ Step 3 : Make the channel visibility `Public`. click on `Create`.
 
 ### Map Channel to Slack App
 
-go to the required channel aand type below command and Enter
+Navigate to the required channel and type the below command and press Enter
 
 /invite @appname 
 
@@ -79,7 +79,7 @@ where appname is slack app name.
 
 ### Get Channel Id
 
-Go to required channel and in About copy channel Id and assign it to channel in slack configuration.
+Navigate to required channel and in About copy channel Id and assign it to channel in slack configuration.
 
 ![New Channel](../../resources/slackalerts-images/ChannelId.png)
 
@@ -90,7 +90,7 @@ Go to required channel and in About copy channel Id and assign it to channel in 
 - Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
 ![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
 
-### Slack Notofication Example
+### Slack Notification Example
 
 ![Slack Example](../../resources/slackalerts-images/SlackNotification.png)
 
