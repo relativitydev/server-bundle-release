@@ -6,40 +6,39 @@ This section describes the configuration of certificates in the `environmentWatc
 
 ## Custom JSON Configuration Structure
 
-To monitor Certificates, configure the Slack details in a custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`. An example of the BCPPath and folder structure is shown below:
+To monitor Certificates, configure the Certificate details in a Custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`. An example of the BCPPath and folder structure is shown below:
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
-The custom JSON file includes the following key sections:
+The Custom JSON file includes the following key sections:
 - Monitoring by Instance
 - Monitoring by Installed Product
 - Monitoring by Host
 
-For details about the custom JSON structure, refer to the [Custom JSON Configuration Structure](./environment_watch_configuration.md) document.
+For more information about the Custom JSON structure, refer to the [Custom JSON Configuration Structure](./environment_watch_configuration.md) document.
 
 ## Overview
 
-Monitors the presence and validity of specified certificates in Windows certificate stores.There are certificates by default monitored without configuration and they are based on installed product.
+Monitors the presence and validity of specified certificates in Windows certificate stores. There are certificates by default monitored without configuration and they are based on installed product.
 
 **Default Certificates**
 | Certificate Name                  | Description                                      |
 |-----------------------------------|--------------------------------------------------|
-|Relativity Secret Store            | Certificate for Relativity Secret Store.         |
+| Relativity Secret Store           | Certificate for Relativity Secret Store.         |
 
-**Properties Table**
+**Properties In Custom JSON Related to Certificates**
 
-| Property      | Type     | Description                                                      |
-|---------------|----------|------------------------------------------------------------------|
-| `enabled`     | boolean  | Enables or disables monitoring for certificates.                 |
-| `include`     | array    | List of certificate objects to monitor.                          |
-| `StoreName`   | string   | Name of the certificate store (e.g., `"My"`).                    |
-| `StoreLocation`| string  | Location of the store (e.g., `"LocalMachine"`).                  |
-| `Thumbprint`  | string   | Certificate thumbprint to identify the certificate.              |
-
+| Property       | Type     | Description                                                      |
+|----------------|----------|------------------------------------------------------------------|
+| `enabled`      | boolean  | Enables or disables monitoring for certificates.                 |
+| `include`      | array    | List of certificate objects to monitor.                          |
+| `StoreName`    | string   | Name of the certificate store (e.g., `"My"`).                    |
+| `StoreLocation`| string   | Location of the store (e.g., `"LocalMachine"`).                  |
+| `Thumbprint`   | string   | Certificate thumbprint to identify the certificate.              |
 
 #### StoreLocation Enum Values
 
-The `StoreLocation` Field specifies the location of the X.509 certificate store to use.
+The `StoreLocation` field specifies the location of the X.509 certificate store to use.
 
 **Possible Values**
 
@@ -50,7 +49,7 @@ The `StoreLocation` Field specifies the location of the X.509 certificate store 
 
 #### StoreName Enum Values
 
-The `StoreName` Field specifies name of the Windows certificate store where the X.509 certificate is located.
+The `StoreName` field specifies the name of the Windows certificate store where the X.509 certificate is located.
 
 **Possible Values**
 
@@ -65,26 +64,61 @@ The `StoreName` Field specifies name of the Windows certificate store where the 
 | TrustedPeople        | Trusted people (used in EFS)                  |
 | TrustedPublisher     | Trusted publishers (used in Authenticode)     |
 
-**Get certificate thumbprint**
+**Get Certificate Thumbprint**
 
 Depending on the Store Location and Store Name, run the following command on the host. For `LocalMachine` and `My`, use:
 
-> ```powershell
-> Get-ChildItem Cert:\LocalMachine\My
+```powershell
+Get-ChildItem Cert:\LocalMachine\My
+```
 
-You will get table with Thumprint and Subject. Select the Thumprint for the certificate required and assign it as shown in the example. Based on the Store Name and Store Location command changes and the values in the json too.
+The command outputs a table with `Thumbprint` and `Subject`. Select the `Thumbprint` for the required certificate and assign it as shown in the example. Adjust the command based on the `StoreName` and `StoreLocation`, and update the values in the JSON accordingly.
 
 
-**Example**
+## Usage
+`enabled` : Set to `true` to enable certificate monitoring.
+When configuring the `include` array, each certificate object must specify the `StoreName`, `StoreLocation`, and `Thumbprint` fields.
+
+**Example 1**: Monitoring one certificate where `StoreName` is `My`, `StoreLocation` is `LocalMachine`, and `Thumbprint` is obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
+
 ```json
-"certificates": {
-					"enabled": true,
-					"include": [
-						{
-							"StoreName": "My",
-							"StoreLocation": "LocalMachine",
-							"Thumbprint": "A54225760344699530649239D175BAA73C70DC1B"
-						}
-					]
-				}
+{
+	"certificates": {
+		"enabled": true,
+		"include": [
+			{
+				"StoreName": "My",
+				"StoreLocation": "LocalMachine",
+				"Thumbprint": "A54225760344699530649239D175BAA73C70DC1B"
+			}
+		]
+	}
+}
+```
+
+**Example 2**: Monitoring multiple certificates (3 in this case) with `StoreName` as `My`, `StoreLocation` as `LocalMachine`, and `Thumbprint` obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
+
+```json
+{
+	"certificates": {
+		"enabled": true,
+		"include": [
+			{
+				"StoreName": "My",
+				"StoreLocation": "LocalMachine",
+				"Thumbprint": "F8809D2677E010477847C92C5A1A673784537CBC"
+			},
+			{
+				"StoreName": "My",
+				"StoreLocation": "LocalMachine",
+				"Thumbprint": "984812C68F059EB19A346D538ECFB072968C11C3"
+			},
+			{
+				"StoreName": "My",
+				"StoreLocation": "LocalMachine",
+				"Thumbprint": "984812C68F059EB19A346D538ECFB072968C11C3"
+			}
+		]
+	}
+}
 ```

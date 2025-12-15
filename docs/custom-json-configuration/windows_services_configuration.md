@@ -6,16 +6,16 @@ This section describes the configuration of windows services in the `environment
 
 ## Custom JSON Configuration Structure
 
-To monitor Windows Services, configure the Windows Services details in a custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`. An example of the BCPPath and folder structure is shown below:
+To monitor Windows Services, configure the Windows Services details in a Custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`. An example of the BCPPath and folder structure is shown below:
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
-The custom JSON file includes the following key sections:
+The Custom JSON file includes the following key sections:
 - Monitoring by Instance
 - Monitoring by Installed Product
 - Monitoring by Host
 
-For details about the custom JSON structure, refer to the [Custom JSON Configuration Structure](./environment_watch_configuration.md) document.
+For more information about the Custom JSON structure, refer to the [Custom JSON Configuration Structure](./environment_watch_configuration.md) document.
 
 ## Overview
 
@@ -45,9 +45,18 @@ Navigate to the Services application. Right-click the desired service, select Pr
 | Property    | Type     | Description                                                      |
 |-------------|----------|------------------------------------------------------------------|
 | `enabled`   | boolean  | Enables or disables monitoring for Windows services.              |
-| `include`   | array    | List of Windows service names to monitor (e.g., `"WinDefend"`).  |
+| `include`   | array    | List of Windows service names (service name and **NOT** display name) to monitor (e.g., `"WinDefend"`).  |
 
-**Example**---
+## Usage
+`enabled` : Set to `true` to enable Windows services monitoring.
+`include` : List the service names to monitor.
+
+> [!NOTE]
+> Windows Service names are case-sensitive and must match exactly as they appear in the Services application.
+
+Windows Services can be monitored by Hosts, Instances, or Installed Products. Below example can be used to monitor Windows Services by Hosts, Instances or Installed Products.
+
+**Example**
 ```json
 {
 	"windowsServices": {
