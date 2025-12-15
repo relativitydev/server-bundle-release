@@ -83,9 +83,14 @@ Refer - [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-con
 **Example**
 ```json
 "sqlServers": {
-				"enabled": true,
-				"include": [ "Host\\INSTANCE01" ]
-			  }
+              "enabled": true,
+              "include": [
+                {
+                  "clusterVirtualName": "SQLClusterName",
+                  "instanceName": "InstanceName"
+                }
+              ]
+            }
 ```
 
 ### Alert Notification Handler
@@ -131,7 +136,10 @@ Refer - [Alert Notification Handlers](alert_notification_handlers_configuration.
 						},
 						"windowsServices": {
 							"enabled": true,
-							"include": [ "IISADMIN", "WinDefend" ]
+							"include": [
+								"IISADMIN",
+								"WinDefend"
+							]
 						}
 					},
 					"otelCollectorYamlFiles": []
@@ -145,7 +153,9 @@ Refer - [Alert Notification Handlers](alert_notification_handlers_configuration.
 						},
 						"windowsServices": {
 							"enabled": true,
-							"include": [ "RpcSs" ]
+							"include": [
+								"RpcSs"
+							]
 						}
 					},
 					"otelCollectorYamlFiles": []
@@ -161,11 +171,18 @@ Refer - [Alert Notification Handlers](alert_notification_handlers_configuration.
 						},
 						"sqlServers": {
 							"enabled": true,
-							"include": [ "VIRTSQL\\INSTANCE01" ]
+							"include": [
+								{
+									"clusterVirtualName": "SQLClusterName",
+									"instanceName": "InstanceName"
+								}
+							]
 						},
 						"windowsServices": {
 							"enabled": true,
-							"include": [ "MSSQLSERVER" ]
+							"include": [
+								"MSSQLSERVER"
+							]
 						}
 					},
 					"otelCollectorYamlFiles": []
@@ -179,7 +196,9 @@ Refer - [Alert Notification Handlers](alert_notification_handlers_configuration.
 						},
 						"windowsServices": {
 							"enabled": true,
-							"include": [ "Dhcp" ]
+							"include": [
+								"Dhcp"
+							]
 						}
 					},
 					"otelCollectorYamlFiles": []
@@ -193,7 +212,9 @@ Refer - [Alert Notification Handlers](alert_notification_handlers_configuration.
 						},
 						"windowsServices": {
 							"enabled": true,
-							"include": [ "Schedule" ]
+							"include": [
+								"Schedule"
+							]
 						}
 					},
 					"otelCollectorYamlFiles": []
