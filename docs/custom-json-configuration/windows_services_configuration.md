@@ -47,14 +47,15 @@ Navigate to the Services application. Right-click the desired service, select Pr
 | `enabled`   | boolean  | Enables or disables monitoring for Windows services.              |
 | `include`   | array    | List of Windows service names (service name and **NOT** display name) to monitor (e.g., `"WinDefend"`).  |
 
-## Usage
-`enabled` : Set to `true` to enable Windows services monitoring.
-`include` : List the service names to monitor.
+## Configure Windows Services
 
 > [!NOTE]
 > Windows Service names are case-sensitive and must match exactly as they appear in the Services application.
 
-Windows Services can be monitored by Hosts, Instances, or Installed Products. Below example can be used to monitor Windows Services by Hosts, Instances or Installed Products.
+Windows Services can be monitored by "**hosts**", "**instance**", or "**installedProducts**". For Windows Services to monitor, locate "**windowsServices**" under the desired section and update the configuration as below.
+
+- `enabled` : Set to `true` to enable Windows services monitoring.
+- `include` : List the service names to monitor.
 
 **Example**
 ```json
@@ -68,3 +69,12 @@ Windows Services can be monitored by Hosts, Instances, or Installed Products. Be
 	}
 }
 ```
+
+### Verification in Kibana
+
+- Navigate to Kibana Discover.
+- Select `logs-*` Data View.
+- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
+![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
+- Navigate to the Kibana Windows Services Dashboard.
+- Ensure that the Windows services specified in the Custom JSON configuration are visible on the Kibana Windows Services Dashboard.

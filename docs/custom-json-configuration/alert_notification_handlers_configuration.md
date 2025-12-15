@@ -83,6 +83,13 @@ Go to required channel and in About copy channel Id and assign it to channel in 
 
 ![New Channel](../../resources/slackalerts-images/ChannelId.png)
 
+### Verification in Kibana
+
+- Navigate to Kibana Discover.
+- Select `logs-*` Data View.
+- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
+![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
+
 ### Slack Notofication Example
 
 ![Slack Example](../../resources/slackalerts-images/SlackNotification.png)

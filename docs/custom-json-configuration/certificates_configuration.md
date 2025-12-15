@@ -75,9 +75,12 @@ Get-ChildItem Cert:\LocalMachine\My
 The command outputs a table with `Thumbprint` and `Subject`. Select the `Thumbprint` for the required certificate and assign it as shown in the example. Adjust the command based on the `StoreName` and `StoreLocation`, and update the values in the JSON accordingly.
 
 
-## Usage
-`enabled` : Set to `true` to enable certificate monitoring.
-When configuring the `include` array, each certificate object must specify the `StoreName`, `StoreLocation`, and `Thumbprint` fields.
+## Configure Certificates
+
+Certificates can be monitored by "**hosts**", "**instance**", or "**installedProducts**". For certificates to monitor, locate "**certificates**" under the desired section and update the configuration as below.
+
+- `enabled` : Set to `true` to enable certificate monitoring.
+- When configuring the `include` array, each certificate object must specify the `StoreName`, `StoreLocation`, and `Thumbprint` fields.
 
 **Example 1**: Monitoring one certificate where `StoreName` is `My`, `StoreLocation` is `LocalMachine`, and `Thumbprint` is obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
 
@@ -122,3 +125,12 @@ When configuring the `include` array, each certificate object must specify the `
 	}
 }
 ```
+
+### Verification in Kibana
+
+- Navigate to Kibana Discover.
+- Select `logs-*` Data View.
+- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
+![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
+- Navigate to the Kibana Certificates Dashboard.
+- Ensure that the certificates specified in the Custom JSON configuration are visible on the Kibana Certificates Dashboard.

@@ -21,7 +21,7 @@ For more information about the Custom JSON structure, refer to the [Custom JSON 
 
 ---
 
-## Configuring SQL Cluster Instances
+## Configure SQL Cluster Instances
 
 To configure SQL Cluster instances in the Custom JSON file, the "**hosts**" section needs to be updated.
 Locate the "hosts" section in the JSON file and add an entry for each SQL Cluster instance you want to monitor. Each **hostName** should be included with the following details:
