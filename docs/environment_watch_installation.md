@@ -7,6 +7,7 @@ Environment Watch and Data Grid Audit require installation and configuration of 
 
 The Relativity applications and components that are referenced in this installation guide are packaged together in the Server bundle release. You can find the latest bundle on GitHub [here](https://github.com/relativitydev/server-bundle-release/releases). Environment Watch and Data Grid Audit also require Relativity applications that are available in the Relativity Application Library and not packaged in the bundle or covered in this installation guide (e.g. Pagebase and Telemetry for Environment Watch, Audit for Data Grid Audit, and InfraWatch Services for both). These applications are identified as pre-requisites in relevant sections of this installation guide.
 
+For information about Environment Watch's performance impact on Relativity workloads, see [Environment Watch Performance Impact](./environment_watch_performance_impact.md).
 
 The Server bundle is generally released quarterly, with hotfixes provided for critical issues as needed.
 
