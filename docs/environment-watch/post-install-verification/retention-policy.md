@@ -1,0 +1,54 @@
+# Verify Retention Policy Configuration
+
+This verification step confirms that the retention period (data lifecycle) is properly configured for your APM data streams.
+
+## Verification Steps
+
+1. Navigate to Kibana Dev Tools Console:
+   - Open Kibana in your web browser
+   - Click on **Dev Tools** in the left navigation menu
+
+2. Run the following queries to verify retention policies for each data stream type:
+
+### Verify Logs Retention Policy
+
+```
+GET /_data_stream/logs-apm.app*?filter_path=data_streams.name,data_streams.lifecycle
+```
+
+### Verify Metrics Retention Policy
+
+```
+GET /_data_stream/metrics-apm.app*?filter_path=data_streams.name,data_streams.lifecycle
+```
+
+### Verify Traces Retention Policy
+
+```
+GET /_data_stream/traces-apm*?filter_path=data_streams.name,data_streams.lifecycle
+```
+
+## Expected Results
+
+Each query should return the data stream names along with their configured lifecycle settings. The response will look similar to:
+
+```json
+{
+  "data_streams": [
+    {
+      "name": "logs-apm.app-default",
+      "lifecycle": {
+        "enabled": true,
+        "data_retention": "90d"
+      }
+    }
+  ]
+}
+```
+
+## What to Check
+
+- **enabled**: Should be `true` if data lifecycle management is active
+- **data_retention**: Shows the configured retention period (e.g., "30d" for 30 days, "90d" for 90 days)
+
+If the lifecycle settings don't match your expected configuration, you may need to update your retention period according to [elasticsearch_retention_policy_guidelines.md](../../elasticsearch_retention_policy_guidelines.md).

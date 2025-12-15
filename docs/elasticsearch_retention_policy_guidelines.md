@@ -29,11 +29,11 @@ Failing to configure appropriate retention policies can lead to:
 
 The following table provides baseline retention recommendations for different data types:
 
-| Data Type | Default Retention | Recommended Retention | Rationale |
-|-----------|-------------------|----------------------|-----------|
-| **Logs** | 10 days | 90 days | Optimal balance between troubleshooting capabilities, storage costs, and operational needs |
-| **Metrics** | 90 days | 90 days | Sufficient period for trend analysis, capacity planning, and performance baseline establishment |
-| **Traces** | 10 days | 30 days | Adequate for performance troubleshooting while managing high-volume trace data storage |
+| Data Type | Default Retention | Recommended Retention |
+|-----------|-------------------|----------------------|
+| **Logs** | 10 days | 90 days |
+| **Metrics** | 90 days | 90 days |
+| **Traces** | 10 days | 30 days | 
 
 > [!NOTE]
 > The default retention values are configured out-of-the-box to minimize storage usage in new installations. The recommended retention periods represent industry best practices for Relativity environments, providing sufficient historical data for troubleshooting and trend analysis. Consider upgrading from default to recommended retention based on your organization's specific requirements, compliance obligations, and available storage capacity.
@@ -90,6 +90,7 @@ Elastic APM provides the `apm-90d@lifecycle` component template by default for 9
 **Sample Request:**
 
 ```json
+# Here apm-30d@lifecycle is the name of the component template
 PUT _component_template/apm-30d@lifecycle
 {
   "template": {
@@ -128,6 +129,7 @@ Update the following index templates to use the appropriate component template b
 Use the Dev Tools Console in Kibana to retrieve the existing index template settings:
 
 ```json
+# Here logs-apm.app@template is the name of the index template
 GET _index_template/logs-apm.app@template
 ```
 
@@ -186,9 +188,10 @@ GET _index_template/logs-apm.app@template
 
 #### b. Update the Index Template
 
-Modify the `composed_of` array to replace the existing lifecycle component template with the desired retention policy. In this example, we replace `apm-10d@lifecycle` with `apm-90d@lifecycle` for 90-day retention:
+From the output above, copy the entire `index_template` section and modify the `composed_of` array to replace the existing lifecycle component template with the desired retention policy. In this example, we replace `apm-10d@lifecycle` with `apm-90d@lifecycle` for 90-day retention:
 
 ```json
+# Here logs-apm.app@template is the name of the index template
 PUT _index_template/logs-apm.app@template
 {
   "index_patterns": [
