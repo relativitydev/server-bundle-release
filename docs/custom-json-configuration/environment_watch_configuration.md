@@ -55,7 +55,7 @@ The `hosts` section contains an array of host objects, each with its own monitor
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows Services, Certificates, and SQL Services. Each source type has its own configuration structure and properties.
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows Services, Certificates, Kibana Alerts through Slack notifications, and SQL Cluster Instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 
@@ -72,28 +72,8 @@ Refer - [Certificates Configuration](certificates_configuration.md)
 
 Refer - [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md)
 
-**Properties Table**
 
-| Property    | Type     | Description                                                      |
-|-------------|----------|------------------------------------------------------------------|
-| `enabled`   | boolean  | Enables or disables monitoring for SQL services.                 |
-| `include`   | array    | List of SQL Server instance names to monitor (e.g., `"VIRTSQL\\INSTANCE01"`). |
-
-
-**Example**
-```json
-"sqlServers": {
-              "enabled": true,
-              "include": [
-                {
-                  "clusterVirtualName": "SQLClusterName",
-                  "instanceName": "InstanceName"
-                }
-              ]
-            }
-```
-
-### Alert Notification Handler
+### Kibana Alert Slack Notification Handler
 
 Refer - [Alert Notification Handlers](alert_notification_handlers_configuration.md)
 
