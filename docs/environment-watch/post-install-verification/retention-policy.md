@@ -1,3 +1,6 @@
+# Post-Install Verification for Rentension Policy
+![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
+
 # Verify Retention Policy Configuration
 
 This verification step confirms that the retention period (data lifecycle) is properly configured for your APM data streams.
