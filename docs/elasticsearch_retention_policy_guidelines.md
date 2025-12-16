@@ -90,8 +90,8 @@ Elastic APM provides the `apm-90d@lifecycle` component template by default for 9
 **Sample Request:**
 
 ```json
-# Here apm-30d@lifecycle is the name of the component template
-PUT _component_template/apm-30d@lifecycle
+# Here apm-30d@lifecycle is the name of the component template 
+PUT _component_template/apm-30d@lifecycle 
 {
   "template": {
     "lifecycle": {
@@ -129,8 +129,8 @@ Update the following index templates to use the appropriate component template b
 Use the Dev Tools Console in Kibana to retrieve the existing index template settings:
 
 ```json
-# Here logs-apm.app@template is the name of the index template
-GET _index_template/logs-apm.app@template
+# Here logs-apm.app@template is the name of the index template 
+GET _index_template/logs-apm.app@template 
 ```
 
 **Sample Output:**
@@ -192,7 +192,7 @@ From the output above, copy the entire `index_template` section and modify the `
 
 ```json
 # Here logs-apm.app@template is the name of the index template
-PUT _index_template/logs-apm.app@template
+PUT _index_template/logs-apm.app@template 
 {
   "index_patterns": [
     "logs-apm.app.*-*"
@@ -261,19 +261,19 @@ After updating the index templates with new retention policies, you need to dele
 **Delete Logs Data Stream:**
 
 ```json
-DELETE _data_stream/logs-apm.app*
+DELETE _data_stream/logs-apm.app* 
 ```
 
 **Delete Metrics Data Stream:**
 
 ```json
-DELETE _data_stream/metrics-apm.app*
+DELETE _data_stream/metrics-apm.app* 
 ```
 
 **Delete Traces Data Stream:**
 
 ```json
-DELETE _data_stream/traces-apm*
+DELETE _data_stream/traces-apm* 
 ```
 
 **Sample Output for each command:**
