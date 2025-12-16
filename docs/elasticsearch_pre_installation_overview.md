@@ -132,7 +132,7 @@ The number of servers and hardware specifications needed to host the Elastic com
 | X-Large                       | 10 / 32 TB          | 5 / 16 TB                    | 3           | 3              |
 
 - Separate Elastic clusters is supported when using both Audit/Environment Watch but not required 
-- APM(Application Performance Monitoring)/Kibana servers can be load balanced
+- Application Performance Monitoring(APM)/Kibana servers can be load balanced
 - Each Elasticsearch node should have at least <b>4 vCPU</b> and <b>32 GB RAM</b>.
 - A single Data node can be used for both Audit and Environment Watch in Development environments.
 

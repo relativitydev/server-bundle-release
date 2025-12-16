@@ -3,7 +3,7 @@
 
 ## Verify Retention Policy Configuration
 
-This verification step confirms that the retention period (data lifecycle) is properly configured for your APM(Application Performance Monitoring) data streams.
+This verification step confirms that the retention period (data lifecycle) is properly configured for your Application Performance Monitoring(APM) data streams.
 
 ## Verification Steps
 
