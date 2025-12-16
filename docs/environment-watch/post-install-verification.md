@@ -37,7 +37,7 @@ This section covers how to ensure that the alerting mechanism is working as expe
 [Click here for Alerts Verification](post-install-verification/alert-overview.md)
 
 ### 4. Retention Policy
-This section guides through verifying that the data retention policies are properly configured for APM data streams.
+This section guides through verifying that the data retention policies are properly configured for APM(Application Performance Monitoring) data streams.
 
 [Click here for Retention Policy Verification](post-install-verification/retention-policy.md)
 

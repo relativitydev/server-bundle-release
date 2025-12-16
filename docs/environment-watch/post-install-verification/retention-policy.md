@@ -1,7 +1,7 @@
 # Post-Install Verification for Retention Policy
 ![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
-# Verify Retention Policy Configuration
+## Verify Retention Policy Configuration
 
 This verification step confirms that the retention period (data lifecycle) is properly configured for your APM data streams.
 
@@ -52,6 +52,6 @@ Each query should return the data stream names along with their configured lifec
 ## What to Check
 
 - **enabled**: Should be `true` if data lifecycle management is active
-- **data_retention**: Shows the configured retention period (e.g., "30d" for 30 days, "90d" for 90 days)
+- **data_retention**: Indicates the configured retention period (e.g., "30d" for 30 days, "90d" for 90 days)
 
 If the lifecycle settings don't match your expected configuration, you may need to update your retention period according to [elasticsearch_retention_policy_guidelines.md](../../elasticsearch_retention_policy_guidelines.md).

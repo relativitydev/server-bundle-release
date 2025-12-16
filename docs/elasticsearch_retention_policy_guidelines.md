@@ -77,7 +77,7 @@ When determining the appropriate retention period for your environment, consider
 
 - **Storage Capacity and Cost** – Evaluate available disk space using the storage calculation formula above. Longer retention requires more storage investment, so balance retention needs against available capacity and infrastructure costs.
 
-- **Regulatory Compliance** – Consult with legal and compliance teams to ensure retention settings meet your organization's regulatory obligations. Some industries and frameworks (HIPAA, SOX, PCI DSS) mandate specific retention periods for audit and logging data.
+- **Regulatory Compliance** – Consult with legal and compliance teams to ensure retention settings meet your organization's regulatory obligations. Some industries and frameworks (HIPAA (Health Insurance Portability and Accountability Act), SOX (Sarbanes-Oxley Act), PCI DSS (Payment Card Industry Data Security Standard)) mandate specific retention periods for audit and logging data.
 
 ---
 
