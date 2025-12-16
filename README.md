@@ -13,7 +13,7 @@ This release bundle contains packages that are required to set up or upgrade two
 
 | **Requirement**   | **Relativity Server 2024 Patch 2**                                  | **Relativity Server 2025**                                  |
 | :---------------- | :------------------------------------------------------------------ | :---------------------------------------------------------- |
-| Elastic Stack     | 8.17.3 is required for Environment Watch.<br/>7.17.x can be used but for Data Grid Audit only. | 8.17.3 and 9.1.3 versions are officially certified for both Data Grid Audit and Environment Watch. |
+| Elastic Stack     | 8.17.3 is required for Environment Watch.<br/>7.17.x can be used but for Data Grid Audit only. | Server 2025 is compatible with Elasticsearch 8.x and 9.x. The following versions are officially certified for both Data Grid Audit and Environment Watch:<br/>- Elasticsearch 8.17.3<br/>- Elasticsearch 9.1.3 |
 
 **Network Ports**: Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](docs/environment-watch/port-diagram.md) for full network configuration details.
 
