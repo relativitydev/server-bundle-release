@@ -4,11 +4,11 @@ The `alertNotificationHandlers` section configures integrations for sending aler
 
 ## Custom JSON Configuration Structure
 
-To monitor Kibana Alerts through Slack notification, configure the Slack details in a Custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`. An example of the BCPPath and folder structure is shown below:
+To monitor Kibana Alerts through Slack Notification, configure the Slack details in a Custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`. An example of the BCPPath and folder structure is shown below:
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
-To identify the BCP path for the environment, execute the following SQL query against the 'EDDS' database:
+To identify the BCP path for the environment, execute the following SQL query against the '**EDDS**' database:
 
 ```sql
 SELECT 
@@ -75,7 +75,7 @@ Go To Settings of Channel. Select `OAuth & Permissions`. Copy Bot User Auth Toke
 
 ### Create Slack Channel
 
-Step 1 : Click on 3 horizontal lines on the extreme left side of the slack. Click `File` and then `New Channel` 
+Step 1 : Click on 3 horizontal lines on the extreme left side of the Slack. Click `File` and then `New Channel` 
 
 ![New Channel](../../resources/slackalerts-images/NewChannel.png)
 
@@ -93,13 +93,34 @@ Navigate to the required channel and type the below command and press Enter
 
 /invite @appname 
 
-where appname is slack app name.
+where appname is Slack app name.
 
 ### Get Channel Id
 
-Navigate to required channel and in About copy channel Id and assign it to channel in slack configuration.
+Navigate to required channel and in About copy channel Id and assign it to channel in Slack configuration.
 
 ![New Channel](../../resources/slackalerts-images/ChannelId.png)
+
+### Configure Slack in Custom JSON
+
+To configure Slack Notification in the Custom JSON file, locate the `alertNotificationHandlers` section and update the configuration as below.
+
+- Provide OAuth Token in `accessToken`.
+- Set `channel` to the Slack channel ID where alerts will be sent.
+- Set `enabled` to `true` to enable Slack notifications.
+- Set `messageIntervalSeconds` to define the interval at which messages are sent to Slack. By default, it is set to 180 seconds from the code base. If, we set it to less than 180 seconds, it will be overridden to 180 seconds.
+
+```json
+"alertNotificationHandlers": {
+			"slack": {
+				"accessToken": "slack-access-token",
+				"acknowledgeAlertEnabled": false,
+				"channel": "slack-channel-id",
+				"enabled": true,
+				"messageIntervalSeconds": 60
+			}
+		}
+```
 
 ### Verification in Kibana
 

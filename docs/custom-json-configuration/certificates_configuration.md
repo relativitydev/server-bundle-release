@@ -1,6 +1,6 @@
 # Certificates Configuration
 
-This section describes the configuration of certificates in the `environmentWatchConfiguration` JSON object for monitoring certificates.
+This section describes the configuration of Certificates in the `environmentWatchConfiguration` JSON object for monitoring Certificates.
 
 ---
 
@@ -10,7 +10,7 @@ To monitor Certificates, configure the Certificate details in a Custom JSON file
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
-To identify the BCP path for the environment, execute the following SQL query against the 'EDDS' database:
+To identify the BCP path for the environment, execute the following SQL query against the '**EDDS**' database:
 
 ```sql
 SELECT 
@@ -37,7 +37,7 @@ For more information about the Custom JSON structure, refer to the [Custom JSON 
 
 ## Overview
 
-Monitors the presence and validity of specified certificates in Windows certificate stores. There are certificates by default monitored without configuration and they are based on installed product.
+Monitors the presence and validity of specified Certificates in Windows Certificate stores. There are Certificates by default monitored without configuration and they are based on installed product.
 
 **Default Certificates**
 | Certificate Name                  | Description                                      |
@@ -48,26 +48,26 @@ Monitors the presence and validity of specified certificates in Windows certific
 
 | Property       | Type     | Description                                                      |
 |----------------|----------|------------------------------------------------------------------|
-| `enabled`      | boolean  | Enables or disables monitoring for certificates.                 |
-| `include`      | array    | List of certificate objects to monitor.                          |
-| `StoreName`    | string   | Name of the certificate store (e.g., `"My"`).                    |
+| `enabled`      | boolean  | Enables or disables monitoring for Certificates.                 |
+| `include`      | array    | List of Certificate objects to monitor.                          |
+| `StoreName`    | string   | Name of the Certificate store (e.g., `"My"`).                    |
 | `StoreLocation`| string   | Location of the store (e.g., `"LocalMachine"`).                  |
-| `Thumbprint`   | string   | Certificate thumbprint to identify the certificate.              |
+| `Thumbprint`   | string   | Certificate thumbprint to identify the Certificate.              |
 
 #### StoreLocation Enum Values
 
-The `StoreLocation` field specifies the location of the X.509 certificate store to use.
+The `StoreLocation` field specifies the location of the X.509 Certificate store to use.
 
 **Possible Values**
 
 | Value         | Description                                                    |
 |---------------|----------------------------------------------------------------|
-| CurrentUser   | The X.509 certificate store is located in the current user's profile. |
-| LocalMachine  | The X.509 certificate store is located in the local computer's profile. |
+| CurrentUser   | The X.509 Certificate store is located in the current user's profile. |
+| LocalMachine  | The X.509 Certificate store is located in the local computer's profile. |
 
 #### StoreName Enum Values
 
-The `StoreName` field specifies the name of the Windows certificate store where the X.509 certificate is located.
+The `StoreName` field specifies the name of the Windows Certificate store where the X.509 Certificate is located.
 
 **Possible Values**
 
@@ -90,17 +90,17 @@ Depending on the Store Location and Store Name, run the following command on the
 Get-ChildItem Cert:\LocalMachine\My
 ```
 
-The command outputs a table with `Thumbprint` and `Subject`. Select the `Thumbprint` for the required certificate and assign it as shown in the example. Adjust the command based on the `StoreName` and `StoreLocation`, and update the values in the JSON accordingly.
+The command outputs a table with `Thumbprint` and `Subject`. Select the `Thumbprint` for the required Certificate and assign it as shown in the example. Adjust the command based on the `StoreName` and `StoreLocation`, and update the values in the JSON accordingly.
 
 
 ## Configure Certificates
 
-Certificates can be monitored by "**hosts**", "**instance**", or "**installedProducts**". For certificates to monitor, locate "**certificates**" under the desired section and update the configuration as below.
+Certificates can be monitored by "**hosts**", "**instance**", or "**installedProducts**". For Certificates to monitor, locate "**certificates**" under the desired section and update the configuration as below.
 
-- `enabled` : Set to `true` to enable certificate monitoring.
-- When configuring the `include` array, each certificate object must specify the `StoreName`, `StoreLocation`, and `Thumbprint` fields.
+- `enabled` : Set to `true` to enable Certificate monitoring.
+- When configuring the `include` array, each Certificate object must specify the `StoreName`, `StoreLocation`, and `Thumbprint` fields.
 
-**Example 1**: Monitoring one certificate where `StoreName` is `My`, `StoreLocation` is `LocalMachine`, and `Thumbprint` is obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
+**Example 1**: Monitoring one Certificate where `StoreName` is `My`, `StoreLocation` is `LocalMachine`, and `Thumbprint` is obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
 
 ```json
 {
@@ -117,7 +117,7 @@ Certificates can be monitored by "**hosts**", "**instance**", or "**installedPro
 }
 ```
 
-**Example 2**: Monitoring multiple certificates (3 in this case) with `StoreName` as `My`, `StoreLocation` as `LocalMachine`, and `Thumbprint` obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
+**Example 2**: Monitoring multiple Certificates (3 in this case) with `StoreName` as `My`, `StoreLocation` as `LocalMachine`, and `Thumbprint` obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
 
 ```json
 {
@@ -151,7 +151,7 @@ Certificates can be monitored by "**hosts**", "**instance**", or "**installedPro
 - Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
 ![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
 - Navigate to the Kibana Certificates Dashboard.
-- Ensure that the Certificates defined in the Custom JSON configuration appear on the Kibana Certificates Dashboard. The example below demonstrates how a certificate specified in the Custom JSON is successfully monitored and displayed on the Certificates Dashboard.
+- Ensure that the Certificates defined in the Custom JSON configuration appear on the Kibana Certificates Dashboard. The example below demonstrates how a Certificate specified in the Custom JSON is successfully monitored and displayed on the Certificates Dashboard.
 
 ![](/resources/custom-json-images/certificate-json-example.png)
 

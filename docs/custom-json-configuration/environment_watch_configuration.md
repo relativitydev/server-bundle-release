@@ -1,6 +1,6 @@
 # Custom JSON Configuration
 
-This document provides an overview of the custom JSON configuration for Environment Watch, allowing user to monitor Windows services and certificates from a shared path for any host, and to send alerts to a Slack channel based on the specified Slack settings.
+This document provides an overview of the Custom JSON configuration for Environment Watch, allowing user to monitor Windows Services and Certificates from a shared path for any host, and to send alerts to a Slack channel based on the specified Slack settings.
 
 ---
 
@@ -26,7 +26,7 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
 
 ### Monitoring by Instance
 The `instance` section defines sources that are monitored at the environment or system-wide level, regardless of specific products or hosts.
-- **Purpose:** Monitors general resources (like certificates or Windows services) that are relevant to the entire instance.
+- **Purpose:** Monitors general resources (like Certificates or Windows Services) that are relevant to the entire instance.
 - **Use Case:** Useful for checks that apply everywhere, such as core system services.
 
 ### Monitoring by Installed Product
@@ -36,8 +36,8 @@ The `installedProducts` section contains an array of product objects, each with 
 
 ### Monitoring by Host
 The `hosts` section contains an array of host objects, each with its own monitoring sources.
-- **Purpose:** Monitors resources on a per-host basis, such as services or certificates unique to a particular server.
-- **Use Case:** Enables granular monitoring for individual machines, supporting host-specific checks (e.g., SQL services on a database server).
+- **Purpose:** Monitors resources on a per-host basis, such as Services or Certificates unique to a particular server.
+- **Use Case:** Enables granular monitoring for individual machines, supporting host-specific checks (e.g., SQL Services on a database server).
 
 ---
 
@@ -55,25 +55,23 @@ The `hosts` section contains an array of host objects, each with its own monitor
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows Services, Certificates, Kibana Alerts through Slack notifications, and SQL Cluster Instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows Services, Certificates, Kibana Alerts through Slack Notifications, and SQL Cluster Instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 ### Windows Services
 
-For detailed instructions, refer to the [Windows Service Configuration](windows_services_configuration.md).
+For detailed instructions, please refer to the [Windows Service Configuration](windows_services_configuration.md).
 
 ### Certificates
 
-For detailed instructions, refer to the [Certificates Configuration](certificates_configuration.md).
-
+For detailed instructions, please refer to the [Certificates Configuration](certificates_configuration.md).
 ### SQL Cluster Instances
 
-For detailed instructions, refer to the [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md).
+For detailed instructions, please refer to the [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md).
 
 ### Kibana Alert Slack Notification Handler
 
-For detailed instructions, refer to the [Alert Notification Handlers](alert_notification_handlers_configuration.md).
-
+For detailed instructions, please refer to the [Alert Notification Handlers](alert_notification_handlers_configuration.md).
 
 ## Example Configuration
 
