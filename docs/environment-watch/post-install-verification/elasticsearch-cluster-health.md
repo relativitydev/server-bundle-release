@@ -33,8 +33,8 @@ Confirm cluster health status, total nodes, shards, indices, and document count 
    - Data size.
 
 **Expected Result:**
-- Under any Data Store Dashboard, click on Cluster Overview Link  
-- Verify Cluster health is **Green (Healthy)**.  
+- Under any Data Store Dashboard, click on Cluster Overview link.  
+- Verify cluster health is **Green (Healthy)**.  
 - Nodes, shards, indices, and documents display current, non-zero values.  
 - No unassigned shards.  
 - Data size is displayed accurately.  
