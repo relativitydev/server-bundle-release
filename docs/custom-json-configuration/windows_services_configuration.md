@@ -39,7 +39,7 @@ Navigate to the Services application. Right-click the desired service, select Pr
 > [!NOTE]
 > Windows service names are case-sensitive and must match exactly as they appear in the services application.
 
-Windows services can be monitored by "**hosts**", "**instance**", or "**installedProducts**". For Windows services to monitor, locate "**windowsServices**" under the desired section and update the configuration as below.
+Windows services can be monitored by "**hosts**", "**instance**", or "**installedProducts**". For services to monitor, locate "**windowsServices**" under the desired section and update the configuration as below.
 
 - `enabled` : Set to `true` to enable Windows services monitoring.
 - `include` : List the service names to monitor.

@@ -33,6 +33,25 @@ The `instance` section defines sources that are monitored at the environment or 
 The `installedProducts` section contains an array of product objects, each with its own monitoring sources.
 - **Purpose:** Monitors resources specific to each installed product (e.g., web server, agent).
 - **Use Case:** Allows you to tailor monitoring to the needs of each product, such as product-specific services or certificates.
+- Based on the installed product, custom JSON configuration will be applied to all hosts where that product is installed.
+- Installed product breakdown as follows:
+
+| Property                    | Description                                                                 |
+|----------------------------|-----------------------------------------------------------------------------|
+| `Generic`                  | No Relativity Product is Installed                                          |
+| `QM`                       | Queue Manager Server                                                        |
+| `Worker`                   | Worker Server                                                               | 
+| `Agent`                    | Agent Server                                                                |
+| `Web`                      | Web Server Server                                                           |
+| `SecretStore`              | Secret Store Server                                                         |
+| `ServiceBus`               | Service Bus Server                                                          |
+| `ServiceHost`              | Service Host Server                                                         |
+| `SQLDistributed`           | SQL Distributed Server                                                      |
+| `SQLPrimary`               | SQL Primary Server                                                          |
+| `Caat`                     | Analytics Server                                                            |
+
+- Above installed product can be used in the custom JSON configuration under the `installedProducts` section.s
+
 
 ### Monitoring by Host
 The `hosts` section contains an array of host objects, each with its own monitoring sources.
@@ -88,19 +107,19 @@ This section describes the main types of sources that can be monitored using the
 ---
 ### Windows Services
 
-For detailed instructions, please refer to the [Windows Service Configuration](windows_services_configuration.md).
+For detailed instructions, see [Windows Service Configuration](windows_services_configuration.md).
 
 ### Certificates
 
-For detailed instructions, please refer to the [Certificates Configuration](certificates_configuration.md).
+For detailed instructions, see [Certificates Configuration](certificates_configuration.md).
 
 ### SQL Cluster Instances
 
-For detailed instructions, please refer to the [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md).
+For detailed instructions, see [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md).
 
 ### Kibana Alert Slack Notification Handler
 
-For detailed instructions, please refer to the [Alert Notification Handlers](alert_notification_handlers_configuration.md).
+For detailed instructions, see [Alert Notification Handlers](alert_notification_handlers_configuration.md).
 
 ## Example Configuration
 
