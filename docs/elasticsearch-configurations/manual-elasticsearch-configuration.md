@@ -1,52 +1,53 @@
 # Manual Elasticsearch Configuration
 
+## Overview
+
 This guide provides the required steps to update and optimize Elasticsearch settings. These adjustments help ensure that Elasticsearch is configured to handle the expected data volume, prevent indexing issues, and maintain reliable system performance.
 
-
-## Updating the index field limit
+## Update the Index Field Limit
 
 Elasticsearch enforces a limit on the total number of fields that can exist within an index. This is controlled by the `index.mapping.total_fields.limit` setting, which helps protect the cluster from mapping explosions and excessive memory usage.
 
-When documents contain more fields than the value configured in index.mapping.total_fields.limit, Elasticsearch silently ignores the additional fields. This leads to:
+When documents contain more fields than the value configured in `index.mapping.total_fields.limit`, Elasticsearch silently ignores the additional fields. This leads to:
 
 - Missing or incomplete data
 - Inconsistent query results
 - Difficulty performing accurate analysis and aggregations
 
-To ensure all fields are properly indexed and stored, the index.mapping.total_fields.limit value must be increased to accommodate the actual number of fields present in the incoming documents.
+To ensure all fields are properly indexed and stored, the `index.mapping.total_fields.limit` value must be increased to accommodate the actual number of fields present in the incoming documents.
 
 This documentation provides step-by-step instructions for manually updating Elasticsearch index settings to adjust the field limit and prevent data loss caused by exceeding the configured threshold.
 
-### Step 1: Update the field limit in the apm@settings component template
+### Steps to Update the Index Field Limit
 
+### Prerequisites 
 
-1. Open Microsoft Edge.
-2. Navigate to Kibana.
-3. In Kibana, go to **Stack Management** → **Index Management** → **Component Templates**.
-   ![Screenshot: Component Templates in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/component-templates.png)
-4. Use the search box to search for **apm@settings** template.
+1. Administrator privileges in Kibana/Elasticsearch.
+
+#### Step 1: Update the Field Limit
+
+1. Log in to Kibana as a user with administrative privileges.
+2. In Kibana, go to **Stack Management** → **Index Management** → **Component Templates**.
+3. Use the search box to find the **apm@settings** component template.
    ![Screenshot: apm@settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings.png)
-5. Open the **apm@settings** component template.
-   1. Click on the template to view details.
-   2. Click on **Manage**, select **Edit**.
-   ![Screenshot: apm@settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-edit.png)
-6. In the edit view, navigate to the **Index settings** section.
+4. Click the **Edit** button in the **Actions** column.
+5. In the edit view, navigate to the **Index settings** section.
     ![Screenshot: edit apm@settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/index-settings.png)
-7. Add or update the field limit to the required limit.
+6. Add or update the field limit setting:
+   - Key: `index.mapping.total_fields.limit`
+   - Value: the required limit (for example, `2500`)
+  
     ![Screenshot: update limit in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-edit-limit.png)
-8. Save the component template.
-   1. After updating the field limit, save the template using either method:
-      1. **Guided workflow**: Click Next through the remaining tabs (**Mappings** → **Aliases** → **Review**) and then click **Save component template** on the **Review** page.
-      ![Screenshot: save apm@settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-edit-limit-save.png)
-      2. **Direct save**: Navigate directly to the **Review** tab and click **Save**.
-      ![Screenshot: save apm@settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-edit-limit-direct-save.png)
+    
+    > [!NOTE]
+    > The default value of `index.mapping.total_fields.limit` is `1000`. The `limit` field is not included by default; for a first-time update, add the `limit` field and set it to the required value.
 
-    Both options will successfully apply the updated template settings.
-9. Verify **apm@settings** component template field limit is updated to the required limit.
+7. After updating the field limit, navigate to the **Review** tab and click **Save component template**.
+8. Verify that the **apm@settings** component template shows the updated field limit.
   ![Screenshot: verify limit in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-updated-limit-verify.png)
 
 
-### Step 2: Perform a rollover to apply the new settings
+#### Step 2: Perform a Rollover to Apply the New Settings
 
 > [!NOTE]
 > A rollover is only required when APM data streams already contain existing backing indices.
@@ -64,12 +65,10 @@ To apply the new settings, the following steps are required:
 - Verify that the newly created index includes the updated limit.
 
 
-1. Identify the APM data stream
+1. Identify the APM Data Stream
     1. Go to **Discover**.
-    2. Select the **Data view** associated with the index you are working with.
-  ![Screenshot: apm data stream in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/dataview.png)
-
-    3. Click on any of the latest documents to expand its details.
+    2. Select the **Data view** associated with the logs/metrics/traces you are working with.
+    3. Open one of the latest documents to expand its details.
     4. Locate the `_index` field. 
         
        In the document details, find the value of the `_index` field.        
@@ -78,39 +77,73 @@ To apply the new settings, the following steps are required:
 
     5. Derive the data stream name
          
-        Remove the `.ds-` prefix and the date/suffix portion from the index name.
+        Remove the `.ds-` prefix and the `date/suffix` portion from the index name.
         
         Using the example above: 
         `logs-apm.app.relsvr_logging-default`
         
-        This is the data stream name that should be used for the rollover API.
+        This is the data stream name to use with the rollover API.
 
-2. Perform a rollover
+2. Perform a Rollover
 
     1. In Kibana, navigate to **Management** → **Dev Tools** → **Console**.
-      ![Screenshot: Console in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/console.png)
-
-    2. Run the rollover command in the console window. Paste the following API request (replace the data stream name).
+    2. Run the rollover command in the console window. Paste the following API request (replace `<data-stream-name>` with the actual data stream name).
        ```
-       POST /<data-stream-name-from-above-step>/_rollover
+       POST /<data-stream-name>/_rollover
        ```
-
-       ![Screenshot: post query in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/post-query.png)
-
     3. Click the **Run** button (the arrow icon on the right side of the console input panel) to execute the request. In the response panel, ensure that the output contains:
         
         - `"rolled_over": true`, and
-        - A new backing index is listed under `"new_index"`.
+        - The `"new_index"` field is present with the new backing index name.
 
-       ![Screenshot: rollover in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/roll-over-response.png)
+        <details>
+        <summary>Sample JSON response</summary>
 
-3. Validate the rollover applied the updated field limit
+        ```
+        {
+          "acknowledged": true,
+          "shards_acknowledged": true,
+          "old_index": ".ds-logs-apm.app.relsvr_logging-default-2025.12.17-000002",
+          "new_index": ".ds-logs-apm.app.relsvr_logging-default-2025.12.17-000003",
+          "rolled_over": true,
+          "dry_run": false,
+          "lazy": false,
+          "conditions": {}
+        }
+        ```
+        </details>
 
-    1. In Kibana, go to **Stack Management** → **Index Management** → **Indices**.
-    2. Enable the **Include hidden indices** option.
-      ![Screenshot: enable hidden indices in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/include-hidden-indices.png)
-    3. Use the search box to search for the newly created backing index as part of the rollover.
-      ![Screenshot: index in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/new-backing-index.png)
-    4. Click on the index to view details.
-    5. Click on **Settings** and validate that the new limit is applied to the index.
-      ![Screenshot: data stream settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/validate-limit.png)
+       > [!NOTE]
+       > Ensure the data stream name is valid; otherwise, the rollover request fails.
+
+3. Verify the Updated Field Limit
+
+    1. In Kibana, navigate to **Management** → **Dev Tools** → **Console**.
+    2. Run the GET command in the console window. Paste the following API request (replace `<index-name>` with the `"new_index"` value returned by the rollover response).
+       ```
+       GET /<index-name>/_settings
+       ```
+    3. Click the **Run** button (the arrow icon on the right side of the console input panel) to execute the request. In the response panel, ensure that the output contains:
+        
+       - `"index.mapping.total_fields.limit": <updated-field-limit>`.
+
+        <details>
+        <summary>Sample JSON response</summary>
+
+        ```
+        {
+          ".ds-logs-apm.app.relsvr_logging-default-2025.12.17-000003": {
+            "settings": {
+              "index": {
+                "mapping": {
+                  "total_fields": {
+                    "limit": "2500",
+                    "ignore_dynamic_beyond_limit": "true"
+                  }
+                },
+              }
+            }
+          }
+        }
+        ```
+        </details>
