@@ -15,8 +15,20 @@ To monitor SQL Cluster instances using the Environment Watch Windows Service, co
 To identify the BCP path for the environment, execute the following SQL query against the 'EDDS' database:
 
 ```sql
-SELECT TemporaryDirectory FROM [EDDS].[eddsdbo].[ResourceServer] WHERE ArtifactID=1015096
+SELECT 
+[TemporaryDirectory]
+FROM [EDDS].[eddsdbo].[ResourceServer] AS rs WITH(NOLOCK)
+INNER JOIN [EDDS].[eddsdbo].[ExtendedArtifact] AS ea WITH(NOLOCK)
+	ON ea.[ArtifactID] = rs.[ArtifactID]
+INNER JOIN [EDDS].[eddsdbo].[Code] AS c WITH(NOLOCK)
+	ON c.[ArtifactID] = rs.[Type]
+INNER JOIN [EDDS].[eddsdbo].[ResourceGroupSQLServers] AS rgss WITH(NOLOCK)
+	ON rgss.[SQLServerArtifactID] = rs.[ArtifactID]
+INNER JOIN [EDDS].[eddsdbo].[ResourceGroup] AS rg WITH(NOLOCK)
+	ON rg.[ArtifactID] = rgss.[ResourceGroupArtifactID]
+WHERE c.[Name] = 'SQL - Primary'
 ```
+![](/resources/custom-json-images/sql-bcp-path-query.png)
 
 The Custom JSON file includes the following key sections:
 - Monitoring by Instance
