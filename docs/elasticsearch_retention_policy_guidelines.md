@@ -89,7 +89,7 @@ Elastic APM provides the `apm-90d@lifecycle` component template by default for 9
 
 **Sample Request:**
 
-```json
+```
 # Here apm-30d@lifecycle is the name of the component template 
 PUT _component_template/apm-30d@lifecycle 
 {
@@ -128,7 +128,7 @@ Update the following index templates to use the appropriate component template b
 
 Use the Dev Tools Console in Kibana to retrieve the existing index template settings:
 
-```json
+```
 # Here logs-apm.app@template is the name of the index template 
 GET _index_template/logs-apm.app@template 
 ```
@@ -190,7 +190,7 @@ GET _index_template/logs-apm.app@template
 
 From the output above, copy the entire `index_template` section and modify the `composed_of` array to replace the existing lifecycle component template with the desired retention policy. In this example, we replace `apm-10d@lifecycle` with `apm-90d@lifecycle` for 90-day retention:
 
-```json
+```
 # Here logs-apm.app@template is the name of the index template
 PUT _index_template/logs-apm.app@template 
 {
@@ -260,19 +260,19 @@ After updating the index templates with new retention policies, you need to dele
 
 **Delete Logs Data Stream:**
 
-```json
+```
 DELETE _data_stream/logs-apm.app* 
 ```
 
 **Delete Metrics Data Stream:**
 
-```json
+```
 DELETE _data_stream/metrics-apm.app* 
 ```
 
 **Delete Traces Data Stream:**
 
-```json
+```
 DELETE _data_stream/traces-apm* 
 ```
 
