@@ -251,6 +251,42 @@ Repeat the above steps for `metrics-apm.app@template` and `traces-apm@template`,
 > [!IMPORTANT]
 > Changes to index templates only affect **new data streams** created after the update. Existing data streams will continue using their original retention policies until they are manually updated or recreated.
 
+### Step 3: Delete Existing Data Streams (Setup Time Only)
+
+> [!WARNING]
+> This step should only be performed once during initial setup. Deleting data streams will permanently remove all data and indices under those data streams.
+
+After updating the index templates with new retention policies, you need to delete the existing data streams so they can be recreated with the updated retention settings. Use the Dev Tools Console in Kibana to run the following commands:
+
+**Delete Logs Data Stream:**
+
+```json
+DELETE _data_stream/logs-apm.app*
+```
+
+**Delete Metrics Data Stream:**
+
+```json
+DELETE _data_stream/metrics-apm.app*
+```
+
+**Delete Traces Data Stream:**
+
+```json
+DELETE _data_stream/traces-apm*
+```
+
+**Sample Output for each command:**
+
+```json
+{
+  "acknowledged": true
+}
+```
+
+> [!NOTE]
+> After deleting the data streams, new data streams will be automatically created with the updated retention policies when APM agents begin sending new telemetry data.
+
 ---
 
 ## Advanced Configuration
