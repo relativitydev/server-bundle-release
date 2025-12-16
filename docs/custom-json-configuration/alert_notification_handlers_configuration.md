@@ -8,6 +8,12 @@ To monitor Kibana Alerts through Slack notification, configure the Slack details
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
+To identify the BCP path for the environment, execute the following SQL query against the 'EDDS' database:
+
+```sql
+SELECT TemporaryDirectory FROM [EDDS].[eddsdbo].[ResourceServer] WHERE ArtifactID=1015096
+```
+
 The Custom JSON file includes the following key sections:
 - Monitoring by Instance
 - Monitoring by Installed Product
@@ -88,7 +94,7 @@ Navigate to required channel and in About copy channel Id and assign it to chann
 - Navigate to Kibana Discover.
 - Select `logs-*` Data View.
 - Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
-![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
+![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
 
 ### Slack Notification Example
 

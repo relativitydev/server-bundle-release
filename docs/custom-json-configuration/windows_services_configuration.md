@@ -10,6 +10,12 @@ To monitor Windows Services, configure the Windows Services details in a Custom 
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
+To identify the BCP path for the environment, execute the following SQL query against the 'EDDS' database:
+
+```sql
+SELECT TemporaryDirectory FROM [EDDS].[eddsdbo].[ResourceServer] WHERE ArtifactID=1015096
+```
+
 The Custom JSON file includes the following key sections:
 - Monitoring by Instance
 - Monitoring by Installed Product
@@ -75,6 +81,13 @@ Windows Services can be monitored by "**hosts**", "**instance**", or "**installe
 - Navigate to Kibana Discover.
 - Select `logs-*` Data View.
 - Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
-![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
-- Navigate to the Kibana Windows Services Dashboard.
-- Ensure that the Windows services specified in the Custom JSON configuration are visible on the Kibana Windows Services Dashboard.
+![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
+- Ensure that the Windows services defined in the Custom JSON configuration appear on the Kibana Windows Services Dashboard. The example below demonstrates how a Windows service specified in the Custom JSON is successfully monitored and displayed on the Windows Services Dashboard.
+
+![](/resources/custom-json-images/windows-service-json-example.png)
+
+![](/resources/custom-json-images/windows-service-dashboard.png)
+
+---
+
+

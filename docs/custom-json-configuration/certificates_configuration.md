@@ -10,6 +10,12 @@ To monitor Certificates, configure the Certificate details in a Custom JSON file
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
+To identify the BCP path for the environment, execute the following SQL query against the 'EDDS' database:
+
+```sql
+SELECT TemporaryDirectory FROM [EDDS].[eddsdbo].[ResourceServer] WHERE ArtifactID=1015096
+```
+
 The Custom JSON file includes the following key sections:
 - Monitoring by Instance
 - Monitoring by Installed Product
@@ -131,6 +137,10 @@ Certificates can be monitored by "**hosts**", "**instance**", or "**installedPro
 - Navigate to Kibana Discover.
 - Select `logs-*` Data View.
 - Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
-![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
+![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
 - Navigate to the Kibana Certificates Dashboard.
-- Ensure that the certificates specified in the Custom JSON configuration are visible on the Kibana Certificates Dashboard.
+- Ensure that the Certificates defined in the Custom JSON configuration appear on the Kibana Certificates Dashboard. The example below demonstrates how a certificate specified in the Custom JSON is successfully monitored and displayed on the Certificates Dashboard.
+
+![](/resources/custom-json-images/certificate-json-example.png)
+
+![](/resources/custom-json-images/certificate-dashboard-example.png)

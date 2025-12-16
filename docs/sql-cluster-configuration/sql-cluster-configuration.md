@@ -12,6 +12,12 @@ To monitor SQL Cluster instances using the Environment Watch Windows Service, co
 
 ![](/resources/sql-cluster-images/bcp-path-custom-json-file-name.png)
 
+To identify the BCP path for the environment, execute the following SQL query against the 'EDDS' database:
+
+```sql
+SELECT TemporaryDirectory FROM [EDDS].[eddsdbo].[ResourceServer] WHERE ArtifactID=1015096
+```
+
 The Custom JSON file includes the following key sections:
 - Monitoring by Instance
 - Monitoring by Installed Product
@@ -86,9 +92,12 @@ For an environment containing a SQL cluster with two nodes (`SQLNode1` and `SQLN
             ]
 ```
 
+> [!NOTE]
+> If the environment does not use SQL Cluster instances, then update `enabled` flag to false for all SQL Server instances in the "**hosts**" section to disable SQL monitoring.
+
 ---
 
-## Restart the Environment Watch Windows Service
+### Restart the Environment Watch Windows Service
 
 After updating the `environment-watch-configuration.json` file with the SQL cluster configuration, save the changes, restart the Environment Watch Windows Service to apply the changes. This ensures that the service reads the updated configuration and begins monitoring the specified SQL cluster instances.
 
