@@ -1,6 +1,6 @@
 # Custom JSON Configuration
 
-This document provides an overview of the Custom JSON configuration for Environment Watch, allowing user to monitor Windows Services and Certificates from a shared path for any host, and to send alerts to a Slack channel based on the specified Slack settings.
+This document provides an overview of the custom JSON configuration for Environment Watch, allowing user to monitor Windows services and certificates from a shared path for any host, and to send alerts to a Slack channel based on the specified Slack settings.
 
 ---
 
@@ -26,7 +26,7 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
 
 ### Monitoring by Instance
 The `instance` section defines sources that are monitored at the environment or system-wide level, regardless of specific products or hosts.
-- **Purpose:** Monitors general resources (like Certificates or Windows Services) that are relevant to the entire instance.
+- **Purpose:** Monitors general resources (like certificates or Windows services) that are relevant to the entire instance.
 - **Use Case:** Useful for checks that apply everywhere, such as core system services.
 
 ### Monitoring by Installed Product
@@ -36,7 +36,7 @@ The `installedProducts` section contains an array of product objects, each with 
 
 ### Monitoring by Host
 The `hosts` section contains an array of host objects, each with its own monitoring sources.
-- **Purpose:** Monitors resources on a per-host basis, such as Services or Certificates unique to a particular server.
+- **Purpose:** Monitors resources on a per-host basis, such as Services or certificates unique to a particular server.
 - **Use Case:** Enables granular monitoring for individual machines, supporting host-specific checks (e.g., SQL Services on a database server).
 
 ---
@@ -52,10 +52,38 @@ The `hosts` section contains an array of host objects, each with its own monitor
 
 ---
 
+## Custom JSON Configuration Folder and File Location
+
+To monitor SQL cluster instances using the Environment Watch Windows service, configure the SQL cluster details in a custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`.
+
+To identify the BCP path for the environment, execute the following SQL query against the '**EDDS**' database:
+
+```sql
+SELECT 
+[TemporaryDirectory]
+FROM [EDDS].[eddsdbo].[ResourceServer] AS rs WITH(NOLOCK)
+INNER JOIN [EDDS].[eddsdbo].[ExtendedArtifact] AS ea WITH(NOLOCK)
+	ON ea.[ArtifactID] = rs.[ArtifactID]
+INNER JOIN [EDDS].[eddsdbo].[Code] AS c WITH(NOLOCK)
+	ON c.[ArtifactID] = rs.[Type]
+INNER JOIN [EDDS].[eddsdbo].[ResourceGroupSQLServers] AS rgss WITH(NOLOCK)
+	ON rgss.[SQLServerArtifactID] = rs.[ArtifactID]
+INNER JOIN [EDDS].[eddsdbo].[ResourceGroup] AS rg WITH(NOLOCK)
+	ON rg.[ArtifactID] = rgss.[ResourceGroupArtifactID]
+WHERE c.[Name] = 'SQL - Primary'
+```
+
+![](/resources/custom-json-images/sql-bcp-path-query.png)
+
+ An example of the BCPPath and folder structure is shown below:
+
+![](/resources/custom-json-images/bcp-path-custom-json-file-name.png)
+
+---
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows Services, Certificates, Kibana Alerts through Slack Notifications, and SQL Cluster Instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, and SQL cluster instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 ### Windows Services
@@ -65,6 +93,7 @@ For detailed instructions, please refer to the [Windows Service Configuration](w
 ### Certificates
 
 For detailed instructions, please refer to the [Certificates Configuration](certificates_configuration.md).
+
 ### SQL Cluster Instances
 
 For detailed instructions, please refer to the [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md).
