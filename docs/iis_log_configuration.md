@@ -12,6 +12,20 @@ The Environment Watch monitoring agent uses OpenTelemetry (OTEL) collectors to p
 - Administrative access to the IIS Manager
 - Environment Watch monitoring agent installed (see [Install Environment Watch Monitoring Agents](install_environment_watch_monitoring_agents.md))
 
+## Terminology and Abbreviations
+ 
+The following abbreviations are used throughout this document:
+ 
+| Abbreviation | Description |
+|-------------|-------------|
+| IIS | Internet Information Services |
+| OTEL | OpenTelemetry |
+| HTTP | Hypertext Transfer Protocol |
+| URI | Uniform Resource Identifier |
+| IP | Internet Protocol |
+| W3C | World Wide Web Consortium |
+| Win32 | Windows API status code |
+
 ## Required IIS Log Fields
 
 The following fields **must** be enabled in your IIS log configuration for successful ingestion:
