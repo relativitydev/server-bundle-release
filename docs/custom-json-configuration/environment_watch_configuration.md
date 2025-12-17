@@ -51,7 +51,7 @@ The `installedProducts` section contains a list of installed products, where eac
 
 
 ### Monitoring by Host
-The `hosts` section contains an array of host objects, each with its own monitoring sources.
+The `hosts` section contains multiple host objects, each specifying its own monitoring sources.
 - **Purpose:** Monitors resources on a per-host basis, such as Services or certificates unique to a particular server.
 - **Use Case:** Enables granular monitoring for individual machines, supporting host-specific checks (e.g., SQL Services on a database server).
 
@@ -156,7 +156,7 @@ For detailed instructions, see [Alert Notification Handlers](alert_notification_
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbPrint": "A54225760344699530649239D175BAA73C70DC1B"
+									"thumbprint": "A54225760344699530649239D175BAA73C70DC1B"
 								}
 							]
 						},
@@ -254,17 +254,17 @@ For detailed instructions, see [Alert Notification Handlers](alert_notification_
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbPrint": "F8809D2677E010477847C92C5A1A673784537CBC"
+									"thumbprint": "F8809D2677E010477847C92C5A1A673784537CBC"
 								},
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbPrint": "984812C68F059EB19A346D538ECFB072968C11C3"
+									"thumbprint": "984812C68F059EB19A346D538ECFB072968C11C3"
 								},
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbPrint": "984812C68F059EB19A346D538ECFB072968C11C3"
+									"thumbprint": "984812C68F059EB19A346D538ECFB072968C11C3"
 								}
 							]
 						},
@@ -284,7 +284,7 @@ For detailed instructions, see [Alert Notification Handlers](alert_notification_
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbPrint": "F8809D2677E010477847C92C5A1A673784537CBC"
+									"thumbprint": "F8809D2677E010477847C92C5A1A673784537CBC"
 								}
 							]
 						},
