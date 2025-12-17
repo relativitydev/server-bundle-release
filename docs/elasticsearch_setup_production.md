@@ -171,25 +171,25 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 **Step 9: Configure JVM Heap Settings (Production)**
 
-    Proper JVM heap configuration is critical for Elasticsearch performance and stability.
+Proper JVM heap configuration is critical for Elasticsearch performance and stability.
 
-    - Navigate to `C:\elastic\elasticsearch-x.x.x\config\jvm.options`
+- Navigate to `C:\elastic\elasticsearch-x.x.x\config\jvm.options`
 
-    - Set heap size to 50% of available RAM, with a maximum of 31GB per node:
+- Set heap size to 50% of available RAM, with a maximum of 31GB per node:
 
-    ```
-    # Xms represents the initial heap size
-    # Xmx represents the maximum heap size
-    # Both values should be equal to avoid heap resizing
+```
+# Xms represents the initial heap size
+# Xmx represents the maximum heap size
+# Both values should be equal to avoid heap resizing
 
-    -Xms16g
-    -Xmx16g
-    ```
+-Xms16g
+-Xmx16g
+```
 
-    **Production Sizing Guidelines:**
-    - For 32GB RAM server: `-Xms16g -Xmx16g`
-    - For 64GB RAM server: `-Xms31g -Xmx31g` (do not exceed 31GB)
-    - For 128GB RAM server: `-Xms31g -Xmx31g` (leave remainder for OS and Lucene)
+**Production Sizing Guidelines:**
+- For 32GB RAM server: `-Xms16g -Xmx16g`
+- For 64GB RAM server: `-Xms31g -Xmx31g` (do not exceed 31GB)
+- For 128GB RAM server: `-Xms31g -Xmx31g` (leave remainder for OS and Lucene)
 
 > [!IMPORTANT]
 > - Never set heap size above 31GB (compressed oops threshold)
@@ -197,11 +197,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > - Reserve at least 50% of RAM for the operating system and Lucene file cache
 > - Monitor heap usage and adjust based on actual workload
 
-    - Restart the Elasticsearch service after making changes:
+- Restart the Elasticsearch service after making changes:
 
-    ```powershell
-    Restart-Service -Name "elasticsearch-service-x64"
-    ```
+```powershell
+Restart-Service -Name "elasticsearch-service-x64"
+```
 
 **Step 10: Verify Elasticsearch Server**
 
@@ -428,25 +428,25 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > [!IMPORTANT]
 > Do NOT paste encryption keys or other secrets into `kibana.yml` in production or commit them to source control. Use the `kibana-keystore` (recommended) or an external secrets manager.
 
-    1. Example (elevated PowerShell) to add the generated keys to the Kibana keystore:
+1. Example (elevated PowerShell) to add the generated keys to the Kibana keystore:
 
-        ```powershell
-        cd C:\Kibana\kibana-x.x.x\bin
+    ```powershell
+    cd C:\Kibana\kibana-x.x.x\bin
 
-        # Create the keystore if it doesn't exist
-        .\kibana-keystore.bat create
+    # Create the keystore if it doesn't exist
+    .\kibana-keystore.bat create
 
-        # Add encryption keys (interactive)
-        .\kibana-keystore.bat add xpack.encryptedSavedObjects.encryptionKey
-        .\kibana-keystore.bat add xpack.reporting.encryptionKey
-        .\kibana-keystore.bat add xpack.security.encryptionKey
+    # Add encryption keys (interactive)
+    .\kibana-keystore.bat add xpack.encryptedSavedObjects.encryptionKey
+    .\kibana-keystore.bat add xpack.reporting.encryptionKey
+    .\kibana-keystore.bat add xpack.security.encryptionKey
 
-        # Or add non-interactively (stdin)
-        Write-Output '<randomly-generated-key-1>' | .\kibana-keystore.bat add xpack.encryptedSavedObjects.encryptionKey --stdin
-        ```
+    # Or add non-interactively (stdin)
+    Write-Output '<randomly-generated-key-1>' | .\kibana-keystore.bat add xpack.encryptedSavedObjects.encryptionKey --stdin
+    ```
 
-    2. After adding secrets, restart Kibana so it reads the keystore.
-    3. Ensure the keystore file has restrictive ACLs so only the Kibana service account can read it.
+2. After adding secrets, restart Kibana so it reads the keystore.
+3. Ensure the keystore file has restrictive ACLs so only the Kibana service account can read it.
 
 4. Restart the Kibana service, by opening an elevated PowerShell and run the following command:
     ```
