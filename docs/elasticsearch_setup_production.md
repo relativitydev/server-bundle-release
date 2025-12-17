@@ -1,4 +1,4 @@
-﻿# Install Elasticsearch, Kibana and APM Server - Development Environment
+﻿# Install Elasticsearch, Kibana and APM Server - Production Environment
 
 ![Set Up Stage](../resources/troubleshooting-images/setupstage.png)
 
