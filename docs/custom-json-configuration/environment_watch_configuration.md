@@ -16,8 +16,8 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
 - **Sections**:
   - `monitoring`: Contains configuration for instance, installed products, and hosts.
     - `instance`: Defines sources monitored at the instance level.
-    - `installedProducts`: Array of product objects, each with its own sources.
-    - `hosts`: Array of host objects, each with its own sources.
+    - `installedProducts`: A list of installed products, where each product defines its own monitoring sources.
+    - `hosts`: A list of hosts, where each host defines its own monitoring sources.
   - `alertNotificationHandlers`: Defines notification handlers (e.g., Slack).
 
 ---
@@ -30,11 +30,10 @@ The `instance` section defines sources that are monitored at the environment or 
 - **Use Case:** Useful for checks that apply everywhere, such as core system services.
 
 ### Monitoring by Installed Product
-The `installedProducts` section contains an array of product objects, each with its own monitoring sources.
+The `installedProducts` section contains a list of installed products, where each product defines its own monitoring sources.
 - **Purpose:** Monitors resources specific to each installed product (e.g., web server, agent).
-- **Use Case:** Allows you to tailor monitoring to the needs of each product, such as product-specific services or certificates.
-- Based on the installed product, custom JSON configuration will be applied to all hosts where that product is installed.
-- Installed product breakdown as follows:
+- **Use Case:** Allows to tailor monitoring to the needs of each product, such as product-specific services or certificates.
+- The following installed product values can be used in the `installedProducts` section of the custom JSON configuration.
 
 | Property                    | Description                                                                 |
 |----------------------------|-----------------------------------------------------------------------------|
@@ -49,8 +48,6 @@ The `installedProducts` section contains an array of product objects, each with 
 | `SQLDistributed`           | SQL Distributed Server                                                      |
 | `SQLPrimary`               | SQL Primary Server                                                          |
 | `Caat`                     | Analytics Server                                                            |
-
-- Above installed product can be used in the custom JSON configuration under the `installedProducts` section.s
 
 
 ### Monitoring by Host
@@ -71,9 +68,15 @@ The `hosts` section contains an array of host objects, each with its own monitor
 
 ---
 
-## Custom JSON Configuration Folder and File Location
+## Configuration File Location and BCP Path
 
-To monitor SQL cluster instances using the Environment Watch Windows service, configure the SQL cluster details in a custom JSON file. This file should be stored in the `BCPPath` directory within the `EnvironmentWatch` folder and named `environment-watch-configuration.json`.
+Base path: `BCPPath`
+
+Folder: `EnvironmentWatch`
+
+File name: `environment-watch-configuration.json`
+
+Environment Watch automatically reads this file and applies the defined monitoring rules to the relevant instances, products, and hosts.
 
 To identify the BCP path for the environment, execute the following SQL query against the '**EDDS**' database:
 
@@ -151,9 +154,9 @@ For detailed instructions, see [Alert Notification Handlers](alert_notification_
 							"enabled": true,
 							"include": [
 								{
-									"StoreName": "My",
-									"StoreLocation": "LocalMachine",
-									"Thumbprint": "A54225760344699530649239D175BAA73C70DC1B"
+									"storeName": "My",
+									"storeLocation": "LocalMachine",
+									"thumbPrint": "A54225760344699530649239D175BAA73C70DC1B"
 								}
 							]
 						},
@@ -251,17 +254,17 @@ For detailed instructions, see [Alert Notification Handlers](alert_notification_
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbprint": "F8809D2677E010477847C92C5A1A673784537CBC"
+									"thumbPrint": "F8809D2677E010477847C92C5A1A673784537CBC"
 								},
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbprint": "984812C68F059EB19A346D538ECFB072968C11C3"
+									"thumbPrint": "984812C68F059EB19A346D538ECFB072968C11C3"
 								},
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbprint": "984812C68F059EB19A346D538ECFB072968C11C3"
+									"thumbPrint": "984812C68F059EB19A346D538ECFB072968C11C3"
 								}
 							]
 						},
@@ -281,7 +284,7 @@ For detailed instructions, see [Alert Notification Handlers](alert_notification_
 								{
 									"storeName": "My",
 									"storeLocation": "LocalMachine",
-									"thumbprint": "F8809D2677E010477847C92C5A1A673784537CBC"
+									"thumbPrint": "F8809D2677E010477847C92C5A1A673784537CBC"
 								}
 							]
 						},

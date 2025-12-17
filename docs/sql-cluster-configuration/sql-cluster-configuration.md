@@ -2,14 +2,15 @@
 > [!NOTE]
 > Use the steps below only if your environment uses SQL cluster servers for Environment Watch monitoring.
 
-An environment may include SQL cluster instances comprising two or more nodes. To monitor these instances with the Environment Watch Windows Service, specific configurations must be defined in a custom JSON file.
+An environment may include SQL cluster instances consisting of two or more nodes. To monitor these instances using the Environment Watch Windows service, you need to define specific configurations in a custom JSON file.
 
 ---
 
 ## Configure SQL Cluster Instances
 
 To configure SQL cluster instances in the Custom JSON file, the "**hosts**" section needs to be updated.
-Locate the "hosts" section in the JSON file and add an entry for each SQL cluster instance you want to monitor. Each **hostName** should be included with the following details:
+
+Locate the "**hosts**" section in the JSON file and add an entry for each SQL cluster instance you want to monitor. Each **hostName** should be included with the following details:
 
 **Example:**
 For an environment containing a SQL cluster with two nodes (`SQLNode1` and `SQLNode2`):  
@@ -81,7 +82,7 @@ For an environment containing a SQL cluster with two nodes (`SQLNode1` and `SQLN
 
 ### Restart the Environment Watch Windows Service
 
-After updating the `environment-watch-configuration.json` file with the SQL cluster configuration, save the changes, restart the Environment Watch Windows Service to apply the changes. This ensures that the service reads the updated configuration and begins monitoring the specified SQL cluster instances.
+After updating the `environment-watch-configuration.json` file with the SQL cluster configuration, save the changes, restart the Environment Watch Windows service to apply the changes. This ensures that the service reads the updated configuration and begins monitoring the specified SQL cluster instances.
 
 Once the windows service has been restarted, verify that the SQL cluster instances are being monitored correctly by checking the Environment Watch discover, dashboards for relevant metrics, alerts.
 

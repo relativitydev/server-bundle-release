@@ -1,17 +1,17 @@
 # Certificates Configuration
 
-This section describes the configuration of certificates in the `environmentWatchConfiguration` JSON object for monitoring certificates.
+This section describes how to configure certificate monitoring using the `environmentWatchConfiguration` JSON object.
 
 ---
 
 ## Overview
 
-Monitors the presence and validity of specified certificates in Windows certificate stores. There are certificates by default monitored without configuration and they are based on installed product.
+Monitors the presence and validity of specified certificates in Windows certificate stores. By default, the Relativity Secret Store certificate is monitored without requiring additional configuration. Other certificates can be added based on the installed product or specific requirements.
 
 **Default Certificates**
 | Certificate Name                  | Description                                      |
 |-----------------------------------|--------------------------------------------------|
-| Relativity Secret Store           | certificate for Relativity Secret Store.         |
+| Relativity Secret Store           | Certificate for Relativity Secret Store.         |
 
 **Properties In Custom JSON Related to Certificates**
 
@@ -19,13 +19,13 @@ Monitors the presence and validity of specified certificates in Windows certific
 |----------------|----------|------------------------------------------------------------------|
 | `enabled`      | boolean  | Enables or disables monitoring for certificates.                 |
 | `include`      | array    | List of certificate objects to monitor.                          |
-| `StoreName`    | string   | Name of the certificate store (e.g., `"My"`).                    |
-| `StoreLocation`| string   | Location of the store (e.g., `"LocalMachine"`).                  |
-| `Thumbprint`   | string   | certificate thumbprint to identify the certificate.              |
+| `storeName`    | string   | Name of the certificate store (e.g., `"My"`).                    |
+| `storeLocation`| string   | Location of the store (e.g., `"LocalMachine"`).                  |
+| `thumbprint`   | string   | Certificate thumbprint to identify the certificate.              |
 
 #### StoreLocation Enum Values
 
-The `StoreLocation` field specifies the location of the X.509 certificate store to use.
+The `storeLocation` field specifies the location of the X.509 certificate store to use.
 
 **Possible Values**
 
@@ -36,7 +36,7 @@ The `StoreLocation` field specifies the location of the X.509 certificate store 
 
 #### StoreName Enum Values
 
-The `StoreName` field specifies the name of the Windows certificate store where the X.509 certificate is located.
+The `storeName` field specifies the name of the Windows certificate store where the X.509 certificate is located.
 
 **Possible Values**
 
@@ -59,17 +59,17 @@ Depending on the Store Location and Store Name, run the following command on the
 Get-ChildItem Cert:\LocalMachine\My
 ```
 
-The command outputs a table with `Thumbprint` and `Subject`. Select the `Thumbprint` for the required certificate and assign it as shown in the example. Adjust the command based on the `StoreName` and `StoreLocation`, and update the values in the JSON accordingly.
-
+The command returns a list of certificates including their `thumbprint` and `subject`. Copy the `thumbprint` value for the certificate you want to monitor and use it in the custom JSON configuration. Adjust the command as needed based on the selected `storeName` and `storeLocation`.
 
 ## Configure Certificates
 
-certificates can be monitored by "**hosts**", "**instance**", or "**installedProducts**". For certificates to monitor, locate "**certificates**" under the desired section and update the configuration as below.
+Certificates can be monitored at the "**hosts**", "**instance**", or "**installedProducts**" level.
+For certificates to monitor, locate "**certificates**" under the desired section and update the configuration as below.
 
 - `enabled` : Set to `true` to enable certificate monitoring.
-- When configuring the `include` array, each certificate object must specify the `StoreName`, `StoreLocation`, and `Thumbprint` fields.
+- When configuring the `include` section, specify the `storeName`, `storeLocation`, and `thumbprint` for each certificate to be monitored.
 
-**Example 1**: Monitoring one certificate where `StoreName` is `My`, `StoreLocation` is `LocalMachine`, and `Thumbprint` is obtained from the following PowerShell command `Get-ChildItem Cert:\LocalMachine\My`:
+**Example 1**: Monitoring two certificates from the LocalMachine\My store. The certificate is identified by its Thumbprint, which you can retrieve using the following PowerShell command:`Get-ChildItem Cert:\LocalMachine\My`
 
 ```json
 {
@@ -77,14 +77,14 @@ certificates can be monitored by "**hosts**", "**instance**", or "**installedPro
 		"enabled": true,
 		"include": [
 			{
-				"StoreName": "My",
-				"StoreLocation": "LocalMachine",
-				"Thumbprint": "005501F9BA68A2ED7D9BD515B256F6298AEF7E5A"
+				"storeName": "My",
+				"storeLocation": "LocalMachine",
+				"thumbprint": "005501F9BA68A2ED7D9BD515B256F6298AEF7E5A"
 			},
 			{
-				"StoreName": "My",
-				"StoreLocation": "LocalMachine",
-				"Thumbprint": "E62D7D4DD8D054072A7A58A577D500753A586C75"
+				"storeName": "My",
+				"storeLocation": "LocalMachine",
+				"thumbprint": "E62D7D4DD8D054072A7A58A577D500753A586C75"
 			}
 		]
 	}
