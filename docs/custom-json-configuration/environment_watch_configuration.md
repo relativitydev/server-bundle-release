@@ -70,7 +70,7 @@ The `hosts` section contains multiple host objects, each specifying its own moni
 
 ---
 
-## Configuration File Location and BCP Path
+## Configuration File Location
 
 Base path: `BCPPath`
 
