@@ -33,13 +33,15 @@ GET /_data_stream/traces-apm*?filter_path=data_streams.name,data_streams.lifecyc
 
 ## Expected Results
 
-Each query should return the data stream names along with their configured lifecycle settings. The response will look similar to:
+Each query should return the data stream names along with their configured lifecycle settings.
+
+**Sample Output:**
 
 ```json
 {
   "data_streams": [
     {
-      "name": "logs-apm.app-default",
+      "name": "logs-apm.app.relsvr_logging-default",
       "lifecycle": {
         "enabled": true,
         "data_retention": "90d",

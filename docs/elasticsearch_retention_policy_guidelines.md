@@ -254,13 +254,123 @@ PUT _index_template/logs-apm.app@template
 
 #### b. Update Metrics Index Template (Optional)
 
-The `metrics-apm.app@template` already uses the `apm-90d@lifecycle` component template by default, so it does not require any updates if you are using the recommended 90-day retention period. If you need a different retention period, retrieve the current template configuration using a GET request and update it following the same pattern as the logs template:
+The `metrics-apm.app@template` already uses the `apm-90d@lifecycle` component template by default, so it does not require any updates if you are using the recommended 90-day retention period. If you need a different retention period, retrieve the current template configuration using a GET request:
 
 **Sample Request:**
 
 ```
 # Get the current template configuration
 GET _index_template/metrics-apm.app@template
+```
+
+**Sample Output:**
+
+```json
+{
+  "index_templates": [
+    {
+      "name": "metrics-apm.app@template",
+      "index_template": {
+        "index_patterns": [
+          "metrics-apm.app.*-*"
+        ],
+        "template": {
+          "settings": {
+            "index": {
+              "mode": "standard",
+              "default_pipeline": "metrics-apm.app@default-pipeline",
+              "final_pipeline": "metrics-apm@pipeline"
+            }
+          }
+        },
+        "composed_of": [
+          "metrics@mappings",
+          "apm@mappings",
+          "apm@settings",
+          "metrics-apm@settings",
+          "metrics-apm.app-fallback@ilm",
+          "ecs@mappings",
+          "metrics@custom",
+          "metrics-apm.app@custom",
+          "apm-90d@lifecycle"
+        ],
+        "priority": 210,
+        "version": 101,
+        "_meta": {
+          "managed": true,
+          "description": "Index template for metrics-apm.app.*-*"
+        },
+        "data_stream": {
+          "hidden": false,
+          "allow_custom_routing": false
+        },
+        "allow_auto_create": true,
+        "ignore_missing_component_templates": [
+          "metrics@custom",
+          "metrics-apm.app@custom",
+          "metrics-apm.app-fallback@ilm"
+        ]
+      }
+    }
+  ]
+}
+```
+
+Then, if you need to change the retention period, copy the `index_template` section from the output above and update it by replacing `apm-90d@lifecycle` with your desired retention component template in the `composed_of` array using a PUT request:
+
+**Sample Request:**
+
+```
+PUT _index_template/metrics-apm.app@template
+{
+  "index_patterns": [
+    "metrics-apm.app.*-*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "mode": "standard",
+        "default_pipeline": "metrics-apm.app@default-pipeline",
+        "final_pipeline": "metrics-apm@pipeline"
+      }
+    }
+  },
+  "composed_of": [
+    "metrics@mappings",
+    "apm@mappings",
+    "apm@settings",
+    "metrics-apm@settings",
+    "metrics-apm.app-fallback@ilm",
+    "ecs@mappings",
+    "metrics@custom",
+    "metrics-apm.app@custom",
+    "apm-90d@lifecycle"
+  ],
+  "priority": 210,
+  "version": 101,
+  "_meta": {
+    "managed": true,
+    "description": "Index template for metrics-apm.app.*-*"
+  },
+  "data_stream": {
+    "hidden": false,
+    "allow_custom_routing": false
+  },
+  "allow_auto_create": true,
+  "ignore_missing_component_templates": [
+    "metrics@custom",
+    "metrics-apm.app@custom",
+    "metrics-apm.app-fallback@ilm"
+  ]
+}
+```
+
+**Sample Output:**
+
+```json
+{
+  "acknowledged": true
+}
 ```
 
 #### c. Update Traces Index Template
