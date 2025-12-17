@@ -1,6 +1,7 @@
 # Windows Service Configuration
 
 This section describes how to configure Windows service monitoring using the `environmentWatchConfiguration` JSON object.
+
 ---
 
 ## Overview
@@ -32,6 +33,8 @@ The following table lists the properties used to configure Windows services moni
 |-------------|----------|------------------------------------------------------------------|
 | `enabled`   | boolean  | Enables or disables monitoring for Windows services.              |
 | `include`   | array    | List of Windows service names (not display names) to monitor (for example, "WinDefend").|
+
+To identify the correct service name:
 
 - Navigate to the **Services** application on the host.
 - Right-click the desired service and select **Properties**.
