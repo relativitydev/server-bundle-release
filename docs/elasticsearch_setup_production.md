@@ -37,8 +37,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
         Enrollment token for Kibana:
         eyJ2ZXIiOiI4LjE3LjMiLCJ...<rest_of_token>
         ```
-        > [!NOTE]
-        > To stop Elasticsearch after you have copied the enrollment token, click inside the PowerShell window and press `Ctrl` and `C` at the same time. This will end the running process.
+
+> [!NOTE]
+> To stop Elasticsearch after you have copied the enrollment token, click inside the PowerShell window and press `Ctrl` and `C` at the same time. This will end the running process.
 
     3. Open an elevated PowerShell and run the following command to install Elasticsearch as a Windows service:
         ```
@@ -84,8 +85,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
         ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
     5. When you run this command, a new password will be generated and displayed in the console output.
-        > [!IMPORTANT]
-        > The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization’s credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
+
+> [!IMPORTANT]
+> The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization's credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
 6. Configure Node roles, discovery and Network
     1. Define explicit node roles to separate master, data, ingest responsibilities. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`) and open the **elasticsearch.yml** file.
@@ -154,7 +156,42 @@ If you download a .zip or other file from the internet, Windows may block the fi
         WARNING: Waiting for service 'Elasticsearch x.x.x (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
         ```
 
-7. Verify Elasticsearch Server
+9. Configure JVM Heap Settings (Production)
+
+    Proper JVM heap configuration is critical for Elasticsearch performance and stability.
+
+    - Navigate to `C:\elastic\elasticsearch-x.x.x\config\jvm.options`
+
+    - Set heap size to 50% of available RAM, with a maximum of 31GB per node:
+
+        ```
+        # Xms represents the initial heap size
+        # Xmx represents the maximum heap size
+        # Both values should be equal to avoid heap resizing
+
+        -Xms16g
+        -Xmx16g
+        ```
+
+        **Production Sizing Guidelines:**
+        - For 32GB RAM server: `-Xms16g -Xmx16g`
+        - For 64GB RAM server: `-Xms31g -Xmx31g` (do not exceed 31GB)
+        - For 128GB RAM server: `-Xms31g -Xmx31g` (leave remainder for OS and Lucene)
+
+        > [!IMPORTANT]
+        > - Never set heap size above 31GB (compressed oops threshold)
+        > - Always set Xms and Xmx to the same value
+        > - Reserve at least 50% of RAM for the operating system and Lucene file cache
+        > - Monitor heap usage and adjust based on actual workload
+
+
+    - Restart the Elasticsearch service after making changes:
+
+        ```powershell
+        Restart-Service -Name "elasticsearch-service-x64"
+        ```
+
+10. Verify Elasticsearch Server
     1. To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values). In production do NOT use `-k`; validate the server certificate using the CA certificate you installed:
         ```
         curl -u <username>:<password> --cacert C:\elastic\secrets\ca\ca.crt https://<hostname_or_ip>:9200
@@ -346,8 +383,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
             Use forward slashes in paths (C:/...) to avoid YAML escape issues.     
 
 5. Generate Kibana encryption keys
-    > [!NOTE]
-    > Skipping the steps below will cause the Relativity Server CLI to fail.
+
+> [!NOTE]
+> Skipping the steps below will cause the Relativity Server CLI to fail.
 
     1. Open an elevated PowerShell and run the following command:
         ```
@@ -369,8 +407,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     3. Store encryption keys securely (production)
 
-        > [!IMPORTANT]
-        > Do NOT paste encryption keys or other secrets into `kibana.yml` in production or commit them to source control. Use the `kibana-keystore` (recommended) or an external secrets manager.
+> [!IMPORTANT]
+> Do NOT paste encryption keys or other secrets into `kibana.yml` in production or commit them to source control. Use the `kibana-keystore` (recommended) or an external secrets manager.
 
         1. Example (elevated PowerShell) to add the generated keys to the Kibana keystore:
 
@@ -409,18 +447,20 @@ If you download a .zip or other file from the internet, Windows may block the fi
     8. For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
 5. Create Kibana Windows Service
-    > [!IMPORTANT]    
-    > **Running Kibana as a Windows Service is Optional**
-    > Environment Watch does NOT require Kibana to run as a Windows service, nor does it require the use of NSSM. NSSM is a commonly used open-source tool to help run applications as services, but it is not mandatory. You can run Kibana manually from the code line if you prefer, and this will work perfectly for development and most production scenarios.
-    > Only use NSSM if you want Kibana to start automatically as a service on Windows. If you do not wish to use NSSM, simply run `kibana.bat` manually.
-    > 
-    > ```
-    > C:\Kibana\kibana-x.x.x\bin\kibana.bat
-    > ```
+
+> [!IMPORTANT]    
+> **Running Kibana as a Windows Service is Optional**
+> Environment Watch does NOT require Kibana to run as a Windows service, nor does it require the use of NSSM. NSSM is a commonly used open-source tool to help run applications as services, but it is not mandatory. You can run Kibana manually from the code line if you prefer, and this will work perfectly for development and most production scenarios.
+> Only use NSSM if you want Kibana to start automatically as a service on Windows. If you do not wish to use NSSM, simply run `kibana.bat` manually.
+> 
+> ```
+> C:\Kibana\kibana-x.x.x\bin\kibana.bat
+> ```
     
     1. Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
-        > [!NOTE]
-        > Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
+
+> [!NOTE]
+> Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
 
     2. Open an elevated PowerShell and run the following command:
 
@@ -465,8 +505,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
     10. Right click on the service and open **Properties** to change the startup type to **Automatic**, so Kibana runs automatically on system startup.
 
     11. Verify that Kibana is running by opening it in your browser.
-        > [!NOTE]
-        > It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
+
+> [!NOTE]
+> It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
 6. Verify Kibana Server
     1. Open a browser and go to `https://<hostname_or_ip>:5601`.
@@ -681,8 +722,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 ### Step 4: Additional Setup and Verification
 
 1. Add Elastic APM Integration Package
-    > [!IMPORTANT]
-    > Skipping the steps below will cause the Relativity Server CLI to fail.
+
+> [!IMPORTANT]
+> Skipping the steps below will cause the Relativity Server CLI to fail.
 
     1. Login to Kibana and select the Elastic APM under Integration, or in the search bar type "Elastic APM" and select it under Integration.
      
