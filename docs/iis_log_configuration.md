@@ -321,7 +321,7 @@ After configuring IIS logging and ensuring the Environment Watch monitoring agen
 ### Step 2: Navigate to Discover
 
 1. Click on the **Discover** menu item in the left navigation panel
-2. select data view logs-*
+2. Select data view logs-*
 
 ### Step 3: Set the Time Range
 
