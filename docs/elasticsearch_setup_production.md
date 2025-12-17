@@ -31,10 +31,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
         ```
         <a id="enrollment-token-generation"></a>
 
-        >  When starting Elasticsearch for the first time, security features are enabled and configured by default:
-        >  - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser.
-        >  - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
-        >  - An enrollment token is generated for Kibana, which is valid for 30 minutes.
+    > - When starting Elasticsearch for the first time, security features are enabled and configured by default:
+    > - Authentication and authorization are enabled, and a password is generated for the elastic built-in superuser.
+    > - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
+    > - An enrollment token is generated for Kibana, which is valid for 30 minutes.
 
 2. Save the token for future reference. Once the enrollment token is displayed, you need to stop Elasticsearch so you can proceed with the next steps. To do this, return to the PowerShell window where Elasticsearch is running and press `Ctrl+C` on your keyboard. This will safely terminate the process. The enrollment token will look similar to:
         ```
@@ -42,8 +42,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
         eyJ2ZXIiOiI4LjE3LjMiLCJ...<rest_of_token>
         ```
 
-        > [!NOTE]
-        > To stop Elasticsearch after you have copied the enrollment token, click inside the PowerShell window and press `Ctrl` and `C` at the same time. This will end the running process.
+    > [!NOTE]
+    > To stop Elasticsearch after you have copied the enrollment token, click inside the PowerShell window and press `Ctrl` and `C` at the same time. This will end the running process.
 
 3. Open an elevated PowerShell and run the following command to install Elasticsearch as a Windows service:
         ```
@@ -191,11 +191,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
         - For 64GB RAM server: `-Xms31g -Xmx31g` (do not exceed 31GB)
         - For 128GB RAM server: `-Xms31g -Xmx31g` (leave remainder for OS and Lucene)
 
-        > [!IMPORTANT]
-        > - Never set heap size above 31GB (compressed oops threshold)
-        > - Always set Xms and Xmx to the same value
-        > - Reserve at least 50% of RAM for the operating system and Lucene file cache
-        > - Monitor heap usage and adjust based on actual workload
+    > [!IMPORTANT]
+    > - Never set heap size above 31GB (compressed oops threshold)
+    > - Always set Xms and Xmx to the same value
+    > - Reserve at least 50% of RAM for the operating system and Lucene file cache
+    > - Monitor heap usage and adjust based on actual workload
 
     - Restart the Elasticsearch service after making changes:
 
@@ -426,7 +426,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 3. Store encryption keys securely (production)
 
     > [!IMPORTANT]
-        > Do NOT paste encryption keys or other secrets into `kibana.yml` in production or commit them to source control. Use the `kibana-keystore` (recommended) or an external secrets manager.
+    > Do NOT paste encryption keys or other secrets into `kibana.yml` in production or commit them to source control. Use the `kibana-keystore` (recommended) or an external secrets manager.
 
     1. Example (elevated PowerShell) to add the generated keys to the Kibana keystore:
 
@@ -477,8 +477,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
     
 1. Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
-        > [!NOTE]
-        > Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
+    > [!NOTE]
+    > Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
 
 2. Open an elevated PowerShell and run the following command:
 
@@ -524,8 +524,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 11. Verify that Kibana is running by opening it in your browser.
 
-        > [!NOTE]
-        > It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
+    > [!NOTE]
+    > It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
 **Step 7: Verify Kibana Server**
 
