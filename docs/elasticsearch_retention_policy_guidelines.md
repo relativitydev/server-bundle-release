@@ -87,6 +87,12 @@ When determining the appropriate retention period for your environment, consider
 
 Elastic APM provides the `apm-90d@lifecycle` component template by default for 90-day retention. For 30-day retention (recommended for traces), create a custom component template using the Dev Tools Console in Kibana:
 
+**Navigate to Dev Tools Console:**
+
+1. Open Kibana in your web browser
+2. Click on **Dev Tools** in the left navigation menu (or use the search bar at the top to find "Dev Tools")
+3. You'll see the Console interface where you can execute Elasticsearch queries
+
 **Sample Request:**
 
 ```
@@ -124,13 +130,15 @@ Update the following index templates to use the appropriate component template b
 | `metrics-apm.app@template` | Metrics | `apm-90d@lifecycle` | `apm-90d@lifecycle` |
 | `traces-apm@template` | Traces | `apm-10d@lifecycle` | `apm-30d@lifecycle` |
 
-#### a. Get Current Index Template Configuration
+#### a. Update Logs Index Template
 
-Use the Dev Tools Console in Kibana to retrieve the existing index template settings:
+First, use the Dev Tools Console in Kibana to retrieve the existing index template settings using a GET request:
+
+**Sample Request:**
 
 ```
-# Here logs-apm.app@template is the name of the index template 
-GET _index_template/logs-apm.app@template 
+# Here logs-apm.app@template is the name of the index template
+GET _index_template/logs-apm.app@template
 ```
 
 **Sample Output:**
@@ -186,9 +194,9 @@ GET _index_template/logs-apm.app@template
 }
 ```
 
-#### b. Update the Index Template
+Then, copy the `index_template` section from the output above and update it by replacing `apm-10d@lifecycle` with `apm-90d@lifecycle` in the `composed_of` array using a PUT request:
 
-From the output above, copy the entire `index_template` section and modify the `composed_of` array to replace the existing lifecycle component template with the desired retention policy. In this example, we replace `apm-10d@lifecycle` with `apm-90d@lifecycle` for 90-day retention:
+**Sample Request:**
 
 ```
 # Here logs-apm.app@template is the name of the index template
@@ -244,9 +252,137 @@ PUT _index_template/logs-apm.app@template
 }
 ```
 
-#### c. Repeat for Other Templates
+#### b. Update Metrics Index Template (Optional)
 
-Repeat the above steps for `metrics-apm.app@template` and `traces-apm@template`, updating each with the appropriate lifecycle component template based on your retention requirements.
+The `metrics-apm.app@template` already uses the `apm-90d@lifecycle` component template by default, so it does not require any updates if you are using the recommended 90-day retention period. If you need a different retention period, retrieve the current template configuration using a GET request and update it following the same pattern as the logs template:
+
+**Sample Request:**
+
+```
+# Get the current template configuration
+GET _index_template/metrics-apm.app@template
+```
+
+#### c. Update Traces Index Template
+
+For traces, retrieve the current template configuration using a GET request:
+
+**Sample Request:**
+
+```
+# Get the current template configuration
+GET _index_template/traces-apm@template
+```
+
+**Sample Output:**
+
+```json
+{
+  "index_templates": [
+    {
+      "name": "traces-apm@template",
+      "index_template": {
+        "index_patterns": [
+          "traces-apm*"
+        ],
+        "template": {
+          "settings": {
+            "index": {
+              "mode": "standard",
+              "default_pipeline": "traces-apm@default-pipeline",
+              "final_pipeline": "traces-apm@pipeline"
+            }
+          }
+        },
+        "composed_of": [
+          "traces@mappings",
+          "apm@mappings",
+          "apm@settings",
+          "traces-apm@settings",
+          "traces-apm-fallback@ilm",
+          "ecs@mappings",
+          "traces@custom",
+          "traces-apm@custom",
+          "apm-10d@lifecycle"
+        ],
+        "priority": 210,
+        "version": 101,
+        "_meta": {
+          "managed": true,
+          "description": "Index template for traces-apm*"
+        },
+        "data_stream": {
+          "hidden": false,
+          "allow_custom_routing": false
+        },
+        "allow_auto_create": true,
+        "ignore_missing_component_templates": [
+          "traces@custom",
+          "traces-apm@custom",
+          "traces-apm-fallback@ilm"
+        ]
+      }
+    }
+  ]
+}
+```
+
+Then, copy the `index_template` section from the output above and update it by replacing `apm-10d@lifecycle` with `apm-30d@lifecycle` (which you created in Step 1) in the `composed_of` array using a PUT request:
+
+**Sample Request:**
+
+```
+PUT _index_template/traces-apm@template
+{
+  "index_patterns": [
+    "traces-apm*"
+  ],
+  "template": {
+    "settings": {
+      "index": {
+        "mode": "standard",
+        "default_pipeline": "traces-apm@default-pipeline",
+        "final_pipeline": "traces-apm@pipeline"
+      }
+    }
+  },
+  "composed_of": [
+    "traces@mappings",
+    "apm@mappings",
+    "apm@settings",
+    "traces-apm@settings",
+    "traces-apm-fallback@ilm",
+    "ecs@mappings",
+    "traces@custom",
+    "traces-apm@custom",
+    "apm-30d@lifecycle"
+  ],
+  "priority": 210,
+  "version": 101,
+  "_meta": {
+    "managed": true,
+    "description": "Index template for traces-apm*"
+  },
+  "data_stream": {
+    "hidden": false,
+    "allow_custom_routing": false
+  },
+  "allow_auto_create": true,
+  "ignore_missing_component_templates": [
+    "traces@custom",
+    "traces-apm@custom",
+    "traces-apm-fallback@ilm"
+  ]
+}
+```
+
+**Sample Output:**
+
+```json
+{
+  "acknowledged": true
+}
+```
 
 > [!IMPORTANT]
 > Changes to index templates only affect **new data streams** created after the update. Existing data streams will continue using their original retention policies until they are manually updated or recreated.

@@ -42,7 +42,9 @@ Each query should return the data stream names along with their configured lifec
       "name": "logs-apm.app-default",
       "lifecycle": {
         "enabled": true,
-        "data_retention": "90d"
+        "data_retention": "90d",
+        "effective_retention": "90d",
+        "retention_determined_by": "data_stream_configuration"
       }
     }
   ]
@@ -51,7 +53,7 @@ Each query should return the data stream names along with their configured lifec
 
 ## What to Check
 
-- **enabled**: Should be `true` if data lifecycle management is active
+- **enabled**: Should be `true`
 - **data_retention**: Indicates the configured retention period (e.g., "30d" for 30 days, "90d" for 90 days)
 
 If the lifecycle settings don't match your expected configuration, you may need to update your retention period according to [elasticsearch_retention_policy_guidelines.md](../../elasticsearch_retention_policy_guidelines.md).
