@@ -19,11 +19,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
 **Step 1: Download Elasticsearch 8.17.3/9.1.3**
 
 1. Visit [Elastic's official download page](https://www.elastic.co/downloads/elasticsearch).
-2. Download the 8.17.3/9.1.3 Windows .zip version.
+2. Download the 8.17.3/9.1.3 Windows .zip version. Server 2024 supports 8.17.3 and Server 2025 supports both 8.17.3 and 9.1.3.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 4. Extract the files to `C:\elastic`
 
-**Step 2: Install and Configure Elasticsearch 8.17.3/9.1.3**
+**Step 2: Install and Configure Elasticsearch x.x.x**
 
 1. Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:     
     ```
@@ -101,8 +101,15 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 **Step 6: Configure Node roles, discovery and Network**
 
-1. Define explicit node roles to separate master, data, ingest responsibilities. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`) and open the **elasticsearch.yml** file.
+1. Define explicit node roles to separate master, data, ingest responsibilities. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`), open the **elasticsearch.yml** file and update the below keys:
 
+    - **cluster.name:** {Logical name of the Elasticsearch cluster}
+    - **node.name:** {Unique identifier for the node within the cluster}
+    - **node.roles:** {List of responsibilities the node performs (master, data, ingest, coordinating, ml)}
+    - **network.host:** {The network interface/address Elasticsearch binds to for transport and HTTP. Bind to a specific management/private IP in production. Avoid 0.0.0.0 unless you intentionally expose it.}
+    - **http.port:** {Port for the HTTP REST API (Kibana, APM, curl clients)}
+    - **discovery.seed_hosts:** {Addresses used by a node to find and connect to other nodes on startup.Include at least the dedicated master nodes and a couple of other stable nodes.}
+    - **cluster.initial_master_nodes:** {List of candidate master node names used only during the very first cluster bootstrap to form an initial master-eligible quorum.}
     <details>
     <summary>Sample Node Details</summary>
 
@@ -140,8 +147,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
 1. Put `path.data` and `path.logs` on dedicated, high‑performance disks (separate from OS) and configure in `elasticsearch.yml`:
 
     ```yaml
-    path.data: C:/esdata
-    path.logs: C:/eslogs
+    path.data: X:/esdata
+    path.logs: X:/eslogs
     ```
 
 2. Save the changes and restart the Elasticsearch service by opening an elevated PowerShell and running the following command:
@@ -212,7 +219,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 2. Configure the snapshot repository path in `elasticsearch.yml`:
     ```yaml
-    path.repo: ["C:/elastic/backups"]
+    path.repo: ["X:/elastic/backups"]
     ```
 
 3. Restart Elasticsearch to apply the changes:
@@ -310,9 +317,9 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 ## Install and Configure Kibana
 
-**Step 1: Download Kibana 8.17.3**
+**Step 1: Download Kibana x.x.x**
 
-1. Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic's official Kibana download page](https://www.elastic.co/downloads/kibana) to stable paths.
+1. Download and extract the x.x.x Windows .zip version of Kibana from [Elastic's official Kibana download page](https://www.elastic.co/downloads/kibana) to stable paths.
 2. Ensure the Elasticsearch service is installed and running before Kibana setup.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
@@ -609,10 +616,10 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 - Elastic and Kibana should be configured and services should be up and running.
 
-**Step 2: Download APM Server 8.17.3**
+**Step 2: Download APM Server x.x.x**
 
 1. Visit [Elastic's APM Server page](https://www.elastic.co/downloads/apm).
-2. Download and extract the 8.17.3 Windows .zip file.
+2. Download and extract the x.x.x Windows .zip file.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 4. Extract the files to `C:\`.
 
@@ -654,14 +661,14 @@ Restart-Service -Name "elasticsearch-service-x64"
             certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt".
             ```
      
-    2.  Use OpenSSL (if certutil missing or for self-signed)  
+2.  Option B: Use OpenSSL (if certutil missing or for self-signed)  
     1. Ensure OPENSSL_HOME is set or openssl.exe is available in PATH.
 
     2. Create config `C:\elastic\secrets\apm-openssl.cnf` with SANs and server settings with
     [req], [dn], [v3_req], [alt_names] including DNS.N and IP.N entries aligned to your hostnames and IPs.
     
     <details>
-    <summary>Sample kibana-openssl.cnf</summary>
+    <summary>Sample apm-openssl.cnf</summary>
     
     ```
     [ req ]
