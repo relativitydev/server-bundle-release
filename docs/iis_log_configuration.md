@@ -348,22 +348,22 @@ After configuring IIS logging and ensuring the Environment Watch monitoring agen
 In the search bar, enter the following query to filter for IIS logs:
 
 ```
-iis_log_http_request_method:*
+labels.iis_log_http_request_method:*
 ```
 
 Or search for a specific field:
 
 ```
-iis_log_http_target:"/Relativity*"
+labels.iis_log_http_target:"/Relativity*"
 ```
 
 ### Step 5: Verify Fields are Populated
 
 1. Expand one of the log entries by clicking the arrow icon
 2. Verify that all IIS log fields are present and populated:
-   - `iis_log_date_time`
-   - `iis_log_hostname`
-   - `iis_log_http_request_method`
-   - `iis_log_http_target`
-   - `iis_log_http_server_status`
-   - `iis_log_http_server_duration` and all other mapped fields
+   - `labels.iis_log_date_time`
+   - `labels.iis_log_hostname`
+   - `labels.iis_log_http_request_method`
+   - `labels.iis_log_http_target`
+   - `labels.iis_log_http_server_status`
+   - `labels.iis_log_http_server_duration` and all other mapped fields
