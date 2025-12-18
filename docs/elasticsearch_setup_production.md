@@ -220,44 +220,56 @@ Restart-Service -Name "elasticsearch-service-x64"
     Restart-Service -Name "elasticsearch-service-x64"
     ```
 
-4. Register the snapshot repository via API:
-    ```powershell
-    $body = @{
-        type = "fs"
-        settings = @{
-            location = "C:/elastic/backups"
-            compress = $true
+4. Register the snapshot repository via Kibana Dev Tools:
+    1. Open Kibana and navigate to **Dev Tools** (Management > Dev Tools).
+    2. Run the following command:
+        ```json
+        PUT _snapshot/my_backup
+        {
+          "type": "fs",
+          "settings": {
+            "location": "C:/elastic/backups",
+            "compress": true
+          }
         }
-    } | ConvertTo-Json
+        ```
 
-    Invoke-RestMethod -Method PUT -Uri "https://<hostname_or_ip>:9200/_snapshot/my_backup" -Body $body -ContentType "application/json" -Credential (Get-Credential)
-    ```
-
-5. Create a snapshot lifecycle policy for automated daily backups:
-    ```powershell
-    $policy = @{
-        schedule = "0 1 * * *"  # Daily at 1 AM
-        name = "<snapshot-{now/d}>"
-        repository = "my_backup"
-        config = @{
-            indices = ["*"]
-            ignore_unavailable = $true
-            include_global_state = $false
+5. Create a snapshot lifecycle policy for automated daily backups via Kibana Dev Tools:
+    1. In Kibana **Dev Tools**, run the following command:
+        ```json
+        PUT _slm/policy/daily_snapshots
+        {
+          "schedule": "0 1 * * *",
+          "name": "<snapshot-{now/d}>",
+          "repository": "my_backup",
+          "config": {
+            "indices": ["*"],
+            "ignore_unavailable": true,
+            "include_global_state": false
+          },
+          "retention": {
+            "expire_after": "30d",
+            "min_count": 7,
+            "max_count": 30
+          }
         }
-        retention = @{
-            expire_after = "30d"
-            min_count = 7
-            max_count = 30
+        ```
+
+6. Verify the snapshot repository via Kibana Dev Tools:
+    1. In Kibana **Dev Tools**, run the following command:
+        ```json
+        POST _snapshot/my_backup/_verify
+        ```
+    2. You should see a response confirming the repository is valid:
+        ```json
+        {
+          "nodes": {
+            "node_id": {
+              "name": "node_name"
+            }
+          }
         }
-    } | ConvertTo-Json -Depth 10
-
-    Invoke-RestMethod -Method PUT -Uri "https://<hostname_or_ip>:9200/_slm/policy/daily_snapshots" -Body $policy -ContentType "application/json" -Credential (Get-Credential)
-    ```
-
-6. Verify the snapshot repository:
-    ```powershell
-    Invoke-RestMethod -Uri "https://<hostname_or_ip>:9200/_snapshot/my_backup/_verify" -Method POST -Credential (Get-Credential)
-    ```
+        ```
 
 **Step 11: Verify Elasticsearch Server**
 
