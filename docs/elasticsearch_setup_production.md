@@ -203,7 +203,63 @@ Proper JVM heap configuration is critical for Elasticsearch performance and stab
 Restart-Service -Name "elasticsearch-service-x64"
 ```
 
-**Step 10: Verify Elasticsearch Server**
+**Step 10: Configure Snapshot Repository and Automated Backups**
+
+1. Create a shared network location or local directory for snapshots:
+    ```
+    mkdir C:\elastic\backups
+    ```
+
+2. Configure the snapshot repository path in `elasticsearch.yml`:
+    ```yaml
+    path.repo: ["C:/elastic/backups"]
+    ```
+
+3. Restart Elasticsearch to apply the changes:
+    ```powershell
+    Restart-Service -Name "elasticsearch-service-x64"
+    ```
+
+4. Register the snapshot repository via API:
+    ```powershell
+    $body = @{
+        type = "fs"
+        settings = @{
+            location = "C:/elastic/backups"
+            compress = $true
+        }
+    } | ConvertTo-Json
+
+    Invoke-RestMethod -Method PUT -Uri "https://<hostname_or_ip>:9200/_snapshot/my_backup" -Body $body -ContentType "application/json" -Credential (Get-Credential)
+    ```
+
+5. Create a snapshot lifecycle policy for automated daily backups:
+    ```powershell
+    $policy = @{
+        schedule = "0 1 * * *"  # Daily at 1 AM
+        name = "<snapshot-{now/d}>"
+        repository = "my_backup"
+        config = @{
+            indices = ["*"]
+            ignore_unavailable = $true
+            include_global_state = $false
+        }
+        retention = @{
+            expire_after = "30d"
+            min_count = 7
+            max_count = 30
+        }
+    } | ConvertTo-Json -Depth 10
+
+    Invoke-RestMethod -Method PUT -Uri "https://<hostname_or_ip>:9200/_slm/policy/daily_snapshots" -Body $policy -ContentType "application/json" -Credential (Get-Credential)
+    ```
+
+6. Verify the snapshot repository:
+    ```powershell
+    Invoke-RestMethod -Uri "https://<hostname_or_ip>:9200/_snapshot/my_backup/_verify" -Method POST -Credential (Get-Credential)
+    ```
+
+**Step 11: Verify Elasticsearch Server**
 
 1. To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values). In production do NOT use `-k`; validate the server certificate using the CA certificate you installed:
     ```
