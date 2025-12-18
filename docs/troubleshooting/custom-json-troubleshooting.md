@@ -39,7 +39,7 @@ WHERE c.[Name] = 'SQL - Primary'
 
 **1.2 The custom JSON file is in the correct BCP path, but the BCP path is not active.**
 
-Check if the BCP path is active:
+Check if the BCP Path is active:
 
 - Login to the Relativity application.
 - Navigate to **Servers**.
@@ -60,7 +60,6 @@ Check if the BCP path is active:
 Check the custom JSON file for syntax errors:
 
 - Please download the sample JSON file from the link below and compare it with your custom JSON file to identify any syntax errors.
-- [Download Sample JSON File](/resources/custom-json-troubleshooting-images/environment-watch-configuration.json)
 - Restart the Environment Watch Windows Service to apply the changes.
 
 **1.4 The Environment Watch Windows Service is not running the latest version.**
@@ -70,7 +69,7 @@ Check the custom JSON file for syntax errors:
 - If it is not updated, please upgrade the Environment Watch Windows Service to the latest version.
 
 > [!NOTE]
-> Ensure the `enable` flag is set to `true` in the custom JSON file for the relevant monitoring section (hosts, instance, or installedProducts).
+> Ensure the `enabled` flag is set to `true` in the custom JSON file for the relevant monitoring section (hosts, instance, or installedProducts).
 
 ## Certificates
 
@@ -118,7 +117,7 @@ Ensure the `hostName` property in your configuration matches the output. Example
 				},
 ```
 
- **1.3 Certificate thumprint is unique and should not be configured in Monitoring by instance.**
+ **1.3 Certificate thumbprint is unique and should not be configured in Monitoring by instance.**
 
  Example configuration for instance monitoring:
 
@@ -242,7 +241,7 @@ Example:
 
 - See [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON changes.
 
-## Slack Notification
+## Slack Notifications
 
 **1.1 Slack messages are being sent too frequently and require to extend the interval.**
 
