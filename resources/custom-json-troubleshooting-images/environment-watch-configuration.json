@@ -1,0 +1,91 @@
+{
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {
+            "enabled": false,
+            "include": []
+          },
+          "windowsServices": {
+            "enabled": false,
+            "include": []
+          }
+        },
+        "otelCollectorYamlFiles": []
+      },
+      "installedProducts": [
+        {
+          "productName": "Agent",
+          "sources": {
+            "certificates": {
+              "enabled": true,
+              "include": [
+                {
+                  "storeName": "My",
+                  "storeLocation": "LocalMachine",
+                  "thumbprint": ""
+                },
+                {
+                  "storeName": "My",
+                  "storeLocation": "LocalMachine",
+                  "thumbprint": ""
+                }
+              ]
+            },
+            "windowsServices": {
+              "enabled": true,
+              "include": ["Spooler"]
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ],
+      "hosts": [
+        {
+          "hostName": "emttest",
+          "sources": {
+            "certificates": {
+              "enabled": false,
+              "include": [
+                {
+                  "storeName": "My",
+                  "storeLocation": "LocalMachine",
+                  "thumbprint": ""
+                },
+                {
+                  "storeName": "My",
+                  "storeLocation": "LocalMachine",
+                  "thumbprint": ""
+                }
+              ]
+            },
+            "sqlServers": {
+              "enabled": false,
+              "include": [
+                {
+                  "clusterVirtualName": "SQLCLUSTER02",
+                  "instanceName": "SQL_INSTANCE"
+                }
+              ]
+            },
+            "windowsServices": {
+              "enabled": false,
+              "include": [ "W3SVC" ]
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ]
+    },
+    "alertNotificationHandlers": {
+      "slack": {
+        "accessToken": "",
+        "acknowledgeAlertEnabled": false,
+        "channel": "C091RB5TPRU",
+        "enabled": true,
+        "messageIntervalSeconds": 60
+      }
+    }
+  }
+}
