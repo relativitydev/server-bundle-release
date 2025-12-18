@@ -361,7 +361,7 @@ labels.iis_log_http_target:"/Relativity*"
 
 1. Expand one of the log entries by clicking the arrow icon
 
-    ![IIS Log Field Mapping](../resources/iis__log_field_mapping.png)
+    ![IIS Log Details Arrow](../resources/iis_log_details_arrow.png)
 
 2. Verify that all IIS log fields are present and populated:
    - `labels.iis_log_date_time`
@@ -370,3 +370,5 @@ labels.iis_log_http_target:"/Relativity*"
    - `labels.iis_log_http_target`
    - `labels.iis_log_http_server_status`
    - `labels.iis_log_http_server_duration` and all other mapped fields
+
+    ![IIS Log Field Mapping](../resources/iis__log_field_mapping.png)
