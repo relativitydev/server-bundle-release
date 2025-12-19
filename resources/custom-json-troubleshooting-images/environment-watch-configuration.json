@@ -82,7 +82,7 @@
       "slack": {
         "accessToken": "",
         "acknowledgeAlertEnabled": false,
-        "channel": "C091RB5TPRU",
+        "channel": "",
         "enabled": true,
         "messageIntervalSeconds": 60
       }

@@ -62,6 +62,9 @@ Check if the BCP path is active:
 Verify the custom JSON file for syntax errors:
 
 - Please download the sample JSON file from the link below and compare it with your custom JSON file to identify any syntax errors.
+
+[Sample Custom JSON File](/resources/custom-json-troubleshooting-images/environment-watch-configuration.json)
+
 - Restart the Environment Watch Windows Service to apply the changes.
 
 **1.4 The Environment Watch Windows Service is not running the latest version.**
@@ -142,6 +145,7 @@ Ensure the `hostName` property in your configuration matches the output. Example
 						]
 					}
 				}
+             }
 ```
 
 ## Windows Services
@@ -168,6 +172,7 @@ Example:
 						}
 					}
 				},
+        ]
 ```
 
 **1.2 The Windows services are not running on the host.**
@@ -238,7 +243,7 @@ Example:
                     },
                     "otelCollectorYamlFiles": []
                 }
-            ]
+        ]
 ```
 
 > [!NOTE]
