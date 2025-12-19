@@ -212,22 +212,38 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 **Step 10: Configure Snapshot Repository and Automated Backups**
 
-1. Create a shared network location or local directory for snapshots:
-    ```
-    mkdir C:\elastic\backups
+> [!IMPORTANT]
+> For multi-node clusters, `path.repo` must be configured in `elasticsearch.yml` on **every node** that might execute snapshot or restore operations. All nodes must have access to the same backup location.
+
+1. Create a backup directory on a dedicated high-performance volume (not C:):
+    ```powershell
+    # Use a dedicated volume for backups
+    mkdir D:\es-backups
     ```
 
-2. Configure the snapshot repository path in `elasticsearch.yml`:
+2. Grant the Elasticsearch service account full read/write permissions:
+    ```powershell
+    # For LocalSystem (default service account)
+    icacls "D:\es-backups" /grant "NT AUTHORITY\SYSTEM:(OI)(CI)F" /T
+    
+    # For custom service account (replace DOMAIN\svc_elasticsearch)
+    # icacls "D:\es-backups" /grant "DOMAIN\svc_elasticsearch:(OI)(CI)F" /T
+    
+    # Verify permissions
+    icacls "D:\es-backups"
+    ```
+
+3. Configure the snapshot repository path in `elasticsearch.yml` on **all nodes**:
     ```yaml
-    path.repo: ["X:/elastic/backups"]
+    path.repo: ["D:/es-backups"]
     ```
 
-3. Restart Elasticsearch to apply the changes:
+4. Restart Elasticsearch on all nodes to apply the changes:
     ```powershell
     Restart-Service -Name "elasticsearch-service-x64"
     ```
 
-4. Register the snapshot repository via Kibana Dev Tools:
+5. Register the snapshot repository via Kibana Dev Tools:
     1. Open Kibana and navigate to **Dev Tools** (Management > Dev Tools).
     2. Run the following command:
         ```json
@@ -235,18 +251,26 @@ Restart-Service -Name "elasticsearch-service-x64"
         {
           "type": "fs",
           "settings": {
-            "location": "C:/elastic/backups",
+            "location": "D:/es-backups",
             "compress": true
           }
         }
         ```
 
-5. Create a snapshot lifecycle policy for automated daily backups via Kibana Dev Tools:
-    1. In Kibana **Dev Tools**, run the following command:
+6. Create a snapshot lifecycle policy for automated backups via Kibana Dev Tools:
+
+> [!NOTE]
+> **Schedule Guidance:** Avoid peak business hours when scheduling snapshots. Format for scheduling snapshots:
+> - Daily at 2 AM: `"0 2 * * *"` (recommended for most environments)
+> - Daily at 3 AM: `"0 3 * * *"`
+> - Weekly on Sunday at 2 AM: `"0 2 * * 0"`
+> - Cron format: `"minute hour day month weekday"`
+
+1. In Kibana **Dev Tools**, run the following command:
         ```json
         PUT _slm/policy/daily_snapshots
         {
-          "schedule": "0 1 * * *",
+          "schedule": "0 2 * * *",
           "name": "<snapshot-{now/d}>",
           "repository": "my_backup",
           "config": {
@@ -262,7 +286,7 @@ Restart-Service -Name "elasticsearch-service-x64"
         }
         ```
 
-6. Verify the snapshot repository via Kibana Dev Tools:
+7. Verify the snapshot repository via Kibana Dev Tools:
     1. In Kibana **Dev Tools**, run the following command:
         ```json
         POST _snapshot/my_backup/_verify
@@ -276,6 +300,51 @@ Restart-Service -Name "elasticsearch-service-x64"
             }
           }
         }
+        ```
+
+8. **Test the snapshot and restore process:**
+
+    1. Create a test snapshot:
+        ```json
+        PUT _snapshot/my_backup/test_snapshot_001
+        {
+          "indices": "*",
+          "ignore_unavailable": true,
+          "include_global_state": false
+        }
+        ```
+    
+    2. Monitor snapshot progress:
+        ```json
+        GET _snapshot/my_backup/test_snapshot_001/_status
+        ```
+    
+    3. List available snapshots:
+        ```json
+        GET _snapshot/my_backup/_all
+        ```
+    
+    4. Test restore (restores with renamed index to avoid overwriting):
+        ```json
+        POST _snapshot/my_backup/test_snapshot_001/_restore
+        {
+          "indices": "your-index-name",
+          "ignore_unavailable": true,
+          "include_global_state": false,
+          "rename_pattern": "(.+)",
+          "rename_replacement": "restored_$1",
+          "include_aliases": false
+        }
+        ```
+    
+    5. Monitor restore progress:
+        ```json
+        GET _recovery?human
+        ```
+    
+    6. Clean up test snapshot after verification:
+        ```json
+        DELETE _snapshot/my_backup/test_snapshot_001
         ```
 
 **Step 11: Verify Elasticsearch Server**
