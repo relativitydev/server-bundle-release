@@ -12,10 +12,10 @@ Environment Watch has been rigorously tested to ensure minimal impact on your Re
 
 | Workload Category | Impact | Summary |
 |------------------|--------|------------------|
-| **Processing** | **+450% faster** | Processing performance has improved dramatically, delivering a 450% speed increase that will noticeably accelerate end-to-end workflows. |
+| **Processing** | TBD |TBD|
 | **Review (Conversion)** | **+5% faster** | Review operations saw a modest 5% improvement, providing slightly faster document conversion without any workflow disruption. |
 | **Imaging & Production** | **Stable (±4%)** | Imaging and production performance remained stable, with changes within a ±4% range, resulting in no meaningful impact to customer workflows. |
-| **Data Transfer** | **Mixed results** | Native file operations improved by 4–38%, offering smoother import/export performance. Image-based workflows saw some declines—most notably a 157% slowdown in RIP image export—which may impact image-heavy projects. |
+| **Data Transfer** | TBD| TBD |
 
 ## Test Environment Specifications
 
@@ -38,6 +38,5 @@ Environment Watch has been rigorously tested to ensure minimal impact on your Re
 
 This comprehensive test environment, ranging from Small to Medium scale, mirrors typical production Relativity deployments and ensures our performance results are representative of real-world customer workloads.
 
-## Conclusion
+## Conclusion(TBD)
 
-Environment Watch delivers significant performance improvements for processing workloads while maintaining stable performance for most other Relativity operations. Organizations with heavy image-based data transfer workflows should evaluate their specific use cases to ensure alignment with their performance requirements.
