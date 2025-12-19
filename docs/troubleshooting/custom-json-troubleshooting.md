@@ -4,7 +4,7 @@ This document provides guidance for troubleshooting issues related to custom JSO
 
 ## Common Issues
 
-If you do not see the log "The Environment Watch shared configuration object is not empty" in Kibana after configuring the custom JSON file, possible causes include:
+If the log "The Environment Watch shared configuration object is not empty" does not appear in Kibana after configuring the custom JSON file, the potential causes are:
 
 ![](/resources/custom-json-troubleshooting-images/environment-watch-shared-settings-not-empty.png)
 
@@ -59,23 +59,23 @@ Check if the BCP path is active:
 
 **1.3 The custom JSON file has syntax errors.**
 
-Check the custom JSON file for syntax errors:
+Verify the custom JSON file for syntax errors:
 
 - Please download the sample JSON file from the link below and compare it with your custom JSON file to identify any syntax errors.
 - Restart the Environment Watch Windows Service to apply the changes.
 
 **1.4 The Environment Watch Windows Service is not running the latest version.**
 
-- Check the version of the Environment Watch Windows Service.
+- Verify the version of the Environment Watch Windows Service.
 - Ensure it is updated to version **100.0.21** or later, as custom JSON support was introduced in this version.
-- If it is not updated, please upgrade the Environment Watch Windows Service to the latest version.
+- If it is not updated, upgrade the Environment Watch Windows Service to the latest version.
 
 > [!NOTE]
 > Ensure the `enabled` flag is set to `true` in the custom JSON file for the relevant monitoring section (hosts, instance, or installedProducts).
 
 ## Certificates
 
-If you see this alert in the Relativity application, possible causes include:
+Possible causes for the following alert in the Relativity application include:
 
 ![](/resources/custom-json-troubleshooting-images/certificate-alert.png)
 
@@ -119,6 +119,7 @@ Ensure the `hostName` property in your configuration matches the output. Example
 					},
 					"otelCollectorYamlFiles": []
 				},
+        ]
 ```
 
  **1.3 Certificate thumbprint is unique and should not be configured in Monitoring by instance.**
@@ -145,7 +146,7 @@ Ensure the `hostName` property in your configuration matches the output. Example
 
 ## Windows Services
 
-If the Windows services are not appearing in the Kibana dashboard after you have configured the custom JSON file, possible causes include:
+If Windows services do not appear in the Kibana dashboard after configuring the custom JSON file, the potential causes are:
 
 ![](/resources/custom-json-troubleshooting-images/widows-service-dashboard-json.png)
 
