@@ -6,6 +6,8 @@ This document provides guidance for troubleshooting issues related to custom JSO
 
 If you do not see the log "The Environment Watch shared configuration object is not empty" in Kibana after configuring the custom JSON file, possible causes include:
 
+![](/resources/custom-json-troubleshooting-images/environment-watch-shared-settings-not-empty.png)
+
  **1.1 The custom JSON file is not placed in the correct BCP path.**
 
 Check the custom JSON file path:
@@ -39,7 +41,7 @@ WHERE c.[Name] = 'SQL - Primary'
 
 **1.2 The custom JSON file is in the correct BCP path, but the BCP path is not active.**
 
-Check if the BCP Path is active:
+Check if the BCP path is active:
 
 - Login to the Relativity application.
 - Navigate to **Servers**.
@@ -74,6 +76,8 @@ Check the custom JSON file for syntax errors:
 ## Certificates
 
 If you see this alert in the Relativity application, possible causes include:
+
+![](/resources/custom-json-troubleshooting-images/certificate-alert.png)
 
  **1.1 Thumbprint for the certificate is not configured properly.**
 
@@ -142,6 +146,8 @@ Ensure the `hostName` property in your configuration matches the output. Example
 ## Windows Services
 
 If the Windows services are not appearing in the Kibana dashboard after you have configured the custom JSON file, possible causes include:
+
+![](/resources/custom-json-troubleshooting-images/widows-service-dashboard-json.png)
 
 **1.1 The custom JSON file does not include the Windows services configuration.**
 
@@ -260,3 +266,12 @@ Example:
 - Ensure that the `accessToken`, `channel`, `enabled`, and `messageIntervalSeconds` properties are set correctly.
 - See [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON changes.
 - It can also occur if the Slack API token is invalid or does not have the necessary permissions to post messages to the specified channel. Verify the token and permissions.
+
+![](/resources/custom-json-troubleshooting-images/slack-message-in-kibana-discover.png)
+
+![](/resources/custom-json-troubleshooting-images/triggerred-alert-in-kibana.png)
+
+![](/resources/custom-json-troubleshooting-images/slack-notification.png)
+
+
+
