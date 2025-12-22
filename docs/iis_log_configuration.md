@@ -8,7 +8,7 @@ The Environment Watch monitoring agent uses OpenTelemetry (OTEL) collectors to p
 
 ## Prerequisites
 
-- IIS installed on Server
+- IIS installed on the Server
 - Administrative access to the IIS Manager
 - Environment Watch monitoring agent installed (see [Install Environment Watch Monitoring Agents](install_environment_watch_monitoring_agents.md))
 
@@ -28,7 +28,7 @@ The following abbreviations are used throughout this document:
 
 ## Required IIS Log Fields
 
-The following fields **must** be enabled in your IIS log configuration for successful ingestion:
+The following fields **must** be enabled in your IIS log configuration for successful ingestion. These fields are configured in IIS Manager under W3C Logging Fields.
 
 | Field Name | IIS Log Field | Description | Required |
 |------------|---------------|-------------|----------|
