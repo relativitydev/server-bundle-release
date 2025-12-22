@@ -21,6 +21,12 @@ The RabbitMQ integration enables monitoring of RabbitMQ queues, exchanges, and n
 
 - [Setting Up RabbitMQ Integration](rabbitmq/rabbitmq_integration.md)
 
+### Manual Elasticsearch Configuration
+
+The Manual Elasticsearch Configuration helps to update and optimize essential Elasticsearch settings.
+
+- [Setting Up Elasticsearch Configuration](elasticsearch-configurations/manual-elasticsearch-configuration.md)
+
 ## Next Step
 
 [Click here for the next step](./environment-watch/post-install-verification.md)
