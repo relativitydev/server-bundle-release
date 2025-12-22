@@ -1,4 +1,4 @@
-## Alert Notification Handlers [Preview Feature]
+## Alert Notification Handlers [Early Access]
 
 The `alertNotificationHandlers` section configures integrations for sending alerts when monitored resources meet specified conditions. This enables automated notifications to external systems such as Slack.
 
