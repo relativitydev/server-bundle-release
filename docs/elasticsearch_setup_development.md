@@ -14,7 +14,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     ![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
 
-### Step 1: Download and Install Elasticsearch 8.x/9.x on one server
+### Step 1: Download and Install the Windows .zip package for Elasticsearch version 8.x or 9.x on one server
 1. Download Elasticsearch 8.x/9.x
     1. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
     2. Download the 8.x/9.x Windows .zip version.
