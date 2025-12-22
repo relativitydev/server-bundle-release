@@ -14,16 +14,16 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     ![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
 
-### Step 1: Download and Install Elasticsearch 8.17.3 on one server
-1. Download Elasticsearch 8.17.3
+### Step 1: Download and Install the Windows .zip package for Elasticsearch version 8.x or 9.x on one server
+1. Download Elasticsearch 8.x or 9.x
     1. Visit [Elastic’s official download page](https://www.elastic.co/downloads/elasticsearch).
-    2. Download the 8.17.3 Windows .zip version.
+    2. Download the 8.x or 9.x Windows .zip version.
     3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
     4. Extract the files to `C:\elastic`
-2. Install and Configure Elasticsearch 8.17.3
+2. Install and Configure Elasticsearch 8.x or 9.x
     1. Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:     
 		```
-		C:\elastic\elasticsearch-8.17.3\bin\elasticsearch.bat
+		C:\elastic\elasticsearch-{version}\bin\elasticsearch.bat
 		```
         <a id="enrollment-token-generation"></a>
 
@@ -42,7 +42,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     3. Open an elevated PowerShell and run the following command to install Elasticsearch as a Windows service:
 		```
-        C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-service.bat install
+        C:\elastic\elasticsearch-{version}\bin\elasticsearch-service.bat install
         ```
         The output will look similar to:
 		```
@@ -53,7 +53,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 3. Run Elasticsearch as a Windows Service
     1. Open an elevated PowerShell and run the following command to start the Elasticsearch service:
         ```
-        C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-service.bat start
+        C:\elastic\elasticsearch-{version}\bin\elasticsearch-service.bat start
         ```
         The output will look similar to:
         ```
@@ -61,7 +61,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
         The service 'elasticsearch-service-x64' has been started.
         ```
 4. Enable Stack Monitoring
-    1. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-8.17.3\config`) and open the **elasticsearch.yml** file.
+    1. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-{version}\config`) and open the **elasticsearch.yml** file.
     2. Add the following line to enable Stack Monitoring:
         ```
         xpack.monitoring.collection.enabled: true
@@ -72,7 +72,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
         ```
 5. Reset the Elastic (Admin) User Password
     1. The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
-    2. Navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-8.17.3\bin`)
+    2. Navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-{version}\bin`)
     3. Open an elevated PowerShell and run the following command:
         ```
         .\elasticsearch-reset-password -u elastic
@@ -88,11 +88,11 @@ If you download a .zip or other file from the internet, Windows may block the fi
 6. Install the 'mapper-size' plugin
     1. Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
         ```
-        C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-plugin install mapper-size
+        C:\elastic\elasticsearch-{version}\bin\elasticsearch-plugin install mapper-size
         ```
     2. To verify the 'mapper-size' plugin is installed, run:
         ```
-        C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-plugin list
+        C:\elastic\elasticsearch-{version}\bin\elasticsearch-plugin list
         ```
     3. Restart the Elasticsearch Service. To restart the Elasticsearch service, run the following in an elevated PowerShell session:
         ```
@@ -100,7 +100,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
         ```
         The output will look similar to:
         ```
-        WARNING: Waiting for service 'Elasticsearch 8.17.3 (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
+        WARNING: Waiting for service 'Elasticsearch 8.x or 9.x (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
         ```
 
 7. Verify Elasticsearch Server
@@ -137,15 +137,15 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ### Step 2: Install and Configure Kibana
 
-1. Download Kibana 8.17.3
-    1. Download and extract the 8.17.3 Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
+1. Download Kibana 8.x or 9.x
+    1. Download and extract the 8.x or 9.x Windows .zip version of Kibana from [Elastic’s official Kibana download page](https://www.elastic.co/downloads/kibana).
     2. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
 2. Start Kibana from the command line
     1. Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
     2. Open an elevated PowerShell and run the following command:
         ```
-        C:\Kibana\kibana-8.17.3\bin\kibana.bat
+        C:\Kibana\kibana-{version}\bin\kibana.bat
         ```
     3. If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
         ```
@@ -158,9 +158,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
     1. In your terminal, click the generated link to open Kibana in your browser.
     2. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the Configure Elastic button to connect your Kibana instance with Elasticsearch.
         [See where the enrollment token is generated.](#enrollment-token-generation)
-    3. If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-8.17.3\bin`).
+    3. If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-{version}\bin`).
         ```
-        C:\elastic\elasticsearch-8.17.3\bin\elasticsearch-create-enrollment-token --scope kibana
+        C:\elastic\elasticsearch-{version}\bin\elasticsearch-create-enrollment-token --scope kibana
         ```
         <details>
         <summary>Sample output</summary>
@@ -177,7 +177,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     1. Open an elevated PowerShell and run the following command:
         ```
-        C:\Kibana\kibana-8.17.3\bin\kibana-encryption-keys generate
+        C:\Kibana\kibana-{version}\bin\kibana-encryption-keys generate
         ```
 		
     2. If successful, you will see output showing the generated encryption keys. For example:
@@ -193,7 +193,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
         
 		</details>
 
-    3. Copy the generated encryption keys and paste them at the end of your `kibana.yml` file (e.g., `C:\Kibana\kibana-8.17.3\config\kibana.yml`). The configuration should look similar to:
+    3. Copy the generated encryption keys and paste them at the end of your `kibana.yml` file (e.g., `C:\Kibana\kibana-{version}\config\kibana.yml`). The configuration should look similar to:
 
         <details>
         <summary>Sample kibana.yml configuration</summary>
@@ -208,7 +208,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     4. Restart the Kibana service, by opening an elevated PowerShell and run the following command:
         ```
-        C:\Kibana\kibana-8.17.3\bin\kibana.bat
+        C:\Kibana\kibana-{version}\bin\kibana.bat
         ```
    
     5. To verify success, check the terminal output for lines indicating that Kibana has started successfully. You can also refer to the screenshots below:
@@ -229,7 +229,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
     > Only use NSSM if you want Kibana to start automatically as a service on Windows. If you do not wish to use NSSM, simply run `kibana.bat` manually.
     > 
     > ```
-    > C:\Kibana\kibana-8.17.3\bin\kibana.bat
+    > C:\Kibana\kibana-{version}\bin\kibana.bat
     > ```
 	
     1. Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
@@ -253,7 +253,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
     > If you accidentally install the Kibana service before completing your configuration (for example, by pressing Return too early in the NSSM dialog), you can easily edit the service properties afterward. This allows you to update the application path, log file settings, or other options without reinstalling the service.
     > To edit the service properties, open an elevated PowerShell and run the following command: `C:\nssm-2.24\win64\nssm.exe edit kibana`
 
-    4. In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-8.17.3\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-8.17.3\service_logs\kibana_service.log`). 
+    4. In the I/O tab, enter the full path of a log file where the service logs will be stored. For example, create a folder in the Kibana directory (e.g., `C:\Kibana\kibana-{version}\service_logs`) and a blank log file (e.g., `C:\Kibana\kibana-{version}\service_logs\kibana_service.log`). 
     
     5. Copy the full log file path into the stdout and stderr sections:
     
@@ -285,13 +285,13 @@ If you download a .zip or other file from the internet, Windows may block the fi
 1. Prerequisites to setup APM Server
     - Elastic and Kibana should be configured and services should be up and running.
 
-2. Download APM Server 8.17.3
+2. Download APM Server 8.x or 9.x
     1. Visit [Elastic’s APM Server page](https://www.elastic.co/downloads/apm).
-    2. Download and extract the 8.17.3 Windows .zip file.
+    2. Download and extract the 8.x or 9.x Windows .zip file.
     3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
     4. Extract the files to `C:\`.
 
-3. Configure APM Server (`C:\apm-server-8.17.3-windows-x86_64\apm-server.yml`)
+3. Configure APM Server (`C:\apm-server-{version}-windows-x86_64\apm-server.yml`)
 
     1. An API key is required for configuring both APM and Beats. To create an API key:
         1. Log in to Kibana (`http://<hostname_or_ip>:5601`) using the `elastic` credential.
@@ -306,7 +306,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
              > Copy and save `id` and `api_key` values immediately and store them securely according to your organization’s credential management and security policies.
 
-    2. Navigate to the apm-server folder (e.g., `C:\apm-server-8.17.3-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
+    2. Navigate to the apm-server folder (e.g., `C:\apm-server-{version}-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
 
     3. Update the `apm-server.yml` file to match the following sample configuration. Replace the placeholder values (`<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`) as needed for your environment. Below is a sample configuration:
 
@@ -333,7 +333,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
     2. Run the following command to install the APM Server as a Windows service:
         
         ```
-        PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-8.17.3-windows-x86_64\install-service.ps1
+        PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-{version}-windows-x86_64\install-service.ps1
         ```
         The output will look similar to:
 
