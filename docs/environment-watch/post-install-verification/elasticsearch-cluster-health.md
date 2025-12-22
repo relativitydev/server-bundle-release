@@ -33,12 +33,14 @@ Confirm cluster health status, total nodes, shards, indices, and document count 
    - Data size.
 
 **Expected Result:**
-- Cluster health is **Green (Healthy)**.  
+- Under any Data Store Dashboard, click on Cluster Overview link.  
+- Verify cluster health is **Green (Healthy)**.  
 - Nodes, shards, indices, and documents display current, non-zero values.  
 - No unassigned shards.  
 - Data size is displayed accurately.  
 
 **Screenshot:**  
+![Screenshot: Cluster Overview](../../../resources/post-install-verification-images/elasticsearch-cluster-health/cluster-overview.png)
 ![Screenshot: Cluster Health Summary](../../../resources/post-install-verification-images/elasticsearch-cluster-health/cluster-health-summary.png)
 
 

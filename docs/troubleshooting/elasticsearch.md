@@ -73,7 +73,7 @@ This document provides troubleshooting guidance for common Elasticsearch issues 
    ```
 
 3. Check Elasticsearch Logs:
-    1. Navigate to the log directory (default: `C:\elastic\elasticsearch-8.17.3\logs\`).
+    1. Navigate to the log directory (default: `C:\elastic\elasticsearch-{version}\logs\`).
     2. Review the Elasticsearch log file (`elasticsearch.log`) for error messages.
     3. Check the slow logs and garbage collection logs if present.
     4. For every error in the Elasticsearch log, provide troubleshooting for that specific error.

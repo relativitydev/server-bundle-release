@@ -20,13 +20,26 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 
 ## How to install/update CAAT
 
-1.  Copy CAAT Bundle to your server
-2.  Unzip the folder
-3.  Replace response-file.properties with master copy
-4.  Open Powershell as an administrator
-5.  Run `.\Install.cmd`
-6.  Once the installation is done, start **Relativity Analytics Engine** and check if the page is loading.
-7.  Open ElasticSearch and search for service.name: “relsvr_caat” in metrics-* data view
+### Prerequisites
+
+- Existing CAAT(4.7.11.A11) installer package
+- CAAT EW bundle (contains `opentelemetry-javaagent.jar`, `startup.cmd`, and `replace_startup.bat`)
+- Administrative access to the server
+
+### Installation Steps
+
+1.  Copy the CAAT EW bundle to your server and unzip it
+2.  Copy the following files from the CAAT EW bundle to the CAAT installer directory:
+    - `opentelemetry-javaagent.jar`
+    - `startup.cmd`
+    - `replace_startup.bat`
+3.  Replace `response-file.properties` with your master copy
+4.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
+5.  Stop the **Relativity Environment Watch** service before starting installation
+6.  Open PowerShell as an administrator
+7.  Run `.\Install.cmd`
+8.  Once the installation is complete, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
+9.  Open Kibana and search for `service.name: "relsvr_caat"` in the `metrics-*` data view to confirm telemetry is being collected
 
 
 ## What's updated
@@ -34,16 +47,16 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 - The Startup.cmd file is updated to include the OpenTelemetry Java Agent. This references the `opentelemetry-javaagent.jar` file, which is used to instrument the CAAT service for telemetry data collection.
 - Check for these lines within `startup.cmd`:
     ```
-    -javaagent:C:\\CAAT\\bin\\opentelemetry-javaagent.jar 
+    -javaagent:..bin\opentelemetry-javaagent.jar 
     -Dotel.service.name="relsvr.caat" 
     -Dotel.metrics.exporter=otlp 
     -Dotel.exporter.otlp.endpoint="http://localhost:4318" 
     -Dotel.instrumentation.runtime-metrics.enabled=true
+    -Dotel.instrumentation.java-util-logging.enabled=false
     ```
 
 ## How to verify the changes
 
 1. **Check Application Logs:** On startup, the agent logs its initialization. Look for lines mentioning `opentelemetry-javaagent` in the CAAT logs.
 2. **Verify Telemetry Export:** Confirm that traces and metrics are being sent to your configured backend (e.g., OpenTelemetry Collector, Jaeger, Azure Monitor).
-3. **Check Service Name:** Ensure the service appears as `caat-analytics-engine` (or your configured name) in your observability backend.
-4. **Disable to Compare:** Temporarily remove the `-javaagent` flag and confirm that telemetry stops, verifying the agent is responsible for the data.
+3. **Check Service Name:** Ensure the service appears as `Relativity Analytics Engine` (or your configured name) in your observability backend.

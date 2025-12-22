@@ -26,6 +26,11 @@ The RabbitMQ integration enables monitoring of RabbitMQ queues, exchanges, and n
 The Custom-JSON integration enables monitoring of Windows Services, Certificates, Kibana Alerts with Slack Notifications, and SQL Cluster Instances.
 
 - [Setting Up Custom-JSON Integration](custom-json-configuration/environment_watch_configuration.md)
+### Manual Elasticsearch Configuration
+
+The Manual Elasticsearch Configuration helps to update and optimize essential Elasticsearch settings.
+
+- [Setting Up Elasticsearch Configuration](elasticsearch-configurations/manual-elasticsearch-configuration.md)
 
 ## Next Step
 
