@@ -1,4 +1,4 @@
-# Manual Elasticsearch Configuration
+# Manual Elasticsearch Configuration: Index Field Limit
 
 ## Overview
 
@@ -8,11 +8,12 @@ This guide provides the required steps to update and optimize Elasticsearch sett
 
 Elasticsearch enforces a limit on the total number of fields that can exist within an index. This is controlled by the `index.mapping.total_fields.limit` setting, which helps protect the cluster from mapping explosions and excessive memory usage.
 
-When documents contain more fields than the value configured in `index.mapping.total_fields.limit`, Elasticsearch silently ignores the additional fields. This leads to:
+When documents contain more fields than the value configured in `index.mapping.total_fields.limit`, Elasticsearch may reject the document or ignore additional dynamic fields depending on index settings, which can result in missing data or ingestion failures. This can lead to:
 
 - Missing or incomplete data
 - Inconsistent query results
 - Difficulty performing accurate analysis and aggregations
+- Document ingestion failures
 
 To ensure all fields are properly indexed and stored, the `index.mapping.total_fields.limit` value must be increased to accommodate the actual number of fields present in the incoming documents.
 
@@ -40,7 +41,8 @@ This documentation provides step-by-step instructions for manually updating Elas
     ![Screenshot: update limit in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-edit-limit.png)
     
     > [!NOTE]
-    > The default value of `index.mapping.total_fields.limit` is `1000`. The `limit` field is not included by default; for a first-time update, add the `limit` field and set it to the required value.
+    > - The default value of `index.mapping.total_fields.limit` is `1000`. The `limit` field is not included by default; for a first-time update, add the `limit` field and set it to the required value.
+    > - Increasing this limit excessively may increase memory usage and impact cluster stability, so it should be set slightly above the expected maximum number of fields.
 
 7. After updating the field limit, navigate to the **Review** tab and click **Save component template**.
 8. Verify that the **apm@settings** component template shows the updated field limit.
