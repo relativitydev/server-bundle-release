@@ -14,12 +14,12 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     ![Unblock file screenshot](../resources/troubleshooting-images/unblocked.png)
 
-## Download and Install Elasticsearch 8.17.3/9.1.3 on one server
+## Download and Install Elasticsearch 8.x.x or 9.x.x on one server
 
-**Step 1: Download Elasticsearch 8.17.3/9.1.3**
+**Step 1: Download Elasticsearch 8.x.x or 9.x.x**
 
 1. Visit [Elastic's official download page](https://www.elastic.co/downloads/elasticsearch).
-2. Download the 8.17.3/9.1.3 Windows .zip version. Server 2024 supports 8.17.3 and Server 2025 supports both 8.17.3 and 9.1.3.
+2. Download the 8.x.x or 9.x.x Windows .zip version. Server 2024 supports 8.x.x and Server 2025 supports both 8.x.x and 9.x.x.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 4. Extract the files to `C:\elastic`
 
@@ -99,9 +99,29 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > [!IMPORTANT]
 > The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization's credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
-**Step 6: Configure Node roles, discovery and Network**
+**Step 6: Configure Node Roles, Discovery and Network**
 
-1. Define explicit node roles to separate master, data, ingest responsibilities. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`), open the **elasticsearch.yml** file and update the below keys:
+> [!IMPORTANT]
+> **Node role separation is the most critical production architectural difference**
+>
+> **Master Nodes** (`node.roles: ["master"]`):
+> - Manage cluster state and coordination
+> - Lightweight operations - do NOT store data
+> - Resources: 2-4 CPU, 8-16GB RAM
+>
+> **Data Nodes** (`node.roles: ["data", "ingest"]`):
+> - Store indices and execute queries
+> - Resource-intensive - do NOT participate in master elections  
+> - Minimum 2 nodes for redundancy
+> - Resources: Based on data volume (high CPU, RAM, fast storage)
+>
+> **Critical Rules:**
+> - NEVER mix master and data roles in production
+> - Roles must be explicitly planned for 2-node, 3-node, or larger clusters
+> - Master and data nodes have very different configurations
+> - Proper master/data node setup is the most important production concern
+
+1. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`), open the **elasticsearch.yml** file and configure node roles:
 
     - **cluster.name:** {Logical name of the Elasticsearch cluster}
     - **node.name:** {Unique identifier for the node within the cluster}
@@ -111,13 +131,32 @@ If you download a .zip or other file from the internet, Windows may block the fi
     - **discovery.seed_hosts:** {Addresses used by a node to find and connect to other nodes on startup.Include at least the dedicated master nodes and a couple of other stable nodes.}
     - **cluster.initial_master_nodes:** {List of candidate master node names used only during the very first cluster bootstrap to form an initial master-eligible quorum.}
     <details>
-    <summary>Sample Node Details</summary>
+    <summary>Production Master Node Configuration</summary>
 
     ```yaml
     # ---------------------------------- Cluster -----------------------------------
+    cluster.name: Cluster01
     #
-    # Use a descriptive name for your cluster:
+    # ------------------------------------ Node ------------------------------------
+    node.name: es-master-01
+    node.roles: [ "master" ]  # Master-only - NO data role
     #
+    # ---------------------------------- Network -----------------------------------
+    network.host: 10.0.1.10
+    http.port: 9200
+    #
+    # --------------------------------- Discovery ----------------------------------
+    discovery.seed_hosts: ["10.0.1.10","10.0.1.11","10.0.1.12"]
+    cluster.initial_master_nodes: ["es-master-01","es-master-02","es-master-03"]
+    ```
+
+    </details>
+
+    <details>
+    <summary>Production Data Node Configuration</summary>
+
+    ```yaml
+    # ---------------------------------- Cluster -----------------------------------
     cluster.name: Cluster01
     #
     # ------------------------------------ Node ------------------------------------
@@ -140,20 +179,38 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     </details>
 
-2. For dedicated master nodes use `node.roles: ["master"]` and ensure they do not hold data (`node.data: false`) if desired.
+2. **Production planning:** Minimum 3 master nodes + minimum 2 data nodes. Never combine roles.
 
-**Step 7: Storage paths**
+**Step 7: Configure Storage Paths**
 
-1. Put `path.data` and `path.logs` on dedicated, high‑performance disks (separate from OS) and configure in `elasticsearch.yml`:
+> [!IMPORTANT]
+> **Storage location is critical for Elasticsearch performance**
+>
+> Elasticsearch is extremely sensitive to disk performance due to high IOPS requirements.
+>
+> **Development:**
+> - May use OS disk (C:) temporarily
+> - Still not recommended
+>
+> **Production:**
+> - NEVER use the OS drive (C:)
+> - Data MUST reside on a dedicated, high-performance disk
+> - Fast storage (SSD/NVMe) with high IOPS is required
+> - Never share disk with the operating system
+>
+> **Configuration is simple:** Only two settings are needed to redirect data paths.
+
+1. Configure `path.data` and `path.logs` in `elasticsearch.yml` to point to dedicated high-performance volumes:
 
     ```yaml
-    path.data: X:/esdata
-    path.logs: X:/eslogs
+    # Production - use dedicated fast disk (D:, E:, or SAN)
+    path.data: D:/esdata
+    path.logs: D:/eslogs
     ```
 
-2. Save the changes and restart the Elasticsearch service by opening an elevated PowerShell and running the following command:
+2. Save the changes and restart the Elasticsearch service:
 
-    ```
+    ```powershell
     Restart-Service -Name "elasticsearch-service-x64"
     ```
 
@@ -368,7 +425,7 @@ Restart-Service -Name "elasticsearch-service-x64"
     "cluster_name" : "elasticsearch",
     "cluster_uuid" : "q5VtYDCQT2iNHU9dOdqomw",
     "version" : {
-        "number" : "8.17.3",
+        "number" : "8.x.x",
         "build_flavor" : "default",
         "build_type" : "zip",
         "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
@@ -843,7 +900,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 2. Run the following code to install the APM Server as a Windows service:
     
     ```
-    PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-8.17.3-windows-x86_64\install-service.ps1
+    PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-x.x.x-windows-x86_64\install-service.ps1
     ```
     The output will look similar to:
 
@@ -883,7 +940,7 @@ Restart-Service -Name "elasticsearch-service-x64"
     "build_date": "2025-02-27T18:17:35Z",
     "build_sha": "f6b917b725e1a22af433e5b52c5c6f0ff9164adf",
     "publish_ready": true,
-    "version": "8.17.3"
+    "version": "8.x.x"
     }
     ```
 
