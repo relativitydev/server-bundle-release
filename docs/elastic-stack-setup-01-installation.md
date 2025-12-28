@@ -16,6 +16,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ## Download and Install Elasticsearch 8.x.x or 9.x.x on one server
 
+> [!NOTE]
+> **Official Documentation:** For detailed installation guidance, see [Elastic's official Elasticsearch installation documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) and [Windows installation guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/zip-windows.html).
+
 **Step 1: Download Elasticsearch 8.x.x or 9.x.x**
 
 1. Visit [Elastic's official download page](https://www.elastic.co/downloads/elasticsearch).
@@ -72,6 +75,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 **Step 4: Enable Stack Monitoring**
 
+> [!NOTE]
+> **Official Documentation:** For more information, see [Elastic's Stack Monitoring documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/monitoring-settings.html).
+
 1. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`) and open the **elasticsearch.yml** file.
 2. Add the following line to enable Stack Monitoring:
     ```
@@ -100,6 +106,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization's credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
 **Step 6: Configure Node Roles, Discovery and Network**
+
+> [!NOTE]
+> **Official Documentation:** For comprehensive configuration details, see [Elasticsearch configuration documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html), [Node roles](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html), and [Discovery and cluster formation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery.html).
 
 > [!IMPORTANT]
 > **Node role separation is the most critical production architectural difference**
@@ -179,14 +188,14 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     </details>
 
-2. **Production planning:** Minimum 3 master nodes + minimum 2 data nodes. Never combine roles.
+2. For dedicated master nodes use `node.roles: ["master"]` and ensure they do not hold data (`node.data: false`) if desired.
 
 **Step 7: Configure Storage Paths**
 
 > [!IMPORTANT]
 > **Storage location is critical for Elasticsearch performance**
 >
-> Elasticsearch is extremely sensitive to disk performance due to high IOPS requirements.
+> Elasticsearch requires fast storage with high read/write performance.
 >
 > **Development:**
 > - May use OS disk (C:) temporarily
@@ -195,10 +204,16 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > **Production:**
 > - NEVER use the OS drive (C:)
 > - Data MUST reside on a dedicated, high-performance disk
-> - Fast storage (SSD/NVMe) with high IOPS is required
+> - Fast storage (SSD/NVMe) is required
 > - Never share disk with the operating system
 >
 > **Configuration is simple:** Only two settings are needed to redirect data paths.
+
+**Understanding Elasticsearch directories:**
+- **`path.data`**: Stores indices (the actual indexed documents, inverted indices, and metadata)
+- **`path.logs`**: Stores Elasticsearch application logs (startup, errors, warnings, query logs)
+
+These are separate directories because data directories require high-performance storage and regular backups, while log directories primarily need adequate space for troubleshooting and monitoring.
 
 1. Configure `path.data` and `path.logs` in `elasticsearch.yml` to point to dedicated high-performance volumes:
 
@@ -235,6 +250,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 **Step 9: Configure JVM Heap Settings (Production)**
 
+> [!NOTE]
+> **Official Documentation:** For detailed JVM configuration guidance, see [Elastic's JVM heap size documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/advanced-configuration.html#set-jvm-heap-size).
+
 Proper JVM heap configuration is critical for Elasticsearch performance and stability.
 
 - Navigate to `C:\elastic\elasticsearch-x.x.x\config\jvm.options`
@@ -268,6 +286,9 @@ Restart-Service -Name "elasticsearch-service-x64"
 ```
 
 **Step 10: Configure Snapshot Repository and Automated Backups**
+
+> [!NOTE]
+> **Official Documentation:** For comprehensive snapshot and restore guidance, see [Elastic's snapshot and restore documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html) and [Snapshot lifecycle management](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-lifecycle-management.html).
 
 > [!IMPORTANT]
 > For multi-node clusters, `path.repo` must be configured in `elasticsearch.yml` on **every node** that might execute snapshot or restore operations. All nodes must have access to the same backup location.
@@ -443,6 +464,9 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 ## Install and Configure Kibana
 
+> [!NOTE]
+> **Official Documentation:** For detailed Kibana installation guidance, see [Elastic's official Kibana installation documentation](https://www.elastic.co/guide/en/kibana/current/install.html) and [Windows installation guide](https://www.elastic.co/guide/en/kibana/current/windows.html).
+
 **Step 1: Download Kibana x.x.x**
 
 1. Download and extract the x.x.x Windows .zip version of Kibana from [Elastic's official Kibana download page](https://www.elastic.co/downloads/kibana) to stable paths.
@@ -483,6 +507,9 @@ Restart-Service -Name "elasticsearch-service-x64"
     ![](../resources/elasticsearch_setup_003.png)
 
 **Step 4: Enable TLS for Kibana**
+
+> [!NOTE]
+> **Official Documentation:** For comprehensive TLS configuration details, see [Elastic's Kibana security documentation](https://www.elastic.co/guide/en/kibana/current/using-kibana-with-security.html) and [Encrypt communications in Kibana](https://www.elastic.co/guide/en/kibana/current/security-settings-kb.html).
 
 1. Generate certificates Option A: Use elasticsearch-certutil 
     1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
@@ -602,6 +629,9 @@ Restart-Service -Name "elasticsearch-service-x64"
         Use forward slashes in paths (C:/...) to avoid YAML escape issues.     
 
 **Step 5: Generate Kibana encryption keys**
+
+> [!NOTE]
+> **Official Documentation:** For encryption key details, see [Elastic's Kibana encryption keys documentation](https://www.elastic.co/guide/en/kibana/current/xpack-security-secure-saved-objects.html).
 
 > [!NOTE]
 > Skipping the steps below will cause the Relativity Server CLI to fail.
@@ -737,6 +767,9 @@ Restart-Service -Name "elasticsearch-service-x64"
     ![Kibana Login Page Response](../resources/troubleshooting-images/kibanaloginpageresponse.png)
 
 ## Install and Configure APM Server
+
+> [!NOTE]
+> **Official Documentation:** For detailed APM Server installation and configuration guidance, see [Elastic's official APM Server documentation](https://www.elastic.co/guide/en/apm/guide/current/apm-quick-start.html) and [APM Server configuration](https://www.elastic.co/guide/en/apm/guide/current/configuring-howto-apm-server.html).
 
 **Step 1: Prerequisites to setup APM Server**
 
