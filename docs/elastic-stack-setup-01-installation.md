@@ -26,7 +26,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 4. Extract the files to `C:\elastic`
 
-**Step 2: Install and Configure Elasticsearch x.x.x**
+**Step 2: Install and Configure Elasticsearch 8.x.x or 9.x.x**
 
 1. Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:     
     ```
@@ -467,9 +467,9 @@ Restart-Service -Name "elasticsearch-service-x64"
 > [!NOTE]
 > **Official Documentation:** For detailed Kibana installation guidance, see [Elastic's official Kibana installation documentation](https://www.elastic.co/guide/en/kibana/current/install.html) and [Windows installation guide](https://www.elastic.co/guide/en/kibana/current/windows.html).
 
-**Step 1: Download Kibana x.x.x**
+**Step 1: Download Kibana 8.x.x or 9.x.x**
 
-1. Download and extract the x.x.x Windows .zip version of Kibana from [Elastic's official Kibana download page](https://www.elastic.co/downloads/kibana) to stable paths.
+1. Download and extract the 8.x.x or 9.x.x Windows .zip version of Kibana from [Elastic's official Kibana download page](https://www.elastic.co/downloads/kibana) to stable paths.
 2. Ensure the Elasticsearch service is installed and running before Kibana setup.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
@@ -775,10 +775,10 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 - Elastic and Kibana should be configured and services should be up and running.
 
-**Step 2: Download APM Server x.x.x**
+**Step 2: Download APM Server 8.x.x or 9.x.x**
 
 1. Visit [Elastic's APM Server page](https://www.elastic.co/downloads/apm).
-2. Download and extract the x.x.x Windows .zip file.
+2. Download and extract the 8.x.x or 9.x.x Windows .zip file.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 4. Extract the files to `C:\`.
 
