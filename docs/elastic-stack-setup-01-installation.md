@@ -5,6 +5,27 @@
 > [!NOTE]
 > This step is required for both Environment Watch and Data Grid Audit
 
+## Cluster Architecture Decision
+
+Before beginning installation, you must decide on your cluster architecture:
+
+**Option 1: Single Unified Cluster**
+- One Elasticsearch cluster that contains all data (Environment Watch and Data Grid Audit)
+- Simpler to manage and maintain
+- Shared resources and infrastructure
+- Suitable for most deployments
+
+**Option 2: Separate Clusters**
+- Two independent Elasticsearch clusters:
+  - One dedicated cluster for Environment Watch
+  - One dedicated cluster for Data Grid Audit
+- Complete isolation between workloads
+- Independent scaling and resource allocation
+- Recommended for very large deployments or when strict data separation is required
+
+> [!TIP]
+> For most organizations, **Option 1 (Single Unified Cluster)** is recommended as it simplifies operations while providing adequate performance and isolation through index management.
+
 ## How to Unblock Downloaded Files
 If you download a .zip or other file from the internet, Windows may block the file and prevent it from running correctly. To unblock a file:
 
@@ -129,6 +150,15 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > - Roles must be explicitly planned for 2-node, 3-node, or larger clusters
 > - Master and data nodes have very different configurations
 > - Proper master/data node setup is the most important production concern
+>
+> **Development Environment:**
+> - For development purposes, a single node can have all roles assigned
+> - Example: `node.roles: ["master", "data", "ingest"]`
+
+![Node Configuration](../resources/troubleshooting-images/node_configuration_dev_environment.PNG)
+
+> [!NOTE]
+> This configuration is NOT recommended for production environments
 
 1. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`), open the **elasticsearch.yml** file and configure node roles:
 
@@ -219,8 +249,8 @@ These are separate directories because data directories require high-performance
 
     ```yaml
     # Production - use dedicated fast disk (D:, E:, or SAN)
-    path.data: D:/esdata
-    path.logs: D:/eslogs
+    path.data: X:/esdata
+    path.logs: X:/eslogs
     ```
 
 2. Save the changes and restart the Elasticsearch service:
@@ -296,24 +326,24 @@ Restart-Service -Name "elasticsearch-service-x64"
 1. Create a backup directory on a dedicated high-performance volume (not C:):
     ```powershell
     # Use a dedicated volume for backups
-    mkdir D:\es-backups
+    mkdir X:\es-backups
     ```
 
 2. Grant the Elasticsearch service account full read/write permissions:
     ```powershell
     # For LocalSystem (default service account)
-    icacls "D:\es-backups" /grant "NT AUTHORITY\SYSTEM:(OI)(CI)F" /T
+    icacls "X:\es-backups" /grant "NT AUTHORITY\SYSTEM:(OI)(CI)F" /T
     
     # For custom service account (replace DOMAIN\svc_elasticsearch)
-    # icacls "D:\es-backups" /grant "DOMAIN\svc_elasticsearch:(OI)(CI)F" /T
+    # icacls "X:\es-backups" /grant "DOMAIN\svc_elasticsearch:(OI)(CI)F" /T
     
     # Verify permissions
-    icacls "D:\es-backups"
+    icacls "X:\es-backups"
     ```
 
 3. Configure the snapshot repository path in `elasticsearch.yml` on **all nodes**:
     ```yaml
-    path.repo: ["D:/es-backups"]
+    path.repo: ["X:/es-backups"]
     ```
 
 4. Restart Elasticsearch on all nodes to apply the changes:
