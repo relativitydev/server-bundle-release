@@ -115,7 +115,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 2. Navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-x.x.x\bin`)
 3. Open an elevated PowerShell and run the following command:
     ```
-    .\.elasticsearch-reset-password -u elastic
+    .\elasticsearch-reset-password -u elastic
     ```
 4. When prompted, press 'Y' to confirm and reset the password
 
@@ -315,147 +315,9 @@ Proper JVM heap configuration is critical for Elasticsearch performance and stab
 Restart-Service -Name "elasticsearch-service-x64"
 ```
 
-**Step 10: Configure Snapshot Repository and Automated Backups**
 
-> [!NOTE]
-> **Official Documentation:** For comprehensive snapshot and restore guidance, see [Elastic's snapshot and restore documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html) and [Snapshot lifecycle management](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-lifecycle-management.html).
 
-> [!IMPORTANT]
-> For multi-node clusters, `path.repo` must be configured in `elasticsearch.yml` on **every node** that might execute snapshot or restore operations. All nodes must have access to the same backup location.
-
-1. Create a backup directory on a dedicated high-performance volume (not C:):
-    ```powershell
-    # Use a dedicated volume for backups
-    mkdir X:\es-backups
-    ```
-
-2. Grant the Elasticsearch service account full read/write permissions:
-    ```powershell
-    # For LocalSystem (default service account)
-    icacls "X:\es-backups" /grant "NT AUTHORITY\SYSTEM:(OI)(CI)F" /T
-    
-    # For custom service account (replace DOMAIN\svc_elasticsearch)
-    # icacls "X:\es-backups" /grant "DOMAIN\svc_elasticsearch:(OI)(CI)F" /T
-    
-    # Verify permissions
-    icacls "X:\es-backups"
-    ```
-
-3. Configure the snapshot repository path in `elasticsearch.yml` on **all nodes**:
-    ```yaml
-    path.repo: ["X:/es-backups"]
-    ```
-
-4. Restart Elasticsearch on all nodes to apply the changes:
-    ```powershell
-    Restart-Service -Name "elasticsearch-service-x64"
-    ```
-
-5. Register the snapshot repository via Kibana Dev Tools:
-    1. Open Kibana and navigate to **Dev Tools** (Management > Dev Tools).
-    2. Run the following command:
-        ```json
-        PUT _snapshot/my_backup
-        {
-          "type": "fs",
-          "settings": {
-            "location": "D:/es-backups",
-            "compress": true
-          }
-        }
-        ```
-
-6. Create a snapshot lifecycle policy for automated backups via Kibana Dev Tools:
-
-> [!NOTE]
-> **Schedule Guidance:** Avoid peak business hours when scheduling snapshots. Format for scheduling snapshots:
-> - Daily at 2 AM: `"0 2 * * *"` (recommended for most environments)
-> - Daily at 3 AM: `"0 3 * * *"`
-> - Weekly on Sunday at 2 AM: `"0 2 * * 0"`
-> - Cron format: `"minute hour day month weekday"`
-
-1. In Kibana **Dev Tools**, run the following command:
-        ```json
-        PUT _slm/policy/daily_snapshots
-        {
-          "schedule": "0 2 * * *",
-          "name": "<snapshot-{now/d}>",
-          "repository": "my_backup",
-          "config": {
-            "indices": ["*"],
-            "ignore_unavailable": true,
-            "include_global_state": false
-          },
-          "retention": {
-            "expire_after": "30d",
-            "min_count": 7,
-            "max_count": 30
-          }
-        }
-        ```
-
-7. Verify the snapshot repository via Kibana Dev Tools:
-    1. In Kibana **Dev Tools**, run the following command:
-        ```json
-        POST _snapshot/my_backup/_verify
-        ```
-    2. You should see a response confirming the repository is valid:
-        ```json
-        {
-          "nodes": {
-            "node_id": {
-              "name": "node_name"
-            }
-          }
-        }
-        ```
-
-8. **Test the snapshot and restore process:**
-
-    1. Create a test snapshot:
-        ```json
-        PUT _snapshot/my_backup/test_snapshot_001
-        {
-          "indices": "*",
-          "ignore_unavailable": true,
-          "include_global_state": false
-        }
-        ```
-    
-    2. Monitor snapshot progress:
-        ```json
-        GET _snapshot/my_backup/test_snapshot_001/_status
-        ```
-    
-    3. List available snapshots:
-        ```json
-        GET _snapshot/my_backup/_all
-        ```
-    
-    4. Test restore (restores with renamed index to avoid overwriting):
-        ```json
-        POST _snapshot/my_backup/test_snapshot_001/_restore
-        {
-          "indices": "your-index-name",
-          "ignore_unavailable": true,
-          "include_global_state": false,
-          "rename_pattern": "(.+)",
-          "rename_replacement": "restored_$1",
-          "include_aliases": false
-        }
-        ```
-    
-    5. Monitor restore progress:
-        ```json
-        GET _recovery?human
-        ```
-    
-    6. Clean up test snapshot after verification:
-        ```json
-        DELETE _snapshot/my_backup/test_snapshot_001
-        ```
-
-**Step 11: Verify Elasticsearch Server**
+**Step 10: Verify Elasticsearch Server**
 
 1. To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values). In production do NOT use `-k`; validate the server certificate using the CA certificate you installed:
     ```
@@ -1065,6 +927,145 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
 3. The word `green` in the response means the cluster is healthy. The word `yellow` in the response means the cluster is partially healthy. If you see `red`, investigate further.
 
+## Elasticsearch Snapshot Repository and Automated Backups
+
+> [!NOTE]
+> **Official Documentation:** For comprehensive snapshot and restore guidance, see [Elastic's snapshot and restore documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html) and [Snapshot lifecycle management](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-lifecycle-management.html).
+
+> [!IMPORTANT]
+> For multi-node clusters, `path.repo` must be configured in `elasticsearch.yml` on **every node** that might execute snapshot or restore operations. All nodes must have access to the same backup location.
+
+1. Create a backup directory on a dedicated high-performance volume (not C:):
+        ```powershell
+        # Use a dedicated volume for backups
+        mkdir X:\es-backups
+        ```
+
+2. Grant the Elasticsearch service account full read/write permissions:
+        ```powershell
+        # For LocalSystem (default service account)
+        icacls "X:\es-backups" /grant "NT AUTHORITY\SYSTEM:(OI)(CI)F" /T
+    
+        # For custom service account (replace DOMAIN\svc_elasticsearch)
+        # icacls "X:\es-backups" /grant "DOMAIN\svc_elasticsearch:(OI)(CI)F" /T
+    
+        # Verify permissions
+        icacls "X:\es-backups"
+        ```
+
+3. Configure the snapshot repository path in `elasticsearch.yml` on **all nodes**:
+        ```yaml
+        path.repo: ["X:/es-backups"]
+        ```
+
+4. Restart Elasticsearch on all nodes to apply the changes:
+        ```powershell
+        Restart-Service -Name "elasticsearch-service-x64"
+        ```
+
+5. Register the snapshot repository via Kibana Dev Tools:
+        1. Open Kibana and navigate to **Dev Tools** (Management > Dev Tools).
+        2. Run the following command:
+                ```json
+                PUT _snapshot/my_backup
+                {
+                    "type": "fs",
+                    "settings": {
+                        "location": "D:/es-backups",
+                        "compress": true
+                    }
+                }
+                ```
+
+6. Create a snapshot lifecycle policy for automated backups via Kibana Dev Tools:
+
+> [!NOTE]
+> **Schedule Guidance:** Avoid peak business hours when scheduling snapshots. Format for scheduling snapshots:
+> - Daily at 2 AM: `"0 2 * * *"` (recommended for most environments)
+> - Daily at 3 AM: `"0 3 * * *"`
+> - Weekly on Sunday at 2 AM: `"0 2 * * 0"`
+> - Cron format: `"minute hour day month weekday"`
+
+1. In Kibana **Dev Tools**, run the following command:
+                ```json
+                PUT _slm/policy/daily_snapshots
+                {
+                    "schedule": "0 2 * * *",
+                    "name": "<snapshot-{now/d}>",
+                    "repository": "my_backup",
+                    "config": {
+                        "indices": ["*"],
+                        "ignore_unavailable": true,
+                        "include_global_state": false
+                    },
+                    "retention": {
+                        "expire_after": "30d",
+                        "min_count": 7,
+                        "max_count": 30
+                    }
+                }
+                ```
+
+7. Verify the snapshot repository via Kibana Dev Tools:
+        1. In Kibana **Dev Tools**, run the following command:
+                ```json
+                POST _snapshot/my_backup/_verify
+                ```
+        2. You should see a response confirming the repository is valid:
+                ```json
+                {
+                    "nodes": {
+                        "node_id": {
+                            "name": "node_name"
+                        }
+                    }
+                }
+                ```
+
+8. **Test the snapshot and restore process:**
+
+        1. Create a test snapshot:
+                ```json
+                PUT _snapshot/my_backup/test_snapshot_001
+                {
+                    "indices": "*",
+                    "ignore_unavailable": true,
+                    "include_global_state": false
+                }
+                ```
+    
+        2. Monitor snapshot progress:
+                ```json
+                GET _snapshot/my_backup/test_snapshot_001/_status
+                ```
+    
+        3. List available snapshots:
+                ```json
+                GET _snapshot/my_backup/_all
+                ```
+    
+        4. Test restore (restores with renamed index to avoid overwriting):
+                ```json
+                POST _snapshot/my_backup/test_snapshot_001/_restore
+                {
+                    "indices": "your-index-name",
+                    "ignore_unavailable": true,
+                    "include_global_state": false,
+                    "rename_pattern": "(.+)",
+                    "rename_replacement": "restored_$1",
+                    "include_aliases": false
+                }
+                ```
+    
+        5. Monitor restore progress:
+                ```json
+                GET _recovery?human
+                ```
+    
+        6. Clean up test snapshot after verification:
+                ```json
+                DELETE _snapshot/my_backup/test_snapshot_001
+                ```
 ## Next Step
 
 [Click here for the next step](relativity_server_cli_setup.md)
