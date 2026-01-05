@@ -49,9 +49,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 **Step 2: Install and Configure Elasticsearch 8.x.x or 9.x.x**
 
-1. Open an elevated PowerShell and run the following command to start Elasticsearch and perform the auto installation steps:     
+1. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-x.x.x\bin`) and run the following command to start Elasticsearch and perform the auto installation steps:     
     ```
-    C:\elastic\elasticsearch-x.x.x\bin\elasticsearch.bat
+    .\elasticsearch.bat
     ```
     <a id="enrollment-token-generation"></a>
 
@@ -69,9 +69,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > [!NOTE]
 > To stop Elasticsearch after you have copied the enrollment token, click inside the PowerShell window and press `Ctrl` and `C` at the same time. This will end the running process.
 
-3. Open an elevated PowerShell and run the following command to install Elasticsearch as a Windows service:
+3. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-x.x.x\bin`) and run the following command to install Elasticsearch as a Windows service:
     ```
-    C:\elastic\elasticsearch-x.x.x\bin\elasticsearch-service.bat install
+    .\elasticsearch-service.bat install
     ```
 
     The output will look similar to:
@@ -83,9 +83,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 **Step 3: Run Elasticsearch as a Windows Service**
 
-1. Open an elevated PowerShell and run the following command to start the Elasticsearch service:
+1. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-x.x.x\bin`) and run the following command to start the Elasticsearch service:
     ```
-    C:\elastic\elasticsearch-x.x.x\bin\elasticsearch-service.bat start
+    .\elasticsearch-service.bat start
     ```
 
     The output will look similar to:
@@ -131,31 +131,16 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > [!NOTE]
 > **Official Documentation:** For comprehensive configuration details, see [Elasticsearch configuration documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html), [Node roles](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html), and [Discovery and cluster formation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery.html).
 
-> [!IMPORTANT]
-> **Node role separation is the most critical production architectural difference**
->
-> **Master Nodes** (`node.roles: ["master"]`):
-> - Manage cluster state and coordination
-> - Lightweight operations - do NOT store data
-> - Resources: 2-4 CPU, 8-16GB RAM
->
-> **Data Nodes** (`node.roles: ["data", "ingest"]`):
-> - Store indices and execute queries
-> - Resource-intensive - do NOT participate in master elections  
-> - Minimum 2 nodes for redundancy
-> - Resources: Based on data volume (high CPU, RAM, fast storage)
->
-> **Critical Rules:**
-> - NEVER mix master and data roles in production
-> - Roles must be explicitly planned for 2-node, 3-node, or larger clusters
-> - Master and data nodes have very different configurations
-> - Proper master/data node setup is the most important production concern
->
-> **Development Environment:**
-> - For development purposes, a single node can have all roles assigned
-> - Example: `node.roles: ["master", "data", "ingest"]`
+**Master Nodes** (`node.roles: ["master"]`):
+- Manage cluster state and coordination
+- Lightweight operations - do NOT store data
+- Resources: 2-4 CPU, 8-16GB RAM
 
-![Node Configuration](../resources/troubleshooting-images/node_configuration_dev_environment.PNG)
+**Data Nodes** (`node.roles: ["data", "ingest"]`):
+- Store indices and execute queries
+- Resource-intensive - do NOT participate in master elections
+- Minimum 2 nodes for redundancy
+- Resources: Based on data volume (high CPU, RAM, fast storage)
 
 > [!NOTE]
 > This configuration is NOT recommended for production environments
@@ -220,6 +205,24 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 2. For dedicated master nodes use `node.roles: ["master"]` and ensure they do not hold data (`node.data: false`) if desired.
 
+> [!IMPORTANT]
+ > **Node role separation is the most critical production architectural difference**
+>
+> **Critical Rules:**
+> - NEVER mix master and data roles in production
+> - Roles must be explicitly planned for 2-node, 3-node, or larger clusters
+> - Master and data nodes have very different configurations
+> - Proper master/data node setup is the most important production concern
+>
+> **Development Environment:**
+> - For development purposes, a single node can have all roles assigned
+> - Example: `node.roles: ["master", "data", "ingest"]`
+
+![Node Configuration](../resources/troubleshooting-images/node_configuration_dev_environment.PNG)
+
+> [!NOTE]
+> This configuration is NOT recommended for production environments
+
 **Step 7: Configure Storage Paths**
 
 > [!IMPORTANT]
@@ -255,19 +258,28 @@ These are separate directories because data directories require high-performance
 
 2. Save the changes and restart the Elasticsearch service:
 
+
     ```powershell
     Restart-Service -Name "elasticsearch-service-x64"
     ```
 
+> [!NOTE]
+> **Development Environment:**
+> If you are running a single-node development environment and have changed the data path, you may need to reset the `elastic` user password after restarting the service. Use the following command in the Elasticsearch bin directory:
+> ```
+> .\elasticsearch-reset-password -u elastic
+> ```
+> This ensures you can log in to Kibana and perform admin tasks after moving the data directory.
+
 **Step 8: Install the 'mapper-size' plugin**
 
-1. Open an elevated PowerShell and run the following command to install the 'mapper-size' plugin:
+1. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(C:\elastic\elasticsearch-x.x.x\bin) and run the following command to install the 'mapper-size' plugin:
     ```
-    C:\elastic\elasticsearch-x.x.x\bin\elasticsearch-plugin install mapper-size
+    .\elasticsearch-plugin install mapper-size
     ```
 2. To verify the 'mapper-size' plugin is installed, run:
     ```
-    C:\elastic\elasticsearch-x.x.x\bin\elasticsearch-plugin list
+    .\elasticsearch-plugin list
     ```
 3. Restart the Elasticsearch Service. To restart the Elasticsearch service, run the following in an elevated PowerShell session:
     ```
@@ -321,7 +333,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 1. To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values). In production do NOT use `-k`; validate the server certificate using the CA certificate you installed:
     ```
-    curl -u <username>:<password> --cacert C:\elastic\secrets\ca\ca.crt https://<hostname_or_ip>:9200
+    curl.exe -u <username>:<password> --cacert "C:\elastic\config\certs\http_ca.crt" --ssl-no-revoke https://<hostname_or_ip>:9200
     ```
     Or with PowerShell (validates TLS by default):
     ```powershell
@@ -370,7 +382,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 1. Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
 2. Open an elevated PowerShell and run the following command:
     ```
-    C:\Kibana\kibana-x.x.x\bin\kibana.bat
+    .\kibana.bat
     ```
 3. If successful, you should see output indicating that the Kibana server has started and is listening on port 5601. Look for lines similar to:
     ```
@@ -380,25 +392,7 @@ Restart-Service -Name "elasticsearch-service-x64"
     Go to https://localhost:5601/?code=xyz to get started
     ```
 
-**Step 3: Enroll Kibana**
-
-1. In your terminal, click the generated link to open Kibana in your browser.
-2. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the Configure Elastic button to connect your Kibana instance with Elasticsearch.
-    [See where the enrollment token is generated.](#enrollment-token-generation)
-3. If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
-    ```
-    C:\elastic\elasticsearch-x.x.x\bin\elasticsearch-create-enrollment-token --scope kibana
-    ```
-    <details>
-    <summary>Sample output</summary>
-    eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
-    </details>
-4. Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
-5. See the screenshot below for the login screen:
-
-    ![](../resources/elasticsearch_setup_003.png)
-
-**Step 4: Enable TLS for Kibana**
+**Step 3: Enable TLS for Kibana**
 
 > [!NOTE]
 > **Official Documentation:** For comprehensive TLS configuration details, see [Elastic's Kibana security documentation](https://www.elastic.co/guide/en/kibana/current/using-kibana-with-security.html) and [Encrypt communications in Kibana](https://www.elastic.co/guide/en/kibana/current/security-settings-kb.html).
@@ -406,9 +400,10 @@ Restart-Service -Name "elasticsearch-service-x64"
 1. Generate certificates Option A: Use elasticsearch-certutil 
     1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
     2. Create CA:
-    1. Run the following command
+    1. Run the following command:
+
             ```
-            elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\kibana_ca.zip"
+            .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\kibana_ca.zip"
             ```
     2. Extract zip contents into `C:\elastic\secrets\ca\ (you should have ca.crt and ca.key)`. 
 
@@ -417,7 +412,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
         2. Run the following command:
             ```
-            elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\ca\ca.crt" --ca-key "C:\elastic\secrets\ca\ca.key" --name kibana [SAN args] --out "C:\elastic\secrets\kibana_server.zip"
+            .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\ca\ca.crt" --ca-key "C:\elastic\secrets\ca\ca.key" --name kibana [SAN args] --out "C:\elastic\secrets\kibana_server.zip"
             ```
         3. Extract zip contents into `C:\elastic\secrets\kibana\` to get kibana.crt and kibana.key
 
@@ -436,7 +431,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
         2. Run the following command using an elevated Powershell
             ```
-            certutil.exe -addstore -f Root "C:\elastic\kibana\config\certs\ca.crt".
+            certutil.exe -addstore -f Root "C:\elastic\kibana\config\certs\ca.crt"
             ```
      
 2.  Use OpenSSL (if certutil missing or for self-signed)  
@@ -520,7 +515,7 @@ Restart-Service -Name "elasticsearch-service-x64"
      
         Use forward slashes in paths (C:/...) to avoid YAML escape issues.     
 
-**Step 5: Generate Kibana encryption keys**
+**Step 4: Generate Kibana encryption keys**
 
 > [!NOTE]
 > **Official Documentation:** For encryption key details, see [Elastic's Kibana encryption keys documentation](https://www.elastic.co/guide/en/kibana/current/xpack-security-secure-saved-objects.html).
@@ -528,9 +523,9 @@ Restart-Service -Name "elasticsearch-service-x64"
 > [!NOTE]
 > Skipping the steps below will cause the Relativity Server CLI to fail.
 
-1. Open an elevated PowerShell and run the following command:
+1. Open an elevated PowerShell, navigate to bin folder(C:\Kibana\kibana-x.x.x\bin) and run the following command:
     ```
-    C:\Kibana\kibana-x.x.x\bin\kibana-encryption-keys generate
+    .\kibana-encryption-keys generate
     ```
     
 2. If successful, you will see output showing the generated encryption keys. For example:
@@ -571,9 +566,9 @@ Restart-Service -Name "elasticsearch-service-x64"
 2. After adding secrets, restart Kibana so it reads the keystore.
 3. Ensure the keystore file has restrictive ACLs so only the Kibana service account can read it.
 
-4. Restart the Kibana service, by opening an elevated PowerShell and run the following command:
+4. Restart the Kibana service, by opening an elevated PowerShell, navigate to bin folder(C:\Kibana\kibana-x.x.x\bin) and run the following command:
     ```
-    C:\Kibana\kibana-x.x.x\bin\kibana.bat
+    .\kibana.bat
     ```
    
 5. To verify success, check the terminal output for lines indicating that Kibana has started successfully. You can also refer to the screenshots below:
@@ -586,6 +581,24 @@ Restart-Service -Name "elasticsearch-service-x64"
     ![Kibana restart](../resources/troubleshooting-images/kibanaloginpageresponse.png)
 
 8. For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
+
+**Step 5: Enroll Kibana**
+
+1. In your terminal, click the generated link to open Kibana in your browser.
+2. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the Configure Elastic button to connect your Kibana instance with Elasticsearch.
+    [See where the enrollment token is generated.](#enrollment-token-generation)
+3. If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
+    ```
+    .\elasticsearch-create-enrollment-token --scope kibana
+    ```
+    <details>
+    <summary>Sample output</summary>
+    eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
+    </details>
+4. Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
+5. See the screenshot below for the login screen:
+
+    ![](../resources/elasticsearch_setup_003.png)
 
 **Step 6: Create Kibana Windows Service**
 
@@ -603,10 +616,10 @@ Restart-Service -Name "elasticsearch-service-x64"
 > [!NOTE]
 > Kibana does not install as a Windows service by default. We recommend using NSSM — a commonly used open-source tool—to run Kibana as a Windows service.
 
-2. Open an elevated PowerShell and run the following command:
+2. Open an elevated PowerShell, navigate to "C:\nssm-2.24\win64" and run the following command:
 
     ```
-    C:\nssm-2.24\win64\nssm.exe install kibana
+    .\nssm.exe install kibana
     ```
     
     This will open a popup to create a Windows service for Kibana.
@@ -681,7 +694,7 @@ Restart-Service -Name "elasticsearch-service-x64"
     2. Create CA:
         1. Run the following command
             ```
-            elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\apm_ca.zip"
+            .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\apm_ca.zip"
             ```
         2. Extract apm_ca.zip contents into `C:\elastic\secrets\apm-ca\ (you should have ca.crt and ca.key inside the folder)`. 
 
@@ -690,7 +703,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
         2. Run the following command:
             ```
-            elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\apm-ca\ca.crt" --ca-key "C:\elastic\secrets\apm-ca\ca.key" --name apm-server [SAN args] --out "C:\elastic\secrets\apm-server.zip"
+            .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\apm-ca\ca.crt" --ca-key "C:\elastic\secrets\apm-ca\ca.key" --name apm-server [SAN args] --out "C:\elastic\secrets\apm-server.zip"
             ```
         3. Extract zip contents into `C:\elastic\secrets\apm-server\` to get APM.crt and APM.key (you should have C:/elastic/secrets/apm-server/apm-server.crt and apm-server.key)
 
@@ -709,7 +722,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
         2. Run the following command using an elevated Powershell
             ```
-            certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt".
+            certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt"
             ```
      
 2.  Option B: Use OpenSSL (if certutil missing or for self-signed)  
@@ -801,22 +814,23 @@ Restart-Service -Name "elasticsearch-service-x64"
 
     ```yaml
     apm-server:
-      host: "<apm-server-hostname_or_ip>:8200"
-     
-    output.elasticsearch:
-      hosts: ["https://<elasticsearch-hostname_or_ip>:9200"]
-      protocol: "https"
-      api_key: "<id>:<api-key>"
+      host: "<apm-server-hostname-or-ip>:8200"
       ssl.enabled: true
-      # Validate the Elasticsearch HTTP layer using the CA cert
-      ssl.certificate_authorities: ["C:/elastic/apm-server/config/certs/ca.crt"]
+      ssl.certificate: C:/elastic/apm-server/config/certs/apm-server.crt
+      ssl.key: C:/elastic/apm-server/config/certs/apm-server.key
+    output.elasticsearch:
+      hosts: ["https://<elasticsearch-hostname-or-ip>:9200"]
+      api_key: "api_key: "<id>:<api-key>""
+      ssl.enabled: true
+      ssl.certificate_authorities: ["C:/elastic/elasticsearch/config/certs/http_ca.crt"]
       ssl.verification_mode: full
-    
+    setup.kibana:
+      host: "https://<kibana-hostname-or-ip>:5601"
+      ssl.enabled: true
+      ssl.certificate_authorities: ["C:/elastic/kibana/config/certs/ca.crt"]  # <-- if Kibana cert was signed by http_ca, point to http_ca.crt
     instrumentation:
       enabled: true
       environment: production
-      hosts:
-      - "https://<apm-server-hostname_or_ip>:8200"
     ```
     
 **Step 5: Execute required scripts to install APM Server as a Windows service**
@@ -825,7 +839,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 2. Run the following code to install the APM Server as a Windows service:
     
     ```
-    PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-x.x.x-windows-x86_64\install-service.ps1
+    PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-8.17.3-windows-x86_64\install-service.ps1
     ```
     The output will look similar to:
 
