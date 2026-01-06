@@ -1,6 +1,6 @@
 ## Alert Notification Handlers [Early Access]
 
-The `alertNotificationHandlers` section configures integrations for sending alerts when monitored resources meet specified conditions. This enables automated notifications to external systems such as Slack.
+The `alertNotificationHandlers` section configures integrations for sending alerts when monitored resources meet specified conditions. This enables automated notifications to external platforms such as Slack.
 
 ### Slack Handler
 
@@ -18,9 +18,17 @@ The Slack handler allows alerts to be sent to a designated Slack channel. Config
 
 ### Configure Slack in Custom JSON
 
+#### Prerequisites
+
+Before configuring Slack notifications:
+
+- Create a Slack App in your Slack workspace.
+- Generate an OAuth token with the required permissions to post messages to channels.
+
+#### Configuration
+
 To configure Slack notification in the custom JSON file, locate the `alertNotificationHandlers` section and update the configuration as below.
 
-- In order to set custom JSON configuration for Slack notifications, first create a Slack App in Slack workspace and generate an OAuth token with the necessary permissions to post messages to channels. 
 - Provide OAuth Token in `accessToken`.
 - Set `channel` to the Slack channel ID where alerts will be sent.
 - Set `enabled` to `true` to enable Slack notifications.

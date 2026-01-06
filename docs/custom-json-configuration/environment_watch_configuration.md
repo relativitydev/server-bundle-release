@@ -1,8 +1,8 @@
 # Custom JSON Configuration
 
-This document provides an overview of the custom JSON configuration for Environment Watch. This feature allows users to centrally define monitoring for Windows services and Certificates using a shared configuration file, and to send alerts to a Slack channel based on the configured Slack notification settings.
+This document provides an overview of the custom JSON configuration used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services and certificates, as well as configure Slack notifications for alerting.
 
-Using a shared configuration ensures that custom monitoring settings remain intact during Environment Watch upgrades, making monitoring both extensible and upgrade-safe.
+The shared configuration file enables users to control what is monitored—such as specific Windows services or certificate conditions—and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
 ---
 
