@@ -82,16 +82,16 @@ Possible causes for the following alert in the Relativity application include:
 
 ![](/resources/custom-json-troubleshooting-images/certificate-alert.png)
 
- **1.1 Thumbprint for the certificate is not configured properly.**
+ **2.1 Thumbprint for the certificate is not configured properly.**
 
 Depending on the Store Location and Store Name, run the following command on the host. For `LocalMachine` and `My`, use:
 
 > ```powershell
 > Get-ChildItem Cert:\LocalMachine\My
 
- **1.2 The host name is not proper for the monitoring by Host or Installed Product.** 
+ **2.2 The host name is not proper for the monitoring by Host or Installed Product.** 
 
-- Run below powershell command to get host name.
+- Run the following PowerShell command.
 
  > ```powershell
 > hostname
@@ -125,10 +125,9 @@ Ensure the `hostName` property in your configuration matches the output. Example
         ]
 ```
 
- **1.3 Certificate thumbprint is unique and should not be configured in Monitoring by instance.**
+ **2.3 Certificate thumbprint is unique and should not be configured in Monitoring by instance.**
 
  Example configuration for instance monitoring:
-
 
 ```json
 "instance": {
@@ -152,9 +151,9 @@ Ensure the `hostName` property in your configuration matches the output. Example
 
 If Windows services do not appear in the Kibana dashboard after configuring the custom JSON file, the potential causes are:
 
-![](/resources/custom-json-troubleshooting-images/widows-service-dashboard-json.png)
+![](/resources/custom-json-troubleshooting-images/windows-service-dashboard-json.png)
 
-**1.1 The custom JSON file does not include the Windows services configuration.**
+**3.1 The custom JSON file does not include the Windows services configuration.**
 
 - Ensure that the custom JSON file contains the correct configuration for the Windows services to monitor.
 - The configuration should be under the `windowsServices` section for the relevant hosts, instance, or installedProducts.
@@ -175,22 +174,21 @@ Example:
         ]
 ```
 
-**1.2 The Windows services are not running on the host.**
+**3.2 The Windows services are not running on the host.**
 
-- Verify that the Windows services you are trying to monitor are actually running on the host machine.
+- Verify that the Windows services you want to monitor are actually running and exist on the host machine.
 - You can check this by logging into the host machine and using the Services management console (`services.msc`) or by using the following PowerShell command:
 
 > ```powershell
 > Get-Service -Name MSSQLSERVER, AnotherService
 
-**1.3 Always include service name in the custom JSON**
+**3.3 Always include service name in the custom JSON**
 
 - Ensure that you are using the correct service names (not display names) in the `include` section of the custom JSON configuration.
 
-
 ## SQL Cluster Instances
 
-**1.1 All instances/nodes in the SQL cluster are not monitored.**
+**4.1 All instances/nodes in the SQL cluster are not monitored.**
 
 - Verify that each node of the SQL cluster is included in the `hosts` section of the custom JSON configuration with the correct `hostName`, `clusterVirtualName`, and `instanceName`.
 - Ensure that `sqlServers` -> `enabled` is set to `true` for each host entry.
@@ -249,24 +247,24 @@ Example:
 > [!NOTE]
 > SQL cluster configuration in the custom JSON file should always be specified within the "**hosts**" section.
 
-**1.2 The log "Processed SQL instance details" is missing, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover**
+**4.2 The log "Processed SQL instance details" is missing, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover**
 
 - See [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON changes.
 
 ## Slack Notifications
 
-**1.1 Slack messages are being sent too frequently and require to extend the interval.**
+**5.1 Slack messages are being sent too frequently; increase the interval to reduce message frequency.**
 
 - Ensure that the `messageIntervalSeconds` property in the Slack handler configuration is set to a value greater than or equal to 180 seconds to avoid rate limiting by Slack.
 - Restart the Environment Watch Windows Service to apply the changes.
 
-**1.2  Kibana Alert is triggered, still cannot see: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}" in Kibana->Discover**
+**5.2  Kibana Alert is triggered, still cannot see: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}" in Kibana->Discover**
 
 - {AlertId}: Pass Kibana Alert ID.
 - {SlackChannel}: Pass Slack Channel ID.
 - Above issue can occur due to issues mentioned in [Common Issues](#common-issues) section 1.1 to 1.4.
 
-**1.3 Slack notifications are not being sent even though the alert is triggered in Kibana.**
+**5.3 Slack notifications are not being sent even though the alert is triggered in Kibana.**
 
 - Verify that the Slack handler is correctly configured in the `alertNotificationHandlers` section of the custom JSON file.
 - Ensure that the `accessToken`, `channel`, `enabled`, and `messageIntervalSeconds` properties are set correctly.
