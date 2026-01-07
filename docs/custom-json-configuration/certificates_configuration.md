@@ -1,6 +1,6 @@
 # Certificates Configuration
 
-This section describes how to configure certificate monitoring using the `environmentWatchConfiguration` JSON object.
+This section describes how to configure certificate monitoring using the `environmentWatchConfiguration` JSON configuration file.
 
 ---
 
