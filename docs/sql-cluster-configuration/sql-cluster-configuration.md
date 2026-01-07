@@ -117,4 +117,4 @@ Once the windows service has been restarted, verify that the SQL cluster instanc
 ---
 
 ## Troubleshooting
-Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve custom JSON SQL cluster configuration issues.
+Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON SQL cluster configuration issues.
