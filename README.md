@@ -17,7 +17,7 @@ This release bundle contains packages that are required to set up or upgrade two
 
 **Network Ports**: Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](docs/environment-watch/port-diagram.md) for full network configuration details.
 
-> **Note**: Relativity Server includes visualization of the Environment Watch Catalog for easier monitoring and management. For more details, refer to the Environment Watch Catalog documentation for your Server version:
+> **Note**: Relativity Server includes visualization of the Environment Watch Catalog for easier monitoring and management. **The catalog content and available metrics vary depending on your Server version.** Be sure to refer to the Environment Watch Catalog documentation that matches your installed Server version:
 > - [Environment Watch Catalog - Relativity Server 2024 Patch 2](https://github.com/relativityone/server-relativity-docs/blob/release-24.0-2024/environment-watch/environment-watch-catalog/readme.md)
 > - [Environment Watch Catalog - Relativity Server 2025](https://github.com/relativityone/server-relativity-docs/blob/release-25.0-2025/environment-watch/environment-watch-catalog/readme.md)
 
