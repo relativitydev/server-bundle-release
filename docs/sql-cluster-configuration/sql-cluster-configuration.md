@@ -115,3 +115,6 @@ Once the windows service has been restarted, verify that the SQL cluster instanc
 - Verify that there are no alerts triggered.
 
 ---
+
+## Troubleshooting
+Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve custom JSON SQL cluster configuration issues.

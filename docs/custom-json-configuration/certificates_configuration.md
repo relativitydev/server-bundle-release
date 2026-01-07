@@ -104,3 +104,6 @@ For certificates to monitor, locate "**certificates**" under the desired section
 ![](/resources/custom-json-images/certificate-json-example.png)
 
 ![](/resources/custom-json-images/certificate-dashboard-example.png)
+
+## Troubleshooting
+Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON certificate configuration issues.

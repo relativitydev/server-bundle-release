@@ -58,3 +58,6 @@ To configure Slack notification in the custom JSON file, locate the `alertNotifi
 
 ![Slack Example](../../resources/slackalerts-images/SlackNotification.png)
 
+## Troubleshooting
+Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON slack configuration issues.
+
