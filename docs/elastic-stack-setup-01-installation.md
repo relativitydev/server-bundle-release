@@ -271,7 +271,87 @@ These are separate directories because data directories require high-performance
 > ```
 > This ensures you can log in to Kibana and perform admin tasks after moving the data directory.
 
-**Step 8: Install the 'mapper-size' plugin**
+**Step 8: Configure Transport Layer Security for Multi-Node Clusters (Production)**
+
+> [!IMPORTANT]
+> **This step is only required for multi-node production clusters.** If you are running a single-node development environment, you can skip this section and proceed to Step 7. Transport layer security ensures secure communication between nodes in a cluster using certificates signed by a Certificate Authority (CA).
+
+> [!NOTE]
+> **Official Documentation:** For comprehensive transport layer security details, see [Elastic's security configuration documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-basic-setup.html) and [TLS encryption documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-basic-setup-https.html).
+
+**1. Create a Certificate Authority (CA)**
+
+**Purpose:** To create a root CA used for signing and issuing certificates for nodes in the cluster. The CA ensures mutual trust among cluster nodes using certificates signed by the same authority.
+
+**Steps:**
+
+Follow these steps on the **Master node server**:
+
+1. Open PowerShell in admin mode.
+2. Navigate to the bin folder of Elasticsearch (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
+3. Run the following command:
+    ```powershell
+    .\elasticsearch-certutil ca
+    ```
+4. This will generate an `elastic-stack-ca.p12` file, which acts as the root CA certificate.
+
+**2. Generate Certificates and Private Keys for Nodes**
+
+**Purpose:** To create unique certificates and private keys for each node in the cluster. These certificates, signed by the CA, enable secure inter-node communication.
+
+**Steps:**
+
+1. Open PowerShell in admin mode.
+2. Navigate to the bin folder of Elasticsearch (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
+3. Run the following command:
+    ```powershell
+    .\elasticsearch-certutil cert --ca elastic-stack-ca.p12
+    ```
+4. During execution:
+    - **Certificate Name:** Provide a unique name for each node (e.g., `node1`, `node2`).
+    - **Password:** Set a password (use the same password for all nodes).
+5. Repeat this command for each node in the cluster.
+6. After creation of certificates, copy each certificate to its corresponding node server in the same directory where the certificate was generated.
+
+**3. Configure Keystore for Secure Password Management**
+
+**Purpose:** To securely store the keystore and truststore passwords, ensuring encrypted access to certificates and private keys.
+
+**Steps:**
+
+Follow these steps on **all DataGrid servers** and use the **same password** on all servers:
+
+1. For each node, execute the following commands in the bin folder of Elasticsearch:
+
+    **Remove Existing Passwords** (if any):
+    
+    - Keystore Password:
+        ```powershell
+        .\elasticsearch-keystore remove xpack.security.transport.ssl.keystore.secure_password
+        ```
+    - Truststore Password:
+        ```powershell
+        .\elasticsearch-keystore remove xpack.security.transport.ssl.truststore.secure_password
+        ```
+
+    **Add New Passwords:**
+    
+    - Keystore Password:
+        ```powershell
+        .\elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
+        ```
+        Enter the password created during certificate generation when prompted.
+    
+    - Truststore Password:
+        ```powershell
+        .\elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
+        ```
+        Enter the same password used during certificate generation when prompted.
+
+> [!IMPORTANT]
+> The passwords must be identical on all nodes in the cluster for proper inter-node communication.
+
+**Step 9: Install the 'mapper-size' plugin**
 
 1. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(C:\elastic\elasticsearch-x.x.x\bin) and run the following command to install the 'mapper-size' plugin:
     ```
@@ -290,7 +370,7 @@ These are separate directories because data directories require high-performance
     WARNING: Waiting for service 'Elasticsearch x.x.x (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
     ```
 
-**Step 9: Configure JVM Heap Settings (Production)**
+**Step 10: Configure JVM Heap Settings (Production)**
 
 > [!NOTE]
 > **Official Documentation:** For detailed JVM configuration guidance, see [Elastic's JVM heap size documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/advanced-configuration.html#set-jvm-heap-size).
@@ -329,7 +409,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 
 
-**Step 10: Verify Elasticsearch Server**
+**Step 11: Verify Elasticsearch Server**
 
 1. To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values). In production do NOT use `-k`; validate the server certificate using the CA certificate you installed:
     ```
@@ -941,145 +1021,145 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
 3. The word `green` in the response means the cluster is healthy. The word `yellow` in the response means the cluster is partially healthy. If you see `red`, investigate further.
 
-## Elasticsearch Snapshot Repository and Automated Backups
+## Elasticsearch Snapshot Repository Setup
 
 > [!NOTE]
-> **Official Documentation:** For comprehensive snapshot and restore guidance, see [Elastic's snapshot and restore documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html) and [Snapshot lifecycle management](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-lifecycle-management.html).
+> **Official Documentation:** For comprehensive snapshot and restore guidance, see [Elastic's snapshot and restore documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-restore.html).
 
 > [!IMPORTANT]
-> For multi-node clusters, `path.repo` must be configured in `elasticsearch.yml` on **every node** that might execute snapshot or restore operations. All nodes must have access to the same backup location.
+> For multi-node clusters, `path.repo` must be configured in `elasticsearch.yml` on **every node**. All nodes must have access to the same backup location (shared network drive or replicated storage).
+
+**Step 1: Create and Configure Backup Directory**
 
 1. Create a backup directory on a dedicated high-performance volume (not C:):
-        ```powershell
-        # Use a dedicated volume for backups
-        mkdir X:\es-backups
-        ```
+
+   ```powershell
+   # Use a dedicated volume for backups
+   mkdir X:\es-backups
+   ```
 
 2. Grant the Elasticsearch service account full read/write permissions:
-        ```powershell
-        # For LocalSystem (default service account)
-        icacls "X:\es-backups" /grant "NT AUTHORITY\SYSTEM:(OI)(CI)F" /T
-    
-        # For custom service account (replace DOMAIN\svc_elasticsearch)
-        # icacls "X:\es-backups" /grant "DOMAIN\svc_elasticsearch:(OI)(CI)F" /T
-    
-        # Verify permissions
-        icacls "X:\es-backups"
-        ```
+
+   ```powershell
+   # For LocalSystem (default service account)
+   icacls "X:\es-backups" /grant "NT AUTHORITY\SYSTEM:(OI)(CI)F" /T
+
+   # For custom service account (replace DOMAIN\svc_elasticsearch)
+   # icacls "X:\es-backups" /grant "DOMAIN\svc_elasticsearch:(OI)(CI)F" /T
+
+   # Verify permissions
+   icacls "X:\es-backups"
+   ```
 
 3. Configure the snapshot repository path in `elasticsearch.yml` on **all nodes**:
-        ```yaml
-        path.repo: ["X:/es-backups"]
-        ```
+
+   ```yaml
+   path.repo: ["X:/es-backups"]
+   ```
 
 4. Restart Elasticsearch on all nodes to apply the changes:
-        ```powershell
-        Restart-Service -Name "elasticsearch-service-x64"
-        ```
 
-5. Register the snapshot repository via Kibana Dev Tools:
-        1. Open Kibana and navigate to **Dev Tools** (Management > Dev Tools).
-        2. Run the following command:
-                ```json
-                PUT _snapshot/my_backup
-                {
-                    "type": "fs",
-                    "settings": {
-                        "location": "D:/es-backups",
-                        "compress": true
-                    }
-                }
-                ```
+   ```powershell
+   Restart-Service -Name "elasticsearch-service-x64"
+   ```
 
-6. Create a snapshot lifecycle policy for automated backups via Kibana Dev Tools:
+**Step 2: Register Snapshot Repository**
 
-> [!NOTE]
-> **Schedule Guidance:** Avoid peak business hours when scheduling snapshots. Format for scheduling snapshots:
-> - Daily at 2 AM: `"0 2 * * *"` (recommended for most environments)
-> - Daily at 3 AM: `"0 3 * * *"`
-> - Weekly on Sunday at 2 AM: `"0 2 * * 0"`
-> - Cron format: `"minute hour day month weekday"`
+1. Open Kibana and navigate to **Dev Tools** (Management > Dev Tools).
+
+2. Run the following command to register the repository:
+
+   ```json
+   PUT _snapshot/my_backup
+   {
+       "type": "fs",
+       "settings": {
+           "location": "X:/es-backups",
+           "compress": true
+       }
+   }
+   ```
+
+   > [!NOTE]
+   > Ensure the `location` path matches the `path.repo` value configured in `elasticsearch.yml`.
+
+**Step 3: Verify Snapshot Repository**
 
 1. In Kibana **Dev Tools**, run the following command:
-                ```json
-                PUT _slm/policy/daily_snapshots
-                {
-                    "schedule": "0 2 * * *",
-                    "name": "<snapshot-{now/d}>",
-                    "repository": "my_backup",
-                    "config": {
-                        "indices": ["*"],
-                        "ignore_unavailable": true,
-                        "include_global_state": false
-                    },
-                    "retention": {
-                        "expire_after": "30d",
-                        "min_count": 7,
-                        "max_count": 30
-                    }
-                }
-                ```
 
-7. Verify the snapshot repository via Kibana Dev Tools:
-        1. In Kibana **Dev Tools**, run the following command:
-                ```json
-                POST _snapshot/my_backup/_verify
-                ```
-        2. You should see a response confirming the repository is valid:
-                ```json
-                {
-                    "nodes": {
-                        "node_id": {
-                            "name": "node_name"
-                        }
-                    }
-                }
-                ```
+   ```json
+   POST _snapshot/my_backup/_verify
+   ```
 
-8. **Test the snapshot and restore process:**
+2. You should see a response confirming the repository is valid:
 
-        1. Create a test snapshot:
-                ```json
-                PUT _snapshot/my_backup/test_snapshot_001
-                {
-                    "indices": "*",
-                    "ignore_unavailable": true,
-                    "include_global_state": false
-                }
-                ```
-    
-        2. Monitor snapshot progress:
-                ```json
-                GET _snapshot/my_backup/test_snapshot_001/_status
-                ```
-    
-        3. List available snapshots:
-                ```json
-                GET _snapshot/my_backup/_all
-                ```
-    
-        4. Test restore (restores with renamed index to avoid overwriting):
-                ```json
-                POST _snapshot/my_backup/test_snapshot_001/_restore
-                {
-                    "indices": "your-index-name",
-                    "ignore_unavailable": true,
-                    "include_global_state": false,
-                    "rename_pattern": "(.+)",
-                    "rename_replacement": "restored_$1",
-                    "include_aliases": false
-                }
-                ```
-    
-        5. Monitor restore progress:
-                ```json
-                GET _recovery?human
-                ```
-    
-        6. Clean up test snapshot after verification:
-                ```json
-                DELETE _snapshot/my_backup/test_snapshot_001
-                ```
+   ```json
+   {
+       "nodes": {
+           "node_id": {
+               "name": "node_name"
+           }
+       }
+   }
+   ```
+
+**Step 4: Test Snapshot and Restore Operations**
+
+1. Create a test snapshot:
+
+   ```json
+   PUT _snapshot/my_backup/test_snapshot_001
+   {
+       "indices": "*",
+       "ignore_unavailable": true,
+       "include_global_state": false
+   }
+   ```
+
+2. Monitor snapshot progress:
+
+   ```json
+   GET _snapshot/my_backup/test_snapshot_001/_status
+   ```
+
+3. List available snapshots:
+
+   ```json
+   GET _snapshot/my_backup/_all
+   ```
+
+4. Test restore (creates a renamed copy to avoid overwriting):
+
+   ```json
+   POST _snapshot/my_backup/test_snapshot_001/_restore
+   {
+       "indices": "your-index-name",
+       "ignore_unavailable": true,
+       "include_global_state": false,
+       "rename_pattern": "(.+)",
+       "rename_replacement": "restored_$1",
+       "include_aliases": false
+   }
+   ```
+
+5. Monitor restore progress:
+
+   ```json
+   GET _recovery?human
+   ```
+
+6. Clean up test snapshot after verification:
+
+   ```json
+   DELETE _snapshot/my_backup/test_snapshot_001
+   ```
+
+> [!TIP]
+> **Creating Manual Snapshots:**
+> To create a snapshot manually at any time, use: `PUT _snapshot/my_backup/snapshot_name`
+> 
+> **Automated Backups:**
+> For automated scheduled snapshots, consider implementing Snapshot Lifecycle Management (SLM). See the [official SLM documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/snapshot-lifecycle-management.html) for details.
 ## Next Step
 
 [Click here for the next step](relativity_server_cli_setup.md)
