@@ -63,9 +63,9 @@ WHERE c.[Name] = 'SQL - Primary'
 
 **1.4 Update the Environment Watch Windows Service to the latest version.**
 
-- Verify the version of the Environment Watch Windows Service.
-- Ensure it is updated to version **100.0.21** or later, as custom JSON support was introduced in this version.
-- If it is not updated, upgrade the Environment Watch Windows Service to the latest version.
+- Verify the installed version of the Environment Watch Windows Service.
+- Ensure the service is updated to version 100.0.21 or later, as custom JSON support was introduced in this version.
+- If the service is running an earlier version, upgrade it to the latest available version.
 
 > [!NOTE]
 > Ensure the `enabled` flag is set to `true` in the custom JSON file for the relevant monitoring section (hosts, instance, or installedProducts).
@@ -170,7 +170,7 @@ Example:
 
 **3.2 Verify that the Windows services are running and exist on the host.**
 
-- Check that the Windows services you want to monitor are running and exist on the host machine.
+- Verify that the Windows services to be monitored are running and exist on the host machine.
 - Use the Services management console (`services.msc`) or the following PowerShell command:
 
 > ```powershell
@@ -178,7 +178,7 @@ Example:
 
 **3.3 Always include service name in the custom JSON**
 
-- Ensure you are using the correct service names (not display names) in the `include` section of the custom JSON configuration.
+- Ensure that the correct service names (not display names) are used in the include section of the custom JSON configuration.
 
 ## SQL Cluster Instances
 

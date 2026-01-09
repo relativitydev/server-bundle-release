@@ -2,23 +2,23 @@
 > [!NOTE]
 > Use the steps below only if your environment uses SQL cluster servers for Environment Watch monitoring.
 
-An environment may include SQL cluster instances consisting of two or more nodes. To monitor these instances using the Environment Watch Windows service, you need to define specific configurations in a custom JSON file.
+An environment may include SQL cluster instances consisting of two or more nodes. Monitoring these instances using the Environment Watch Windows service requires defining specific configurations in a custom JSON configuration file.
 
 ---
 
 ## Configure SQL Cluster Instances
 
-To configure SQL cluster instances in the Custom JSON file, the "**hosts**" section needs to be updated.
+To configure SQL cluster instances in the custom JSON configuration file, the "**hosts**" section needs to be updated.
 
-Locate the "**hosts**" section in the JSON file and add an entry for each SQL cluster instance you want to monitor. Each **hostName** should be included with the following details:
+Locate the "**hosts**" section in the JSON file and add an entry for each SQL cluster instance to be monitored. Include each **hostName** with the following details:
 
 **Example:**
 For an environment containing a SQL cluster with two nodes (`SQLNode1` and `SQLNode2`):  
-- Update the "hosts" section for each node by:
-- Specifying the correct host name
-- Setting the `enabled` flag to `true`
-- Including the appropriate SQL cluster name (`clusterVirtualName`)
-- Providing the corresponding instance name (`instanceName`)
+Update the "hosts" section for each node by:
+- Specify the correct host name
+- Set the `enabled` flag to `true`
+- Include the appropriate SQL cluster name (`clusterVirtualName`)
+- Provide the corresponding instance name (`instanceName`)
 - Below configuration sets both `SQLNode1` and `SQLNode2` cluster nodes to monitor the SQL cluster instance `SQL_INSTANCE` with the virtual cluster name `SQLCLUSTER`.
 
 > [!NOTE]

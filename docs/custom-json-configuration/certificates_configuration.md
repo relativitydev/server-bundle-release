@@ -59,7 +59,7 @@ Depending on the Store Location and Store Name, run the following command on the
 Get-ChildItem Cert:\LocalMachine\My
 ```
 
-The command returns a list of certificates including their `thumbprint` and `subject`. Copy the `thumbprint` value for the certificate you want to monitor and use it in the custom JSON configuration. Adjust the command as needed based on the selected `storeName` and `storeLocation`.
+The command returns a list of certificates including their `thumbprint` and `subject`. Copy the `thumbprint` value for the certificate to be monitored and use it in the custom JSON configuration. Adjust the command as needed based on the selected `storeName` and `storeLocation`.
 
 ## Configure Certificates
 
@@ -69,7 +69,7 @@ For certificates to monitor, locate "**certificates**" under the desired section
 - `enabled` : Set to `true` to enable certificate monitoring.
 - When configuring the `include` section, specify the `storeName`, `storeLocation`, and `thumbprint` for each certificate to be monitored.
 
-**Example 1**: Monitoring two certificates from the LocalMachine\My store. The certificate is identified by its Thumbprint, which you can retrieve using the following PowerShell command:`Get-ChildItem Cert:\LocalMachine\My`
+**Example 1**: Monitoring two certificates from the LocalMachine\My store. The certificate is identified by its Thumbprint, which can be retrieved using the following PowerShell command: `Get-ChildItem Cert:\LocalMachine\My`
 
 ```json
 {
