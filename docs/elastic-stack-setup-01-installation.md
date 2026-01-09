@@ -480,20 +480,20 @@ Restart-Service -Name "elasticsearch-service-x64"
 1. Generate certificates Option A: Use elasticsearch-certutil 
     1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
     2. Create CA:
-    1. Run the following command:
+        1. Run the following command:
 
-            ```
-            .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\kibana_ca.zip"
-            ```
-    2. Extract zip contents into `C:\elastic\secrets\ca\ (you should have ca.crt and ca.key)`. 
+        ```powershell
+        .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\kibana_ca.zip"
+        ```
+        2. Extract zip contents into `C:\elastic\secrets\ca\ (you should have ca.crt and ca.key)`. 
 
     3. Create server cert for Kibana:
         1. Build SAN args with your DNS and IPs, e.g., `--dns <fqdn> --dns <shortname> --ip <server-ip>`
 
         2. Run the following command:
-            ```
-            .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\ca\ca.crt" --ca-key "C:\elastic\secrets\ca\ca.key" --name kibana [SAN args] --out "C:\elastic\secrets\kibana_server.zip"
-            ```
+        ```powershell
+        .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\ca\ca.crt" --ca-key "C:\elastic\secrets\ca\ca.key" --name kibana [SAN args] --out "C:\elastic\secrets\kibana_server.zip"
+        ```
         3. Extract zip contents into `C:\elastic\secrets\kibana\` to get kibana.crt and kibana.key
 
     4. Copy to Kibana certs:
@@ -510,9 +510,9 @@ Restart-Service -Name "elasticsearch-service-x64"
         1. Run mmc, add Certificates snap-in for Computer account, import ca.crt under Trusted Root Certification Authorities.
 
         2. Run the following command using an elevated Powershell
-            ```
-            certutil.exe -addstore -f Root "C:\elastic\kibana\config\certs\ca.crt"
-            ```
+        ```powershell
+        certutil.exe -addstore -f Root "C:\elastic\kibana\config\certs\ca.crt"
+        ```
      
 2.  Use OpenSSL (if certutil missing or for self-signed)  
     1. Ensure OPENSSL_HOME is set or openssl.exe is available in PATH.
@@ -773,18 +773,18 @@ Restart-Service -Name "elasticsearch-service-x64"
     1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
     2. Create CA:
         1. Run the following command
-            ```
-            .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\apm_ca.zip"
-            ```
+        ```powershell
+        .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\apm_ca.zip"
+        ```
         2. Extract apm_ca.zip contents into `C:\elastic\secrets\apm-ca\ (you should have ca.crt and ca.key inside the folder)`. 
 
     3. Create server cert for APM:
         1. Build SAN args with your DNS and IPs, e.g., `--dns <fqdn> --dns <shortname> --ip <server-ip>`
 
         2. Run the following command:
-            ```
-            .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\apm-ca\ca.crt" --ca-key "C:\elastic\secrets\apm-ca\ca.key" --name apm-server [SAN args] --out "C:\elastic\secrets\apm-server.zip"
-            ```
+        ```powershell
+        .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\apm-ca\ca.crt" --ca-key "C:\elastic\secrets\apm-ca\ca.key" --name apm-server [SAN args] --out "C:\elastic\secrets\apm-server.zip"
+        ```
         3. Extract zip contents into `C:\elastic\secrets\apm-server\` to get APM.crt and APM.key (you should have C:/elastic/secrets/apm-server/apm-server.crt and apm-server.key)
 
     4. Copy to APM certs:
@@ -801,9 +801,9 @@ Restart-Service -Name "elasticsearch-service-x64"
         1. Run mmc, add Certificates snap-in for Computer account, import ca.crt under Trusted Root Certification Authorities.
 
         2. Run the following command using an elevated Powershell
-            ```
-            certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt"
-            ```
+        ```powershell
+        certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt"
+        ```
      
 2.  Option B: Use OpenSSL (if certutil missing or for self-signed)  
     1. Ensure OPENSSL_HOME is set or openssl.exe is available in PATH.
