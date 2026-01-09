@@ -1,6 +1,6 @@
 # Custom JSON Configuration Troubleshooting
 
-This document provides guidance for troubleshooting issues related to custom JSON configurations in Relativity Server environments.
+This document provides guidance for troubleshooting issues related to custom JSON configuration file in Relativity Server environments.
 
 ## Common Issues
 
@@ -8,9 +8,9 @@ If the log message “The Environment Watch shared configuration object is not e
 
 ![](/resources/custom-json-troubleshooting-images/environment-watch-shared-settings-not-empty.png)
 
- **1.1 The custom JSON file is not placed in the correct BCP path.**
+ **1.1 The custom JSON configuration file is not placed in the correct BCP path.**
 
-Verify that the custom JSON file is located in the correct BCP path.
+Verify that the custom JSON configuration file is located in the correct BCP path.
 
 Base path: `BCPPath`
 
@@ -53,23 +53,22 @@ WHERE c.[Name] = 'SQL - Primary'
 - Again, click on 'Edit' and toggle the **'Status'** to 'Active' and save it.
 - Restart the Environment Watch Windows Service to apply the changes.
 
-**1.3 Check the custom JSON file for syntax errors.**
+**1.3 Check the custom JSON configuration file for syntax errors.**
 
-- Download the sample JSON file from the link below and compare it with your custom JSON file to identify any syntax errors.
+- Download the sample JSON file from the link below and compare it with your custom JSON configuration file to identify any syntax errors.
 
-[Sample Custom JSON File](/resources/custom-json-troubleshooting-images/environment-watch-configuration.json)
+[Sample Custom JSON Configuration File](/resources/custom-json-troubleshooting-images/environment-watch-configuration.json)
 
 - Restart the Environment Watch Windows Service to apply the changes.
 
 **1.4 Update the Environment Watch Windows Service to the latest version.**
 
 - Verify the installed version of the Environment Watch Windows Service.
-- Ensure the service is updated to version 100.0.21 or later, as custom JSON support was introduced in this version.
+- Ensure the service is updated to version 100.0.21 or later, as custom JSON configuration file support was introduced in this version.
 - If the service is running an earlier version, upgrade it to the latest available version.
 
 > [!NOTE]
-> Ensure the `enabled` flag is set to `true` in the custom JSON file for the relevant monitoring section (hosts, instance, or installedProducts).
-
+> Ensure the `enabled` flag is set to `true` in the custom JSON configuration file for the relevant monitoring section (hosts, instance, or installedProducts).
 ## Certificates
 
 Possible causes for the following alert in the Relativity application include:
@@ -143,13 +142,12 @@ Ensure the `hostName` property in your configuration matches the output. Example
 
 ## Windows Services
 
-If Windows services do not appear in the Kibana dashboard after configuring the custom JSON file, review the following potential causes:
+If Windows services do not appear in the Kibana dashboard after configuring the custom JSON configuration file, review the following potential causes:
 
 ![](/resources/custom-json-troubleshooting-images/windows-service-dashboard-json.png)
 
-**3.1 Include the Windows services configuration in the custom JSON file.**
-
-- Ensure the custom JSON file contains the correct configuration for the Windows services to monitor.
+**3.1 Include the Windows services configuration in the custom JSON configuration file.**
+- Ensure the custom JSON configuration file contains the correct configuration for the Windows services to monitor.
 - Place the configuration under the `windowsServices` section for the relevant hosts, instance, or installedProducts.
 
 Example:
@@ -176,15 +174,15 @@ Example:
 > ```powershell
 > Get-Service -Name MSSQLSERVER, AnotherService
 
-**3.3 Always include service name in the custom JSON**
+**3.3 Always include service name in the custom JSON configuration file**
 
-- Ensure that the correct service names (not display names) are used in the include section of the custom JSON configuration.
+- Ensure that the correct service names (not display names) are used in the include section of the custom JSON configuration file.
 
 ## SQL Cluster Instances
 
 **4.1 Ensure all instances/nodes in the SQL cluster are monitored.**
 
-- Include each node of the SQL cluster in the `hosts` section of the custom JSON configuration with the correct `hostName`, `clusterVirtualName`, and `instanceName`.
+- Include each node of the SQL cluster in the `hosts` section of the custom JSON configuration file with the correct `hostName`, `clusterVirtualName`, and `instanceName`.
 - Set `sqlServers` -> `enabled` to `true` for each host entry.
 
 ```json
@@ -239,11 +237,11 @@ Example:
 ```
 
 > [!NOTE]
-> Always specify SQL cluster configuration within the "**hosts**" section of the custom JSON file.
+> Always specify SQL cluster configuration within the "**hosts**" section of the custom JSON configuration file.
 
 **4.2 The log "Processed SQL instance details" is missing, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover**
 
-- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON changes.
+- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 
 ## Slack Notifications
 
@@ -259,9 +257,9 @@ Example:
 
 **5.3 Slack notifications are not being sent even though the alert is triggered in Kibana.**
 
-- Verify that the Slack handler is correctly configured in the `alertNotificationHandlers` section of the custom JSON file.
+- Verify that the Slack handler is correctly configured in the `alertNotificationHandlers` section of the custom JSON configuration file.
 - Ensure that the `accessToken`, `channel`, `enabled`, and `messageIntervalSeconds` properties are set correctly.
-- See [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON changes.
+- See [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 - It can also occur if the Slack API token is invalid or does not have the necessary permissions to post messages to the specified channel. 
 - Verify the token and permissions.
 

@@ -6,7 +6,7 @@ This section describes how to configure Windows service monitoring using the `en
 
 ## Overview
 
-This configuration monitors the status of specified Windows services to ensure they are running as expected. Some Windows services are monitored by default based on the installed products, even if they are not explicitly configured in the custom JSON file. 
+This configuration monitors the status of specified Windows services to ensure they are running as expected. Some Windows services are monitored by default based on the installed products, even if they are not explicitly configured in the custom JSON configuration file. 
 
 The table below lists the service names that are monitored by default based on the installed products.
 
@@ -27,7 +27,7 @@ The table below lists the service names that are monitored by default based on t
 
 ### Properties Table
 
-The following table lists the properties used to configure Windows services monitoring in the custom JSON file.
+The following table lists the properties used to configure Windows services monitoring in the custom JSON configuration file.
 
 | Property    | Type     | Description                                                      |
 |-------------|----------|------------------------------------------------------------------|
@@ -67,12 +67,11 @@ For services to monitor, locate "**windowsServices**" under the desired section 
 
 - Navigate to Kibana Discover.
 - Select `logs-*` Data View.
-- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows service fetching values from the custom JSON configuration successfully.
+- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows service fetching values from the custom JSON configuration file successfully.
 
 ![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
 
-- Ensure that the Windows services defined in the custom JSON configuration appear on the Kibana Windows services dashboard. The example below demonstrates how a Windows service specified in the custom JSON is successfully monitored and displayed on the Windows services dashboard.
-
+- Ensure that the Windows services defined in the custom JSON configuration file appear on the Kibana Windows services dashboard. The example below demonstrates how a Windows service specified in the custom JSON configuration file is successfully monitored and displayed on the Windows services dashboard.
 ![](/resources/custom-json-images/windows-service-json-example.png)
 
 ![](/resources/custom-json-images/windows-service-dashboard.png)

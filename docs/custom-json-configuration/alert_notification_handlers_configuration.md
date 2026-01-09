@@ -16,7 +16,7 @@ The Slack handler allows alerts to be sent to a designated Slack channel. Config
 
 ---
 
-### Configure Slack in Custom JSON
+### Configure Slack in Custom JSON Configuration File
 
 #### Prerequisites
 
@@ -27,7 +27,7 @@ Before configuring Slack notifications:
 
 #### Configuration
 
-To configure Slack notification in the custom JSON file, locate the `alertNotificationHandlers` section and update the configuration as below.
+To configure Slack notification in the custom JSON configuration file, locate the `alertNotificationHandlers` section and update the configuration as below.
 
 - Provide OAuth Token in `accessToken`.
 - Set `channel` to the Slack channel ID where alerts will be sent.
@@ -50,7 +50,7 @@ To configure Slack notification in the custom JSON file, locate the `alertNotifi
 
 - Navigate to Kibana Discover.
 - Select `logs-*` Data View.
-- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the custom JSON configuration successfully.
+- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the custom JSON configuration file successfully.
 
 ![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
 

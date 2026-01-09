@@ -1,6 +1,6 @@
 # Custom JSON Configuration
 
-This document provides an overview of the custom JSON configuration used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services and certificates, as well as configure Slack notifications for alerting.
+This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services and certificates, as well as configure Slack notifications for alerting.
 
 The shared configuration file enables users to control what is monitored—such as specific Windows services or certificate conditions—and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
@@ -35,7 +35,7 @@ The `instance` section defines sources that are monitored at the environment or 
 The `installedProducts` section contains a list of installed products, where each product defines its own monitoring sources.
 - **Purpose:** Monitors resources specific to each installed product (e.g., web server, agent).
 - **Use Case:** Allows to tailor monitoring to the needs of each product, such as product-specific services or certificates.
-- The following installed product values can be used in the `installedProducts` section of the custom JSON configuration.
+- The following installed product values can be used in the `installedProducts` section of the custom JSON configuration file.
 
 | Property                    | Description                                                                 |
 |----------------------------|-----------------------------------------------------------------------------|

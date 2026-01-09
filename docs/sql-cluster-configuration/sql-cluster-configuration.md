@@ -8,7 +8,7 @@ An environment may include SQL cluster instances consisting of two or more nodes
 
 ## Configure SQL Cluster Instances
 
-To configure SQL cluster instances in the custom JSON configuration file, the "**hosts**" section needs to be updated.
+Specify SQL cluster configuration in the custom JSON configuration file within the "**hosts**" section.
 
 Locate the "**hosts**" section in the JSON file and add an entry for each SQL cluster instance to be monitored. Include each **hostName** with the following details:
 
@@ -22,7 +22,7 @@ Update the "hosts" section for each node by:
 - Below configuration sets both `SQLNode1` and `SQLNode2` cluster nodes to monitor the SQL cluster instance `SQL_INSTANCE` with the virtual cluster name `SQLCLUSTER`.
 
 > [!NOTE]
-> SQL cluster configuration in the custom JSON file should always be specified within the "**hosts**" section.
+> SQL cluster configuration in the custom JSON configuration file should always be specified within the "**hosts**" section.
 
 ```json
 "hosts": [
@@ -90,11 +90,11 @@ Once the windows service has been restarted, verify that the SQL cluster instanc
 
 - Navigate to Kibana Discover.
 - Select `logs-*` Data View.
-- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW windows service fetching values from the Custom JSON configuration successfully.
+- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW windows service fetching values from the custom JSON configuration file successfully.
 
 ![](/resources/sql-cluster-images/environment-watch-shared-settings-not-empty.png)
 
-- Search for "Processed SQL instance details" and "labels.IsProvidedByCustomConfiguration attribute" should be true indicating that the SQL instance details were processed through custom JSON successfully as shown below:
+- Search for "Processed SQL instance details" and "labels.IsProvidedByCustomConfiguration attribute" should be true indicating that the SQL instance details were processed through custom JSON configuration file successfully as shown below:
 
 ![](/resources/sql-cluster-images/processed-sql-details-true.png)
 

@@ -13,7 +13,7 @@ Monitors the presence and validity of specified certificates in Windows certific
 |-----------------------------------|--------------------------------------------------|
 | Relativity Secret Store           | Certificate for Relativity Secret Store.         |
 
-**Properties In Custom JSON Related to Certificates**
+**Properties In Custom JSON Configuration File Related to Certificates**
 
 | Property       | Type     | Description                                                      |
 |----------------|----------|------------------------------------------------------------------|
@@ -59,7 +59,7 @@ Depending on the Store Location and Store Name, run the following command on the
 Get-ChildItem Cert:\LocalMachine\My
 ```
 
-The command returns a list of certificates including their `thumbprint` and `subject`. Copy the `thumbprint` value for the certificate to be monitored and use it in the custom JSON configuration. Adjust the command as needed based on the selected `storeName` and `storeLocation`.
+The command returns a list of certificates including their `thumbprint` and `subject`. Copy the `thumbprint` value for the certificate to be monitored and use it in the custom JSON configuration file. Adjust the command as needed based on the selected `storeName` and `storeLocation`.
 
 ## Configure Certificates
 
@@ -95,11 +95,11 @@ For certificates to monitor, locate "**certificates**" under the desired section
 
 - Navigate to Kibana Discover.
 - Select `logs-*` Data View.
-- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the Custom JSON configuration successfully.
+- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the custom JSON configuration file successfully.
 
 ![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
 - Navigate to the Kibana certificates dashboard.
-- Ensure that the certificates defined in the custom JSON configuration appear on the Kibana certificates dashboard. The example below demonstrates how a certificate specified in the custom JSON is successfully monitored and displayed on the certificates dashboard.
+- Ensure that the certificates defined in the custom JSON configuration file appear on the Kibana certificates dashboard. The example below demonstrates how a certificate specified in the custom JSON configuration file is successfully monitored and displayed on the certificates dashboard.
 
 ![](/resources/custom-json-images/certificate-json-example.png)
 
