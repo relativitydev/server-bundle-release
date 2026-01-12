@@ -124,4 +124,4 @@ For services to monitor, locate "**windowsServices**" under the desired section 
 ---
 
 ## Troubleshooting
-Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON windows services configuration issues.
+Refer to the [Troubleshooting Guide](../../../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON windows services configuration issues.

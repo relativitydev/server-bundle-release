@@ -1,5 +1,4 @@
 # Post-Install Verification for Elastic Cluster Health  
-![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Verify that the dashboard exists
 
@@ -40,8 +39,8 @@ Confirm cluster health status, total nodes, shards, indices, and document count 
 - Data size is displayed accurately.  
 
 **Screenshot:**  
-![Screenshot: Cluster Overview](../../../resources/post-install-verification-images/elasticsearch-cluster-health/cluster-overview.png)
-![Screenshot: Cluster Health Summary](../../../resources/post-install-verification-images/elasticsearch-cluster-health/cluster-health-summary.png)
+![Screenshot: Cluster Overview](../../resources/post-install-verification-images/elasticsearch-cluster-health/cluster-overview.png)
+![Screenshot: Cluster Health Summary](../../resources/post-install-verification-images/elasticsearch-cluster-health/cluster-health-summary.png)
 
 
 ## Verify node metrics
@@ -63,7 +62,7 @@ Ensure node-level metrics such as CPU usage, JVM heap usage, and disk space are 
 - Load average may show as N/A if unsupported but should be monitored for future inclusion.  
 
 **Screenshot:**  
-![Screenshot: Node Metrics](../../../resources/post-install-verification-images/elasticsearch-cluster-health/node-metrics.png)
+![Screenshot: Node Metrics](../../resources/post-install-verification-images/elasticsearch-cluster-health/node-metrics.png)
 
 
 ## Verify index statistics
@@ -87,7 +86,7 @@ Validate index-level metrics including document counts, data size, indexing rate
 - Alerts show clear or no issues on indices.  
 
 **Screenshot:**  
-![Screenshot: Index Statistics](../../../resources/post-install-verification-images/elasticsearch-cluster-health/index-stats.png)
+![Screenshot: Index Statistics](../../resources/post-install-verification-images/elasticsearch-cluster-health/index-stats.png)
 
 
 ## Verify disk and storage utilization
@@ -103,4 +102,4 @@ Ensure disk free space and usage metrics are visible for each node.
 - No fields marked as N/A for disk metrics.  
 
 **Screenshot:**  
-![Screenshot: Disk and Storage Utilization](../../../resources/post-install-verification-images/elasticsearch-cluster-health/disk-storage-utilization.png)
+![Screenshot: Disk and Storage Utilization](../../resources/post-install-verification-images/elasticsearch-cluster-health/disk-storage-utilization.png)

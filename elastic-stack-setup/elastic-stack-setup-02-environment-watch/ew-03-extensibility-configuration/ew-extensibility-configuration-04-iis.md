@@ -10,7 +10,7 @@ The Environment Watch monitoring agent uses OpenTelemetry (OTEL) collectors to p
 
 - IIS installed on the Server
 - Administrative access to the IIS Manager
-- Environment Watch monitoring agent installed (see [Install Environment Watch Monitoring Agents](install_environment_watch_monitoring_agents.md))
+- Environment Watch monitoring agent installed (see [Install Environment Watch Monitoring Agents](../ew-01-install-monitoring-agents.md))
 
 ## Terminology and Abbreviations
  
@@ -361,7 +361,7 @@ labels.iis_log_http_target:"/Relativity*"
 
 1. Expand one of the log entries by clicking the arrow icon
 
-    ![IIS Log Details Arrow](../resources/iis_log_details_arrow.png)
+    ![IIS Log Details Arrow](../../../resources/iis_log_details_arrow.png)
 
 2. Verify that all IIS log fields are present and populated:
    - `labels.iis_log_date_time`
@@ -371,4 +371,4 @@ labels.iis_log_http_target:"/Relativity*"
    - `labels.iis_log_http_server_status`
    - `labels.iis_log_http_server_duration` and all other mapped fields
 
-    ![IIS Log Field Mapping](../resources/iis__log_field_mapping.png)
+    ![IIS Log Field Mapping](../../../resources/iis__log_field_mapping.png)

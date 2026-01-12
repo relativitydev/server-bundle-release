@@ -1,5 +1,4 @@
 ﻿# Post-Install Verification for Alerts
-![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Verify that the dashboard exists
 
@@ -19,7 +18,7 @@ Ensure that the **[Relativity] Alerts Overview** dashboard is successfully insta
 - The dashboard is accessible without errors.
 
 **Screenshot:**  
-![Screenshot: Dashboard listed in Kibana](../../../resources/post-install-verification-images/alerts-overview/dashboard-listed.png)
+![Screenshot: Dashboard listed in Kibana](../../resources/post-install-verification-images/alerts-overview/dashboard-listed.png)
 
 
 ## Verify the dashboard tag
@@ -37,7 +36,7 @@ Confirm that the correct tag is applied to the dashboard for proper categorizati
 - The dashboard includes the **Relativity Environment Watch** tag.
 
 **Screenshot:**  
-![Screenshot: Dashboard tag](../../../resources/post-install-verification-images/alerts-overview/dashboard-tag.png)
+![Screenshot: Dashboard tag](../../resources/post-install-verification-images/alerts-overview/dashboard-tag.png)
 
 
 ## Verify that health indicators are displayed
@@ -57,7 +56,7 @@ Ensure that the health indicators section is visible at the top of the dashboard
   - Color: Green or Red based on alert state.
 
 **Screenshot:**  
-![Screenshot: Health indicators at top](../../../resources/post-install-verification-images/alerts-overview/health-indicators-overview.png)
+![Screenshot: Health indicators at top](../../resources/post-install-verification-images/alerts-overview/health-indicators-overview.png)
 
 
 ## Verify individual health indicator status
@@ -75,7 +74,7 @@ Verify the status and formatting of each health indicator tile, based on alert-d
 > All health indicators should display either Green or Red status after the initial wait period. If any health indicators aren't displaying correctly after waiting the full 10-15 minutes, verify that all related services are running properly and data collection is functioning correctly.
 
 **Example Screenshot:**  
-![All Health Indicators](../../../resources/post-install-verification-images/alerts-overview/all-health-indicators.png)
+![All Health Indicators](../../resources/post-install-verification-images/alerts-overview/all-health-indicators.png)
 
 
 ## Verify dashboard in a time range
@@ -95,4 +94,4 @@ Ensure that the dashboard is using a custom 15-minute time range as required for
 - Health indicators update dynamically based on this range.
 
 **Screenshot:**  
-![Screenshot: Time range 15 minutes](../../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)
+![Screenshot: Time range 15 minutes](../../resources/post-install-verification-images/alerts-overview/time-range-15-minutes.png)

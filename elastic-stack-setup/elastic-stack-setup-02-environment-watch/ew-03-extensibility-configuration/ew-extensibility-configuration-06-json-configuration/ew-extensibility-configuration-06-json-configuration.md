@@ -103,21 +103,21 @@ An example of the BCPPath and folder structure is shown below:
 This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, and SQL server instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
-### Windows Services
-
-For detailed instructions, see [Windows Service Configuration](windows_services_configuration.md).
-
 ### Certificates
 
-For detailed instructions, see [Certificates Configuration](certificates_configuration.md).
+For detailed instructions, see [Certificates Configuration](ew-json-configuration-01-certificates.md).
 
-### SQL Server Instances
+### Windows Services
 
-For detailed instructions, see [SQL Server Configuration](../sql-server-configuration/sql-server-configuration.md).
+For detailed instructions, see [Windows Service Configuration](ew-json-configuration-02-windows-services.md).
 
 ### Slack Alert Notifications
 
-For detailed instructions, see [Alert Notification Handlers](alert_notification_handlers_configuration.md).
+For detailed instructions, see [Alert Notification Handlers](ew-json-configuration-03-slack.md).
+
+### SQL Server Instances
+
+For detailed instructions, see [SQL Server Configuration](ew-json-configuration-04-sql-server.md).
 
 ## Example Configuration
 

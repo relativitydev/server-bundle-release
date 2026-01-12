@@ -1,7 +1,5 @@
 # Install Environment Watch Monitoring Agents
 
-![Setup Stage](../resources/stage_environmentwatch.png)
-
 > [!NOTE]
 > This step is required for Environment Watch.
 >The Environment Watch monitoring agent installation should start on the SQL Primary server, verify the installation, and then be applied to other servers in the environment. This ensures proper setup and validation before deploying across all servers.
@@ -45,7 +43,7 @@ This document outlines the steps to install the Environment Watch monitoring age
     1.  In Kibana, navigate to **Dashboards** and open the **[Relativity] Host Infrastructure Overview** dashboard.
     2.  Confirm that CPU, RAM, and Disk metrics are visible for the newly added host.
     
-        ![Host metrics visible in Kibana](../resources/Installer_hostmetric.png)
+        ![Host metrics visible in Kibana](../../resources/Installer_hostmetric.png)
     3.  Navigate to the **[Relativity] Monitoring Agent** dashboard to verify that:
         - The installed monitoring agent version is displayed correctly
         - Host information and other important fields are properly reflected
@@ -60,7 +58,7 @@ After verifying the first installation, repeat these steps for the remaining ser
 
 
 > [!NOTE]
-> For troubleshooting, refer to the installer logs in the `%TEMP%` directory or see the [Monitoring Agent Troubleshooting Guide](troubleshooting/monitoring-agent-and-otel-collector.md).
+> For troubleshooting, refer to the installer logs in the `%TEMP%` directory or see the [Monitoring Agent Troubleshooting Guide](../troubleshooting/monitoring-agent-and-otel-collector.md).
 
 ## Next Step
-[Click here for the next step](environment_watch_install_other_integrations.md)
+[Click here for the next step](./ew-02-relativity-alerts.md)

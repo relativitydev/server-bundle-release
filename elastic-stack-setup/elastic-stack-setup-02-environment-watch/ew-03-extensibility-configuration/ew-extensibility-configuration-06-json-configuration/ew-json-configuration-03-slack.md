@@ -101,8 +101,8 @@ To configure Slack notification in the custom JSON configuration file, locate th
 
 ### Slack Notification Example
 
-![Slack Example](../../resources/slackalerts-images/SlackNotification.png)
+![Slack Example](/resources/slackalerts-images/SlackNotification.png)
 
 ## Troubleshooting
-Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON slack configuration issues.
+Refer to the [Troubleshooting Guide](../../../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON slack configuration issues.
 

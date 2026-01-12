@@ -108,4 +108,4 @@ Once the Windows service has been restarted, verify the SQL instances are being 
 ---
 
 ## Troubleshooting
-Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON SQL server configuration issues.
+Refer to the [Troubleshooting Guide](../../../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON SQL server configuration issues.

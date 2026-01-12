@@ -30,15 +30,15 @@ This documentation provides step-by-step instructions for manually updating Elas
 1. Log in to Kibana as a user with administrative privileges.
 2. In Kibana, go to **Stack Management** → **Index Management** → **Component Templates**.
 3. Use the search box to find the **apm@settings** component template.
-   ![Screenshot: apm@settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings.png)
+   ![Screenshot: apm@settings in Kibana](../../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings.png)
 4. Click the **Edit** button in the **Actions** column.
 5. In the edit view, navigate to the **Index settings** section.
-    ![Screenshot: edit apm@settings in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/index-settings.png)
+    ![Screenshot: edit apm@settings in Kibana](../../../resources/post-install-verification-images/elasticsearch-index-settings/index-settings.png)
 6. Add or update the field limit setting:
    - Key: `index.mapping.total_fields.limit`
    - Value: the required limit (for example, `2500`)
   
-    ![Screenshot: update limit in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-edit-limit.png)
+    ![Screenshot: update limit in Kibana](../../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-edit-limit.png)
     
     > [!NOTE]
     > - The default value of `index.mapping.total_fields.limit` is `1000`. The `limit` field is not included by default; for a first-time update, add the `limit` field and set it to the required value.
@@ -46,7 +46,7 @@ This documentation provides step-by-step instructions for manually updating Elas
 
 7. After updating the field limit, navigate to the **Review** tab and click **Save component template**.
 8. Verify that the **apm@settings** component template shows the updated field limit.
-  ![Screenshot: verify limit in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-updated-limit-verify.png)
+  ![Screenshot: verify limit in Kibana](../../../resources/post-install-verification-images/elasticsearch-index-settings/apm-settings-updated-limit-verify.png)
 
 
 #### Step 2: Perform a Rollover to Apply the New Settings
@@ -75,7 +75,7 @@ To apply the new settings, the following steps are required:
         
        In the document details, find the value of the `_index` field.        
        Example: `.ds-logs-apm.app.relsvr_logging-default-2025.11.26-000013`
-       ![Screenshot: data stream in Kibana](../../resources/post-install-verification-images/elasticsearch-index-settings/latest-document.png)
+       ![Screenshot: data stream in Kibana](../../../resources/post-install-verification-images/elasticsearch-index-settings/latest-document.png)
 
     5. Derive the data stream name
          

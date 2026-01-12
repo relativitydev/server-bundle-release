@@ -1,5 +1,4 @@
 # Post-Install Verification for Monitoring Agents
-![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Verify Monitoring Agent dashboard exists
 
@@ -14,7 +13,7 @@ Ensure the Monitoring Agent dashboard is present.
 - **Monitoring Agent** is listed.
 
 **Screenshot:**
-![Screenshot: Dashboard exists](../../../resources/post-install-verification-images/monitoring-agents/dashboard-exists.png)
+![Screenshot: Dashboard exists](../../resources/post-install-verification-images/monitoring-agents/dashboard-exists.png)
 
 
 ## Verify Monitoring Agents dashboard tags
@@ -32,7 +31,7 @@ Ensure the correct tags are assigned to the dashboard.
   - **FeatureDomain: Monitoring**
 
 **Screenshot:**
-![Screenshot: Tags](../../../resources/post-install-verification-images/monitoring-agents/dashboard-tags.png)
+![Screenshot: Tags](../../resources/post-install-verification-images/monitoring-agents/dashboard-tags.png)
 
 
 ## Verify dashboard filters populate with data
@@ -50,7 +49,7 @@ Ensure filter dropdowns are populated with available data.
 > Filters may take a few minutes to populate after initial data collection begins.
 
 **Screenshot:**
-![Screenshot: Filter dropdown populated](../../../resources/post-install-verification-images/monitoring-agents/filter-dropdown-populated.png)
+![Screenshot: Filter dropdown populated](../../resources/post-install-verification-images/monitoring-agents/filter-dropdown-populated.png)
 
 
 ## Verify data population by changing filters and time ranges
@@ -67,7 +66,7 @@ Ensure the dashboard data is loading correctly.
 * All panels are populated with data.
 
 **Screenshot:**
-![Screenshot: Populated data](../../../resources/post-install-verification-images/monitoring-agents/data-populated.png)
+![Screenshot: Populated data](../../resources/post-install-verification-images/monitoring-agents/data-populated.png)
 
 
 ## Verify Hosts and Agent versions
@@ -86,7 +85,7 @@ Ensure hosts and agent versions are correctly displayed.
 > Verify that the agent version is consistent across all nodes to ensure uniform monitoring capabilities.
 
 **Screenshot:**
-![Screenshot: Hosts and versions](../../../resources/post-install-verification-images/monitoring-agents/hosts-agent-versions.png)
+![Screenshot: Hosts and versions](../../resources/post-install-verification-images/monitoring-agents/hosts-agent-versions.png)
 
 
 ## Verify data in Discover
@@ -102,5 +101,5 @@ Ensure dashboard data is reflected in Discover.
 - Data is visible in Discover.
 
 **Screenshot:**
-![Screenshot: Discover view 01](../../../resources/post-install-verification-images/monitoring-agents/explore-discover-view.png)
-![Screenshot: Discover view 02](../../../resources/post-install-verification-images/monitoring-agents/discover-view.png)
+![Screenshot: Discover view 01](../../resources/post-install-verification-images/monitoring-agents/explore-discover-view.png)
+![Screenshot: Discover view 02](../../resources/post-install-verification-images/monitoring-agents/discover-view.png)

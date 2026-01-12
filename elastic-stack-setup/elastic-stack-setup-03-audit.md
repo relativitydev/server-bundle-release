@@ -1,7 +1,5 @@
 # Enable Data Grid Audit
 
-![Setup Stage](../resources/enable_environmentwatch.png)
-
 > [!NOTE]
 > This section applies to Datagrid Only.
 
@@ -9,7 +7,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 
 > Please review the following important information before proceeding:
-> * **For Existing Data Grid Audit Customers:** You must be on Elasticsearch 7.17 when initially running this setup. After the setup is complete, you can upgrade to Elasticsearch 8.x or 9.x.
+> * **For Existing Data Grid Audit Customers:** You must be on Elasticsearch 7.17 or later when initially running this setup.
 > * Before upgrading to Elasticsearch 8.x or 9.x, the `ESIndexCreationSetting` may need to be updated. For details, refer to the [Instance setting Details](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
 > * Always verify the minimum required Elasticsearch version in your specific release bundle, as it may differ from the versions mentioned here.
 
@@ -76,8 +74,3 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 
 
 5. Verify Audit Dashboard - navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
-
-
-## Next
-
-[Click here for the next step](install_environment_watch_monitoring_agents.md)
