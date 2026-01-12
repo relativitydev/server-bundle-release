@@ -1,7 +1,5 @@
 # Set up Environment Watch using the Relativity Server CLI
 
-![Setup Stage](../resources/enable_environmentwatch.png)
-
 > [!NOTE]
 > This step is required for Environment Watch.
 
@@ -87,8 +85,7 @@ Refer to the [Troubleshooting Guide](troubleshooting/relativity-server-cli.md) i
 
 ## Next Steps
 
-* [Click here if setting up Data Grid Audit](datagrid_audit_setup.md)
-* [Click here to continue Environment Watch Setup](install_environment_watch_monitoring_agents.md)
+* [Click here to continue Environment Watch Setup](elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)
 
 
 

@@ -1,5 +1,4 @@
 ﻿# Post-Install Verification for Alerts
-![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Verify that the dashboard exists
 

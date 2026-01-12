@@ -1,7 +1,5 @@
 # Enable Data Grid Audit
 
-![Setup Stage](../resources/enable_environmentwatch.png)
-
 > [!NOTE]
 > This section applies to Datagrid Only.
 
@@ -80,4 +78,4 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 
 ## Next
 
-[Click here for the next step](install_environment_watch_monitoring_agents.md)
+[Click here for the next step](./elastic-stack-setup-04-post-install-verification.md)

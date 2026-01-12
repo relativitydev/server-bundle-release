@@ -1,7 +1,5 @@
 # Install Environment Watch Monitoring Agents
 
-![Setup Stage](../resources/stage_environmentwatch.png)
-
 > [!NOTE]
 > This step is required for Environment Watch.
 >The Environment Watch monitoring agent installation should start on the SQL Primary server, verify the installation, and then be applied to other servers in the environment. This ensures proper setup and validation before deploying across all servers.
@@ -60,7 +58,7 @@ After verifying the first installation, repeat these steps for the remaining ser
 
 
 > [!NOTE]
-> For troubleshooting, refer to the installer logs in the `%TEMP%` directory or see the [Monitoring Agent Troubleshooting Guide](troubleshooting/monitoring-agent-and-otel-collector.md).
+> For troubleshooting, refer to the installer logs in the `%TEMP%` directory or see the [Monitoring Agent Troubleshooting Guide](../troubleshooting/monitoring-agent-and-otel-collector.md).
 
 ## Next Step
-[Click here for the next step](environment_watch_install_other_integrations.md)
+[Click here for the next step](./ew-02-relativity-alerts.md)

@@ -1,5 +1,4 @@
 # Post-Install Verification for Monitoring Agents
-![Post-Install Verification Banner](../../../resources/post-install-verification-images/Post-installation-verification.svg)
 
 ## Verify Monitoring Agent dashboard exists
 

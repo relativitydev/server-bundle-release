@@ -1,8 +1,5 @@
 ﻿# Elasticsearch Pre-Installation Overview
 
-![alt text](../resources/stage_environmentwatch01.png)
-
-
 ## Install Elastic Stack Components
 
 The first step of the **Environment Watch** and/or **Data Grid Audit** setup involves installing required third-party software from the **Elastic Stack**. The following Elastic components are used for these two products:
@@ -290,6 +287,6 @@ If you have used Elasticsearch for the optional Data Grid Audit feature on Relat
 
 ### Next step
 
-[Click here to setup an Elastic Stack for a development environment](./elasticsearch_setup_development.md)
+// TODO add link to ElasticSlack installation
 
-[Click here to setup an Elastic Stack for a production environment](./elasticsearch_setup_production.md)
+[Click here to setup Environment Watch](./elastic-stack-setup-02-environment-watch.md)
