@@ -280,7 +280,7 @@ When troubleshooting Slack notification issues, first step is to verify whether 
 **5.1  When Kibana Alert is triggered, and unable to see: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}" log in Kibana Discover**
 
 - Pass the Kibana Alert ID (`{AlertId}`) and Slack Channel ID (`{SlackChannel}`) in Kibana Discover.
-- If message is not found, can mean custom JSON configuration file is not configured correctly. 
+- If the message is not found, it may indicate that the custom JSON configuration file is not set up correctly.
 - Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 
 **5.2 Above message appears in Kibana Discover after fixing common issues, but Slack notifications are still not being sent**
