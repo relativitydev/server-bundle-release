@@ -1,6 +1,6 @@
 # Windows Service Configuration
 
-This section describes how to configure Windows service monitoring using the `environmentWatchConfiguration` JSON object.
+This section describes how to configure Windows service monitoring using the `environmentWatchConfiguration` JSON configuration file.
 
 ---
 

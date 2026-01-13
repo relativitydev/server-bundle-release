@@ -71,7 +71,11 @@ WHERE c.[Name] = 'SQL - Primary'
 > Ensure the `enabled` flag is set to `true` in the custom JSON configuration file for the relevant monitoring section (hosts, instance, or installedProducts).
 ## Certificates
 
-Possible causes for the following alert in the Relativity application include:
+If certificates do not appear in the Kibana dashboard after configuring the custom JSON configuration file, review the following potential causes:
+
+- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
+
+After fixing the common issues, if certificate alert is triggerred in Kibana, review the following potential causes:
 
 ![](/resources/custom-json-troubleshooting-images/certificate-alert.png)
 
@@ -82,14 +86,22 @@ Run the following PowerShell command based on the certificate store location and
 > ```powershell
 > Get-ChildItem Cert:\LocalMachine\My
 
- **2.2 Ensure the host name is correct for monitoring by Host or Installed Product.** 
+ **2.2 Certificate thumbprint configured correctly, but the certificate is expired.**
+
+ - Verify the certificate is expirated or not from certificate dashboard.
+ - If expired, replace it with a valid certificate by running the following PowerShell command: For `LocalMachine` and `My`, use:
+ 
+ > ```powershell
+> Get-ChildItem Cert:\LocalMachine\My
+
+ **2.3 Ensure the host name is correct for monitoring by Host or Installed Product.** 
 
 - Run the following PowerShell command.
 
  > ```powershell
 > hostname
 
-Ensure the `hostName` property in your configuration matches the output. Example:
+- Ensure the `hostName` property in your configuration matches the output. Example:
 
 ```json
 "hosts": [
@@ -118,7 +130,7 @@ Ensure the `hostName` property in your configuration matches the output. Example
         ]
 ```
 
- **2.3 Avoid configuring certificate thumbprints in Monitoring by instance.**
+ **2.4 Avoid configuring certificate thumbprints in Monitoring by instance.**
 
  Example configuration for instance monitoring:
 
@@ -144,9 +156,14 @@ Ensure the `hostName` property in your configuration matches the output. Example
 
 If Windows services do not appear in the Kibana dashboard after configuring the custom JSON configuration file, review the following potential causes:
 
+- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
+
+After fixing the common issues, if Windows services do not appear in the Kibana dashboard, review the following potential causes:
+
 ![](/resources/custom-json-troubleshooting-images/windows-service-dashboard-json.png)
 
 **3.1 Include the Windows services configuration in the custom JSON configuration file.**
+
 - Ensure the custom JSON configuration file contains the correct configuration for the Windows services to monitor.
 - Place the configuration under the `windowsServices` section for the relevant hosts, instance, or installedProducts.
 
@@ -180,7 +197,22 @@ Example:
 
 ## SQL Cluster Instances
 
-**4.1 Ensure all instances/nodes in the SQL cluster are monitored.**
+When monitoring SQL cluster instances using the custom JSON configuration file, ensure the following:
+
+- All nodes in the cluster are properly configured.
+- The Environment Watch Windows service picks up the configuration changes.
+- The log message below appears in Kibana to confirm that SQL cluster instance details are picked up from the custom JSON configuration file.
+
+- Log Message: "Processed SQL instance details"
+- Attribute in Kibana -> Discover: "labels.IsProvidedByCustomConfiguration" set to true under logs-\* data view.
+
+![](/resources/sql-cluster-images/processed-sql-details-true.png)
+
+**4.1 If the log message "Processed SQL instance details" does not appear in Kibana, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover under logs-`*` data view:**
+
+- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
+
+**4.2 Ensure all instances/nodes in the SQL cluster are monitored.**
 
 - Include each node of the SQL cluster in the `hosts` section of the custom JSON configuration file with the correct `hostName`, `clusterVirtualName`, and `instanceName`.
 - Set `sqlServers` -> `enabled` to `true` for each host entry.
@@ -239,33 +271,37 @@ Example:
 > [!NOTE]
 > Always specify SQL cluster configuration within the "**hosts**" section of the custom JSON configuration file.
 
-**4.2 The log "Processed SQL instance details" is missing, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover**
-
-- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
-
 ## Slack Notifications
 
-**5.1 Adjust Slack message frequency.**
+When troubleshooting Slack notification issues, first step is to verify whether the following log message appears in Kibana Discover for the triggered alert.
 
-- Set the `messageIntervalSeconds` property in the Slack handler configuration to a value greater than or equal to 180 seconds to avoid rate limiting by Slack.
-- Restart the Environment Watch Windows Service to apply the changes.
+- Log Message: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}"
 
-**5.2  When Kibana Alert is triggered, unable to see: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}" log in Kibana Discover**
+**5.1  When Kibana Alert is triggered, and unable to see: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}" log in Kibana Discover**
 
-- Pass the Kibana Alert ID (`{AlertId}`) and Slack Channel ID (`{SlackChannel}`).
-- Address issues mentioned in [Common Issues](#common-issues) section 1.1 to 1.4.
+- Pass the Kibana Alert ID (`{AlertId}`) and Slack Channel ID (`{SlackChannel}`) in Kibana Discover.
+- If message is not found, can mean custom JSON configuration file is not configured correctly. 
+- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 
-**5.3 Slack notifications are not being sent even though the alert is triggered in Kibana.**
+**5.2 Above message appears in Kibana Discover after fixing common issues, but Slack notifications are still not being sent**
 
 - Verify that the Slack handler is correctly configured in the `alertNotificationHandlers` section of the custom JSON configuration file.
 - Ensure that the `accessToken`, `channel`, `enabled`, and `messageIntervalSeconds` properties are set correctly.
 - See [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 - It can also occur if the Slack API token is invalid or does not have the necessary permissions to post messages to the specified channel. 
 - Verify the token and permissions.
+- Once the above issues are resolved, Slack notifications should be successfully sent. 
 
 ![](/resources/custom-json-troubleshooting-images/slack-message-in-kibana-discover.png)
 
 ![](/resources/custom-json-troubleshooting-images/triggerred-alert-in-kibana.png)
 
 ![](/resources/custom-json-troubleshooting-images/slack-notification.png)
+
+**If users need to adjust the frequency of Slack messages, follow these steps:**
+
+- Set the `messageIntervalSeconds` property in the Slack handler configuration to a value greater than or equal to 180 seconds to avoid rate limiting by Slack.
+- Restart the Environment Watch Windows Service to apply the changes.
+
+
 
