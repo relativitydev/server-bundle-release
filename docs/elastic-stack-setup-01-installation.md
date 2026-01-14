@@ -60,6 +60,9 @@ If you download a .zip or other file from the internet, Windows may block the fi
     > - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
     > - An enrollment token is generated for Kibana, which is valid for 30 minutes.
 
+    > [!NOTE]
+    > **Multi-Node Clusters:** In a multi-node cluster setup, the enrollment token should be created from the **master node**.
+
 2. Save the token for future reference. Once the enrollment token is displayed, you need to stop Elasticsearch so you can proceed with the next steps. To do this, return to the PowerShell window where Elasticsearch is running and press `Ctrl+C` on your keyboard. This will safely terminate the process. The enrollment token will look similar to:
     ```
     Enrollment token for Kibana:
@@ -283,6 +286,9 @@ These are separate directories because data directories require high-performance
 
 **Purpose:** To create a root CA used for signing and issuing certificates for nodes in the cluster. The CA ensures mutual trust among cluster nodes using certificates signed by the same authority.
 
+> [!NOTE]
+> **Multi-Node Clusters:** Certificates must be generated only from the **master node** server.
+
 **Steps:**
 
 Follow these steps on the **Master node server**:
@@ -313,7 +319,44 @@ Follow these steps on the **Master node server**:
 5. Repeat this command for each node in the cluster.
 6. After creation of certificates, copy each certificate to its corresponding node server in the same directory where the certificate was generated.
 
-**3. Configure Keystore for Secure Password Management**
+**3. Distribute Certificates and Configure elasticsearch.yml**
+
+**Purpose:** To distribute the generated certificates to all nodes and configure transport layer security settings in elasticsearch.yml.
+
+**Steps:**
+
+Follow these steps on **all nodes** in the cluster:
+
+1. Copy the generated certificate files to each respective node:
+    - Copy `elastic-stack-ca.p12` to each node (e.g., `C:\elastic\elasticsearch-x.x.x\config\certs\`)
+    - Copy the node-specific certificate (e.g., `node1.p12`, `node2.p12`) to its corresponding node
+
+2. On each node, open the `elasticsearch.yml` file (e.g., `C:\elastic\elasticsearch-x.x.x\config\elasticsearch.yml`)
+
+3. Add the following transport layer security configuration (update `keystore.path` to match the node-specific certificate):
+
+    **Example for Node 1:**
+    ```yaml
+    xpack.security.transport.ssl.enabled: true
+    xpack.security.transport.ssl.verification_mode: certificate
+    xpack.security.transport.ssl.keystore.path: certs/node1.p12
+    xpack.security.transport.ssl.truststore.path: certs/elastic-stack-ca.p12
+    ```
+
+    **Example for Node 2:**
+    ```yaml
+    xpack.security.transport.ssl.enabled: true
+    xpack.security.transport.ssl.verification_mode: certificate
+    xpack.security.transport.ssl.keystore.path: certs/node2.p12
+    xpack.security.transport.ssl.truststore.path: certs/elastic-stack-ca.p12
+    ```
+
+    > [!IMPORTANT]
+    > Each node must reference its own unique certificate in the `keystore.path`. The `truststore.path` remains the same on all nodes (pointing to the shared CA certificate).
+
+4. Save the changes to `elasticsearch.yml`
+
+**4. Configure Keystore for Secure Password Management**
 
 **Purpose:** To securely store the keystore and truststore passwords, ensuring encrypted access to certificates and private keys.
 
@@ -337,17 +380,21 @@ Follow these steps on **all DataGrid servers** and use the **same password** on 
     **Add New Passwords:**
     
     - Keystore Password:
+
+        Enter the password created during certificate generation when prompted.
+
         ```powershell
         .\elasticsearch-keystore add xpack.security.transport.ssl.keystore.secure_password
         ```
-        Enter the password created during certificate generation when prompted.
-    
+            
     - Truststore Password:
+
+        Enter the same password used during certificate generation when prompted.
+
         ```powershell
         .\elasticsearch-keystore add xpack.security.transport.ssl.truststore.secure_password
         ```
-        Enter the same password used during certificate generation when prompted.
-
+        
 > [!IMPORTANT]
 > The passwords must be identical on all nodes in the cluster for proper inter-node communication.
 
@@ -480,6 +527,10 @@ Restart-Service -Name "elasticsearch-service-x64"
 1. Generate certificates Option A: Use elasticsearch-certutil 
     1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
     2. Create CA:
+        
+        > [!NOTE]
+        > **Multi-Node Clusters:** Run the following commands on the **master node** server.
+        
         1. Run the following command:
 
         ```powershell
@@ -668,6 +719,10 @@ Restart-Service -Name "elasticsearch-service-x64"
 2. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the Configure Elastic button to connect your Kibana instance with Elasticsearch.
     [See where the enrollment token is generated.](#enrollment-token-generation)
 3. If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
+    
+    > [!NOTE]
+    > **Multi-Node Clusters:** Run this command on the **master node** server.
+    
     ```
     .\elasticsearch-create-enrollment-token --scope kibana
     ```
@@ -770,6 +825,10 @@ Restart-Service -Name "elasticsearch-service-x64"
 **Step 3: Enable TLS for APM**
 
 1. Generate certificates Option A: Use elasticsearch-certutil
+    
+    > [!NOTE]
+    > **Multi-Node Clusters:** Run the following commands on the **master node** server.
+    
     1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
     2. Create CA:
         1. Run the following command
@@ -805,7 +864,11 @@ Restart-Service -Name "elasticsearch-service-x64"
         certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt"
         ```
      
-2.  Option B: Use OpenSSL (if certutil missing or for self-signed)  
+2.  Option B: Use OpenSSL (if certutil missing or for self-signed)
+    
+    > [!NOTE]
+    > **Multi-Node Clusters:** Run the following commands on the **master node** server.
+    
     1. Ensure OPENSSL_HOME is set or openssl.exe is available in PATH.
 
     2. Create config `C:\elastic\secrets\apm-openssl.cnf` with SANs and server settings with
