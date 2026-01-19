@@ -8,7 +8,7 @@ If the log message “The Environment Watch shared configuration object is not e
 
 ![](/resources/custom-json-troubleshooting-images/environment-watch-shared-settings-not-empty.png)
 
-**1.1 The custom JSON configuration file is not placed in the correct BCP path.**
+**The custom JSON configuration file is not placed in the correct BCP path.**
 
 Verify that the custom JSON configuration file is located in the correct BCP path.
 
@@ -37,7 +37,7 @@ INNER JOIN [EDDS].[eddsdbo].[ResourceGroup] AS rg WITH(NOLOCK)
 WHERE c.[Name] = 'SQL - Primary'
 ```
 
-**1.2 Activate the BCP path if it is not active.**
+**Activate the BCP path if it is not active.**
 
 - Log in to the Relativity application.
 - Navigate to **Servers**.
@@ -53,7 +53,7 @@ WHERE c.[Name] = 'SQL - Primary'
 - Again, click on 'Edit' and toggle the **Status** to 'Active' and save it.
 - Restart the Environment Watch Windows Service to apply the changes.
 
-**1.3 Check the custom JSON configuration file for syntax errors.**
+**Check the custom JSON configuration file for syntax errors.**
 
 - Download the sample JSON file from the link below and compare it with your custom JSON configuration file to identify any syntax errors.
 
@@ -61,7 +61,7 @@ WHERE c.[Name] = 'SQL - Primary'
 
 - Restart the Environment Watch Windows Service to apply the changes.
 
-**1.4 Update the Environment Watch Windows Service to the latest version.**
+**Update the Environment Watch Windows Service to the latest version.**
 
 - Verify the installed version of the Environment Watch Windows Service.
 - Ensure the service is updated to version 100.0.21 or later, as custom JSON configuration file support was introduced in this version.
@@ -81,14 +81,14 @@ After fixing the common issues, If a certificate alert is triggered in Kibana, r
 
 ![](/resources/custom-json-troubleshooting-images/certificate-alert.png)
 
-**2.1 Configure the certificate thumbprint properly.**
+**Configure the certificate thumbprint properly.**
 
 Run the following PowerShell command based on the certificate store location and name. For `LocalMachine` and `My`, use:
 
 > ```powershell
 > Get-ChildItem Cert:\LocalMachine\My
 
-**2.2 Certificate thumbprint configured correctly, but the certificate is expired.**
+**Certificate thumbprint configured correctly, but the certificate is expired.**
 
 - Verify whether the certificate is expired from the certificate dashboard.
 - If it is expired, replace it with a valid certificate. For `LocalMachine` and `My`, use:
@@ -96,7 +96,7 @@ Run the following PowerShell command based on the certificate store location and
  > ```powershell
 > Get-ChildItem Cert:\LocalMachine\My
 
-**2.3 Ensure the host name is correct for monitoring by Host or Installed Product.** 
+**Ensure the host name is correct for monitoring by Host or Installed Product.** 
 
 - Run the following PowerShell command:
 
@@ -133,7 +133,7 @@ Run the following PowerShell command based on the certificate store location and
 ]
 ```
 
-**2.4 Avoid configuring certificate thumbprints in Monitoring by instance.**
+**Avoid configuring certificate thumbprints in Monitoring by instance.**
 
 Example configuration for instance monitoring:
 
@@ -163,7 +163,7 @@ After fixing the common issues, if Windows services still do not appear in the K
 
 ![](/resources/custom-json-troubleshooting-images/windows-service-dashboard-json.png)
 
-**3.1 Verify the Windows services in the custom JSON configuration file.**
+**Verify the Windows services in the custom JSON configuration file.**
 
 - Ensure the custom JSON configuration file contains the correct configuration for the Windows services to monitor.
 - Place the configuration under the `windowsServices` section for the relevant `hosts`, `instance`, or `installedProducts` entry.
@@ -184,7 +184,7 @@ Example:
 ]
 ```
 
-**3.2 Verify the Windows services are running and exist on the host.**
+**Verify the Windows services are running and exist on the host.**
 
 - Verify the Windows services to be monitored are running and exist on the host machine.
 - Use the Services management console (`services.msc`) or the following PowerShell command:
@@ -192,7 +192,7 @@ Example:
 > ```powershell
 > Get-Service -Name MSSQLSERVER, AnotherService
 
-**3.3 Always include the Windows service name in the custom JSON configuration file.**
+**Always include the Windows service name in the custom JSON configuration file.**
 
 - Ensure that the correct service names (not display names) are used in the `include` section of the custom JSON configuration file.
 
@@ -209,11 +209,11 @@ When monitoring SQL cluster instances using the custom JSON configuration file, 
 
 ![](/resources/sql-cluster-images/processed-sql-details-true.png)
 
-**4.1 If the log message "Processed SQL instance details" does not appear in Kibana, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover under logs-`*` data view:**
+**If the log message "Processed SQL instance details" does not appear in Kibana, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover under logs-`*` data view:**
 
 - Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 
-**4.2 Ensure all instances/nodes in the SQL cluster are monitored.**
+**Ensure all instances/nodes in the SQL cluster are monitored.**
 
 - Include each node of the SQL cluster in the `hosts` section of the custom JSON configuration file with the correct `hostName`, `clusterVirtualName`, and `instanceName`.
 - Set `sqlServers` -> `enabled` to `true` for each host entry.
@@ -278,13 +278,13 @@ When troubleshooting Slack notification issues, the first step is to verify whet
 
 - Log message: `Message successfully sent alert {AlertId} to Slack channel {SlackChannel}`
 
-**5.1  When a Kibana alert is triggered, and unable to see: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}" log in Kibana Discover**
+**When a Kibana alert is triggered, and unable to see: "Message successfully sent alert {AlertId} to Slack channel {SlackChannel}" log in Kibana Discover**
 
 - Pass the Kibana Alert ID (`{AlertId}`) and Slack Channel ID (`{SlackChannel}`) in Kibana Discover.
 - If the message is not found, it may indicate that the custom JSON configuration file is not set up correctly.
 - Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 
-**5.2 The log message appears in Kibana Discover after fixing common issues, but Slack notifications are still not being sent**
+**The log message appears in Kibana Discover after fixing common issues, but Slack notifications are still not being sent**
 
 - Verify that the Slack handler is correctly configured in the `alertNotificationHandlers` section of the custom JSON configuration file.
 - Ensure that the `accessToken`, `channel`, `enabled`, and `messageIntervalSeconds` properties are set correctly.
