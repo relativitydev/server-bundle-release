@@ -351,8 +351,8 @@ Follow these steps on **all nodes** in the cluster:
     xpack.security.transport.ssl.truststore.path: certs/elastic-stack-ca.p12
     ```
 
-    > [!IMPORTANT]
-    > Each node must reference its own unique certificate in the `keystore.path`. The `truststore.path` remains the same on all nodes (pointing to the shared CA certificate).
+> [!IMPORTANT]
+> Each node must reference its own unique certificate in the keystore.path setting. The truststore.path remains the same on all nodes pointing to the shared CA certificate.
 
 4. Save the changes to `elasticsearch.yml`
 
@@ -677,6 +677,8 @@ Restart-Service -Name "elasticsearch-service-x64"
 > [!IMPORTANT]
 > Do NOT paste encryption keys or other secrets into `kibana.yml` in production or commit them to source control. Use the `kibana-keystore` (recommended) or an external secrets manager.
 
+**Option A: Add keys to Kibana keystore (Recommended)**
+
 1. Example (elevated PowerShell) to add the generated keys to the Kibana keystore:
 
     ```powershell
@@ -692,26 +694,22 @@ Restart-Service -Name "elasticsearch-service-x64"
 
     # Or add non-interactively (stdin)
     Write-Output '<randomly-generated-key-1>' | .\kibana-keystore.bat add xpack.encryptedSavedObjects.encryptionKey --stdin
+    Write-Output '<randomly-generated-key-2>' | .\kibana-keystore.bat add xpack.reporting.encryptionKey --stdin
+    Write-Output '<randomly-generated-key-3>' | .\kibana-keystore.bat add xpack.security.encryptionKey --stdin
     ```
 
-2. After adding secrets, restart Kibana so it reads the keystore.
-3. Ensure the keystore file has restrictive ACLs so only the Kibana service account can read it.
+**Option B: Add keys directly to kibana.yml (Development only)**
 
-4. Restart the Kibana service, by opening an elevated PowerShell, navigate to bin folder(C:\Kibana\kibana-x.x.x\bin) and run the following command:
+> [!WARNING]
+> This method is only suitable for development environments. For production, always use the keystore method above.
+
+1. Open `C:\elastic\kibana\config\kibana.yml` and add the following lines with your generated keys:
+
+    ```yaml
+    xpack.encryptedSavedObjects.encryptionKey: "<randomly-generated-key-1>"
+    xpack.reporting.encryptionKey: "<randomly-generated-key-2>"
+    xpack.security.encryptionKey: "<randomly-generated-key-3>"
     ```
-    .\kibana.bat
-    ```
-   
-5. To verify success, check the terminal output for lines indicating that Kibana has started successfully. You can also refer to the screenshots below:
-
-    ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
-
-6. After Kibana has restarted, open a browser and go to `https://<hostname_or_ip>:5601`.
-7. Log in using the `elastic` username and the password you generated earlier. This verifies that Kibana is running and your credentials are working.
-
-    ![Kibana restart](../resources/troubleshooting-images/kibanaloginpageresponse.png)
-
-8. For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
 
 **Step 5: Enroll Kibana**
 
