@@ -80,28 +80,21 @@ File name: `environment-watch-configuration.json`
 
 Environment Watch automatically reads this file and applies the defined monitoring rules to the relevant instances, products, and hosts.
 
-To identify the BCP path for the environment, execute the following SQL query against the '**EDDS**' database:
+To identify the BCP path for the environment, navigate to the "Server" tab in the Relativity front end as below:
 
-```sql
-SELECT 
-[TemporaryDirectory]
-FROM [EDDS].[eddsdbo].[ResourceServer] AS rs WITH(NOLOCK)
-INNER JOIN [EDDS].[eddsdbo].[ExtendedArtifact] AS ea WITH(NOLOCK)
-	ON ea.[ArtifactID] = rs.[ArtifactID]
-INNER JOIN [EDDS].[eddsdbo].[Code] AS c WITH(NOLOCK)
-	ON c.[ArtifactID] = rs.[Type]
-INNER JOIN [EDDS].[eddsdbo].[ResourceGroupSQLServers] AS rgss WITH(NOLOCK)
-	ON rgss.[SQLServerArtifactID] = rs.[ArtifactID]
-INNER JOIN [EDDS].[eddsdbo].[ResourceGroup] AS rg WITH(NOLOCK)
-	ON rg.[ArtifactID] = rgss.[ResourceGroupArtifactID]
-WHERE c.[Name] = 'SQL - Primary'
+![](/resources/custom-json-images/server-tab-bcp-path.png)
+
+Complete path to the custom JSON configuration file will be:
+
+```text
+\\EMTTEST\BCPPath\EnvironmentWatch\environment-watch-configuration.json
 ```
-
-![](/resources/custom-json-images/sql-bcp-path-query.png)
-
- An example of the BCPPath and folder structure is shown below:
+An example of the BCPPath and folder structure is shown below:
 
 ![](/resources/custom-json-images/bcp-path-custom-json-file-name.png)
+
+> [!NOTE]
+> EW supports all BCP share configuration options available in Relativity. Primary SQL is just one of several supported configurations.
 
 ---
 
@@ -122,7 +115,7 @@ For detailed instructions, see [Certificates Configuration](certificates_configu
 
 For detailed instructions, see [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md).
 
-### Kibana Alert Slack Notification Handler
+### Slack Alert Notifications
 
 For detailed instructions, see [Alert Notification Handlers](alert_notification_handlers_configuration.md).
 
@@ -311,3 +304,6 @@ For detailed instructions, see [Alert Notification Handlers](alert_notification_
 	}
 }
 ```
+
+> [!NOTE]
+> otelCollectorYamlFiles is currently not used and not yet supported.

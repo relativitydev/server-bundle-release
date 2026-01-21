@@ -42,9 +42,6 @@ To identify the correct service name:
 
 ## Configure Windows Services
 
-> [!NOTE]
-> Windows service names are case-sensitive and must match exactly as they appear in the Services application.
-
 Windows services can be monitored at the **hosts**", "**instance**", or "**installedProducts**" level.
 For services to monitor, locate "**windowsServices**" under the desired section and update the configuration as below.
 
@@ -54,24 +51,72 @@ For services to monitor, locate "**windowsServices**" under the desired section 
 **Example**
 ```json
 {
-	"windowsServices": {
-		"enabled": true,
-		"include": [
-			"Spooler"
-		]
-	}
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {},
+          "windowsServices": {
+            "enabled": false,
+            "include": []
+          }
+        },
+        "otelCollectorYamlFiles": []
+      },
+      "installedProducts": [
+        {
+          "productName": "Agent",
+          "sources": {
+            "certificates": {
+              "enabled": true,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": true,
+              "include": [
+                "Spooler"
+              ]
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ],
+      "hosts": [
+        {
+          "hostName": "emttest",
+          "sources": {
+            "certificates": {
+              "enabled": false,
+              "include": []
+            },
+            "sqlServers": {
+              "enabled": false,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": true,
+              "include": [
+                "W3SVC"
+              ]
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ]
+    },
+    "alertNotificationHandlers": {}
+  }
 }
 ```
 
+> [!NOTE]
+> If the Windows service specified in the custom JSON configuration file cannot be found on the host, an alert will be triggered indicating that the service is stopped/missing. For troubleshooting guidance, refer [Troubleshooting](#troubleshooting) section.
+
 ### Verification in Kibana
 
-- Navigate to Kibana Discover.
-- Select `logs-*` Data View.
-- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows service fetching values from the custom JSON configuration file successfully.
-
-![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
-
+- Navigate to Kibana Dashboard.
 - Ensure that the Windows services defined in the custom JSON configuration file appear on the Kibana Windows services dashboard. The example below demonstrates how a Windows service specified in the custom JSON configuration file is successfully monitored and displayed on the Windows services dashboard.
+
 ![](/resources/custom-json-images/windows-service-json-example.png)
 
 ![](/resources/custom-json-images/windows-service-dashboard.png)

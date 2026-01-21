@@ -73,31 +73,75 @@ For certificates to monitor, locate "**certificates**" under the desired section
 
 ```json
 {
-	"certificates": {
-		"enabled": true,
-		"include": [
-			{
-				"storeName": "My",
-				"storeLocation": "LocalMachine",
-				"thumbprint": "005501F9BA68A2ED7D9BD515B256F6298AEF7E5A"
-			},
-			{
-				"storeName": "My",
-				"storeLocation": "LocalMachine",
-				"thumbprint": "E62D7D4DD8D054072A7A58A577D500753A586C75"
-			}
-		]
-	}
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {},
+          "windowsServices": {
+            "enabled": false,
+            "include": []
+          }
+        },
+        "otelCollectorYamlFiles": []
+      },
+      "installedProducts": [
+        {
+          "productName": "Agent",
+          "sources": {
+            "certificates": {
+              "enabled": true,
+              "include": [
+                {
+                  "storeName": "My",
+                  "storeLocation": "LocalMachine",
+                  "thumbprint": "005501F9BA68A2ED7D9BD515B256F6298AEF7E5A"
+                },
+                {
+                  "storeName": "My",
+                  "storeLocation": "LocalMachine",
+                  "thumbprint": "E62D7D4DD8D054072A7A58A577D500753A586C75"
+                }
+              ]
+            },
+            "windowsServices": {
+              "enabled": false,
+              "include": []
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ],
+      "hosts": [
+        {
+          "hostName": "emttest",
+          "sources": {
+            "certificates": {
+              "enabled": true,
+              "include": []
+            },
+            "sqlServers": {
+              "enabled": false,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": false,
+              "include": []
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ]
+    },
+    "alertNotificationHandlers": {}
+  }
 }
 ```
+> [!NOTE]
+> If the certificate specified in the custom JSON configuration file cannot be found on the host, an alert will be triggered indicating that the certificate is missing. For troubleshooting guidance, refer [Troubleshooting](#troubleshooting) section.
 
 ### Verification in Kibana
 
-- Navigate to Kibana Discover.
-- Select `logs-*` Data View.
-- Search for "The Environment Watch shared configuration object is not empty" which indicates that the EW Windows Service fetching values from the custom JSON configuration file successfully.
-
-![](/resources/custom-json-images/environment-watch-shared-settings-not-empty-generic.png)
 - Navigate to the Kibana certificates dashboard.
 - Ensure that the certificates defined in the custom JSON configuration file appear on the Kibana certificates dashboard. The example below demonstrates how a certificate specified in the custom JSON configuration file is successfully monitored and displayed on the certificates dashboard.
 

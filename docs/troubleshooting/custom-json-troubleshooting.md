@@ -2,9 +2,17 @@
 
 This document provides guidance for troubleshooting issues related to custom JSON configuration file in Relativity Server environments.
 
+## Prerequisites
+
+- Install the latest Server Bundle to ensure support for custom JSON configuration. The most recent release can be downloaded from the [Server Bundle releases page](https://github.com/relativitydev/server-bundle-release/releases/tag/v2025.12.10.gold).
+
 ## Common Issues
 
-If the log message “The Environment Watch shared configuration object is not empty” does not appear in Kibana, review the following potential causes:
+If the log message "The Environment Watch shared configuration object is not empty" does not appear in Kibana, review the following potential causes:
+
+```text
+"The Environment Watch shared configuration object is not empty"
+```
 
 ![](/resources/custom-json-troubleshooting-images/environment-watch-shared-settings-not-empty.png)
 
@@ -20,22 +28,22 @@ File name: `environment-watch-configuration.json`
 
 Environment Watch automatically reads this file and applies the defined monitoring rules to the relevant instances, products, and hosts.
 
-To identify the BCP path for the environment, execute the following SQL query against the **EDDS** database:
+To identify the BCP path for the environment, navigate to the "Server" tab in the Relativity front end as below:
 
-```sql
-SELECT 
-[TemporaryDirectory]
-FROM [EDDS].[eddsdbo].[ResourceServer] AS rs WITH(NOLOCK)
-INNER JOIN [EDDS].[eddsdbo].[ExtendedArtifact] AS ea WITH(NOLOCK)
-	ON ea.[ArtifactID] = rs.[ArtifactID]
-INNER JOIN [EDDS].[eddsdbo].[Code] AS c WITH(NOLOCK)
-	ON c.[ArtifactID] = rs.[Type]
-INNER JOIN [EDDS].[eddsdbo].[ResourceGroupSQLServers] AS rgss WITH(NOLOCK)
-	ON rgss.[SQLServerArtifactID] = rs.[ArtifactID]
-INNER JOIN [EDDS].[eddsdbo].[ResourceGroup] AS rg WITH(NOLOCK)
-	ON rg.[ArtifactID] = rgss.[ResourceGroupArtifactID]
-WHERE c.[Name] = 'SQL - Primary'
+![](/resources/custom-json-images/server-tab-bcp-path.png)
+
+Complete path to the custom JSON configuration file will be:
+
+```text
+\\EMTTEST\BCPPath\EnvironmentWatch\environment-watch-configuration.json
 ```
+
+An example of the BCPPath and folder structure is shown below:
+
+![](/resources/custom-json-images/bcp-path-custom-json-file-name.png)
+
+> [!NOTE]
+> EW supports all BCP share configuration options available in Relativity. Primary SQL is just one of several supported configurations.
 
 **Activate the BCP path if it is not active.**
 
@@ -64,8 +72,8 @@ WHERE c.[Name] = 'SQL - Primary'
 **Update the Environment Watch Windows Service to the latest version.**
 
 - Verify the installed version of the Environment Watch Windows Service.
-- Ensure the service is updated to version 100.0.21 or later, as custom JSON configuration file support was introduced in this version.
-- If the service is running an earlier version, upgrade it to the latest available version.
+- Ensure the service is updated to latest version, as custom JSON configuration file support was introduced in latest version.
+- If the service is running an earlier version, review the [Prerequisites](#prerequisites) section to confirm you’re on the latest Server Bundle, then upgrade the Environment Watch Windows Service to the latest available version.
 
 > [!NOTE]
 > Ensure the `enabled` flag is set to `true` in the custom JSON configuration file for the relevant monitoring section (`hosts`, `instance`, or `installedProducts`).
@@ -81,14 +89,14 @@ After fixing the common issues, If a certificate alert is triggered in Kibana, r
 
 ![](/resources/custom-json-troubleshooting-images/certificate-alert.png)
 
-**Configure the certificate thumbprint properly.**
+**Certificate is misconfigured.**
 
 Run the following PowerShell command based on the certificate store location and name. For `LocalMachine` and `My`, use:
 
 > ```powershell
 > Get-ChildItem Cert:\LocalMachine\My
 
-**Certificate thumbprint configured correctly, but the certificate is expired.**
+**Certificate configured correctly, but the certificate is expired.**
 
 - Verify whether the certificate is expired from the certificate dashboard.
 - If it is expired, replace it with a valid certificate. For `LocalMachine` and `My`, use:
@@ -106,31 +114,64 @@ Run the following PowerShell command based on the certificate store location and
 - Ensure the `hostName` property in your configuration matches the output. Example:
 
 ```json
-"hosts": [
-  {
-    "hostName": "SQL01",
-    "sources": {
-      "certificates": {
-        "enabled": true,
-        "include": []
-      },
-      "sqlServers": {
-        "enabled": true,
-        "include": [
-          {
-            "clusterVirtualName": "SQLCLUSTER",
-            "instanceName": "SQL_INSTANCE"
+{
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {},
+          "windowsServices": {
+            "enabled": false,
+            "include": []
           }
-        ]
+        },
+        "otelCollectorYamlFiles": []
       },
-      "windowsServices": {
-        "enabled": true,
-        "include": [ "MSSQLSERVER" ]
-      }
+      "installedProducts": [
+        {
+          "productName": "Agent",
+          "sources": {
+            "certificates": {
+              "enabled": true,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": true,
+              "include": []
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ],
+      "hosts": [
+        {
+          "hostName": "SQL01",
+          "sources": {
+            "certificates": {
+              "enabled": true,
+              "include": []
+            },
+            "sqlServers": {
+              "enabled": true,
+              "include": [
+                {
+                  "clusterVirtualName": "SQLCLUSTER",
+                  "instanceName": "SQL_INSTANCE"
+                }
+              ]
+            },
+            "windowsServices": {
+              "enabled": true,
+              "include": []
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ]
     },
-    "otelCollectorYamlFiles": []
+    "alertNotificationHandlers": {}
   }
-]
+}
 ```
 
 **Avoid configuring certificate thumbprints in Monitoring by instance.**
@@ -138,19 +179,62 @@ Run the following PowerShell command based on the certificate store location and
 Example configuration for instance monitoring:
 
 ```json
-"instance": {
-  "sources": {
-    "certificates": {
-      "enabled": false,
-      "include": []
-    },
-    "windowsServices": {
-      "enabled": true,
-      "include": [
-        "WindowsAzureGuestAgent",
-        "mpssvc"
+{
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {
+            "enabled": false,
+            "include": []
+          },
+          "windowsServices": {
+            "enabled": true,
+            "include": [
+              "WindowsAzureGuestAgent",
+              "mpssvc"
+            ]
+          }
+        }
+      },
+      "installedProducts": [
+        {
+          "productName": "Agent",
+          "sources": {
+            "certificates": {
+              "enabled": false,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": false,
+              "include": []
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ],
+      "hosts": [
+        {
+          "hostName": "SQL01",
+          "sources": {
+            "certificates": {
+              "enabled": false,
+              "include": []
+            },
+            "sqlServers": {
+              "enabled": false,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": false,
+              "include": []
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
       ]
-    }
+    },
+    "alertNotificationHandlers": {}
   }
 }
 ```
@@ -171,17 +255,64 @@ After fixing the common issues, if Windows services still do not appear in the K
 Example:
 
 ```json
-"hosts": [
-  {
-    "hostName": "SQL01",
-    "sources": {
-      "windowsServices": {
-        "enabled": true,
-        "include": [ "MSSQLSERVER", "AnotherService" ]
-      }
-    }
+{
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {
+            "enabled": false,
+            "include": []
+          },
+          "windowsServices": {
+            "enabled": true,
+            "include": [
+              "WindowsAzureGuestAgent",
+              "mpssvc"
+            ]
+          }
+        }
+      },
+      "installedProducts": [
+        {
+          "productName": "Agent",
+          "sources": {
+            "certificates": {
+              "enabled": false,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": true,
+              "include": []
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ],
+      "hosts": [
+        {
+          "hostName": "SQL01",
+          "sources": {
+            "certificates": {
+              "enabled": false,
+              "include": []
+            },
+            "sqlServers": {
+              "enabled": false,
+              "include": []
+            },
+            "windowsServices": {
+              "enabled": true,
+              "include": ["MSSQLSERVER", "AnotherService"]
+            }
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ]
+    },
+    "alertNotificationHandlers": {}
   }
-]
+}
 ```
 
 **Verify the Windows services are running and exist on the host.**
@@ -201,17 +332,9 @@ Example:
 When monitoring SQL cluster instances using the custom JSON configuration file, ensure the following:
 
 - All nodes in the cluster are properly configured.
+- Update the correct cluster virtual name and instance name. 
 - The Environment Watch Windows service picks up the configuration changes.
 - The following log message appears in Kibana to confirm that SQL cluster instance details are picked up from the custom JSON configuration file:
-
-- Log Message: "Processed SQL instance details"
-- Attribute in Kibana -> Discover: "labels.IsProvidedByCustomConfiguration" set to true under logs-\* data view.
-
-![](/resources/sql-cluster-images/processed-sql-details-true.png)
-
-**If the log message "Processed SQL instance details" does not appear in Kibana, and the "labels.IsProvidedByCustomConfiguration" attribute is not set to true in Kibana->Discover under logs-`*` data view:**
-
-- Refer to [Common Issues](#common-issues) section 1.1 to 1.4 to troubleshoot why the Environment Watch Windows service is not picking up the custom JSON configuration file changes.
 
 **Ensure all instances/nodes in the SQL cluster are monitored.**
 
@@ -219,54 +342,66 @@ When monitoring SQL cluster instances using the custom JSON configuration file, 
 - Set `sqlServers` -> `enabled` to `true` for each host entry.
 
 ```json
-"hosts": [
-  {
-    "hostName": "SQLNode1",
-    "sources": {
-      "certificates": {
-        "enabled": false,
-        "include": []
+{
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {},
+          "windowsServices": {}
+        },
+        "otelCollectorYamlFiles": []
       },
-      "sqlServers": {
-        "enabled": true,
-        "include": [
-          {
-            "clusterVirtualName": "SQLCLUSTER",
-            "instanceName": "SQL_INSTANCE"
-          }
-        ]
-      },
-      "windowsServices": {
-        "enabled": false,
-        "include": [ "MSSQLSERVER" ]
-      }
+      "installedProducts": [
+        {
+          "productName": "Agent",
+          "sources": {
+            "certificates": {},
+            "windowsServices": {}
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ],
+      "hosts": [
+        {
+          "hostName": "SQLNode1",
+          "sources": {
+            "certificates": {},
+            "sqlServers": {
+              "enabled": true,
+              "include": [
+                {
+                  "clusterVirtualName": "SQLCLUSTER",
+                  "instanceName": "SQL_INSTANCE"
+                }
+              ]
+            },
+            "windowsServices": {}
+          },
+          "otelCollectorYamlFiles": []
+        },
+        {
+          "hostName": "SQLNode2",
+          "sources": {
+            "certificates": {},
+            "sqlServers": {
+              "enabled": true,
+              "include": [
+                {
+                  "clusterVirtualName": "SQLCLUSTER",
+                  "instanceName": "SQL_INSTANCE"
+                }
+              ]
+            },
+            "windowsServices": {}
+          },
+          "otelCollectorYamlFiles": []
+        }
+      ]
     },
-    "otelCollectorYamlFiles": []
-  },
-  {
-    "hostName": "SQLNode2",
-    "sources": {
-      "certificates": {
-        "enabled": false,
-        "include": []
-      },
-      "sqlServers": {
-        "enabled": true,
-        "include": [
-          {
-            "clusterVirtualName": "SQLCLUSTER",
-            "instanceName": "SQL_INSTANCE"
-          }
-        ]
-      },
-      "windowsServices": {
-        "enabled": false,
-        "include": [ "Dhcp" ]
-      }
-    },
-    "otelCollectorYamlFiles": []
+    "alertNotificationHandlers": {}
   }
-]
+}
 ```
 
 > [!NOTE]

@@ -35,7 +35,9 @@
             },
             "windowsServices": {
               "enabled": true,
-              "include": ["Spooler"]
+              "include": [
+                "Spooler"
+              ]
             }
           },
           "otelCollectorYamlFiles": []
@@ -71,7 +73,9 @@
             },
             "windowsServices": {
               "enabled": false,
-              "include": [ "W3SVC" ]
+              "include": [
+                "W3SVC"
+              ]
             }
           },
           "otelCollectorYamlFiles": []
