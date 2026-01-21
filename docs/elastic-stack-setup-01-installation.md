@@ -40,14 +40,14 @@ If you download a .zip or other file from the internet, Windows may block the fi
 > [!NOTE]
 > **Official Documentation:** For detailed installation guidance, see [Elastic's official Elasticsearch installation documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html) and [Windows installation guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/zip-windows.html).
 
-**Step 1: Download Elasticsearch 8.x.x or 9.x.x**
+### Download Elasticsearch 8.x.x or 9.x.x
 
 1. Visit [Elastic's official download page](https://www.elastic.co/downloads/elasticsearch).
 2. Download the 8.x.x or 9.x.x Windows .zip version. Server 2024 supports 8.x.x and Server 2025 supports both 8.x.x and 9.x.x.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 4. Extract the files to `C:\elastic`
 
-**Step 2: Install and Configure Elasticsearch 8.x.x or 9.x.x**
+### Install and Configure Elasticsearch 8.x.x or 9.x.x
 
 1. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-x.x.x\bin`) and run the following command to start Elasticsearch and perform the auto installation steps:     
     ```
@@ -60,8 +60,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
     > - Certificates and keys for TLS are generated for the transport and HTTP layer, and TLS is enabled and configured with these keys and certificates.
     > - An enrollment token is generated for Kibana, which is valid for 30 minutes.
 
-    > [!NOTE]
-    > **Multi-Node Clusters:** In a multi-node cluster setup, the enrollment token should be created from the **master node**.
+    > Multi-Node Clusters: In a multi-node cluster setup, the enrollment token should be created from the master node.
 
 2. Save the token for future reference. Once the enrollment token is displayed, you need to stop Elasticsearch so you can proceed with the next steps. To do this, return to the PowerShell window where Elasticsearch is running and press `Ctrl+C` on your keyboard. This will safely terminate the process. The enrollment token will look similar to:
     ```
@@ -84,7 +83,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
     The service 'elasticsearch-service-x64' has been installed.
     ```
 
-**Step 3: Run Elasticsearch as a Windows Service**
+### Run Elasticsearch as a Windows Service
 
 1. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-x.x.x\bin`) and run the following command to start the Elasticsearch service:
     ```
@@ -97,56 +96,63 @@ If you download a .zip or other file from the internet, Windows may block the fi
     The service 'elasticsearch-service-x64' has been started.
     ```
 
-**Step 4: Enable Stack Monitoring**
+    > **Alternative:** If PowerShell fails to start the service, you can use the Windows Services application:
+    > 1. Open the Start menu, type `services.msc`, and press Enter.
+    > 2. In the Services window, locate `elasticsearch-service-x64`.
+    > 3. Right-click the service and select Start.
+    > 4. Use this method if you encounter permission or environment issues with PowerShell.
 
-> [!NOTE]
-> **Official Documentation:** For more information, see [Elastic's Stack Monitoring documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/monitoring-settings.html).
+### Enable Stack Monitoring
 
 1. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`) and open the **elasticsearch.yml** file.
 2. Add the following line to enable Stack Monitoring:
     ```
     xpack.monitoring.collection.enabled: true
     ```
-3. Save the changes and restart the Elasticsearch service by opening an elevated PowerShell and running the following command:
-    ```
-    Restart-Service -Name "elasticsearch-service-x64"
-    ```
+3. Save the changes and restart the Elasticsearch service using the Windows Services application.
 
-**Step 5: Reset the Elastic (Admin) User Password**
+### Reset the Elastic (Admin) User Password
 
 1. The following command resets the password for the `elastic` user, which is the default superuser (admin) account in Elasticsearch. This account is required for logging in to Kibana and for performing administrative tasks such as managing users, roles, and system settings.
-2. Navigate to ElasticSearch's bin folder(`C:\elastic\elasticsearch-x.x.x\bin`)
+2. Navigate to ElasticSearch's bin folder (`C:\elastic\elasticsearch-x.x.x\bin`).
 3. Open an elevated PowerShell and run the following command:
-    ```
+
+    ```powershell
     .\elasticsearch-reset-password -u elastic
     ```
-4. When prompted, press 'Y' to confirm and reset the password
+
+    > **Alternative:**
+    > You can also use the batch file with interactive and user options:
+    > 
+    >     .\elasticsearch-reset-password.bat -i -u elastic
+    > 
+    > This will prompt you interactively for the user and password reset process.
+
+4. When prompted, press 'Y' to confirm and reset the password.
 
     ![elastic-reset-password](../resources/troubleshooting-images/elastic-reset-password.png)
 
 5. When you run this command, a new password will be generated and displayed in the console output.
 
+
 > [!IMPORTANT]
 > The password is shown only once and cannot be retrieved later. Immediately record and securely store the password according to your organization's credential management and security policies. You will need this password for future authentication to Elasticsearch and Kibana.
 
-**Step 6: Configure Node Roles, Discovery and Network**
+### Configure Node Roles, Discovery and Network
 
 > [!NOTE]
 > **Official Documentation:** For comprehensive configuration details, see [Elasticsearch configuration documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/settings.html), [Node roles](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html), and [Discovery and cluster formation](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery.html).
 
-**Master Nodes** (`node.roles: ["master"]`):
+**Master Nodes** (`node.roles: [master, remote_cluster_client]`):
 - Manage cluster state and coordination
 - Lightweight operations - do NOT store data
 - Resources: 2-4 CPU, 8-16GB RAM
 
-**Data Nodes** (`node.roles: ["data", "ingest"]`):
+**Data Nodes** (`node.roles: [data, ingest]`):
 - Store indices and execute queries
 - Resource-intensive - do NOT participate in master elections
 - Minimum 2 nodes for redundancy
 - Resources: Based on data volume (high CPU, RAM, fast storage)
-
-> [!NOTE]
-> This configuration is NOT recommended for production environments
 
 1. Navigate to the Elasticsearch configuration folder (e.g., `C:\elastic\elasticsearch-x.x.x\config`), open the **elasticsearch.yml** file and configure node roles:
 
@@ -206,7 +212,7 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     </details>
 
-2. For dedicated master nodes use `node.roles: ["master"]` and ensure they do not hold data (`node.data: false`) if desired.
+2. For dedicated master nodes, use `node.roles: ["master"]` and verify that they do not hold data (`node.data: false`) if desired.
 
 > [!IMPORTANT]
  > **Node role separation is the most critical production architectural difference**
@@ -223,10 +229,8 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
 ![Node Configuration](../resources/troubleshooting-images/node_configuration_dev_environment.PNG)
 
-> [!NOTE]
-> This configuration is NOT recommended for production environments
 
-**Step 7: Configure Storage Paths**
+### Configure Storage Paths
 
 > [!IMPORTANT]
 > **Storage location is critical for Elasticsearch performance**
@@ -261,10 +265,14 @@ These are separate directories because data directories require high-performance
 
 2. Save the changes and restart the Elasticsearch service:
 
-
     ```powershell
     Restart-Service -Name "elasticsearch-service-x64"
     ```
+
+    > **Alternative:** To restart using the Windows Services application:
+    > 1. Open the Start menu, type `services.msc`, and press Enter.
+    > 2. In the Services window, locate `elasticsearch-service-x64`.
+    > 3. Right-click the service and select **Restart**.
 
 > [!NOTE]
 > **Development Environment:**
@@ -274,7 +282,7 @@ These are separate directories because data directories require high-performance
 > ```
 > This ensures you can log in to Kibana and perform admin tasks after moving the data directory.
 
-**Step 8: Configure Transport Layer Security for Multi-Node Clusters (Production)**
+### Configure Transport Layer Security for Multi-Node Clusters (Production)
 
 > [!IMPORTANT]
 > **This step is only required for multi-node production clusters.** If you are running a single-node development environment, you can skip this section and proceed to Step 7. Transport layer security ensures secure communication between nodes in a cluster using certificates signed by a Certificate Authority (CA).
@@ -282,14 +290,12 @@ These are separate directories because data directories require high-performance
 > [!NOTE]
 > **Official Documentation:** For comprehensive transport layer security details, see [Elastic's security configuration documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-basic-setup.html) and [TLS encryption documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-basic-setup-https.html).
 
-**1. Create a Certificate Authority (CA)**
+#### Create a Certificate Authority (CA)
 
 **Purpose:** To create a root CA used for signing and issuing certificates for nodes in the cluster. The CA ensures mutual trust among cluster nodes using certificates signed by the same authority.
 
 > [!NOTE]
 > **Multi-Node Clusters:** Certificates must be generated only from the **master node** server.
-
-**Steps:**
 
 Follow these steps on the **Master node server**:
 
@@ -301,11 +307,9 @@ Follow these steps on the **Master node server**:
     ```
 4. This will generate an `elastic-stack-ca.p12` file, which acts as the root CA certificate.
 
-**2. Generate Certificates and Private Keys for Nodes**
+#### Generate Certificates and Private Keys for Nodes
 
 **Purpose:** To create unique certificates and private keys for each node in the cluster. These certificates, signed by the CA, enable secure inter-node communication.
-
-**Steps:**
 
 1. Open PowerShell in admin mode.
 2. Navigate to the bin folder of Elasticsearch (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
@@ -314,16 +318,14 @@ Follow these steps on the **Master node server**:
     .\elasticsearch-certutil cert --ca elastic-stack-ca.p12
     ```
 4. During execution:
-    - **Certificate Name:** Provide a unique name for each node (e.g., `node1`, `node2`).
+    - **Certificate Name:** Provide a unique name for each node (e.g., `node1.p12`, `node2.p12`).
     - **Password:** Set a password (use the same password for all nodes).
 5. Repeat this command for each node in the cluster.
 6. After creation of certificates, copy each certificate to its corresponding node server in the same directory where the certificate was generated.
 
-**3. Distribute Certificates and Configure elasticsearch.yml**
+#### Distribute Certificates and Configure elasticsearch.yml
 
 **Purpose:** To distribute the generated certificates to all nodes and configure transport layer security settings in elasticsearch.yml.
-
-**Steps:**
 
 Follow these steps on **all nodes** in the cluster:
 
@@ -351,18 +353,19 @@ Follow these steps on **all nodes** in the cluster:
     xpack.security.transport.ssl.truststore.path: certs/elastic-stack-ca.p12
     ```
 
+> [!NOTE]
+> You may use the same file for both `keystore.path` and `truststore.path` **if** your `.p12` file contains both the node's private key and the CA certificate. This is common if you generated the node certificate with the CA included. If not, set `truststore.path` to the CA file (e.g., `certs/elastic-stack-ca.p12`).
+
 > [!IMPORTANT]
 > Each node must reference its own unique certificate in the keystore.path setting. The truststore.path remains the same on all nodes pointing to the shared CA certificate.
 
 4. Save the changes to `elasticsearch.yml`
 
-**4. Configure Keystore for Secure Password Management**
+#### Configure Keystore for Secure Password Management
 
 **Purpose:** To securely store the keystore and truststore passwords, ensuring encrypted access to certificates and private keys.
 
-**Steps:**
-
-Follow these steps on **all DataGrid servers** and use the **same password** on all servers:
+Follow these steps on **all servers** and use the **same password** on all servers:
 
 1. For each node, execute the following commands in the bin folder of Elasticsearch:
 
@@ -398,7 +401,7 @@ Follow these steps on **all DataGrid servers** and use the **same password** on 
 > [!IMPORTANT]
 > The passwords must be identical on all nodes in the cluster for proper inter-node communication.
 
-**Step 9: Install the 'mapper-size' plugin**
+### Install the 'mapper-size' plugin
 
 1. Open an elevated PowerShell, navigate to ElasticSearch's bin folder(C:\elastic\elasticsearch-x.x.x\bin) and run the following command to install the 'mapper-size' plugin:
     ```
@@ -417,7 +420,7 @@ Follow these steps on **all DataGrid servers** and use the **same password** on 
     WARNING: Waiting for service 'Elasticsearch x.x.x (elasticsearch-service-x64) (elasticsearch-service-x64)' to stop...
     ```
 
-**Step 10: Configure JVM Heap Settings (Production)**
+### Configure JVM Heap Settings (Production)
 
 > [!NOTE]
 > **Official Documentation:** For detailed JVM configuration guidance, see [Elastic's JVM heap size documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/advanced-configuration.html#set-jvm-heap-size).
@@ -454,9 +457,7 @@ Proper JVM heap configuration is critical for Elasticsearch performance and stab
 Restart-Service -Name "elasticsearch-service-x64"
 ```
 
-
-
-**Step 11: Verify Elasticsearch Server**
+### Verify Elasticsearch Server
 
 1. To verify Elasticsearch is running, open an elevated Command Prompt and run the following command (replace `<username>`, `<password>`, and `<hostname_or_ip>` with your actual values). In production do NOT use `-k`; validate the server certificate using the CA certificate you installed:
     ```
@@ -466,6 +467,13 @@ Restart-Service -Name "elasticsearch-service-x64"
     ```powershell
     Invoke-RestMethod -Uri https://<hostname_or_ip>:9200 -Credential (Get-Credential)
     ```
+    > **Alternative:**
+    > You can also open the following URL in your browser to verify Elasticsearch is running:
+    >
+    >     https://<hostname_or_ip>:9200
+    >
+    > You should see a JSON response with cluster information if the server is accessible and running.
+
 2. The response should show basic cluster information in JSON format if the server is running and accessible.
 
     <details>
@@ -498,13 +506,13 @@ Restart-Service -Name "elasticsearch-service-x64"
 > [!NOTE]
 > **Official Documentation:** For detailed Kibana installation guidance, see [Elastic's official Kibana installation documentation](https://www.elastic.co/guide/en/kibana/current/install.html) and [Windows installation guide](https://www.elastic.co/guide/en/kibana/current/windows.html).
 
-**Step 1: Download Kibana 8.x.x or 9.x.x**
+### Download Kibana 8.x.x or 9.x.x
 
 1. Download and extract the 8.x.x or 9.x.x Windows .zip version of Kibana from [Elastic's official Kibana download page](https://www.elastic.co/downloads/kibana) to stable paths.
-2. Ensure the Elasticsearch service is installed and running before Kibana setup.
+2. Verify that the Elasticsearch service is installed and running before Kibana setup.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 
-**Step 2: Start Kibana from the command line**
+### Start Kibana from the command line
 
 1. Navigate to Kibana's `bin` folder (e.g., `C:\elastic\kibana\bin`).
 2. Open an elevated PowerShell and run the following command:
@@ -519,57 +527,57 @@ Restart-Service -Name "elasticsearch-service-x64"
     Go to https://localhost:5601/?code=xyz to get started
     ```
 
-**Step 3: Enable TLS for Kibana**
+### Enable TLS for Kibana
 
 > [!NOTE]
 > **Official Documentation:** For comprehensive TLS configuration details, see [Elastic's Kibana security documentation](https://www.elastic.co/guide/en/kibana/current/using-kibana-with-security.html) and [Encrypt communications in Kibana](https://www.elastic.co/guide/en/kibana/current/security-settings-kb.html).
 
-1. Generate certificates Option A: Use elasticsearch-certutil 
-    1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
-    2. Create CA:
-        
-        > [!NOTE]
-        > **Multi-Node Clusters:** Run the following commands on the **master node** server.
-        
-        1. Run the following command:
+**Option A: Use elasticsearch-certutil**
 
-        ```powershell
-        .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\kibana_ca.zip"
-        ```
-        2. Extract zip contents into `C:\elastic\secrets\ca\ (you should have ca.crt and ca.key)`. 
+> [!NOTE]
+> For multi-node clusters, run the following commands on the master node server.
 
-    3. Create server cert for Kibana:
-        1. Build SAN args with your DNS and IPs, e.g., `--dns <fqdn> --dns <shortname> --ip <server-ip>`
+1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
 
-        2. Run the following command:
-        ```powershell
-        .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\ca\ca.crt" --ca-key "C:\elastic\secrets\ca\ca.key" --name kibana [SAN args] --out "C:\elastic\secrets\kibana_server.zip"
-        ```
-        3. Extract zip contents into `C:\elastic\secrets\kibana\` to get kibana.crt and kibana.key
+2. Create CA by running the following command:
 
-    4. Copy to Kibana certs:
-        1. Create `C:\elastic\kibana\config\certs`
+    ```powershell
+    .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\kibana_ca.zip"
+    ```
 
-        2. Copy:
-            ```
-            C:\elastic\secrets\kibana\kibana.crt -> C:\elastic\kibana\config\certs\kibana.crt
-            C:\elastic\secrets\kibana\kibana.key -> C:\elastic\kibana\config\certs\kibana.key
-        	C:\elastic\secrets\ca\ca.crt -> C:\elastic\kibana\config\certs\ca.crt
-            ```
+3. Extract zip contents into `C:\elastic\secrets\ca\` (you should have ca.crt and ca.key).
 
-    5.  Install CA to Windows trust (Local Machine Root) so browsers trust Kibana:
-        1. Run mmc, add Certificates snap-in for Computer account, import ca.crt under Trusted Root Certification Authorities.
+4. Create server cert for Kibana. Build SAN args with your DNS and IPs, e.g., `--dns <fqdn> --dns <shortname> --ip <server-ip>`, then run:
 
-        2. Run the following command using an elevated Powershell
-        ```powershell
-        certutil.exe -addstore -f Root "C:\elastic\kibana\config\certs\ca.crt"
-        ```
+    ```powershell
+    .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\ca\ca.crt" --ca-key "C:\elastic\secrets\ca\ca.key" --name kibana [SAN args] --out "C:\elastic\secrets\kibana_server.zip"
+    ```
+
+5. Extract zip contents into `C:\elastic\secrets\kibana\` to get kibana.crt and kibana.key.
+
+    ![](../resources/troubleshooting-images/kibana_certs.png)
+
+6. Create `C:\elastic\kibana\config\certs` directory.
+
+7. Copy the certificate files:
+
+    ```
+    C:\elastic\secrets\kibana\kibana.crt -> C:\elastic\kibana\config\certs\kibana.crt
+    C:\elastic\secrets\kibana\kibana.key -> C:\elastic\kibana\config\certs\kibana.key
+    C:\elastic\secrets\ca\ca.crt -> C:\elastic\kibana\config\certs\ca.crt
+    ```
+
+8. Install CA to Windows trust (Local Machine Root) so browsers trust Kibana. Run mmc, add Certificates snap-in for Computer account, import ca.crt under Trusted Root Certification Authorities, or run:
+
+    ```powershell
+    certutil.exe -addstore -f Root "C:\elastic\kibana\config\certs\ca.crt"
+    ```
      
-2.  Use OpenSSL (if certutil missing or for self-signed)  
-    1. Ensure OPENSSL_HOME is set or openssl.exe is available in PATH.
+**Option B: Use OpenSSL (if certutil missing or for self-signed)**
 
-    2. Create config `C:\elastic\secrets\kibana-openssl.cnf` with SANs and server settings with
-    [req], [dn], [v3_req], [alt_names] including DNS.N and IP.N entries aligned to your hostnames and IPs.
+1. Verify that OPENSSL_HOME is set or openssl.exe is available in PATH.
+
+2. Create config `C:\elastic\secrets\kibana-openssl.cnf` with SANs and server settings with [req], [dn], [v3_req], [alt_names] including DNS.N and IP.N entries aligned to your hostnames and IPs.
     
     <details>
     <summary>Sample kibana-openssl.cnf</summary>
@@ -604,36 +612,37 @@ Restart-Service -Name "elasticsearch-service-x64"
 
     Include only stable addresses as part of IP SANs.
 
-    3. Generate local CA:
-        1. Navigate to the path where openssl is installed. Open an elevated PowerShell from the navigated path.
-        2. Run the following command:
+3. Navigate to the path where openssl is installed. Open an elevated PowerShell from the navigated path.
 
-        ```
-        .\openssl.exe req -x509 -newkey rsa:4096 -sha256 -days 730 -nodes -subj "/CN=Relativity Kibana Local CA" -keyout "C:\elastic\secrets\kibana-ca.key" -out "C:\elastic\secrets\kibana-ca.crt" -config "C:\elastic\secrets\kibana-openssl.cnf"
-        ```
+4. Generate local CA by running:
 
-        3. Generate CSR and server key using the following command
+    ```
+    .\openssl.exe req -x509 -newkey rsa:4096 -sha256 -days 730 -nodes -subj "/CN=Relativity Kibana Local CA" -keyout "C:\elastic\secrets\kibana-ca.key" -out "C:\elastic\secrets\kibana-ca.crt" -config "C:\elastic\secrets\kibana-openssl.cnf"
+    ```
 
-        ```
-        \openssl.exe req -new -newkey rsa:4096 -nodes -keyout "C:\elastic\kibana\config\certs\kibana.key" -out "C:\elastic\secrets\kibana.csr" -config "C:\elastic\secrets\kibana-openssl.cnf"
-        ```
+5. Generate CSR and server key:
 
-        4. Sign server certificate using the following command
+    ```
+    \openssl.exe req -new -newkey rsa:4096 -nodes -keyout "C:\elastic\kibana\config\certs\kibana.key" -out "C:\elastic\secrets\kibana.csr" -config "C:\elastic\secrets\kibana-openssl.cnf"
+    ```
 
-        ```
-        \openssl.exe x509 -req -in "C:\elastic\secrets\kibana.csr" -CA "C:\elastic\secrets\kibana-ca.crt" -CAkey "C:\elastic\secrets\kibana-ca.key" -CAcreateserial -CAserial "C:\elastic\secrets\kibana-ca.srl" -out "C:\elastic\kibana\config\certs\kibana.crt" -days 730 -sha256 -extensions v3_req -extfile "C:\elastic\secrets\kibana-openssl.cnf"
-        ```
+6. Sign server certificate:
 
-        5. Copy CA:
+    ```
+    \openssl.exe x509 -req -in "C:\elastic\secrets\kibana.csr" -CA "C:\elastic\secrets\kibana-ca.crt" -CAkey "C:\elastic\secrets\kibana-ca.key" -CAcreateserial -CAserial "C:\elastic\secrets\kibana-ca.srl" -out "C:\elastic\kibana\config\certs\kibana.crt" -days 730 -sha256 -extensions v3_req -extfile "C:\elastic\secrets\kibana-openssl.cnf"
+    ```
 
-        ```
-        "C:\elastic\secrets\kibana-ca.crt" -> "C:\elastic\kibana\config\certs\ca.crt"
-        ```
+7. Copy CA:
 
-        7. Install CA to Windows trust using the steps mentioned in the above approach.  
+    ```
+    "C:\elastic\secrets\kibana-ca.crt" -> "C:\elastic\kibana\config\certs\ca.crt"
+    ```
 
-3.  Configure kibana.yml
-    1. Open C:\elastic\kibana\config\kibana.yml and set:
+8. Install CA to Windows trust using the steps mentioned in Option A above.
+
+**Configure kibana.yml**
+
+1. Open C:\elastic\kibana\config\kibana.yml and set:
 
         ```
         server.host: "<bind address>" (use the specific interface or hostname; avoid 0.0.0.0 unless required)
@@ -646,7 +655,30 @@ Restart-Service -Name "elasticsearch-service-x64"
      
         Use forward slashes in paths (C:/...) to avoid YAML escape issues.     
 
-**Step 4: Generate Kibana encryption keys**
+### Enroll Kibana
+
+1. In your terminal, click the generated link to open Kibana in your browser.
+2. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the Configure Elastic button to connect your Kibana instance with Elasticsearch.
+    [See where the enrollment token is generated.](#enrollment-token-generation)
+3. If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
+
+> [!NOTE]
+> **Multi-Node Clusters:** Run this command on the **master node** server.
+
+```
+.\elasticsearch-create-enrollment-token --scope kibana
+```
+<details>
+<summary>Sample output</summary>
+eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
+</details>
+
+4. Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
+5. See the screenshot below for the login screen:
+
+    ![](../resources/elasticsearch_setup_003.png)
+
+### Generate Kibana encryption keys
 
 > [!NOTE]
 > **Official Documentation:** For encryption key details, see [Elastic's Kibana encryption keys documentation](https://www.elastic.co/guide/en/kibana/current/xpack-security-secure-saved-objects.html).
@@ -698,6 +730,21 @@ Restart-Service -Name "elasticsearch-service-x64"
     Write-Output '<randomly-generated-key-3>' | .\kibana-keystore.bat add xpack.security.encryptionKey --stdin
     ```
 
+2. After adding secrets, restart Kibana so it reads the keystore.
+3. Verify that the keystore file has restrictive ACLs so only the Kibana service account can read it.
+
+4. Restart the Kibana service, by opening an elevated PowerShell, navigate to bin folder(C:\Kibana\kibana-x.x.x\bin) and run the following command:
+    ```
+    .\kibana.bat
+    ```
+   
+5. To verify success, check the terminal output for lines indicating that Kibana has started successfully. You can also refer to the screenshots below:
+    ![Kibana restart verification](../resources/troubleshooting-images/kibanarerun.png)
+6. After Kibana has restarted, open a browser and go to `https://<hostname_or_ip>:5601`.
+7. Log in using the `elastic` username and the password you generated earlier. This verifies that Kibana is running and your credentials are working.
+    ![Kibana restart](../resources/troubleshooting-images/kibanaloginpageresponse.png)
+8. For more details, refer to the official documentation: https://www.elastic.co/guide/en/kibana/current/kibana-encryption-keys.html
+
 **Option B: Add keys directly to kibana.yml (Development only)**
 
 > [!WARNING]
@@ -711,38 +758,18 @@ Restart-Service -Name "elasticsearch-service-x64"
     xpack.security.encryptionKey: "<randomly-generated-key-3>"
     ```
 
-**Step 5: Enroll Kibana**
+### Create Kibana Windows Service
 
-1. In your terminal, click the generated link to open Kibana in your browser.
-2. In your browser, paste the enrollment token that was generated in the terminal when you started Elasticsearch, then click the Configure Elastic button to connect your Kibana instance with Elasticsearch.
-    [See where the enrollment token is generated.](#enrollment-token-generation)
-3. If the token has expired, generate a new one by running the following command in the Elasticsearch's bin folder (e.g., `C:\elastic\elasticsearch-x.x.x\bin`).
-    
-    > [!NOTE]
-    > **Multi-Node Clusters:** Run this command on the **master node** server.
-    
-    ```
-    .\elasticsearch-create-enrollment-token --scope kibana
-    ```
-    <details>
-    <summary>Sample output</summary>
-    eyJ2ZXIiOiI4LjE0LjAiLCJhZHIiOlsiMTAuMC4yLjI6OTIwMCJdLCJmZ3IiOiI4ZGE1MWZkYTExZmM1ZDAwNDBhZWZlNTJlNmRiYzQ5ZTM2NmYxYTkyOGIwY2NiMzExOGY0MWFjZTczODNkZDliIiwia2V5IjoiOGFfc1BKZ0Jra09qNlh6dngycS06bG5sWkNEMnpSbFNiZjZZclpRSHF6dyJ9
-    </details>
-4. Log in to Kibana as the `elastic` user with the password that was generated when you started Elasticsearch.
-5. See the screenshot below for the login screen:
-
-    ![](../resources/elasticsearch_setup_003.png)
-
-**Step 6: Create Kibana Windows Service**
-
-> [!IMPORTANT]    
-    > **Running Kibana as a Windows Service is Optional**
-    > Environment Watch does NOT require Kibana to run as a Windows service, nor does it require the use of NSSM. NSSM is a commonly used open-source tool to help run applications as services, but it is not mandatory. You can run Kibana manually from the code line if you prefer, and this will work perfectly for development and most production scenarios.
-    > Only use NSSM if you want Kibana to start automatically as a service on Windows. If you do not wish to use NSSM, simply run `kibana.bat` manually.
-    > 
-    > ```
-    > C:\Kibana\kibana-x.x.x\bin\kibana.bat
-    > ```
+> [!IMPORTANT]
+> **Running Kibana as a Windows Service is Optional**
+>
+> Environment Watch does NOT require Kibana to run as a Windows service, nor does it require the use of NSSM. NSSM is a commonly used open-source tool to help run applications as services, but it is not mandatory. You can run Kibana manually from the code line if you prefer, and this will work perfectly for development and most production scenarios.
+>
+> Only use NSSM if you want Kibana to start automatically as a service on Windows. If you do not wish to use NSSM, simply run `kibana.bat` manually:
+>
+> ```
+> C:\Kibana\kibana-x.x.x\bin\kibana.bat
+> ```
     
 1. Download the latest NSSM executable from https://nssm.cc/download and place it in the C drive (e.g., `C:\nssm-2.24`).
 
@@ -785,7 +812,7 @@ Restart-Service -Name "elasticsearch-service-x64"
         C:\nssm-2.24\win64\nssm.exe set kibana ObjectName "DOMAIN\svc_kibana"
         C:\nssm-2.24\win64\nssm.exe set kibana Password "<service-account-password>"
         ```
-    - Ensure the service account has read access to Kibana installation, config, certs and the kibana keystore, and only those privileges required.
+    - Verify that the service account has read access to Kibana installation, config, certs and the kibana keystore, and only those privileges required.
 
 9. Go to the Services app in Windows, search for the `kibana` service, right click, and start the service.
 
@@ -796,7 +823,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 > [!NOTE]
 > It is normal for Kibana to take 1-5 minutes to become accessible after starting the service, depending on your system. Please be patient while it starts up.
 
-**Step 7: Verify Kibana Server**
+### Verify Kibana Server
 
 1. Open a browser and go to `https://<hostname_or_ip>:5601`.
 2. Log in using the `elastic` credential to verify successful access.
@@ -809,68 +836,66 @@ Restart-Service -Name "elasticsearch-service-x64"
 > [!NOTE]
 > **Official Documentation:** For detailed APM Server installation and configuration guidance, see [Elastic's official APM Server documentation](https://www.elastic.co/guide/en/apm/guide/current/apm-quick-start.html) and [APM Server configuration](https://www.elastic.co/guide/en/apm/guide/current/configuring-howto-apm-server.html).
 
-**Step 1: Prerequisites to setup APM Server**
+### Prerequisites to setup APM Server
 
 - Elastic and Kibana should be configured and services should be up and running.
 
-**Step 2: Download APM Server 8.x.x or 9.x.x**
+### Download APM Server 8.x.x or 9.x.x
 
 1. Visit [Elastic's APM Server page](https://www.elastic.co/downloads/apm).
 2. Download and extract the 8.x.x or 9.x.x Windows .zip file.
 3. Before extracting, see [How to Unblock Downloaded Files](#how-to-unblock-downloaded-files).
 4. Extract the files to `C:\`.
 
-**Step 3: Enable TLS for APM**
+### Enable TLS for APM
 
-1. Generate certificates Option A: Use elasticsearch-certutil
-    
-    > [!NOTE]
-    > **Multi-Node Clusters:** Run the following commands on the **master node** server.
-    
-    1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
-    2. Create CA:
-        1. Run the following command
-        ```powershell
-        .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\apm_ca.zip"
-        ```
-        2. Extract apm_ca.zip contents into `C:\elastic\secrets\apm-ca\ (you should have ca.crt and ca.key inside the folder)`. 
+**Option A: Use elasticsearch-certutil**
 
-    3. Create server cert for APM:
-        1. Build SAN args with your DNS and IPs, e.g., `--dns <fqdn> --dns <shortname> --ip <server-ip>`
+> [!NOTE]
+> **Multi-Node Clusters:** Run the following commands on the **master node** server.
 
-        2. Run the following command:
-        ```powershell
-        .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\apm-ca\ca.crt" --ca-key "C:\elastic\secrets\apm-ca\ca.key" --name apm-server [SAN args] --out "C:\elastic\secrets\apm-server.zip"
-        ```
-        3. Extract zip contents into `C:\elastic\secrets\apm-server\` to get APM.crt and APM.key (you should have C:/elastic/secrets/apm-server/apm-server.crt and apm-server.key)
+1. Open an elevated PowerShell in C:\elastic\elasticsearch\bin.
 
-    4. Copy to APM certs:
-        1. Create `C:\elastic\apm-server\config\certs`
+2. Create CA by running:
 
-        2. Copy:
-            ```
-            C:/elastic/secrets/apm-server/apm-server.crt -> C:/elastic/apm-server/config/certs/apm-server.crt
-            C:/elastic/secrets/apm-server/apm-server.key -> C:/elastic/apm-server/config/certs/apm-server.key
-            C:/elastic/secrets/apm-ca/ca.crt -> C:/elastic/apm-server/config/certs/ca.crt
-            ```
+    ```powershell
+    .\elasticsearch-certutil.bat ca --silent --pem --out "C:\elastic\secrets\apm_ca.zip"
+    ```
 
-    5.  Install CA to Windows trust (Local Machine Root) so browsers trust APM:
-        1. Run mmc, add Certificates snap-in for Computer account, import ca.crt under Trusted Root Certification Authorities.
+3. Extract apm_ca.zip contents into `C:\elastic\secrets\apm-ca\` (you should have ca.crt and ca.key inside the folder).
 
-        2. Run the following command using an elevated Powershell
-        ```powershell
-        certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt"
-        ```
+4. Create server cert for APM. Build SAN args with your DNS and IPs, e.g., `--dns <fqdn> --dns <shortname> --ip <server-ip>`, then run:
+
+    ```powershell
+    .\elasticsearch-certutil.bat cert --silent --pem --ca-cert "C:\elastic\secrets\apm-ca\ca.crt" --ca-key "C:\elastic\secrets\apm-ca\ca.key" --name apm-server [SAN args] --out "C:\elastic\secrets\apm-server.zip"
+    ```
+
+5. Extract zip contents into `C:\elastic\secrets\apm-server\` to get APM.crt and APM.key (you should have C:/elastic/secrets/apm-server/apm-server.crt and apm-server.key).
+
+6. Create `C:\elastic\apm-server\config\certs` directory.
+
+7. Copy the certificate files:
+
+    ```
+    C:/elastic/secrets/apm-server/apm-server.crt -> C:/elastic/apm-server/config/certs/apm-server.crt
+    C:/elastic/secrets/apm-server/apm-server.key -> C:/elastic/apm-server/config/certs/apm-server.key
+    C:/elastic/secrets/apm-ca/ca.crt -> C:/elastic/apm-server/config/certs/ca.crt
+    ```
+
+8. Install CA to Windows trust (Local Machine Root) so browsers trust APM. Run mmc, add Certificates snap-in for Computer account, import ca.crt under Trusted Root Certification Authorities, or run:
+
+    ```powershell
+    certutil.exe -addstore -f Root "C:\elastic\apm-server\config\certs\ca.crt"
+    ```
      
-2.  Option B: Use OpenSSL (if certutil missing or for self-signed)
-    
-    > [!NOTE]
-    > **Multi-Node Clusters:** Run the following commands on the **master node** server.
-    
-    1. Ensure OPENSSL_HOME is set or openssl.exe is available in PATH.
+**Option B: Use OpenSSL (if certutil missing or for self-signed)**
 
-    2. Create config `C:\elastic\secrets\apm-openssl.cnf` with SANs and server settings with
-    [req], [dn], [v3_req], [alt_names] including DNS.N and IP.N entries aligned to your hostnames and IPs.
+> [!NOTE]
+> **Multi-Node Clusters:** Run the following commands on the **master node** server.
+
+1. Verify that OPENSSL_HOME is set or openssl.exe is available in PATH.
+
+2. Create config `C:\elastic\secrets\apm-openssl.cnf` with SANs and server settings with [req], [dn], [v3_req], [alt_names] including DNS.N and IP.N entries aligned to your hostnames and IPs.
     
     <details>
     <summary>Sample apm-openssl.cnf</summary>
@@ -905,91 +930,113 @@ Restart-Service -Name "elasticsearch-service-x64"
 
     Include only stable addresses as part of IP SANs.
 
-    3. Generate local CA:
-        1. Navigate to the path where openssl is installed. Open an elevated PowerShell from the navigated path.
-        2. Run the following command:
+3. Navigate to the path where openssl is installed. Open an elevated PowerShell from the navigated path.
 
-        ```
-        .\openssl.exe req -x509 -newkey rsa:4096 -sha256 -days 730 -nodes -subj "/CN=Relativity APM Local CA" -keyout "C:\elastic\secrets\apm-ca.key" -out "C:\elastic\secrets\apm-ca.crt" -config "C:\elastic\secrets\apm-openssl.cnf"
-        ```
+4. Generate local CA by running:
 
-        3. Generate CSR and server key using the following command
+    ```
+    .\openssl.exe req -x509 -newkey rsa:4096 -sha256 -days 730 -nodes -subj "/CN=Relativity APM Local CA" -keyout "C:\elastic\secrets\apm-ca.key" -out "C:\elastic\secrets\apm-ca.crt" -config "C:\elastic\secrets\apm-openssl.cnf"
+    ```
 
-        ```
-        \openssl.exe req -new -newkey rsa:4096 -nodes -keyout "C:\elastic\apm-server\config\certs\apm-server.key" -out "C:\elastic\secrets\apm-server.csr" -config "C:\elastic\secrets\apm-openssl.cnf"
-        ```
+5. Generate CSR and server key:
 
-        4. Sign server certificate using the following command
+    ```
+    \openssl.exe req -new -newkey rsa:4096 -nodes -keyout "C:\elastic\apm-server\config\certs\apm-server.key" -out "C:\elastic\secrets\apm-server.csr" -config "C:\elastic\secrets\apm-openssl.cnf"
+    ```
 
-        ```
-        \openssl.exe x509 -req -in "C:\elastic\secrets\apm-server.csr" -CA "C:\elastic\secrets\apm-ca.crt" -CAkey "C:\elastic\secrets\apm-ca.key" -CAcreateserial -CAserial "C:\elastic\secrets\apm-ca.srl" -out "C:\elastic\apm-server\config\certs\apm-server.crt" -days 730 -sha256 -extensions v3_req -extfile "C:\elastic\secrets\apm-openssl.cnf"
-        ```
+6. Sign server certificate:
 
-        5. Copy CA:
+    ```
+    \openssl.exe x509 -req -in "C:\elastic\secrets\apm-server.csr" -CA "C:\elastic\secrets\apm-ca.crt" -CAkey "C:\elastic\secrets\apm-ca.key" -CAcreateserial -CAserial "C:\elastic\secrets\apm-ca.srl" -out "C:\elastic\apm-server\config\certs\apm-server.crt" -days 730 -sha256 -extensions v3_req -extfile "C:\elastic\secrets\apm-openssl.cnf"
+    ```
 
-        ```
-        "C:\elastic\secrets\apm-ca.crt" -> "C:\elastic\apm-server\config\certs\ca.crt"
-        ```
+7. Copy CA:
 
-        7. Install CA to Windows trust using the steps mentioned in the above approach.  
+    ```
+    "C:\elastic\secrets\apm-ca.crt" -> "C:\elastic\apm-server\config\certs\ca.crt"
+    ```
+
+8. Install CA to Windows trust using the steps mentioned in Option A above.  
 
 
-**Step 4: Configure APM Server (`C:\apm-server-x.x.x-windows-x86_64\apm-server.yml`)**
 
-1. An API key is required for configuring both APM and Beats. To create an API key:
-    1. Log in to Kibana (`https://<hostname_or_ip>:5601`) using the `elastic` credential.
-    2. Use the global search at the top of Kibana to search for "API keys" and select it from the results.
-    3. Click the **Create API key** button.
-    4. Enter a name for your API key (for example, specify if it will be used for Beats or APM).
-    5. Click the **Privileges** dropdown and select **Beats** to automatically apply the recommended permissions for Beats.
-    6. Click **Create API key**.
-    7. Copy and securely save the generated `id` and `api_key` values.
-     
-    ![create-apikey](../resources/troubleshooting-images/create-apikey.png)
+### Configure APM Server
 
-    > Copy and save `id` and `api_key` values immediately and store them securely according to your organization's credential management and security policies.
+1. **Create an API Key for APM/Beats:**
+        - Log in to Kibana at `https://<hostname_or_ip>:5601` using the `elastic` user.
+        - Use the global search to find **API keys** and select it.
+        - Click **Create API key**.
+        - Enter a descriptive name (e.g., "APM Server Key").
+        - Click **Create API key**.
+        - In **Privileges**, select **Beats** for recommended permissions.
+        - Copy and securely store the generated `id` and `api_key` values.
 
-2. Navigate to the apm-server folder (e.g., `C:\apm-server-x.x.x-windows-x86_64`) and open the `apm-server.yml` file using a text editor.
+![create-apikey](../resources/troubleshooting-images/create-apikey.png)
 
-3. Update the `apm-server.yml` file to match the following sample configuration. Replace the placeholder values (`<apm-server-hostname_or_ip>`, `<elasticsearch-hostname_or_ip>`, `<id>`, `<api-key>`) as needed for your environment. Below is a sample configuration (production-safe TLS settings shown):
+> [!IMPORTANT]
+> Copy and save `id` and `api_key` values immediately. Store them securely according to your organization's credential management and security policies.
+
+2. **Edit the APM Server Configuration:**
+        - Navigate to the APM Server folder (e.g., `C:\apm-server-x.x.x-windows-x86_64`).
+        - Open `apm-server.yml` in a text editor.
+        - Update the file to match the following sample configuration. Replace all placeholder values (`your-elasticsearch-host`, `your_api_id:your_api_key`, etc.) with your actual environment values.
 
     ```yaml
     apm-server:
-      host: "<apm-server-hostname-or-ip>:8200"
-      ssl.enabled: true
-      ssl.certificate: C:/elastic/apm-server/config/certs/apm-server.crt
-      ssl.key: C:/elastic/apm-server/config/certs/apm-server.key
+        host: "0.0.0.0:8200"
+        ssl.enabled: true
+        ssl.certificate: "C:/path/to/apm-server.crt"
+        ssl.key: "C:/path/to/apm-server.key"
+
     output.elasticsearch:
-      hosts: ["https://<elasticsearch-hostname-or-ip>:9200"]
-      api_key: "api_key: "<id>:<api-key>""
-      ssl.enabled: true
-      ssl.certificate_authorities: ["C:/elastic/elasticsearch/config/certs/http_ca.crt"]
-      ssl.verification_mode: full
+        hosts:
+            - "https://your-elasticsearch-host:9200"
+        api_key: "your_api_id:your_api_key"
+        ssl.enabled: true
+        ssl.certificate_authorities:
+            - "C:/path/to/http_ca.crt"
+        ssl.verification_mode: full
+
     setup.kibana:
-      host: "https://<kibana-hostname-or-ip>:5601"
-      ssl.enabled: true
-      ssl.certificate_authorities: ["C:/elastic/kibana/config/certs/ca.crt"]  # <-- if Kibana cert was signed by http_ca, point to http_ca.crt
+        host: "https://your-kibana-host:5601"
+        ssl.enabled: true
+        ssl.certificate_authorities:
+            - "C:/path/to/http_ca.crt"
+
     instrumentation:
-      enabled: true
-      environment: production
-    ```
-    
-**Step 5: Execute required scripts to install APM Server as a Windows service**
+        enabled: true
+        environment: production
 
-1. Open an elevated PowerShell.
-2. Run the following code to install the APM Server as a Windows service:
-    
+    # Enable Stack Monitoring for APM Server
+    monitoring:
+        enabled: true
+        elasticsearch:
+            hosts:
+                - "https://your-elasticsearch-host:9200"
+            api_key: "your_api_id:your_api_key"
+            ssl:
+                certificate_authorities:
+                    - "C:/path/to/http_ca.crt"
     ```
-    PowerShell.exe -ExecutionPolicy UnRestricted -File C:\apm-server-8.17.3-windows-x86_64\install-service.ps1
-    ```
-    The output will look similar to:
 
+### Install APM Server as a Windows Service
+
+1. Open an elevated PowerShell window.
+2. Change directory to the APM Server installation folder (e.g., `cd C:\apm-server-8.17.3-windows-x86_64`).
+3. Run the following command to install the service:
+
+    ```powershell
+    PowerShell.exe -ExecutionPolicy UnRestricted -File .\install-service.ps1
     ```
+
+    The output should look similar to:
+
+    ```powershell
     Installing service apm-server...
     Service "apm-server" has been successfully installed.
     ```
      
-**Step 6: Start the APM Server service**
+### Start the APM Server service
 
 1. Open an elevated PowerShell and run the following command:
     
@@ -997,11 +1044,19 @@ Restart-Service -Name "elasticsearch-service-x64"
     Start-Service -Name "apm-server"
     ```
 
+> [!TIP]
+> **If PowerShell fails to start the APM Server service:**
+> You can use the Windows Services application as an alternative:
+> 1. Open the **Start** menu, type `services.msc`, and press **Enter**.
+> 2. In the Services window, locate **apm-server**.
+> 3. Right-click the service and select **Start**.
+> 4. Use this method if you encounter permission or environment issues with PowerShell.
+
 2. Once the instrumentation is set, you can verify it in Kibana as shown below:
 
     ![verify-instrumentation](../resources/troubleshooting-images/verify-instrumentation.png)
 
-**Step 7: Verify APM Server**
+### Verify APM Server
 
 1. Open an elevated Command Prompt and run the following command (replace `<hostname_or_ip>` with your actual value). Validate TLS using the CA certificate rather than using `-k`:
 
@@ -1024,9 +1079,13 @@ Restart-Service -Name "elasticsearch-service-x64"
     }
     ```
 
+> [!TIP]
+> **Alternative to browser:**
+> If you cannot access the APM Server endpoint in a browser, use the above `curl` or `Invoke-RestMethod` commands in your terminal to verify the server status. This is useful for headless environments or remote servers.
+
 ## Additional Setup and Verification
 
-**Step 1: Add Elastic APM Integration Package**
+### Add Elastic APM Integration Package
 
 > [!IMPORTANT]
 > Skipping the steps below will cause the Relativity Server CLI to fail.
@@ -1051,7 +1110,7 @@ Restart-Service -Name "elasticsearch-service-x64"
 
     ![alt text](../resources/troubleshooting-images/agent-button.png)
 
-**Step 2: Verify APM Data View**
+### Verify APM Data View
    
 Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
@@ -1062,7 +1121,7 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 
     ![dataview](../resources/troubleshooting-images/dataview.png)
 
-**Step 3: Verify Cluster Health**
+### Verify Cluster Health
     
 1. Open an elevated Command Prompt and run the following command (replace `username`, `password`, and `hostname_or_ip` with your actual values). In production validate TLS with the CA certificate:
 
@@ -1071,8 +1130,17 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
     ```
     Or with PowerShell:
     ```powershell
+
     Invoke-RestMethod -Uri https://<hostname_or_ip>:9200/_cat/health -Credential (Get-Credential)
     ```
+
+> [!TIP]
+> **Alternative:**
+> You can also check cluster health in your browser by navigating to:
+>
+>     https://<hostname_or_ip>:9200/_cat/health
+>
+> You will be prompted for credentials. The response will be a single line showing the cluster health status (e.g., green, yellow, or red).
 
 2. You should see a response similar to:
 
@@ -1090,7 +1158,7 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
 > [!IMPORTANT]
 > For multi-node clusters, `path.repo` must be configured in `elasticsearch.yml` on **every node**. All nodes must have access to the same backup location (shared network drive or replicated storage).
 
-**Step 1: Create and Configure Backup Directory**
+### Create and Configure Backup Directory
 
 1. Create a backup directory on a dedicated high-performance volume (not C:):
 
@@ -1124,7 +1192,7 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
    Restart-Service -Name "elasticsearch-service-x64"
    ```
 
-**Step 2: Register Snapshot Repository**
+### Register Snapshot Repository
 
 1. Open Kibana and navigate to **Dev Tools** (Management > Dev Tools).
 
@@ -1141,10 +1209,10 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
    }
    ```
 
-   > [!NOTE]
-   > Ensure the `location` path matches the `path.repo` value configured in `elasticsearch.yml`.
+> [!NOTE]
+> Verify that the `location` path matches the `path.repo` value configured in `elasticsearch.yml`.
 
-**Step 3: Verify Snapshot Repository**
+### Verify Snapshot Repository
 
 1. In Kibana **Dev Tools**, run the following command:
 
@@ -1164,7 +1232,7 @@ Before proceeding with EW CLI, check if the APM Data View is created in Kibana:
    }
    ```
 
-**Step 4: Test Snapshot and Restore Operations**
+### Test Snapshot and Restore Operations
 
 1. Create a test snapshot:
 
