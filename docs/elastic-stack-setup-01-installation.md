@@ -644,14 +644,14 @@ Restart-Service -Name "elasticsearch-service-x64"
 
 1. Open C:\elastic\kibana\config\kibana.yml and set:
 
-        ```
-        server.host: "<bind address>" (use the specific interface or hostname; avoid 0.0.0.0 unless required)
-        server.port: 5601
-        server.publicBaseUrl: "https://your.kibana.host:5601"
-        server.ssl.enabled: true
-        server.ssl.certificate: "C:/elastic/kibana/config/certs/kibana.crt"
-        server.ssl.key: "C:/elastic/kibana/config/certs/kibana.key"
-        ```
+    ```json
+    server.host: "<bind address>" (use the specific interface or hostname; avoid 0.0.0.0 unless required)
+    server.port: 5601
+    server.publicBaseUrl: "https://your.kibana.host:5601"
+    server.ssl.enabled: true
+    server.ssl.certificate: "C:/elastic/kibana/config/certs/kibana.crt"
+    server.ssl.key: "C:/elastic/kibana/config/certs/kibana.key"
+    ```
      
         Use forward slashes in paths (C:/...) to avoid YAML escape issues.     
 
