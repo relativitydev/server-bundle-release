@@ -156,7 +156,7 @@ This section covers common errors encountered during the Environment Watch and D
 **Symptoms:**
 - The CLI reports an error during the toggle stage due to an incorrect Invariant server name in the instance settings.
 
-    ![Invariant Server Instance Settings Error](../../resources/image.png)
+    ![Invariant Server Instance Settings Error](../../resources/ew-cli-toggle-stage-error.png)
 
 **Troubleshooting Steps:**
 1. **Verify Invariant Server Name Instance Settings in Relativity:**
