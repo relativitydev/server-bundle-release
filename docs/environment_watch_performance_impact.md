@@ -12,10 +12,10 @@ Environment Watch has been rigorously tested to ensure minimal impact on your Re
 
 | Workload Category | Impact | Summary |
 |------------------|--------|------------------|
-| **Processing** | TBD |TBD|
+| **Processing** | **~8% faster on average** | Processing operations demonstrated improved performance across all stages. Inventory was 3-8% faster, Discovery results matched closely (within a minute variance), and Publish operations were up to 19% faster, resulting in an approximate 8% overall improvement. |
 | **Review (Conversion)** | **+5% faster** | Review operations saw a modest 5% improvement, providing slightly faster document conversion without any workflow disruption. |
 | **Imaging & Production** | **Stable (±4%)** | Imaging and production performance remained stable, with changes within a ±4% range, resulting in no meaningful impact to customer workflows. |
-| **Data Transfer** | TBD| TBD |
+| **Data Transfer** | **~5-6% faster on average** | Data transfer operations showed performance improvements with Imports demonstrating ~10% faster performance on average, while Exports (excluding RIP Images Export) were ~1% faster on average, resulting in an approximate 5-6% overall improvement. |
 
 ## Test Environment Specifications
 
@@ -38,5 +38,6 @@ Environment Watch has been rigorously tested to ensure minimal impact on your Re
 
 This comprehensive test environment, ranging from Small to Medium scale, mirrors typical production Relativity deployments and ensures our performance results are representative of real-world customer workloads.
 
-## Conclusion(TBD)
+## Conclusion
 
+Environment Watch has demonstrated minimal to positive impact on Relativity workloads across comprehensive testing. Most operations showed performance improvements, with Processing, Data Transfer, and Review all performing faster. Imaging and Production workflows remained stable. These results confirm that Environment Watch provides valuable observability and monitoring capabilities without compromising your Relativity system's performance.
