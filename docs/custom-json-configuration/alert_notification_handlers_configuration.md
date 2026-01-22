@@ -9,10 +9,10 @@ The Slack handler allows alerts to be sent to a designated Slack channel. Config
 | Property                   | Description                                                                 |
 |----------------------------|-----------------------------------------------------------------------------|
 | `accessToken`              | The Slack API token used for authentication.                                |
-| `acknowledgeAlertEnabled`  | Boolean flag to enable/disable alert acknowledgment in Slack. This is by dafault false since implementation is not done.               |
+| `acknowledgeAlertEnabled`  | Boolean flag to enable/disable alert acknowledgment in Slack. This is by default false since implementation is not done.               |
 | `channel`                  | The Slack channel ID where alerts will be posted.                         |
 | `enabled`                  | Boolean flag to enable/disable Slack notifications.                         |
-| `messageIntervalSeconds`   | Interval (in seconds) between alert messages sent to Slack. It should be more than or equal to  min slack interval in seconds i.e. 180               |
+| `messageIntervalSeconds`   | Interval (in seconds) between alert messages sent to Slack. It should be greater than or equal to the minimum Slack interval in seconds, i.e., 180.               |
 
 ---
 
@@ -23,7 +23,7 @@ The Slack handler allows alerts to be sent to a designated Slack channel. Config
 Before configuring Slack notifications:
 
 - Create a Slack App in your Slack workspace.
-- Generate an "Bot User OAuth Token" with the required permissions to post messages to channels.
+- Generate a "Bot User OAuth Token" with the required permissions to post messages to channels.
 
 #### Configuration
 

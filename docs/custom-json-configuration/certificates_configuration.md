@@ -13,7 +13,7 @@ Monitors the presence and validity of specified certificates in Windows certific
 |-----------------------------------|--------------------------------------------------|
 | Relativity Secret Store           | Certificate for Relativity Secret Store.         |
 
-**Properties In Custom JSON Configuration File Related to Certificates**
+**Properties in Custom JSON Configuration File Related to Certificates**
 
 | Property       | Type     | Description                                                      |
 |----------------|----------|------------------------------------------------------------------|
@@ -53,23 +53,23 @@ The `storeName` field specifies the name of the Windows certificate store where 
 
 **Get Certificate Thumbprint**
 
-Depending on the Store Location and Store Name, run the following command on the host. For `LocalMachine` and `My`, use:
+Depending on the store location and store name, run the following command on the host. For `LocalMachine` and `My`, use:
 
 ```powershell
 Get-ChildItem Cert:\LocalMachine\My
 ```
 
-The command returns a list of certificates including their `thumbprint` and `subject`. Copy the `thumbprint` value for the certificate to be monitored and use it in the custom JSON configuration file. Adjust the command as needed based on the selected `storeName` and `storeLocation`.
+The command returns a list of certificates including their `thumbprint` and `subject`. Copy the `thumbprint` value for the certificate to be monitored and use it in the custom JSON configuration file. Modify the command as necessary based on the selected `storeName` and `storeLocation`.
 
 ## Configure Certificates
 
-Certificates can be monitored at the "**hosts**", "**instance**", or "**installedProducts**" level.
-For certificates to monitor, locate "**certificates**" under the desired section and update the configuration as below.
+Certificates can be monitored in the "**hosts**", "**instance**", or "**installedProducts**" level.
+For certificates to monitor, locate "**certificates**" under the desired section and update the configuration as shown below.
 
 - `enabled` : Set to `true` to enable certificate monitoring.
 - When configuring the `include` section, specify the `storeName`, `storeLocation`, and `thumbprint` for each certificate to be monitored.
 
-**Example 1**: Monitoring two certificates from the LocalMachine\My store. The certificate is identified by its Thumbprint, which can be retrieved using the following PowerShell command: `Get-ChildItem Cert:\LocalMachine\My`
+**Example 1**: Monitoring two certificates from the LocalMachine\My store. The certificate is identified by its thumbprint, which can be retrieved using the following PowerShell command: `Get-ChildItem Cert:\LocalMachine\My`
 
 ```json
 {

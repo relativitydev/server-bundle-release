@@ -8,7 +8,7 @@ The shared configuration file enables users to control what is monitored—such 
 
 ## Configuration Structure
 
-The configuration is organized in a hierarchical JSON format, with top-level sections and nested objects for each monitored entity. It will be saved in the BCPPath and the inside folder EnvironmentWatch. The name of the file will be environment-watch-configuration.json. Below is an example structure and explanation:
+The configuration is organized in a hierarchical JSON format, with top-level sections and nested objects for each monitored entity. It will be saved in the BCPPath and inside the EnvironmentWatch folder. The name of the file will be environment-watch-configuration.json. Below is an example structure and explanation:
 
 ---
 
@@ -80,7 +80,7 @@ File name: `environment-watch-configuration.json`
 
 Environment Watch automatically reads this file and applies the defined monitoring rules to the relevant instances, products, and hosts.
 
-To identify the BCP path for the environment, navigate to the "Server" tab in the Relativity front end as below:
+To identify the BCP path for the environment, navigate to the "Server" tab in the Relativity front end as shown below:
 
 ![](/resources/custom-json-images/server-tab-bcp-path.png)
 

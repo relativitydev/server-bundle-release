@@ -8,7 +8,10 @@ SQL Primary and SQL Distributed instances are auto-configured by default; howeve
 
 ## Configure SQL Cluster Instances
 
-Specify SQL cluster configuration in the custom JSON configuration file within the "**hosts**" section.
+Define SQL cluster configuration in the custom JSON configuration file within the "**hosts**" section.
+
+> [!NOTE]
+> SQL cluster configuration in the custom JSON configuration file must always be specified within the "**hosts**" section.
 
 Locate the "**hosts**" section in the JSON file and add an entry for each SQL cluster instance to be monitored. Include each **hostName** with the following details:
 
@@ -17,12 +20,9 @@ For an environment containing a SQL cluster with two nodes (`SQLNode1` and `SQLN
 Update the "hosts" section for each node by:
 - Specify the correct host name
 - Set the `enabled` flag to `true`
-- Include the appropriate SQL cluster name (`clusterVirtualName`)
+- Specify the appropriate SQL cluster name (`clusterVirtualName`)
 - Provide the corresponding instance name (`instanceName`)
 - Below configuration sets both `SQLNode1` and `SQLNode2` cluster nodes to monitor the SQL cluster instance `SQL_INSTANCE` with the virtual cluster name `SQLCLUSTER`.
-
-> [!NOTE]
-> SQL cluster configuration in the custom JSON configuration file must always be specified within the "**hosts**" section.
 
 ```json
 {
@@ -96,7 +96,7 @@ Update the "hosts" section for each node by:
 
 After updating the `environment-watch-configuration.json` file with the SQL cluster configuration, save the changes, restart the Environment Watch Windows service to apply the changes. This ensures that the service reads the updated configuration and begins monitoring the specified SQL cluster instances.
 
-Once the windows service has been restarted, verify the SQL instances are being monitored correctly by checking the Environment Watch discover, dashboards for relevant metrics, alerts.
+Once the Windows service has been restarted, verify the SQL instances are being monitored correctly by checking the Environment Watch discover, dashboards for relevant metrics, alerts.
 
 ### Verification in Kibana
 

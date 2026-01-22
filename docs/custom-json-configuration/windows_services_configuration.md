@@ -6,9 +6,9 @@ This section describes how to configure Windows service monitoring using the `en
 
 ## Overview
 
-This configuration monitors the status of specified Windows services to ensure they are running as expected. Some Windows services are monitored by default based on the installed products, even if they are not explicitly configured in the custom JSON configuration file. 
+This configuration monitors the status of specified Windows services to ensure they are running as expected. Some Windows services are monitored by default depending on the installed products, even if they are not explicitly configured in the custom JSON configuration file. 
 
-The table below lists the service names that are monitored by default based on the installed products.
+The table below lists the service names that are monitored by default depending on the installed products.
 
 ### Default Services
 
@@ -42,8 +42,8 @@ To identify the correct service name:
 
 ## Configure Windows Services
 
-Windows services can be monitored at the **hosts**", "**instance**", or "**installedProducts**" level.
-For services to monitor, locate "**windowsServices**" under the desired section and update the configuration as below.
+Windows services can be monitored at the "**hosts**", "**instance**", or "**installedProducts**" level.
+For services to monitor, locate "**windowsServices**" under the desired section and update the configuration as shown below.
 
 - `enabled` : Set to `true` to enable Windows services monitoring.
 - `include` : List the service names to monitor.
@@ -110,7 +110,7 @@ For services to monitor, locate "**windowsServices**" under the desired section 
 ```
 
 > [!NOTE]
-> If the Windows service specified in the custom JSON configuration file cannot be found on the host, an alert will be triggered indicating that the service is stopped/missing. For troubleshooting guidance, refer [Troubleshooting](#troubleshooting) section.
+> If the Windows service specified in the custom JSON configuration file cannot be found on the host, an alert will be triggered indicating that the service is stopped or missing. For troubleshooting guidance, refer [Troubleshooting](#troubleshooting) section.
 
 ### Verification in Kibana
 
