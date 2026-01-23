@@ -6,10 +6,9 @@
 
 These guidelines define retention policies for logs, metrics, and traces collected in Elasticsearch and viewed through Kibana. Proper retention management is critical for:
 
-- **Storage Optimization** – Prevents excessive disk usage by automatically removing outdated data
+- **Storage Optimization & Cost Control** – Prevents excessive disk usage and reduces infrastructure costs by automatically removing outdated data
 - **Performance Maintenance** – Keeps query response times fast by limiting the volume of searchable data
 - **Compliance Adherence** – Ensures data is retained long enough to meet regulatory and audit requirements
-- **Cost Control** – Reduces infrastructure costs associated with storage expansion
 
 ### Impact of Improper Retention
 
@@ -51,6 +50,10 @@ GiB/Day (Daily Storage) = Docs/Day × 380 / 1024³
 
 Total Storage with Retention = GiB/Day × R (where R is retention in days)
 ```
+
+**Understanding Daily Storage Calculation:**
+
+The formula multiplies your daily document count by 380 (average bytes per document) and divides by 1024³ to convert bytes to Gibibytes. This gives you the storage space consumed per day. For example, 16.4 million documents × 380 bytes ÷ 1,073,741,824 bytes/GiB ≈ 5.8 GiB/day.
 
 **Example Calculation:**
 
@@ -499,8 +502,16 @@ PUT _index_template/traces-apm@template
 
 ### Step 3: Delete Existing Data Streams (Setup Time Only)
 
-> [!WARNING]
-> This step should only be performed once during initial setup. Deleting data streams will permanently remove all data and indices under those data streams.
+> [!CAUTION]
+> **⚠️ DESTRUCTIVE OPERATION – PERMANENT DATA LOSS**
+> 
+> This step will **permanently delete all data and indices** in the specified data streams. There is no recovery. Only proceed if:
+> - You are in a **development or non-production environment**, OR
+> - You have **backed up all critical data** from these data streams, OR
+> - You are performing **initial setup** and no production data exists yet
+> 
+> **Do NOT run this on production systems with active data.**
+
 
 After updating the index templates with new retention policies, you need to delete the existing data streams so they can be recreated with the updated retention settings. Use the Dev Tools Console in Kibana to run the following commands:
 
