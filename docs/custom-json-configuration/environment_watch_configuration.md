@@ -100,7 +100,7 @@ An example of the BCPPath and folder structure is shown below:
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, and SQL cluster instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, and SQL server instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 ### Windows Services
@@ -111,9 +111,9 @@ For detailed instructions, see [Windows Service Configuration](windows_services_
 
 For detailed instructions, see [Certificates Configuration](certificates_configuration.md).
 
-### SQL Cluster Instances
+### SQL Server Instances
 
-For detailed instructions, see [SQL Cluster Configuration](../sql-cluster-configuration/sql-cluster-configuration.md).
+For detailed instructions, see [SQL Server Configuration](../sql-server-configuration/sql-server-configuration.md).
 
 ### Slack Alert Notifications
 

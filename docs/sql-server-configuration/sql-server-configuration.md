@@ -6,23 +6,23 @@ SQL Primary and SQL Distributed instances are auto-configured by default; howeve
 
 ---
 
-## Configure SQL Cluster Instances
+## Configure SQL Server Instances
 
-Define SQL cluster configuration in the custom JSON configuration file within the "**hosts**" section.
+Define SQL server configuration in the custom JSON configuration file within the "**hosts**" section.
 
 > [!NOTE]
-> SQL cluster configuration in the custom JSON configuration file must always be specified within the "**hosts**" section.
+> SQL server configuration in the custom JSON configuration file must always be specified within the "**hosts**" section.
 
-Locate the "**hosts**" section in the JSON file and add an entry for each SQL cluster instance to be monitored. Include each **hostName** with the following details:
+Locate the "**hosts**" section in the JSON file and add an entry for each SQL server instance to be monitored. Include each **hostName** with the following details:
 
 **Example:**
-For an environment containing a SQL cluster with two nodes (`SQLNode1` and `SQLNode2`):  
+For an environment containing a SQL server with two nodes (`SQLNode1` and `SQLNode2`):  
 Update the "hosts" section for each node by:
 - Specify the correct host name
 - Set the `enabled` flag to `true`
-- Specify the appropriate SQL cluster name (`clusterVirtualName`)
+- Specify the appropriate SQL server/cluster name (`clusterVirtualName`)
 - Provide the corresponding instance name (`instanceName`)
-- Below configuration sets both `SQLNode1` and `SQLNode2` cluster nodes to monitor the SQL cluster instance `SQL_INSTANCE` with the virtual cluster name `SQLCLUSTER`.
+- Below configuration sets both `SQLNode1` and `SQLNode2` nodes to monitor the SQL server instance `SQL_INSTANCE` with the virtual cluster name `SQLCLUSTER`.
 
 ```json
 {
@@ -88,13 +88,13 @@ Update the "hosts" section for each node by:
 ```
 
 > [!NOTE]
-> If the environment does not use SQL cluster instances, then update `enabled` flag to false for all SQL cluster instances in the "**hosts**" section to disable SQL monitoring.
+> If the environment does not use SQL server instances, then update `enabled` flag to false for all SQL server instances in the "**hosts**" section to disable SQL monitoring.
 
 ---
 
 ### Restart the Environment Watch Windows Service
 
-After updating the `environment-watch-configuration.json` file with the SQL cluster configuration, save the changes, restart the Environment Watch Windows service to apply the changes. This ensures that the service reads the updated configuration and begins monitoring the specified SQL cluster instances.
+After updating the `environment-watch-configuration.json` file with the SQL server configuration, save the changes, restart the Environment Watch Windows service to apply the changes. This ensures that the service reads the updated configuration and begins monitoring the specified SQL server instances.
 
 Once the Windows service has been restarted, verify the SQL instances are being monitored correctly by checking the Environment Watch discover, dashboards for relevant metrics, alerts.
 
@@ -108,4 +108,4 @@ Once the Windows service has been restarted, verify the SQL instances are being 
 ---
 
 ## Troubleshooting
-Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON SQL cluster configuration issues.
+Refer to the [Troubleshooting Guide](../troubleshooting/custom-json-troubleshooting.md) to resolve any custom JSON SQL server configuration issues.

@@ -327,18 +327,18 @@ Example:
 
 - Ensure that the correct service names (not display names) are used in the `include` section of the custom JSON configuration file.
 
-## SQL Cluster Instances
+## SQL Server Instances
 
-When monitoring SQL cluster instances using the custom JSON configuration file, ensure the following:
+When monitoring SQL server instances using the custom JSON configuration file, ensure the following:
 
-- All nodes in the cluster are properly configured.
-- Update the correct cluster virtual name and instance name. 
+- All nodes of the SQL environment are properly configured.
+- Update the correct SQL server virtual name and instance name. 
 - The Environment Watch Windows service picks up the configuration changes.
-- The following log message appears in Kibana to confirm that SQL cluster instance details are picked up from the custom JSON configuration file:
+- The following log message appears in Kibana to confirm that SQL server instance details are picked up from the custom JSON configuration file:
 
-**Ensure all instances/nodes in the SQL cluster are monitored.**
+**Ensure all instances/nodes of the SQL environment are monitored.**
 
-- Include each node of the SQL cluster in the `hosts` section of the custom JSON configuration file with the correct `hostName`, `clusterVirtualName`, and `instanceName`.
+- Include each node of the SQL server in the `hosts` section of the custom JSON configuration file with the correct `hostName`, `clusterVirtualName`, and `instanceName`.
 - Set `sqlServers` -> `enabled` to `true` for each host entry.
 
 ```json
@@ -405,7 +405,7 @@ When monitoring SQL cluster instances using the custom JSON configuration file, 
 ```
 
 > [!NOTE]
-> Always specify SQL cluster configuration within the "**hosts**" section of the custom JSON configuration file.
+> Always specify SQL server configuration within the "**hosts**" section of the custom JSON configuration file.
 
 ## Slack Notifications
 
