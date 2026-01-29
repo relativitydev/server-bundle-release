@@ -16,10 +16,10 @@ Environment Watch has been rigorously tested to ensure minimal impact on your Re
 
 | Workload Category | Impact | Summary |
 |------------------|--------|------------------|
-| **Processing** | **~8% faster on average** | Processing operations demonstrated improved performance across all stages. Inventory was 3-8% faster, Discovery results matched closely (within a minute variance), and Publish operations were up to 19% faster, resulting in an approximate 8% overall improvement. |
+| **Processing** | **+8% faster** | Processing operations demonstrated improved performance across all stages. Inventory was 3-8% faster, Discovery results matched closely (within a minute variance), and Publish operations were up to 19% faster, resulting in an approximate 8% overall improvement. |
 | **Review (Conversion)** | **+5% faster** | Review operations saw a modest 5% improvement, providing slightly faster document conversion without any workflow disruption. |
 | **Imaging & Production** | **Stable (±4%)** | Imaging and production performance remained stable, with changes within a ±4% range, resulting in no meaningful impact to customer workflows. |
-| **Data Transfer** | **~5-6% faster on average** | Data transfer operations showed performance improvements with Imports demonstrating ~10% faster performance on average, while Exports (excluding RIP Images Export) were ~1% faster on average, resulting in an approximate 5-6% overall improvement. |
+| **Data Transfer** | **+6% faster** | Data transfer operations showed performance improvements with Imports demonstrating ~10% faster performance on average, while Exports (excluding RIP Images Export) were ~1% faster on average, resulting in an approximate 6% overall improvement. |
 
 ## Test Environment Specifications
 
