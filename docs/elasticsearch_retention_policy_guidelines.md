@@ -503,7 +503,7 @@ PUT _index_template/traces-apm@template
 }
 ```
 
-### Step 3: Delete Existing Data Streams (Optional – Initial Setup Only)
+### Step 3: Delete Existing Data Streams (Setup Time Only)
 
 > [!CAUTION]
 > **⚠️ DESTRUCTIVE OPERATION – PERMANENT DATA LOSS**
