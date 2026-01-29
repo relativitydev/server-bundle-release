@@ -2,13 +2,17 @@
 
 ## Overview
 
-This document provides transparent information about the performance overhead Environment Watch introduces to standard Relativity workloads, based on comprehensive testing in a production-like environment.
+This document provides transparent information about the performance overhead Environment Watch introduces to standard Relativity workloads, based on testing conducted in a controlled, production-like environment. Actual performance may vary depending on workload characteristics, environment size, infrastructure configuration, and usage patterns.
+
 
 ## Performance Impact on Relativity Workloads
 
 Environment Watch has been rigorously tested to ensure minimal impact on your Relativity operations. Here's what you can expect:
 
 ### Performance Results Summary
+
+> [!NOTE]
+> The results below reflect observed outcomes from internal testing and are provided for transparency. These results should not be interpreted as guaranteed performance improvements for all Environment Watch deployments.
 
 | Workload Category | Impact | Summary |
 |------------------|--------|------------------|
@@ -40,4 +44,4 @@ This comprehensive test environment, ranging from Small to Medium scale, mirrors
 
 ## Conclusion
 
-Environment Watch has demonstrated minimal to positive impact on Relativity workloads across comprehensive testing. Most operations showed performance improvements, with Processing, Data Transfer, and Review all performing faster. Imaging and Production workflows remained stable. These results confirm that Environment Watch provides valuable observability and monitoring capabilities without compromising your Relativity system's performance.
+Environment Watch has demonstrated minimal to positive impact on Relativity workloads based on comprehensive testing in a controlled, production-like environment. Most operations showed performance improvements, with Processing, Data Transfer, and Review performing faster, while Imaging and Production workflows remained stable. Environment Watch is designed to deliver observability and monitoring capabilities with minimal overhead; however, actual performance results may vary based on customer-specific configurations, environment size, and workload characteristics.

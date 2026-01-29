@@ -1,5 +1,8 @@
 # Elasticsearch Retention Policy - Guidelines
 
+> [!NOTE]
+> Configuring Elasticsearch retention policies is optional. Environment Watch works out of the box using default retention settings. The configurations described here should be applied only if you need to customize how long data is retained to align with your organization's storage, performance, or compliance requirements.
+
 ## Introduction
 
 ### Purpose
@@ -132,6 +135,9 @@ Update the following index templates to use the appropriate component template b
 | `logs-apm.app@template` | Logs | `apm-10d@lifecycle` | `apm-90d@lifecycle` |
 | `metrics-apm.app@template` | Metrics | `apm-90d@lifecycle` | `apm-90d@lifecycle` |
 | `traces-apm@template` | Traces | `apm-10d@lifecycle` | `apm-30d@lifecycle` |
+
+> [!IMPORTANT]
+> Changes to index templates only affect **new data streams** created after the update. Existing data streams will continue using their original retention policies until they are manually updated or recreated.
 
 #### a. Update Logs Index Template
 
@@ -497,13 +503,12 @@ PUT _index_template/traces-apm@template
 }
 ```
 
-> [!IMPORTANT]
-> Changes to index templates only affect **new data streams** created after the update. Existing data streams will continue using their original retention policies until they are manually updated or recreated.
-
-### Step 3: Delete Existing Data Streams (Setup Time Only)
+### Step 3: Delete Existing Data Streams (Optional – Initial Setup Only)
 
 > [!CAUTION]
 > **⚠️ DESTRUCTIVE OPERATION – PERMANENT DATA LOSS**
+> 
+> **This step is optional and is not required for most Environment Watch deployments.** It should only be performed during initial setup or in controlled, non-production scenarios.
 > 
 > This step will **permanently delete all data and indices** in the specified data streams. There is no recovery. Only proceed if:
 > - You are in a **development or non-production environment**, OR
