@@ -1,9 +1,8 @@
 # Elasticsearch Retention Policy - Guidelines
 
-> [!NOTE]
-> Configuring Elasticsearch retention policies is optional. Environment Watch works out of the box using default retention settings. The configurations described here should be applied only if you need to customize how long data is retained to align with your organization's storage, performance, or compliance requirements.
-
 ## Introduction
+
+Environment Watch works out of the box using default Elasticsearch retention settings. Configuring custom retention policies is optional and typically unnecessary for dev environments. This guidance applies only when customers need to adjust retention to meet storage, performance, or compliance requirements.
 
 ### Purpose
 
