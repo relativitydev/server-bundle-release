@@ -425,6 +425,10 @@ If you download a .zip or other file from the internet, Windows may block the fi
 
     3. The word `green` in the response means the cluster is healthy. The word `yellow` in the response means the cluster is partially healthy. If you see `red`, investigate further.
 
+4. Adjust Retention Period (Optional)
+
+    If the default retention periods do not meet your requirements, you can modify them according to your organization's needs. For detailed guidance on retention policies and configuration steps, see [Elasticsearch Retention Policy Guidelines](elasticsearch_retention_policy_guidelines.md).
+
 ## Next Step
 
 [Click here for the next step](relativity_server_cli_setup.md)
