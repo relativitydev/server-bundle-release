@@ -1,1 +1,1 @@
-![alt text](<Elastic Stack Port Diagram 01.svg>)
+![alt text](<../resources/Elastic Stack Port Diagram 01.svg>)
