@@ -15,4 +15,4 @@ The Server bundle is generally released quarterly, with hotfixes provided for cr
 Environment Watch and Data Grid Audit depend on a properly installed and configured Elastic Stack, including Elasticsearch and Kibana.
 
 For complete, step-by-step instructions on installing and configuring the Elastic Stack for Relativity, see:
-[Elastic Stack Setup documentation]()
+[Elastic Stack Setup documentation](https://help.relativity.com/Server2025/Content/Elasticstack/Elastic_Stack_Installation_Overview.htm)
