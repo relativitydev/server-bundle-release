@@ -6,6 +6,7 @@ This document provides quick reference links to detailed troubleshooting guides 
 
 - [Pre-requisite Troubleshooting](./pre-requisite-troubleshooting.md) 
 - [Environment Watch Monitoring Agent and Open Telemetry Collector Troubleshooting](./monitoring-agent-and-otel-collector.md)
+- [libsodium-64.dll: Functionality and Impact](./libsodium-dll-functionality.md)
 - [Relativity Server CLI Troubleshooting](./relativity-server-cli.md)
 - [Relativity Alerts Troubleshooting](./relativity_alerts_troubleshooting.md)
 - [Custom JSON Configuration Troubleshooting](./custom-json-troubleshooting.md)

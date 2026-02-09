@@ -25,3 +25,4 @@ This release bundle contains packages that are required to set up or upgrade two
 - **Upgrade**: [Click here for upgrade instructions](./elastic-stack-setup/elastic-stack-setup-02-environment-watch/environment_watch_upgrade.md).
 
 - **Troubleshooting**: [Click here for the troubleshooting guide](./elastic-stack-setup/troubleshooting/environment_watch_troubleshooting.md).
+  - For specific issues with `libsodium-64.dll` cryptographic library, see [libsodium-64.dll Functionality and Impact](./elastic-stack-setup/troubleshooting/libsodium-dll-functionality.md).

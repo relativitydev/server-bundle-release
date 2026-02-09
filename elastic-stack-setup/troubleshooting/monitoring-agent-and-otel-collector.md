@@ -238,6 +238,26 @@ For service account requirements and troubleshooting, see [Environment_Watch_Ins
 
 This section covers issues related to the Environment Watch installer and the underlying Windows services it manages.
 
+### Missing or Corrupted libsodium-64.dll
+
+**Symptoms:**
+- OpenTelemetry Collector (`otelcol-relativity.exe`) fails to start
+- Environment Watch service repeatedly restarts or shows errors
+- Error messages mentioning "libsodium" or "cryptographic library"
+- No data appears in Kibana dashboards despite service being installed
+
+**Troubleshooting Steps:**
+
+For detailed information about `libsodium-64.dll`, its functionality, and comprehensive troubleshooting steps, see:
+[libsodium-64.dll: Functionality and Impact](./libsodium-dll-functionality.md)
+
+Quick steps:
+1. Verify the DLL is present in the installation directory
+2. Check Windows Event Viewer for DLL loading errors
+3. Reinstall the Environment Watch monitoring agent if the DLL is missing or corrupted
+4. Ensure Visual C++ Redistributable is installed
+5. Check for antivirus or security software blocking the DLL
+
 ### User Not in Local Security Policy
 
 **Symptoms:**
