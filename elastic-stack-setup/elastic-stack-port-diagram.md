@@ -1,0 +1,1 @@
+![alt text](<../resources/Elastic Stack Port Diagram 01.svg>)

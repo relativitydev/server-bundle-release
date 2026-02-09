@@ -1,1 +1,0 @@
-![alt text](<Elastic Stack Port Diagram 01.svg>)
