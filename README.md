@@ -18,6 +18,11 @@ This release bundle contains packages that are required to set up or upgrade two
 **Network Ports**: Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](./elastic-stack-setup/elastic-stack-port-diagram.md) for full network configuration details.
 
 
+## Relativity Post Upgrade Instructions from Server 2024 to Server 2025
+
+After upgrading from 2024 to 2025, the latest Environment Watch bundle must be applied to ensure compatibility and proper functionality of environment watch.
+
+
 ## Getting Started
 
 - **First-Time Installation**: [Click here for installation instructions](./elastic-stack-setup/elastic-stack-setup-01-installation.md).
