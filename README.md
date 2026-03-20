@@ -13,10 +13,14 @@ This release bundle contains packages that are required to set up or upgrade two
 
 | **Requirement**   | **Relativity Server 2024 Patch 2**                                  | **Relativity Server 2025**                                  |
 | :---------------- | :------------------------------------------------------------------ | :---------------------------------------------------------- |
-| Elastic Stack     |v7.17 and above (within the v7 series) - Data Grid Audit only<br/> Server 2024 is compatible with Elasticsearch 8.x and 9.x. The following versions are officially certified for both Data Grid Audit and Environment Watch: <br/> v8.17.3, v9.1.3 <br/> <br/> <i>Note: Elasticsearch v7 reached end of vendor support on January 15, 2026. When planning an upgrade, Relativity recommends using the latest supported Elasticsearch version</i>| Server 2025 is compatible with Elasticsearch 8.x and 9.x. The following versions are officially certified for both Data Grid Audit and Environment Watch: <br/> v8.17.3, v9.1.3|
+| Elastic Stack     |v7.17 and above (within the v7 series) - Data Grid Audit only<br/> Server 2024 is compatible with Elasticsearch 8.x and 9.x. The following versions are officially certified for both Data Grid Audit and Environment Watch: <br/> v8.19.8, v9.1.3 <br/> <br/> <i>Note: Elasticsearch v7 reached end of vendor support on January 15, 2026. When planning an upgrade, Relativity recommends using the latest supported Elasticsearch version</i>| Server 2025 is compatible with Elasticsearch 8.x and 9.x. The following versions are officially certified for both Data Grid Audit and Environment Watch: <br/> v8.19.8, v9.1.3|
 
 **Network Ports**: Ensure required ports are open for Elastic Stack communication. [Refer to the port diagram](./elastic-stack-setup/elastic-stack-port-diagram.md) for full network configuration details.
 
+> **Note**:  Environment Watch catalog visualizations and available metrics vary by Relativity Server version.
+Be sure to refer to the Environment Watch Catalog documentation that corresponds to your installed Server version:
+> - [Environment Watch Catalog - Relativity Server 2024 Patch 2+](https://help.relativity.com/Server2024/Content/Environment_Watch/Guides/Environment_Watch_Catalog.htm)
+> - [Environment Watch Catalog - Relativity Server 2025](https://help.relativity.com/Server2025/Content/Environment_Watch/Guides/Environment_Watch_Catalog.htm)
 
 ## Getting Started
 
