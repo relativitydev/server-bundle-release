@@ -1,6 +1,6 @@
 # Custom JSON Configuration
 
-This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services and certificates, as well as configure Slack notifications for alerting.
+This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services, certificates, SQL servers, and scrapers, as well as configure Slack notifications for alerting.
 
 The shared configuration file enables users to control what is monitored—such as specific Windows services or certificate conditions—and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
@@ -16,10 +16,11 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
 
 - **Top-level object**: `environmentWatchConfiguration`
 - **Sections**:
-  - `monitoring`: Contains configuration for instance, installed products, and hosts.
+  - `monitoring`: Contains configuration for instance, installed products, hosts, and scrapers.
     - `instance`: Defines sources monitored at the instance level.
     - `installedProducts`: A list of installed products, where each product defines its own monitoring sources.
     - `hosts`: A list of hosts, where each host defines its own monitoring sources.
+    - `scrapers`: A list of scrapers with configurable intervals and parameters.
   - `alertNotificationHandlers`: Defines notification handlers (e.g., Slack).
 
 ---
@@ -57,6 +58,11 @@ The `hosts` section contains multiple host objects, each specifying its own moni
 - **Purpose:** Monitors resources on a per-host basis, such as Services or certificates unique to a particular server.
 - **Use Case:** Enables granular monitoring for individual machines, supporting host-specific checks (e.g., SQL Services on a database server).
 
+### Scrapers Configuration
+The `scrapers` section allows customization of metric collection intervals and parameters for each scraper.
+- **Purpose:** Controls how frequently each scraper collects metrics.
+- **Use Case:** Tune scraper intervals based on environment requirements and performance considerations.
+
 ---
 
 ### Monitoring Section Breakdown
@@ -67,6 +73,7 @@ The `hosts` section contains multiple host objects, each specifying its own moni
 | `enabled`                  | Boolean flag to enable/disable monitoring for the source.                    |
 | `include`                  | List of specific items to monitor (service names, certificate details, etc.) |
 | `otelCollectorYamlFiles`   | List of OpenTelemetry Collector YAML files (empty in this example).          |
+| `scrapers`                 | List of scraper configurations with intervals and parameters.                |
 
 ---
 
@@ -100,7 +107,7 @@ An example of the BCPPath and folder structure is shown below:
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, and SQL server instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, SQL server instances, and scrapers. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 ### Certificates
@@ -118,6 +125,10 @@ For detailed instructions, see [Alert Notification Handlers](ew-json-configurati
 ### SQL Server Instances
 
 For detailed instructions, see [SQL Server Configuration](ew-json-configuration-04-sql-server.md).
+
+### Scrapers
+
+For detailed instructions, see [Scrapers Configuration](ew-json-configuration-05-scrapers.md).
 
 ## Example Configuration
 
@@ -289,6 +300,27 @@ For detailed instructions, see [SQL Server Configuration](ew-json-configuration-
 						}
 					},
 					"otelCollectorYamlFiles": []
+				}
+			],
+			"scrapers": [
+				{
+				"name": "HeartbeatOtelMetricScraper",
+				"parameters": {
+					"intervalSeconds": "30"
+				}
+				},
+				{
+				"name": "WindowsServiceOtelMetricScraper",
+				"parameters": {
+					"intervalSeconds": "60"
+				}
+				},
+				{
+				"name": "X509CertificateOtelMetricScraper",
+				"parameters": {
+					"intervalSeconds": "3600",
+					"expirationWarningDays": "30"
+				}
 				}
 			]
 		},
