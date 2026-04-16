@@ -1,8 +1,8 @@
 # Custom JSON Configuration
 
-This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services and certificates, as well as configure Slack notifications for alerting.
+This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services, certificates, and file log receivers, as well as configure Slack notifications for alerting.
 
-The shared configuration file enables users to control what is monitored—such as specific Windows services or certificate conditions—and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
+The shared configuration file enables users to control what is monitored—such as specific Windows services, certificate conditions, or custom log file sources—and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
 ---
 
@@ -20,6 +20,7 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
     - `instance`: Defines sources monitored at the instance level.
     - `installedProducts`: A list of installed products, where each product defines its own monitoring sources.
     - `hosts`: A list of hosts, where each host defines its own monitoring sources.
+    - `logSources`: A list of custom file log source configurations for the file log receiver.
   - `alertNotificationHandlers`: Defines notification handlers (e.g., Slack).
 
 ---
@@ -54,8 +55,13 @@ The `installedProducts` section contains a list of installed products, where eac
 
 ### Monitoring by Host
 The `hosts` section contains multiple host objects, each specifying its own monitoring sources.
-- **Purpose:** Monitors resources on a per-host basis, such as Services or certificates unique to a particular server.
+- **Purpose:** Monitors resources on a per-host basis, such as services or certificates unique to a particular server.
 - **Use Case:** Enables granular monitoring for individual machines, supporting host-specific checks (e.g., SQL Services on a database server).
+
+### File Log Configuration
+The `openTelemetryOverrides` section defines custom log source configurations for the OpenTelemetry Collector file log receiver. This allows Environment Watch to collect and parse application-specific log files.
+- **Purpose:** Extends log collection to include custom log files (e.g., RabbitMQ logs) with user-defined parsing rules for log file path, multiline handling, regex extraction, and timestamp parsing.
+- **Use Case:** Useful when complex custom regex patterns need to be defined or when specifying log file paths to ingest logs from different sources (e.g., RabbitMQ, IIS).
 
 ---
 
@@ -67,6 +73,7 @@ The `hosts` section contains multiple host objects, each specifying its own moni
 | `enabled`                  | Boolean flag to enable/disable monitoring for the source.                    |
 | `include`                  | List of specific items to monitor (service names, certificate details, etc.) |
 | `otelCollectorYamlFiles`   | List of OpenTelemetry Collector YAML files (empty in this example).          |
+| `logSources`               | List of custom log source configurations for the file log receiver.     |
 
 ---
 
@@ -100,7 +107,7 @@ An example of the BCPPath and folder structure is shown below:
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, and SQL server instances. Each source type has its own configuration structure and properties. Following are the details for each source type:
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, SQL server instances, and file log receivers. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 ### Certificates
@@ -118,6 +125,10 @@ For detailed instructions, see [Alert Notification Handlers](ew-json-configurati
 ### SQL Server Instances
 
 For detailed instructions, see [SQL Server Configuration](ew-json-configuration-04-sql-server.md).
+
+### File Log Receiver
+
+For detailed instructions, see [File Log Receiver Configuration](ew-json-configuration-07-file-log-receiver.md).
 
 ## Example Configuration
 
@@ -290,7 +301,19 @@ For detailed instructions, see [SQL Server Configuration](ew-json-configuration-
 					},
 					"otelCollectorYamlFiles": []
 				}
-			]
+			],
+			"openTelemetryOverrides": {
+            "logSources": [
+                {
+                    "type": "rabbitmq",
+                    "enabled": true,
+                    "logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
+                    "multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
+                    "regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2})",
+                    "timestampLayout": "%Y-%m-%d %H:%M:%S.%f"
+                }
+                ]
+            },
 		},
 		"alertNotificationHandlers": {
 			"slack": {
