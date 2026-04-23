@@ -51,16 +51,17 @@ The following table lists the properties used to configure a log source in the c
 
 ## Configure File Log Receiver
 
-Define the log source configuration in the custom JSON configuration file within the `openTelemetryOverrides` section. The `logSources` array contains one or more log source objects.
+The file log receiver is configured in the `openTelemetryOverrides` section of the custom JSON configuration file. The `logSources` array contains one or more log source objects.
+For log sources to monitor, locate `logSources` under the `openTelemetryOverrides` section and update the configuration as shown below.
 
-- `type`: Set to the identifier for the log source (e.g., `"rabbitmq"`).
-- `enabled`: Set to `true` to enable log collection for this source.
-- `logFilePath`: Specify the full path to the log file on the host.
-- `multilineStartPattern`: Provide a regex pattern that matches the beginning of each log entry. This is used to correctly group multiline log messages.
-- `regexPattern`: Provide a regex pattern with named capture groups to extract fields from each log entry. The named capture group names must exactly match the expected field names (see [Assumptions](#assumptions)).
-- `timestampLayout`: Specify the format string used to parse the timestamp extracted by `regexPattern`.
+- `type` : Set to the identifier for the log source (e.g., `"rabbitmq"`).
+- `enabled` : Set to `true` to enable log collection for this source.
+- `logFilePath` : Specify the full path to the log file on the host.
+- `multilineStartPattern` : Provide a regex pattern that matches the beginning of each log entry.
+- `regexPattern` : Provide a regex pattern with named capture groups to extract fields from each log entry.
+- `timestampLayout` : Specify the format string used to parse the extracted timestamp.
 
-**Example**: Monitoring a RabbitMQ log file with log file path, multiline support, regex pattern, and timestamp extraction using the custom JSON configuration file.
+**Example**
 
 ```json
 {
@@ -77,17 +78,17 @@ Define the log source configuration in the custom JSON configuration file within
       "hosts": []
     },
     "openTelemetryOverrides": {
-      "logSources": [
-        {
-          "type": "rabbitmq",
-          "enabled": true,
-          "logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
-          "multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
-          "regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
-          "timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
-        }
-      ]
-    },
+            "logSources": [
+              {
+                "type": "rabbitmq",
+                "enabled": true,
+                "logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
+                "multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
+                "regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
+                "timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
+              }
+            ]
+        },
     "alertNotificationHandlers": {}
   }
 }
@@ -106,75 +107,28 @@ If a log source is not explicitly configured in the `logSources` array, it will 
 > [!NOTE]
 > Currently, the file log receiver is only supported for RabbitMQ file log receiver, but the configuration structure allows for future expansion to other log sources (IIS, CAAT).
 
----
-
-### Restart the Environment Watch Windows Service
-
-After updating the `environment-watch-configuration.json` file with the file log receiver configuration, follow the steps below to apply the changes:
-
-1. Log in to the server where Environment Watch is installed.
-2. Navigate to the BCP share path and open the `environment-watch-configuration.json` file.
-3. Stop the Environment Watch Windows service.
-4. Ensure the `openTelemetryOverrides` section is defined with the desired `logSources` configuration and the `enabled` flag is set to `true`.
-5. Save the JSON configuration file.
-6. Start the Environment Watch Windows service.
-
-This ensures that the service reads the updated configuration and begins collecting logs from the specified file log receiver sources.
-
----
+> [!NOTE]
+> After updating the custom JSON configuration file, restart the Environment Watch Windows service to apply the changes.
 
 ### Verification in Kibana
 
-Once the Environment Watch Windows service has been restarted, verify the file log receiver is working correctly by performing the following checks in Kibana.
-
-#### 1. Verify RabbitMQ Configuration Detection
-
 - Navigate to **Kibana > Discover**.
 - Select the **logs-\*** data view.
-- Search for:
+- Search for `"RabbitMQ configuration found in the shared Json configuration."` to confirm that Environment Watch detected the RabbitMQ file log receiver configuration.
 
-```text
-"RabbitMQ configuration found in the shared Json configuration."
-```
+![RabbitMQ configuration found](../../../../resources/custom-json-file-log-receiver-images/rabbitmq-file-log-custom-json-true.png)
 
-- Verify that results are returned, confirming that Environment Watch detected the RabbitMQ file log receiver configuration.
+- If `enabled` is `false`, search for `"No RabbitMQ configuration found in the shared Json config file or rabbitmq was disabled in Json config file. Falling back to default settings."` to confirm that the file log receiver was not enabled or was disabled in the JSON configuration file.
 
-#### 2. Verify RabbitMQ File Log Receiver Content
+![RabbitMQ configuration not found](../../../../resources/custom-json-file-log-receiver-images/rabbitmq-file-log-custom-json-false.png)
 
-- Navigate to **Kibana > Discover**.
-- Select the **logs-\*** data view.
-- Search for:
+- Search for `service.name: "server_rabbitmq"` in the **logs-\*** data view.
+- Ensure that log entries from the RabbitMQ log file appear in Kibana. The example below demonstrates how RabbitMQ log entries from the file log receiver are successfully collected and displayed in Kibana.
 
-```text
-service.name: "server_rabbitmq"
-```
+![RabbitMQ file log content](../../../../resources/custom-json-file-log-receiver-images/rabbitmq-file-log-content.png)
 
-- Verify that log entries from the RabbitMQ log file are returned.
-
-#### 3. Verify RabbitMQ Host Receiver Content
-
-- Navigate to **Kibana > Discover**.
-- Select the **APM** data view.
-- Search for:
-
-```text
-process.cpu.time: * and labels.process_executable_name : "erl.exe"
-```
-
-- Verify that results are returned, confirming that RabbitMQ host-level metrics are being collected.
-
-#### 4. Verify RabbitMQ Receiver Content
-
-- Navigate to **Kibana > Discover**.
-- Select the **APM** data view.
-- Search for:
-
-```text
-rabbitmq.node.disk_free: * and host.name : "<hostname>"
-```
-
-- Replace `<hostname>` with the actual host name of the server where RabbitMQ is installed (e.g., `"EWatch-A-RMQ01"` or `"emttest"`).
-- Verify that results are returned, confirming that RabbitMQ receiver metrics are being collected.
+> [!NOTE]
+> When `enabled` is `true`, the file log receiver settings are fetched from the custom JSON configuration file. When `enabled` is `false`, the file log receiver falls back to the default settings defined in the source code based on the [Assumptions](#assumptions) made.
 
 ---
 

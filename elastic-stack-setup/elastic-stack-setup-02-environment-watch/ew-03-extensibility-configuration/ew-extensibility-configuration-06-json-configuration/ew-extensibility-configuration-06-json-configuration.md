@@ -304,16 +304,16 @@ For detailed instructions, see [File Log Receiver Configuration](ew-json-configu
 			],
 			"openTelemetryOverrides": {
             "logSources": [
-                {
-                    "type": "rabbitmq",
-                    "enabled": true,
-                    "logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
-                    "multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
-                    "regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2})",
-                    "timestampLayout": "%Y-%m-%d %H:%M:%S.%f"
-                }
-                ]
-            },
+              {
+                "type": "rabbitmq",
+                "enabled": true,
+                "logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
+                "multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
+                "regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
+                "timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
+              }
+            ]
+        },
 		},
 		"alertNotificationHandlers": {
 			"slack": {
