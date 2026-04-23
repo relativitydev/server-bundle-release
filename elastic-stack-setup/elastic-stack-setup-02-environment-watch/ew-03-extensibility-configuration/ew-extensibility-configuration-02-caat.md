@@ -22,15 +22,13 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 
 ### Prerequisites
 
-- Existing CAAT(4.7.11.A11) installer package
-- CAAT EW bundle (contains `opentelemetry-javaagent.jar`, `startup.cmd`, and `replace_startup.bat`)
+- Existing CAAT(5.1.4.A1) installer package
 - Administrative access to the server
 
 ### Installation Steps
 
 1.  Copy the CAAT EW bundle to your server and unzip it
 2.  Copy the following files from the CAAT EW bundle to the CAAT installer directory:
-    - `opentelemetry-javaagent.jar`
     - `startup.cmd`
     - `replace_startup.bat`
 3.  Replace `response-file.properties` with your master copy
@@ -42,18 +40,28 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 9.  Open Kibana and search for `service.name: "relsvr_caat"` in the `metrics-*` data view to confirm telemetry is being collected
 
 
-## What's updated
-
-- The Startup.cmd file is updated to include the OpenTelemetry Java Agent. This references the `opentelemetry-javaagent.jar` file, which is used to instrument the CAAT service for telemetry data collection.
-- Check for these lines within `startup.cmd`:
+## CAAT Instrumentation Configuration
+ 
+**Important**
+ 
+- CAAT instrumentation is **disabled by default** starting with this update.
+- Customers using Environment Watch (EW) must **manually enable instrumentation** after applying the patch.
+ 
+**Steps to Enable Instrumentation**
+ 
+1. Navigate to the CAAT/bin directory.
+2. Open the startup.cmd file.    
+3. Add the following lines towards the end of the JVM options section (before the final -jar entry):
     ```
-    -javaagent:..bin\opentelemetry-javaagent.jar 
-    -Dotel.service.name="relsvr.caat" 
-    -Dotel.metrics.exporter=otlp 
-    -Dotel.exporter.otlp.endpoint="http://localhost:4318" 
+    -javaagent:..bin\opentelemetry-javaagent.jar
+    -Dotel.service.name="relsvr.caat"
+    -Dotel.metrics.exporter=otlp
+    -Dotel.exporter.otlp.endpoint="http://localhost:4318"
     -Dotel.instrumentation.runtime-metrics.enabled=true
     -Dotel.instrumentation.java-util-logging.enabled=false
     ```
+4. Save the file.
+5. Restart the Analytics Service to apply the change
 
 ## How to verify the changes
 
