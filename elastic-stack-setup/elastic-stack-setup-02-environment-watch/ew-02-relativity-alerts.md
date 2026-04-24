@@ -78,7 +78,7 @@ To create a Kibana user and assign the custom Kibana role:
 	- **Username**: A unique login name (e.g., `alerts_dashboard_user`).<br/>
 	- **Password**: Set a strong password.<br/>
 	- **Full name / Email address**: Optional but recommended.<br/>
-5. Under **Roles**, search for and assign the `relativity_dashboard_user` role.
+5. Under **Roles**, search for and assign the `relativity_dashboard_user` role. Optionally, also assign the `monitoring_user` to enable access to Stack Monitoring.
 6. Click **Create user** to save.  
 ![](../../resources/custom_kibana_role.png)
 
