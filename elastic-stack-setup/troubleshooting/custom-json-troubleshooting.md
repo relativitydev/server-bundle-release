@@ -464,9 +464,8 @@ Example:
         "otelCollectorYamlFiles": []
       },
       "installedProducts": [],
-      "hosts": []
-    },
-    "openTelemetryOverrides": {
+      "hosts": [],
+      "openTelemetryOverrides": {
             "logSources": [
               {
                 "type": "rabbitmq",
@@ -477,7 +476,8 @@ Example:
                 "timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
               }
             ]
-        },
+        }
+    },
     "alertNotificationHandlers": {}
   }
 }
