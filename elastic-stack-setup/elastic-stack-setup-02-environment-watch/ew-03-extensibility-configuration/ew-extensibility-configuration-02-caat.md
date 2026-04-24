@@ -23,48 +23,40 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 ### Prerequisites
 
 - Existing CAAT(5.1.4.A1) installer package
+- CAAT EW bundle (contains `startup.cmd`)
 - Administrative access to the server
 
 ### Installation Steps
 
-1.  Copy the CAAT EW bundle to your server and unzip it
-2.  Copy the following files from the CAAT EW bundle to the CAAT installer directory:
+1.  Install/upgrade CAAT latest installer.If this has already been completed, skip this step.
+2.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
+3.  Stop the **Relativity Environment Watch** service in analytics server.
+4.  Copy and replace the following file from the CAAT EW bundle to the bin folder CAAT installer directory:    
     - `startup.cmd`
-    - `replace_startup.bat`
-3.  Replace `response-file.properties` with your master copy
-4.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
-5.  Stop the **Relativity Environment Watch** service before starting installation
-6.  Open PowerShell as an administrator
-7.  Run `.\Install.cmd`
-8.  Once the installation is complete, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
-9.  Open Kibana and search for `service.name: "relsvr_caat"` in the `metrics-*` data view to confirm telemetry is being collected
+5.  Once the copying is complete, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
+6.  Open Kibana and search for `service.name: "relsvr_caat"` in the `metrics-*` data view to confirm telemetry is being collected
 
 
-## CAAT Instrumentation Configuration
- 
-**Important**
- 
-- CAAT instrumentation is **disabled by default** starting with this update.
-- Customers using Environment Watch (EW) must **manually enable instrumentation** after applying the patch.
- 
-**Steps to Enable Instrumentation**
- 
-1. Navigate to the CAAT/bin directory.
-2. Open the startup.cmd file.    
-3. Add the following lines towards the end of the JVM options section (before the final -jar entry):
+## What's updated
+
+- The Startup.cmd file is updated to include the OpenTelemetry Java Agent. This references the `opentelemetry-javaagent.jar` file, which is used to instrument the CAAT service for telemetry data collection.
+- Check for these lines within `startup.cmd`:
     ```
-    -javaagent:..bin\opentelemetry-javaagent.jar
-    -Dotel.service.name="relsvr.caat"
-    -Dotel.metrics.exporter=otlp
-    -Dotel.exporter.otlp.endpoint="http://localhost:4318"
+    -javaagent:..bin\opentelemetry-javaagent.jar 
+    -Dotel.service.name="relsvr.caat" 
+    -Dotel.metrics.exporter=otlp 
+    -Dotel.exporter.otlp.endpoint="http://localhost:4318" 
     -Dotel.instrumentation.runtime-metrics.enabled=true
     -Dotel.instrumentation.java-util-logging.enabled=false
     ```
-4. Save the file.
-5. Restart the Analytics Service to apply the change
 
 ## How to verify the changes
 
 1. **Check Application Logs:** On startup, the agent logs its initialization. Look for lines mentioning `opentelemetry-javaagent` in the CAAT logs.
 2. **Verify Telemetry Export:** Confirm that traces and metrics are being sent to your configured backend (e.g., OpenTelemetry Collector, Jaeger, Azure Monitor).
 3. **Check Service Name:** Ensure the service appears as `Relativity Analytics Engine` (or your configured name) in your observability backend.
+
+## Important
+
+CAAT instrumentation is disabled by default starting with this update.
+Customers using Environment Watch (EW) can manually enable instrumentation after applying the patch.
