@@ -22,7 +22,7 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 
 ### Prerequisites
 
-- Existing CAAT(5.1.4.A1) installer package
+- CAAT (5.1.4.A1) installer package
 - CAAT EW bundle (contains `startup.cmd`)
 - Administrative access to the server
 
