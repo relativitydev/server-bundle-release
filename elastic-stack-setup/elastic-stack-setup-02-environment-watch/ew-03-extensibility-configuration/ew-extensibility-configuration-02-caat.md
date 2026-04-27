@@ -39,7 +39,7 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 
 ## What's updated
 
-- The Startup.cmd file is updated to include the OpenTelemetry Java Agent. This references the `opentelemetry-javaagent.jar` file (this will come with CAAT installer package), which is used to instrument the CAAT service for telemetry data collection.
+- The `startup.cmd` file is updated to include the OpenTelemetry Java Agent. It references `opentelemetry-javaagent.jar`, which is provided by the CAAT installer package (not the CAAT EW bundle), to instrument the CAAT service for telemetry data collection.
 - Check for these lines within `startup.cmd`:
     ```
     -javaagent:..bin\opentelemetry-javaagent.jar 
