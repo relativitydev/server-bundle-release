@@ -22,29 +22,24 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 
 ### Prerequisites
 
-- Existing CAAT(4.7.11.A11) installer package
-- CAAT EW bundle (contains `opentelemetry-javaagent.jar`, `startup.cmd`, and `replace_startup.bat`)
+- Existing CAAT(5.1.4.A1) installer package
+- CAAT EW bundle (contains `startup.cmd`)
 - Administrative access to the server
 
 ### Installation Steps
 
-1.  Copy the CAAT EW bundle to your server and unzip it
-2.  Copy the following files from the CAAT EW bundle to the CAAT installer directory:
-    - `opentelemetry-javaagent.jar`
+1.  Install or upgrade the CAAT 5.1.4.A1 installer. If this has already been completed, skip this step.
+2.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
+3.  Stop the **Relativity Environment Watch** service on the analytics server.
+4.  Copy and replace the following file from the CAAT EW bundle into the `bin` directory of the installed CAAT application (not the `bin` directory inside the extracted CAAT installer package):    
     - `startup.cmd`
-    - `replace_startup.bat`
-3.  Replace `response-file.properties` with your master copy
-4.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
-5.  Stop the **Relativity Environment Watch** service before starting installation
-6.  Open PowerShell as an administrator
-7.  Run `.\Install.cmd`
-8.  Once the installation is complete, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
-9.  Open Kibana and search for `service.name: "relsvr_caat"` in the `metrics-*` data view to confirm telemetry is being collected
+5.  Once the copying is complete, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
+6.  Open Kibana and search for `service.name: "relsvr.caat"` in the `metrics-*` data view to confirm telemetry is being collected
 
 
 ## What's updated
 
-- The Startup.cmd file is updated to include the OpenTelemetry Java Agent. This references the `opentelemetry-javaagent.jar` file, which is used to instrument the CAAT service for telemetry data collection.
+- The Startup.cmd file is updated to include the OpenTelemetry Java Agent. This references the `opentelemetry-javaagent.jar` file (this will come with CAAT installer package), which is used to instrument the CAAT service for telemetry data collection.
 - Check for these lines within `startup.cmd`:
     ```
     -javaagent:..bin\opentelemetry-javaagent.jar 
