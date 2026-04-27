@@ -31,7 +31,7 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 1.  Install/upgrade CAAT latest installer.If this has already been completed, skip this step.
 2.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
 3.  Stop the **Relativity Environment Watch** service in analytics server.
-4.  Copy and replace the following file from the CAAT EW bundle to the bin folder CAAT installer directory:    
+4.  Copy and replace the following file from the CAAT EW bundle into the `bin` directory of the installed CAAT application (not the `bin` directory inside the extracted CAAT installer package):    
     - `startup.cmd`
 5.  Once the copying is complete, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
 6.  Open Kibana and search for `service.name: "relsvr_caat"` in the `metrics-*` data view to confirm telemetry is being collected
