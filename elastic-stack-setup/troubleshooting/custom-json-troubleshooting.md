@@ -516,7 +516,7 @@ Example:
   - `rabbitmq_pid_process`
   - `rabbitmq_pid_serial`
   - `message`
-- Compare the configuration against the example in the [File Log Receiver Configuration](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-07-file-log-receiver.md) document.
+- Compare the configuration against the example in the [File Log Receiver Configuration](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-06-file-log-receiver.md) document.
 - Restart the Environment Watch Windows service after correcting the field names.
 
 **Timestamps are incorrect or missing in Kibana.**

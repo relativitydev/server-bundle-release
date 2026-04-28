@@ -104,8 +104,17 @@ For log sources to monitor, locate `logSources` under the `openTelemetryOverride
 
 If a log source is not explicitly configured in the `logSources` array, it will use its default settings from the source code. For example, if the RabbitMQ log source is not defined in the JSON configuration, it will not be enabled by default since the default `enabled` value for the RabbitMQ log source is `false` in the source code. To enable it, you must explicitly define it in the `logSources` array with `"enabled": true`.
 
+At the property level, if a property is not set or is set to an empty/null value, it will be overridden by the default value defined in the source code. This applies to the following properties:
+
+| Property                  | Default Behavior When Empty or Null                                                              |
+|--------------------------|--------------------------------------------------------------------------------------------------|
+| `logFilePath`            | Falls back to the default log file path defined in the source code for the given log source type. |
+| `multilineStartPattern`  | Falls back to the default multiline start pattern defined in the source code.                     |
+| `regexPattern`           | Falls back to the default regex pattern defined in the source code.                               |
+| `timestampLayout`        | Falls back to the default timestamp layout defined in the source code.                            |
+
 > [!NOTE]
-> Currently, the file log receiver is only supported for RabbitMQ file log receiver, but the configuration structure allows for future expansion to other log sources (IIS, CAAT).
+> Currently, the file log receiver is only supported for RabbitMQ file log receiver.
 
 > [!NOTE]
 > After updating the custom JSON configuration file, restart the Environment Watch Windows service to apply the changes.

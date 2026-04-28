@@ -135,13 +135,13 @@ For detailed instructions, see [Alert Notification Handlers](ew-json-configurati
 
 For detailed instructions, see [SQL Server Configuration](ew-json-configuration-04-sql-server.md).
 
-### File Log Receiver
-
-For detailed instructions, see [File Log Receiver Configuration](ew-json-configuration-07-file-log-receiver.md).
-
 ### Scrapers
 
 For detailed instructions, see [Scrapers Configuration](ew-json-configuration-05-scrapers.md).
+
+### File Log Receiver
+
+For detailed instructions, see [File Log Receiver Configuration](ew-json-configuration-06-file-log-receiver.md).
 
 ## Example Configuration
 
