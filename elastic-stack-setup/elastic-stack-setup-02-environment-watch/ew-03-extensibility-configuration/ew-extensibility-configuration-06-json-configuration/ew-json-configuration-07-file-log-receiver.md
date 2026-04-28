@@ -75,9 +75,8 @@ For log sources to monitor, locate `logSources` under the `openTelemetryOverride
         "otelCollectorYamlFiles": []
       },
       "installedProducts": [],
-      "hosts": []
-    },
-    "openTelemetryOverrides": {
+      "hosts": [],
+      "openTelemetryOverrides": {
             "logSources": [
               {
                 "type": "rabbitmq",
@@ -88,7 +87,8 @@ For log sources to monitor, locate `logSources` under the `openTelemetryOverride
                 "timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
               }
             ]
-        },
+        }
+    },
     "alertNotificationHandlers": {}
   }
 }

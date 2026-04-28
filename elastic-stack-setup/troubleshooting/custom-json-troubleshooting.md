@@ -486,8 +486,6 @@ Example:
 **Verify the log file path is accessible.**
 
 - The log file path specified in the configuration must be accessible from the host where the Environment Watch Windows service is running.
-- Run the following PowerShell command to verify the file exists:
-
 - Verify the RabbitMQ installation path is correct.
 - The file name matches and the path matches the location of the log file on the host machine.
 - The Environment Watch service account has read permissions to the file.

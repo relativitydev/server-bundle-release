@@ -2,7 +2,7 @@
 
 This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services, certificates, SQL servers, file log receivers, and scrapers, as well as configure Slack notifications for alerting.
 
-The shared configuration file enables users to control what is monitored—such as specific Windows services, certificate conditions, or custom log file sources—and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
+The shared configuration file enables users to control what is monitored such as specific Windows services, certificate conditions, or custom log file sources and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
 ---
 
@@ -20,8 +20,9 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
     - `instance`: Defines sources monitored at the instance level.
     - `installedProducts`: A list of installed products, where each product defines its own monitoring sources.
     - `hosts`: A list of hosts, where each host defines its own monitoring sources.
-    - `logSources`: A list of custom file log source configurations for the file log receiver.
     - `scrapers`: A list of scrapers with configurable intervals and parameters.
+    - `openTelemetryOverrides`: Contains custom OpenTelemetry Collector overrides.
+      - `logSources`: A list of custom file log source configurations for the OTEL file log receiver.
   - `alertNotificationHandlers`: Defines notification handlers (e.g., Slack).
 
 ---
@@ -79,7 +80,8 @@ The `scrapers` section allows customization of metric collection intervals and p
 | `enabled`                  | Boolean flag to enable/disable monitoring for the source.                    |
 | `include`                  | List of specific items to monitor (service names, certificate details, etc.) |
 | `otelCollectorYamlFiles`   | List of OpenTelemetry Collector YAML files (empty in this example).          |
-| `logSources`               | List of custom log source configurations for the file log receiver.     |
+| `openTelemetryOverrides`   | Contains custom OpenTelemetry Collector overrides.                           |
+| ↳ `logSources`             | List of custom log source configurations for the file log receiver.          |
 | `scrapers`                 | List of scraper configurations with intervals and parameters.                |
 
 ---
@@ -333,19 +335,19 @@ For detailed instructions, see [Scrapers Configuration](ew-json-configuration-05
 					"expirationWarningDays": "30"
 				}
 				}
-			]
-		},
-		"openTelemetryOverrides": {
-			"logSources": [
-				{
-					"type": "rabbitmq",
-					"enabled": true,
-					"logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
-					"multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
-					"regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
-					"timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
-				}
-			]
+			],
+			"openTelemetryOverrides": {
+				"logSources": [
+					{
+						"type": "rabbitmq",
+						"enabled": true,
+						"logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
+						"multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
+						"regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
+						"timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
+					}
+				]
+			}
 		},
 		"alertNotificationHandlers": {
 			"slack": {
