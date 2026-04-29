@@ -1,6 +1,13 @@
 # Custom JSON Configuration
 
-This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services, certificates, SQL servers, file log receivers, and scrapers, as well as configure Slack notifications for alerting.
+This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for:
+
+- Windows services
+- Certificates
+- SQL servers
+- File log receivers
+- Scrapers
+- It also includes configuration options for Slack notifications used for alerting.
 
 The shared configuration file enables users to control what is monitored such as specific Windows services, certificate conditions, or custom log file sources and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
