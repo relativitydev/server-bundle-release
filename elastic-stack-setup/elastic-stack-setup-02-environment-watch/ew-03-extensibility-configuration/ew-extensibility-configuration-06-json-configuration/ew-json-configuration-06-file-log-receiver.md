@@ -6,12 +6,15 @@ This section describes how to configure file log receiver monitoring using the `
 
 ## Overview
 
-The file log receiver allows Environment Watch to collect and parse log files from custom sources using the OpenTelemetry Collector. By defining log sources in the `openTelemetryOverrides` section, users can extend monitoring to include application-specific log files (e.g., RabbitMQ logs) with custom parsing rules for log file path, multiline handling, regex extraction, and timestamp parsing.
+The file log receiver allows Environment Watch to collect and parse log files from custom sources using the OpenTelemetry Collector. This configuration is intended for Relativity administrators managing Environment Watch on self‑hosted environments who want to extend monitoring to include application‑specific log files (for example, RabbitMQ logs).
+
+By defining log sources in the `openTelemetryOverrides` section of the custom JSON configuration file, administrators can configure log file paths, multiline handling, regex‑based field extraction, and timestamp parsing.
 
 ### Assumptions
 
 - The log file is expected to be in **plaintext** format, not JSON.
 - The log file path must be accessible from the host where the Environment Watch Windows service is running.
+- The log file must be readable by the Windows account running the Environment Watch Windows service.
 - Each log entry is expected to follow a consistent format that can be matched by the provided regex patterns.
 - The attributes in the `regexPattern` must match the exact field names defined in the source code. For RabbitMQ, the expected field names are:
 
@@ -50,6 +53,9 @@ The following table lists the properties used to configure a log source in the c
 ---
 
 ## Configure File Log Receiver
+
+> [!IMPORTANT]
+> The regex patterns shown are examples aligned to known RabbitMQ log formats, and should be validated against the admin’s actual log output before being used in production. Timestamp parsing and field extraction are common failure points, and malformed regex can result in logs being dropped or the collector failing to start.
 
 The file log receiver is configured in the `openTelemetryOverrides` section of the custom JSON configuration file. The `logSources` array contains one or more log source objects.
 For log sources to monitor, locate `logSources` under the `openTelemetryOverrides` section and update the configuration as shown below.
@@ -102,9 +108,11 @@ For log sources to monitor, locate `logSources` under the `openTelemetryOverride
 
 ### Default Behavior
 
-If a log source is not explicitly configured in the `logSources` array, it will use its default settings from the source code. For example, if the RabbitMQ log source is not defined in the JSON configuration, it will not be enabled by default since the default `enabled` value for the RabbitMQ log source is `false` in the source code. To enable it, you must explicitly define it in the `logSources` array with `"enabled": true`.
+Defaults apply at two levels: whether a log source is enabled, and the individual configuration properties used to parse logs.
 
-At the property level, if a property is not set or is set to an empty/null value, it will be overridden by the default value defined in the source code. This applies to the following properties:
+If a log source is not explicitly configured in the logSources array, it will use its default settings from the source code. For example, if the RabbitMQ log source is not defined in the JSON configuration, it will not be enabled by default since the default enabled value for the RabbitMQ log source is false. To enable it, you must explicitly define it in the logSources array with "enabled": true.
+
+At the property level, if a property is not set or is set to an empty or null value, it falls back to the default value defined in the source code. This applies to the following properties:
 
 | Property                  | Default Behavior When Empty or Null                                                              |
 |--------------------------|--------------------------------------------------------------------------------------------------|
