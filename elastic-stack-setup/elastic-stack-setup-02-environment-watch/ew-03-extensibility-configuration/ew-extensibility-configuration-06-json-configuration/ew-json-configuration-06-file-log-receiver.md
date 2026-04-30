@@ -12,8 +12,7 @@ By defining log sources in the `openTelemetryOverrides` section of the custom JS
 
 ### Assumptions
 
-- The log file is expected to be in **plaintext** format, not JSON.
-- The log file path must be accessible from the host where the Environment Watch Windows service is running.
+- The log file is expected to be in **plaintext** format (not JSON), and its path must be accessible from the host where the Environment Watch Windows service is running.
 - The log file must be readable by the Windows account running the Environment Watch Windows service.
 - Each log entry is expected to follow a consistent format that can be matched by the provided regex patterns.
 - The attributes in the `regexPattern` must match the exact field names defined in the source code. For RabbitMQ, the expected field names are:
