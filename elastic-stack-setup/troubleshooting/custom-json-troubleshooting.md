@@ -437,3 +437,103 @@ When troubleshooting Slack notification issues, the first step is to verify whet
 
 - Set the `messageIntervalSeconds` property in the Slack handler configuration to a value greater than or equal to 180 seconds to avoid rate limiting by Slack.
 - Restart the Environment Watch Windows service to apply the changes.
+
+## File Log Receiver
+
+If RabbitMQ logs do not appear in Kibana after configuring the file log receiver, fix the common issues outlined in [Common Issues](#common-issues) before reviewing the following potential causes:
+
+After fixing the common issues, if RabbitMQ logs still do not appear in Kibana, review the following potential causes:
+
+**Verify the file log receiver configuration in the custom JSON configuration file.**
+
+- Ensure the custom JSON configuration file contains the `openTelemetryOverrides` section with a valid `logSources` array.
+- Set `enabled` to `true` for the desired log source.
+- Place the configuration under the `openTelemetryOverrides` section.
+
+Example:
+
+```json
+{
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {},
+          "windowsServices": {}
+        },
+        "otelCollectorYamlFiles": []
+      },
+      "installedProducts": [],
+      "hosts": [],
+      "openTelemetryOverrides": {
+            "logSources": [
+              {
+                "type": "rabbitmq",
+                "enabled": true,
+                "logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
+                "multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
+                "regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
+                "timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
+              }
+            ]
+        }
+    },
+    "alertNotificationHandlers": {}
+  }
+}
+```
+
+**Verify the log file path is accessible.**
+
+- The log file path specified in the configuration must be accessible from the host where the Environment Watch Windows service is running.
+- Verify the RabbitMQ installation path is correct.
+- The file name matches and the path matches the location of the log file on the host machine.
+- The Environment Watch service account has read permissions to the file.
+
+**Verify the OpenTelemetry Collector detected the RabbitMQ configuration.**
+
+- Navigate to **Kibana > Discover**.
+- Select the **logs-\*** data view.
+- Search for:
+
+```text
+"RabbitMQ configuration found in the shared Json configuration."
+```
+
+- If no results appear:
+  - Review the custom JSON configuration file for syntax errors.
+  - Ensure the `enabled` flag is set to `true` in the `logSources` array.
+  - Restart the Environment Watch Windows service.
+  - Check Windows Event Viewer for OpenTelemetry Collector errors.
+
+**Verify the `regexPattern` field names match the required field names.**
+
+- The named capture groups in `regexPattern` must exactly match the default field names defined in the source code. Incorrect field names will cause the OpenTelemetry Collector to throw a fatal error and stop working.
+- Verify the following required field names are used:
+  - `rabbitmq_log_date_time`
+  - `severity`
+  - `rabbitmq_pid_node`
+  - `rabbitmq_pid_process`
+  - `rabbitmq_pid_serial`
+  - `message`
+- Compare the configuration against the example in the [File Log Receiver Configuration](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-06-file-log-receiver.md) document.
+- Restart the Environment Watch Windows service after correcting the field names.
+
+**Timestamps are incorrect or missing in Kibana.**
+
+- Verify the `timestampLayout` format matches the log file timestamp format.
+- For RabbitMQ logs, use: `"%Y-%m-%d %H:%M:%S.%f%j"`.
+- The `%j` suffix handles the timezone offset component.
+
+**Multiline log entries are not grouping correctly.**
+
+- Verify the `multilineStartPattern` regex matches the start of each new log entry.
+- Ensure backslashes are properly escaped in JSON (use `\\` instead of `\`).
+
+**No log data in Kibana after configuration detection message appears.**
+
+- Verify the `enabled` flag is set to `true` in the `logSources` array.
+- Confirm the log file contains recent entries.
+- Check that the log file is actively being written to by RabbitMQ.
+- Review the OpenTelemetry Collector logs in Kibana for parsing errors.
+- Restart the Environment Watch Windows service to apply the changes.
