@@ -70,8 +70,9 @@ Verify the status and formatting of each health indicator tile, based on alert-d
 **Expected Result:**
 - **Green** = No active alerts (Healthy)
 - **Red** = Active alerts present (Unhealthy)
+- **Gray** = Monitoring data unavailable (N/A) (e.g., monitoring agent is down)
 
-> All health indicators should display either Green or Red status after the initial wait period. If any health indicators aren't displaying correctly after waiting the full 10-15 minutes, verify that all related services are running properly and data collection is functioning correctly.
+> All health indicators should display either Green or Red status after the initial wait period. If any health indicators display **N/A**, this indicates that monitoring data is not being received—typically due to the monitoring agent being down or a data collection issue. If any health indicators aren't displaying correctly after waiting the full 10-15 minutes, verify that all related services are running properly and data collection is functioning correctly.
 
 **Example Screenshot:**  
 ![All Health Indicators](../../resources/post-install-verification-images/alerts-overview/all-health-indicators.png)
