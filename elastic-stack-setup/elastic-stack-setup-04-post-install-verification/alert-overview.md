@@ -70,8 +70,14 @@ Verify the status and formatting of each health indicator tile, based on alert-d
 **Expected Result:**
 - **Green** = No active alerts (Healthy)
 - **Red** = Active alerts present (Unhealthy)
+- **Grey** = Monitoring data not available (N/A) 
 
-> All health indicators should display either Green or Red status after the initial wait period. If any health indicators aren't displaying correctly after waiting the full 10-15 minutes, verify that all related services are running properly and data collection is functioning correctly.
+> After the initial startup period (typically 10–15 minutes), all health indicators should display a Green or Red status.
+If a health indicator displays N/A (grey), this indicates that monitoring data is not currently available. This typically occurs when the monitoring agent is down or when there is a telemetry or data collection issue.
+If any health indicators continue to display N/A after the initial startup period:
+Verify that all required monitoring agents and related services are running.
+Check for errors or warnings related to monitoring or data collection in the Environment Watch logs.
+Health indicators will automatically update once monitoring data becomes available.
 
 **Example Screenshot:**  
 ![All Health Indicators](../../resources/post-install-verification-images/alerts-overview/all-health-indicators.png)
