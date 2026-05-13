@@ -58,4 +58,4 @@ Each query should return the data stream names along with their configured lifec
 - **enabled**: Should be `true`
 - **data_retention**: Indicates the configured retention period (e.g., "30d" for 30 days, "90d" for 90 days)
 
-If the lifecycle settings don't match your expected configuration, you may need to update your retention period according to [elasticsearch_retention_policy_guidelines.md](../../elasticsearch_retention_policy_guidelines.md).
+If the lifecycle settings don't match your expected configuration, you may need to update your retention period according to [elasticsearch_retention_policy_guidelines.md](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-03-retention-policy.md).
