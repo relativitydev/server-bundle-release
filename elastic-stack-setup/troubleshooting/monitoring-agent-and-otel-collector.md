@@ -231,7 +231,7 @@ If the above steps do not resolve the issue, verify the following access and con
 
 ### Relativity Service Account Verification
 
-For service account requirements and troubleshooting, see [Environment_Watch_Installer](../environment_watch_installation.md)
+For service account requirements and troubleshooting, see [Environment_Watch_Installer](../elastic-stack-setup-02-environment-watch/elastic-stack-setup-02-environment-watch.md)
 
 
 ## Installer and Service Errors
@@ -265,5 +265,5 @@ This section covers issues related to the Environment Watch installer and the un
 
 
 For additional troubleshooting, refer to the main documentation:  
-[Environment Watch Installer](../environment_watch_installation.md)
+[Environment Watch Installer](../elastic-stack-setup-01-installation.md)
 
