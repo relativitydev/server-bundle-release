@@ -115,7 +115,7 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 > [!NOTE]
 > Ensure inbound/outbound ports are open for this Elastic stack component.
 
-[See the port diagram for network requirements.](environment-watch/port-diagram.md)
+[See the port diagram for network requirements.](./elastic-stack-port-diagram.md)
 
 #### Relativity Environment Watch Windows Service
 
