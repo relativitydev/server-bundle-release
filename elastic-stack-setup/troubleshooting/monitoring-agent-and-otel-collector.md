@@ -36,9 +36,9 @@ First, ensure that the core Elastic Stack components (Elasticsearch, Kibana, and
     A JSON response with version details indicates success.
 
 4. If a service is not running, refer to its specific troubleshooting guide:
-    - [Elasticsearch Troubleshooting](elasticsearch.md)
-    - [Kibana Troubleshooting](kibana.md)
-    - [APM Server Troubleshooting](apm-server.md)
+    - [Elasticsearch Troubleshooting](https://help.relativity.com/Server2025/Content/Elasticstack/Elasticsearch_Troubleshooting.htm)
+    - [Kibana Troubleshooting](https://help.relativity.com/Server2025/Content/Elasticstack/Kibana_Troubleshooting.htm)
+    - [APM Server Troubleshooting](https://help.relativity.com/Server2025/Content/Elasticstack/APM_Server_Troubleshooting.htm)
 
 
 - For port-related issues, see the [Pre-requisite Troubleshooting](pre-requisite-troubleshooting.md) guide.
@@ -231,7 +231,7 @@ If the above steps do not resolve the issue, verify the following access and con
 
 ### Relativity Service Account Verification
 
-For service account requirements and troubleshooting, see [Environment_Watch_Installer](../elastic-stack-setup-02-environment-watch/elastic-stack-setup-02-environment-watch.md)
+For service account requirements and troubleshooting, see [Environment_Watch_Installer](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)
 
 
 ## Installer and Service Errors
@@ -265,5 +265,5 @@ This section covers issues related to the Environment Watch installer and the un
 
 
 For additional troubleshooting, refer to the main documentation:  
-[Environment Watch Installer](../elastic-stack-setup-01-installation.md)
+[Environment Watch Installer](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)
 
