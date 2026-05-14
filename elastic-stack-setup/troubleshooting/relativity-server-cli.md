@@ -28,12 +28,12 @@ The Elastic APM integration package must be added and configured in Kibana befor
     1. Login to Kibana and navigate to **Management** > **Integrations**.
     2. Search for "Elastic APM" in the search bar.
     3. Check if "Elastic APM" appears under **Installed integrations**.
-    4. If APM integration is not installed, follow the detailed setup instructions in the [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#step-4-additional-setup-and-verification).
+    4. If APM integration is not installed, follow the detailed setup instructions in the [Elastic APM Integration Setup Guide](https://help.relativity.com/Server2025/Content/Elasticstack/Installing_Elastic_Stack.htm#additional-setup-and-verification).
 
         ![Installed_Integrations](../../resources/troubleshooting-images/installed_integrations.png)
 
 > [!NOTE]
-> If you encounter errors such as "Package not found" or installation timeouts during APM integration package installation, refer to the official [Elastic APM Integration Setup Guide](../elasticsearch_setup_development.md#elastic-apm-integration-package).
+> If you encounter errors such as "Package not found" or installation timeouts during APM integration package installation, refer to the official [Elastic APM Integration Setup Guide](https://help.relativity.com/Server2025/Content/Elasticstack/Installing_Elastic_Stack.htm#additional-setup-and-verification).
 
 To verify connectivity, always use the following format for verification commands:
 ```powershell
@@ -66,7 +66,7 @@ Expected Output:
 
 #### Self Instrumentation Data View
 
-Self-instrumentation allows you to monitor the CLI's own metrics, traces, and logs. See [Self-Instrumentation](apm-server.md#self-instrumentation) for setup and troubleshooting instructions.
+Self-instrumentation allows you to monitor the CLI's own metrics, traces, and logs. See [Self-Instrumentation](https://help.relativity.com/Server2025/Content/Elasticstack/APM_Server_Troubleshooting.htm#self-instrumentation) for setup and troubleshooting instructions.
 
 
 > Without the self-instrumentation Data View, you may not see CLI self-monitoring data in Kibana dashboards.
@@ -91,7 +91,7 @@ Kibana encryption keys must be added to `C:\elastic\kibana\config\kibana.yml` be
 [ERROR] Missing required Kibana encryption key: xpack.security.encryptionKey
 ```
 
-If you encounter encryption key validation errors or warnings in the CLI, follow the instructions in [Kibana Encryption Keys Configuration](kibana.md#5-kibana-encryption-keys-configuration).
+If you encounter encryption key validation errors or warnings in the CLI, follow the instructions in [Kibana Encryption Keys Configuration](https://help.relativity.com/Server2025/Content/Elasticstack/Kibana_Troubleshooting.htm#kibana-encryption-keys-configuration).
 
 ## Common CLI Errors
 
@@ -151,4 +151,4 @@ This section covers common errors encountered during the Environment Watch and D
     relsvr.exe setup
     ```
 
-For full setup instructions, see [Relativity_Server_CLI Setup](../relativity_server_cli_setup.md).
+For full setup instructions, see [Relativity_Server_CLI Setup](../elastic-stack-setup-02-environment-watch/elastic-stack-setup-02-environment-watch.md).
