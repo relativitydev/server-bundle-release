@@ -49,7 +49,6 @@ After installing the required Elastic components for Data Grid Audit, the integr
 6. **Relativity admin account permissions** — The Relativity admin account used with the CLI must:
    - Be a member of the **System Administrators** group in Relativity.
    - Have read/write access to the **Secret Store**.
-   - Use **Forms Authentication**. The CLI authenticates against the Relativity REST API using Forms Authentication credentials; other authentication providers are not supported.
    - **Not have two-factor authentication (2FA) enabled.** The CLI cannot complete an interactive 2FA challenge. Using an account with 2FA enforced will result in authentication failures during setup.
 
 7. **Elasticsearch admin account** — The Elasticsearch credential provided to the CLI must have **superuser** privileges (or equivalent cluster-level read/write permissions). Using a limited-privilege account will result in `Unauthorized` errors during API key creation and index operations.
@@ -69,7 +68,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 - Use the **master node hostname** — do not use a data node URL. The CLI communicates with the cluster through the master/coordinating node, which handles cluster-level operations such as API key creation and index management.
 - The default port is `9200`. The URL must use HTTPS if TLS is enabled on the cluster.
 - Use a hostname that matches the **Subject Alternative Name (SAN) or Common Name (CN)** on the Elasticsearch TLS certificate. Using an IP address or alternate hostname not covered by the certificate will cause a certificate mismatch (SSL error) even if the certificate is otherwise trusted.
-- Example: `https://<elasticsearch-hostname:9200`
+- Example: `https://<elasticsearch-hostname>:9200`
 
 > [!TIP]
 > If your environment uses a load balancer in front of Elasticsearch, confirm that the load balancer certificate covers the hostname you are providing, and that the backend nodes are also individually accessible for certificate validation. When in doubt, use the individual node hostname that matches the certificate CN/SAN.
@@ -98,7 +97,7 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
     Confirm you would like to perform the 'DataGrid' setup [y/n] (y): y
 
     Existing settings do not exist
-    Enter the Relativity admin username (relativity.admin@kcura.com): relativity.admin@kcura.com
+    Enter the Relativity admin username (<relativity-admin-username>): <relativity-admin-username>
     Enter the Relativity admin password: *********
     Enter the Relativity instance url (https://relativity.example.com/Relativity): https://relativity.example.com/Relativity
     Relativity instance is verified
@@ -110,7 +109,7 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 
     | Parameter | Description | Example |
     | :--- | :--- | :--- |
-    | Relativity admin username | The username of a Relativity System Administrator account. Must use Forms Authentication with two-factor authentication disabled. | `relativity.admin@kcura.com` |
+    | Relativity admin username | The username of a Relativity System Administrator account. Must use Forms Authentication with two-factor authentication disabled. | `<relativity-admin-username>` |
     | Relativity admin password | The password for the Relativity admin account. | |
     | Relativity instance URL | The HTTPS URL of the Relativity web server or load balancer, reachable from the SQL Primary server. Must end with `/Relativity`. | `https://relativity.example.com/Relativity` |
     | Elasticsearch admin username | The username of an Elasticsearch account with superuser privileges. | `elastic` |
@@ -134,10 +133,9 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
     
     If the setup completes successfully, Datagrid is now configured for the environment.
 
-    > [!NOTE]
-    > After setup completes, check whether the `NewDataGridMigratorToggleOverwrite` instance setting exists in your Relativity instance. If it is present, it must be set to `True`. If it is not present, no action is required.
-
 4. Restart the Relativity services on all machines for the changes to take effect.
 
+> [!NOTE]
+> After setup completes, check whether the `NewDataGridMigratorToggleOverwrite` instance setting exists in your Relativity instance. If it is present, it must be set to `True`. If it is not present, no action is required.
 
 5. Verify Audit Dashboard - navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
