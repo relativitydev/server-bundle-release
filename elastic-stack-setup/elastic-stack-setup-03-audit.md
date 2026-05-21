@@ -171,6 +171,3 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 > **Required for ARM jobs that include Data Grid content:** Check whether the `NewDataGridMigratorToggleOverwrite` instance setting exists in your Relativity instance. If it is present, it **must** be set to `True` before running any ARM jobs — otherwise ARM jobs will fail during the Audit Migration stage and may time out and discard all migration progress. If the setting is not present, no action is required.
 
 5. Verify Audit Dashboard - navigate to the Audit tab in the Relativity environment and confirm that the dashboard and its data are loading correctly.
-
-> [!NOTE]
-> **Large or high-volume environments:** The `AuditRecord_PrimaryPartition` table uses an INT identity column with a maximum value of 2,147,483,647 rows. Environments with high audit activity can approach this limit over time, which causes all users to be locked out of Relativity. Proactively monitor the row count and convert the Audit ID column to BIGINT before the limit is reached. **Do not reset the identity sequence back to 1** — this creates duplicate Audit IDs that cause Data Grid and SQL search results to return different records for the same ID. Contact Relativity Support for the BIGINT conversion procedure.
