@@ -57,14 +57,14 @@ After installing the required Elastic components for Data Grid Audit, the integr
    - The SSL certificate must be trusted on the SQL Primary server, and must be issued to the same hostname you provide as the Relativity instance URL. A mismatch between the certificate hostname and the URL will cause SSL validation to fail even if the certificate itself is valid.
    - To verify from the SQL Primary server:
      ```powershell
-     curl.exe -u <username>:<password> "https://<relativity-hostname>/Relativity/Identity/Get"
+     curl.exe -v -u <relativity-admin-username> "https://<relativity-hostname>/Relativity/"
      ```
 
    **Elasticsearch SSL certificate:**
    - The Elasticsearch cluster certificate must be trusted on the SQL Primary server.
    - To verify from the SQL Primary server:
      ```powershell
-     curl.exe -u <username>:<password> -X GET "https://<elasticsearch-masternode-hostname>:9200/"
+     curl.exe --ssl-no-revoke -u <elasticsearch-admin-username> "https://<elasticsearch-masternode-hostname>:9200/"
      ```
 
    A successful response (without `-k`) for each confirms the certificate is trusted. If a command only succeeds with `-k` (skip verification), import the relevant CA certificate into the Windows **Trusted Root Certification Authorities** store on the SQL Primary before proceeding. See [SSL/TLS Certificate Issues](./troubleshooting/pre-requisite-troubleshooting.md#ssltls-certificate-issues) for import instructions.
