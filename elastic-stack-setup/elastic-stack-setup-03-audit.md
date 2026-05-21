@@ -82,8 +82,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
    1. Import the Elasticsearch CA certificate into the Windows **Trusted Root Certification Authorities** store. See [SSL/TLS Certificate Issues](./troubleshooting/pre-requisite-troubleshooting.md#ssltls-certificate-issues) for import steps.
    2. Restart all Relativity services on the host (`kCura Edds Agent Manager`, `kCura Edds Web Processing Manager`, `kCura Service Host Manager`).
 
-   > [!NOTE]
-   > The Audit tab in Relativity working correctly does **not** confirm that Agent Servers have the certificate — the Audit tab communicates through the web tier, while ARM agents connect to Elasticsearch directly.
+   > **Note:** The Audit tab in Relativity working correctly does **not** confirm that Agent Servers have the certificate — the Audit tab communicates through the web tier, while ARM agents connect to Elasticsearch directly.
 
 7. **Relativity admin account permissions** — The Relativity admin account used with the CLI must:
    - Be a member of the **System Administrators** group in Relativity.
@@ -106,8 +105,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
    - Use a hostname that matches the **Subject Alternative Name (SAN) or Common Name (CN)** on the Elasticsearch TLS certificate. Using an IP address or alternate hostname not covered by the certificate will cause a certificate mismatch (SSL error) even if the certificate is otherwise trusted.
    - Example: `https://<elasticsearch-masternode-hostname>:9200`
 
-   > [!TIP]
-   > If your environment uses a load balancer in front of Elasticsearch, confirm that the load balancer certificate covers the hostname you are providing, and that the backend nodes are also individually accessible for certificate validation. When in doubt, use the individual node hostname that matches the certificate CN/SAN.
+   > **Tip:** If your environment uses a load balancer in front of Elasticsearch, confirm that the load balancer certificate covers the hostname you are providing, and that the backend nodes are also individually accessible for certificate validation. When in doubt, use the individual node hostname that matches the certificate CN/SAN.
 
 ### Set up instructions
 
