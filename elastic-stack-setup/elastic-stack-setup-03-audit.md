@@ -18,8 +18,6 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 3. Verify that the InfraWatch Services application is installed in the Relativity instance (this RAP is delivered as part of the base Relativity Server 2024 installation package). To confirm, open the Relativity **Application Library** and verify that **InfraWatch Services** appears in the installed application list.
 
-**Network & SSL** — Prerequisites 4–6 cover connectivity and certificate trust. Complete all three before running the CLI.
-
 4. **Network accessibility from the SQL Primary server** — The CLI runs on the SQL Primary server and makes outbound HTTPS connections to both Relativity and Elasticsearch. Before running the CLI, verify that both endpoints are reachable from the SQL Primary server:
 
    ```powershell
@@ -52,7 +50,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
    Both must return `TcpTestSucceeded : True` before proceeding. If either fails, resolve the network or firewall issue before continuing.
 
-5. **SSL/TLS certificate trust — SQL Primary server** — The SSL certificates for both Relativity (Kepler) and Elasticsearch must be trusted on the SQL Primary server before running the CLI. Certificate trust on all other servers (Web Servers, Agent Servers) is covered in prerequisite 6.
+5. **SSL/TLS certificate trust — SQL Primary server** — The SSL certificates for both Relativity and Elasticsearch must be trusted on the SQL Primary server before running the CLI. Certificate trust on all other servers (Web Servers, Agent Servers) is covered in prerequisite 6.
 
    **Relativity SSL certificate:**
    - The SSL certificate must be trusted on the SQL Primary server, and must be issued to the same hostname you provide as the Relativity instance URL. A mismatch between the certificate hostname and the URL will cause SSL validation to fail even if the certificate itself is valid.
@@ -76,11 +74,8 @@ After installing the required Elastic components for Data Grid Audit, the integr
      ```powershell
      curl.exe --ssl-no-revoke -u <elasticsearch-admin-username> "https://<elasticsearch-masternode-hostname>:9200/"
      ```
-   - **Success** — an HTTP response body (even a `401`) confirms the certificate is trusted:
-     ```json
-     {"error":{"root_cause":[{"type":"security_exception","reason":"missing authentication credentials"}]}}
-     ```
-   - **Failure** — a `curl: (60)` error means the certificate is not trusted and must be imported before proceeding:
+   - **Success** — any HTTP response body confirms the certificate is trusted.
+   - **Failure** — a `curl: (60)` error means the certificate is not trusted:
      ```
      curl: (60) SSL certificate problem: self-signed certificate in certificate chain
      ```
@@ -100,7 +95,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
    1. Import the Elasticsearch CA certificate into the Windows **Trusted Root Certification Authorities** store. See [SSL/TLS Certificate Issues](./troubleshooting/pre-requisite-troubleshooting.md#ssltls-certificate-issues) for import steps.
    2. Restart all Relativity services on the host (`kCura Edds Agent Manager`, `kCura Edds Web Processing Manager`, `kCura Service Host Manager`).
 
-   > **Note:** The Audit tab in Relativity working correctly does **not** confirm that Agent Servers have the certificate — the Audit tab communicates through the web tier, while ARM agents connect to Elasticsearch directly.
+   > **Note:** A working Audit tab does **not** confirm that Agent Servers have the certificate — the Audit tab communicates through the web tier, while ARM agents connect to Elasticsearch directly.
 
 7. **Relativity admin account permissions** — The Relativity admin account used with the CLI must:
    - Be a member of the **System Administrators** group in Relativity.
@@ -185,7 +180,7 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 
     If the setup completes successfully, Datagrid is now configured for the environment.
 
-> **Warning:** **Required for ARM jobs that include Data Grid content:** Before restarting services, check whether the `NewDataGridMigratorToggleOverwrite` instance setting exists in your Relativity instance. If it is present, it **must** be set to `True` before running any ARM jobs — otherwise ARM jobs will fail during the Audit Migration stage and may time out and discard all migration progress. If the setting is not present, no action is required.
+> **Warning:** Before restarting services, check whether the `NewDataGridMigratorToggleOverwrite` instance setting exists in your Relativity instance. If it is present, it **must** be set to `True` before running any ARM jobs — otherwise ARM jobs will fail during the Audit Migration stage and may time out and discard all migration progress. If the setting is not present, no action is required.
 
 4. Restart the following Relativity services on **all machines** in the Relativity instance: `kCura Edds Agent Manager`, `kCura Edds Web Processing Manager`, and `kCura Service Host Manager`.
 
