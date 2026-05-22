@@ -12,7 +12,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 ### Prerequisites
 
-1. Install the mapper-size plugin on all nodes in the Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). The Elasticsearch service must be restarted on each node after installing the plugin. In production environments, perform a **rolling restart** — restart one node at a time and wait for it to rejoin the cluster and return to a green/yellow health status before proceeding to the next node. A full cluster restart is not required.
+1. Install the mapper-size plugin on all nodes in the Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). The Elasticsearch service must be restarted on each node after installing the plugin.
 
 2. The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
 
@@ -101,6 +101,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
    - Be a member of the **System Administrators** group in Relativity.
    - Have read/write access to the **Secret Store**.
    - **Not have two-factor authentication (2FA) enabled.** The CLI cannot complete an interactive 2FA challenge. Using an account with 2FA enforced will result in authentication failures during setup.
+   - The CLI must be run from an **elevated (Run as Administrator) command prompt or PowerShell** on the SQL Primary server — see Step 1 of the setup instructions.
 
 8. **Elasticsearch admin account** — The Elasticsearch credential provided to the CLI must have **superuser** privileges (or equivalent cluster-level read/write permissions). Using a limited-privilege account will result in `Unauthorized` errors during API key creation and index operations.
 
@@ -126,7 +127,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 Follow these steps to set up Data Grid Audit using the Relativity Server CLI. All setup will occur on the SQL Primary server.
 
-1. Open elevated command prompt/powershell. Run below command. Select **Datagrid**
+1. Open an **elevated command prompt or PowerShell** on the SQL Primary server (right-click → **Run as Administrator**). Run the following command and select **DataGrid**:
     ```
     C:\Server.Bundle.x.y.z\relsvr.exe setup
     Relativity Server CLI - 24.0.1196
