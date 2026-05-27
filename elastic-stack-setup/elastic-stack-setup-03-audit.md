@@ -103,6 +103,8 @@ After installing the required Elastic components for Data Grid Audit, the integr
    - **Not have two-factor authentication (2FA) enabled.** The CLI cannot complete an interactive 2FA challenge. Using an account with 2FA enforced will result in authentication failures during setup.
    - The CLI must be run from an **elevated (Run as Administrator) command prompt or PowerShell** on the SQL Primary server — see Step 1 of the setup instructions.
 
+   > **Note:** If the Relativity password provider has **Trusted IP Address** restrictions configured, add the SQL Primary server's IP address to the trusted IP list before running the CLI. Authentication requests originate from the SQL Primary server and will be blocked for unlisted IPs even with valid credentials.
+
 8. **Elasticsearch admin account** — The Elasticsearch credential provided to the CLI must have **superuser** privileges (or equivalent cluster-level read/write permissions). Using a limited-privilege account will result in `Unauthorized` errors during API key creation and index operations.
 
 9. **Instance URL requirements** — Providing the wrong Relativity or Elasticsearch URL is one of the most common causes of setup failure. Review these requirements before running the CLI.
