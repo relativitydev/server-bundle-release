@@ -30,19 +30,43 @@ Running `rotate-api-key` without any flags launches an interactive session. The 
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key
+
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
+Select the Elasticsearch cluster to rotate the API key for:
+
+> rel-cluster-infrawatch
+  rel-cluster-datagrid
 ```
 
-![Interactive cluster selection menu](../../resources/RotateApiKey-Interactive-ClusterSelect.png)
-
-After selecting a cluster, the CLI displays the current API key ID, the number of days remaining before it expires, and asks you to confirm the rotation. Entering `n` aborts with no changes made. Entering `y` continues to prompt for a validity period in days, then performs the rotation.
+After selecting a cluster, the CLI displays the current API key ID and the number of days remaining before expiry, then asks you to confirm the rotation. Entering `n` aborts with no changes made. Entering `y` continues to prompt for a validity period in days, then performs the rotation.
 
 **InfraWatch cluster:**
 
-![Interactive rotation for the InfraWatch cluster](../../resources/RotateApiKey-Interactive-InfraWatch.png)
+```
+Current API key ID: g9tMUp8BVmBEyCHxvRon  (name: rel-infrawatch)
+Days remaining before expiry: 179
+Rotate API key for cluster 'rel-cluster-infrawatch'? This will invalidate the current key. [y/n] (n): y
+How many days should the new key be valid? (180): 180
+
+API key rotation completed ----------------------------------------- 100%
+
+Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
+```
 
 **DataGrid cluster:**
 
-![Interactive rotation for the DataGrid cluster](../../resources/RotateApiKey-Interactive-DataGrid.png)
+```
+Current API key ID: idtNUp8BVmBEyCHxYC02  (name: rel-datagrid)
+Days remaining before expiry: 179
+Rotate API key for cluster 'rel-cluster-datagrid'? This will invalidate the current key. [y/n] (n): y
+How many days should the new key be valid? (180): 180
+
+API key rotation completed ----------------------------------------- 100%
+
+Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
+```
 
 ### Rotate with a pre-selected cluster
 
@@ -50,21 +74,53 @@ Use `--cluster` to target a specific cluster directly, skipping the cluster sele
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-infrawatch
+
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
+Current API key ID: GUgcV58BbZgP437js08h  (name: rel-infrawatch)
+Days remaining before expiry: 179
+Rotate API key for cluster 'rel-cluster-infrawatch'? This will invalidate the current key. [y/n] (n): y
+How many days should the new key be valid? (180): 180
+
+API key rotation completed ----------------------------------------- 100%
+
+Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
 ```
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-datagrid
-```
 
-![Pre-selected cluster showing key info and confirmation prompt](../../resources/RotateApiKey-Cluster-Flag.png)
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
+Current API key ID: gUkdV58BbZgP437jHQNQ  (name: rel-datagrid)
+Days remaining before expiry: 179
+Rotate API key for cluster 'rel-cluster-datagrid'? This will invalidate the current key. [y/n] (n): y
+How many days should the new key be valid? (180): 180
+
+API key rotation completed ----------------------------------------- 100%
+
+Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
+```
 
 Use the `-c` short alias to achieve the same result:
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key -c rel-cluster-infrawatch
-```
 
-![Short alias rotation completing successfully](../../resources/RotateApiKey-ShortAlias.png)
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
+Current API key ID: GUgcV58BbZgP437js08h  (name: rel-infrawatch)
+Days remaining before expiry: 179
+Rotate API key for cluster 'rel-cluster-infrawatch'? This will invalidate the current key. [y/n] (n): y
+How many days should the new key be valid? (180): 180
+
+API key rotation completed ----------------------------------------- 100%
+
+Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
+```
 
 ### Quiet mode (automated / scripted rotation)
 
@@ -72,13 +128,31 @@ Combining `--quiet` with `--cluster` suppresses all prompts, auto-confirms the r
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --quiet --cluster rel-cluster-infrawatch
+
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
+Current API key ID: 5UkeV58BbZgP437jfiJ8  (name: rel-infrawatch)
+Days remaining before expiry: 179
+
+API key rotation completed ----------------------------------------- 100%
+
+Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
 ```
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --quiet --cluster rel-cluster-datagrid
-```
 
-![Quiet mode rotation completing for both clusters](../../resources/RotateApiKey-Quiet.png)
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
+Current API key ID: gUkdV58BbZgP437jHQNQ  (name: rel-datagrid)
+Days remaining before expiry: 179
+
+API key rotation completed ----------------------------------------- 100%
+
+Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
+```
 
 ### Dry run
 
@@ -86,13 +160,16 @@ Use `--dryrun` to simulate the rotation without making any changes. The CLI disp
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-infrawatch --dryrun
-```
 
-```
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
+Current API key ID: 5UkeV58BbZgP437jfiJ8  (name: rel-infrawatch)
+Days remaining before expiry: 179
+Rotate API key for cluster 'rel-cluster-infrawatch'? This will invalidate the current key. [y/n] (n): y
+How many days should the new key be valid? (180): 180
 DryRun mode: No changes were committed. The API key rotation was simulated successfully.
 ```
-
-![Dry run simulation output](../../resources/RotateApiKey-DryRun.png)
 
 ### Invalid cluster value
 
@@ -100,13 +177,12 @@ If an unrecognized value is passed to `--cluster`, the CLI rejects it immediatel
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster infrawatch
-```
 
-```
+Relativity Server CLI - 100.0.28
+Copyright (c) 2025, Relativity ODA LLC
+
 Invalid --cluster value 'infrawatch'. Valid values are: rel-cluster-infrawatch, rel-cluster-datagrid
 ```
-
-![Invalid cluster argument error](../../resources/RotateApiKey-InvalidCluster.png)
 
 ## Verify the rotation
 
