@@ -26,45 +26,45 @@ The `rotate-api-key` command creates a new Elasticsearch API key for the specifi
 
 ### Interactive
 
-Running `rotate-api-key` without any flags launches an interactive session. The CLI prompts you to select a target cluster, displays the current key information, and asks for an expiry duration in days.
+Running `rotate-api-key` without any flags launches an interactive session. The CLI prompts you to select a target cluster.
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key
 ```
 
-### Rotate the InfraWatch cluster API key
+![Interactive cluster selection menu](../../resources/RotateApiKey-Interactive-ClusterSelect.png)
 
-Use `--cluster rel-cluster-infrawatch` (or its short alias `-c`) to target the Environment Watch cluster directly, skipping the cluster selection prompt.
+After selecting a cluster, the CLI displays the current API key ID, the number of days remaining before it expires, and asks you to confirm the rotation. Entering `n` aborts with no changes made. Entering `y` continues to prompt for a validity period in days, then performs the rotation.
+
+**InfraWatch cluster:**
+
+![Interactive rotation for the InfraWatch cluster](../../resources/RotateApiKey-Interactive-InfraWatch.png)
+
+**DataGrid cluster:**
+
+![Interactive rotation for the DataGrid cluster](../../resources/RotateApiKey-Interactive-DataGrid.png)
+
+### Rotate with a pre-selected cluster
+
+Use `--cluster` to target a specific cluster directly, skipping the cluster selection menu. The CLI still displays the current key information and asks for confirmation before rotating.
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-infrawatch
 ```
 
-Short alias:
+```
+C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-datagrid
+```
+
+![Pre-selected cluster showing key info and confirmation prompt](../../resources/RotateApiKey-Cluster-Flag.png)
+
+Use the `-c` short alias to achieve the same result:
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key -c rel-cluster-infrawatch
 ```
 
-On success, the CLI reports:
-
-```
-API key rotation completed ----------------------------------------- 100%
-
-Successfully rotated the Elasticsearch API key and persisted the new key to the Secret Store.
-```
-
-![InfraWatch API key rotation CLI output](../../resources/RotateApiKey-InfraWatch-CLI.png)
-
-### Rotate the DataGrid cluster API key
-
-Use `--cluster rel-cluster-datagrid` to target the DataGrid cluster.
-
-```
-C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-datagrid
-```
-
-![DataGrid API key rotation CLI output](../../resources/RotateApiKey-DataGrid-CLI.png)
+![Short alias rotation completing successfully](../../resources/RotateApiKey-ShortAlias.png)
 
 ### Quiet mode (automated / scripted rotation)
 
@@ -78,13 +78,21 @@ C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --quiet --cluster rel-cluster-i
 C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --quiet --cluster rel-cluster-datagrid
 ```
 
+![Quiet mode rotation completing for both clusters](../../resources/RotateApiKey-Quiet.png)
+
 ### Dry run
 
-Use `--dryrun` to preview what the command would do without making any changes. No new key is created and the Secret Store is not modified.
+Use `--dryrun` to simulate the rotation without making any changes. The CLI displays the current key information, accepts the same prompts as a normal rotation, then confirms the simulation without writing to Elasticsearch or the Secret Store.
 
 ```
-C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --dryrun --cluster rel-cluster-infrawatch
+C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-infrawatch --dryrun
 ```
+
+```
+DryRun mode: No changes were committed. The API key rotation was simulated successfully.
+```
+
+![Dry run simulation output](../../resources/RotateApiKey-DryRun.png)
 
 ### Invalid cluster value
 
@@ -107,17 +115,7 @@ Invalid --cluster value 'infrawatch'. Valid values are: rel-cluster-infrawatch, 
 1. In Kibana, navigate to **Stack Management** > **Security** > **API keys**.
 2. Confirm a new key for the rotated cluster appears at the top of the list with a recent creation timestamp and an expiry approximately six months in the future.
 
-**Before rotation** — the existing key shows the original creation date and remaining expiry time.
-
-![Kibana API keys before rotation](../../resources/RotateApiKey-InfraWatch-Kibana-Before.png)
-
-**After rotation (InfraWatch)** — a new `rel-infrawatch` key appears at the top, created moments ago.
-
-![Kibana API keys after InfraWatch rotation](../../resources/RotateApiKey-InfraWatch-Kibana-After.png)
-
-**After rotation (DataGrid)** — a new `rel-datagrid` key appears at the top, created moments ago.
-
-![Kibana API keys after DataGrid rotation](../../resources/RotateApiKey-DataGrid-Kibana-After.png)
+![Kibana API keys page showing newly rotated rel-infrawatch and rel-datagrid keys](../../resources/RotateApiKey-Kibana-After.png)
 
 ### Secret Store
 
@@ -125,12 +123,6 @@ To confirm the new API key was persisted, read the secret for the rotated cluste
 
 - **InfraWatch secret path:** `/database/elasticsearch/clusters/rel-cluster-infrawatch/security/api-keys/rel-infrawatch`
 - **DataGrid secret path:** `/database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid`
-
-The Secret Store output shows the old and new `api-key` values before and after rotation.
-
-![InfraWatch Secret Store before and after rotation](../../resources/RotateApiKey-InfraWatch-SecretStore.png)
-
-![DataGrid Secret Store before and after rotation](../../resources/RotateApiKey-DataGrid-SecretStore.png)
 
 ### Elasticsearch Dev Tools (optional)
 
@@ -149,10 +141,10 @@ To confirm that the old key has been invalidated and the new key is active, quer
 
 **Old key — invalidated:**
 
-![Old API key invalidated in Elasticsearch Dev Tools](../../resources/RotateApiKey-InfraWatch-DevTools-OldKey.png)
+![Old API key showing invalidated: true in Elasticsearch Dev Tools](../../resources/RotateApiKey-InfraWatch-DevTools-OldKey.png)
 
 **New key — active:**
 
-![New API key active in Elasticsearch Dev Tools](../../resources/RotateApiKey-InfraWatch-DevTools-NewKey.png)
+![New API key showing invalidated: false in Elasticsearch Dev Tools](../../resources/RotateApiKey-InfraWatch-DevTools-NewKey.png)
 
 Refer to the [Troubleshooting Guide](../troubleshooting/relativity-server-cli.md) if you encounter any issues.
