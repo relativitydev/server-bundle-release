@@ -10,7 +10,7 @@ The `rotate-api-key` command creates a new Elasticsearch API key for the specifi
 ## Prerequisites
 
 - The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
-- Access to the Relativity Secret Store (whitelisted for Secret Store access)
+- Access to the Relativity Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
 - Elasticsearch is running and accessible
 - The initial Environment Watch setup has been completed. See [Set up Environment Watch using the Relativity Server CLI](./elastic-stack-setup-02-environment-watch.md)
 
@@ -19,7 +19,7 @@ The `rotate-api-key` command creates a new Elasticsearch API key for the specifi
 | Flag | Short alias | Description | Default |
 |------|-------------|-------------|---------|
 | `--cluster <value>` | `-c` | Target Elasticsearch cluster. Valid values: `rel-cluster-infrawatch`, `rel-cluster-datagrid` | Prompted interactively |
-| `--quiet` | | Suppress all prompts, auto-confirm, and use the default 180-day expiry | `false` |
+| `--quiet` | | Suppress confirmation and expiry prompts; auto-confirms with the default 180-day expiry. Use together with `--cluster` for fully unattended execution | `false` |
 | `--dryrun` | | Preview what would happen without making any changes to Elasticsearch or the Secret Store | `false` |
 
 ## Usage
@@ -40,7 +40,13 @@ Select the Elasticsearch cluster to rotate the API key for:
   rel-cluster-datagrid
 ```
 
-After selecting a cluster, the CLI displays the current API key ID and the number of days remaining before expiry, then asks you to confirm the rotation. Entering `n` aborts with no changes made. Entering `y` continues to prompt for a validity period in days, then performs the rotation.
+After selecting a cluster, the CLI displays the current API key ID and the number of days remaining before expiry, then asks you to confirm the rotation. Entering `n` aborts with no changes made:
+
+```
+Key rotation aborted. No changes were made.
+```
+
+Entering `y` continues to prompt for a validity period in days, then performs the rotation.
 
 **InfraWatch cluster:**
 
