@@ -201,10 +201,21 @@ Invalid --cluster value 'infrawatch'. Valid values are: rel-cluster-infrawatch, 
 
 ### Secret Store
 
-To confirm the new API key was persisted, read the secret for the rotated cluster using the Secret Store client. To compare values, read the secret both before and after running `rotate-api-key` — the `api-key` value should differ between the two reads.
+To confirm the new API key was persisted, use the Secret Store CLI to read the secret for the rotated cluster. To compare values, read the secret both before and after running `rotate-api-key` — the `api-key` value should differ between the two reads.
 
-- **InfraWatch secret path:** `/database/elasticsearch/clusters/rel-cluster-infrawatch/security/api-keys/rel-infrawatch`
-- **DataGrid secret path:** `/database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid`
+From an elevated PowerShell on the Secret Store server, navigate to `C:\Program Files\Relativity Secret Store\Client\` and run the read command for the rotated cluster:
+
+**InfraWatch:**
+
+```
+.\secretstore.exe secret read /database/elasticsearch/clusters/rel-cluster-infrawatch/security/api-keys/rel-infrawatch
+```
+
+**DataGrid:**
+
+```
+.\secretstore.exe secret read /database/elasticsearch/clusters/rel-cluster-datagrid/security/api-keys/rel-datagrid
+```
 
 ### Elasticsearch Dev Tools (optional)
 
