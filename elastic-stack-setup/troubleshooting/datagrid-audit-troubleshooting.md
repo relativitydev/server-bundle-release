@@ -2,7 +2,7 @@
 
 This document provides troubleshooting guidance for common issues that cause the Data Grid Audit tab in Relativity to fail or display errors. These issues can occur after initial setup, following an API key rotation, or when an existing API key has expired.
 
-## Audit Tab Shows Authentication Error or No Results
+## Audit Tab Shows Authentication Error
 
 ### Symptoms
 
@@ -19,7 +19,6 @@ The Audit tab may display one of the following errors:
 These errors can be caused by:
 - An Elasticsearch API key that has **expired** or been **invalidated**
 - Relativity services not yet restarted after an API key rotation
-- The Elasticsearch service requiring a restart to accept the new key
 
 ---
 
