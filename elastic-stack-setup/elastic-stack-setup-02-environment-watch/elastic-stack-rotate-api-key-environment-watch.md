@@ -240,4 +240,4 @@ To confirm that the old key has been invalidated and the new key is active, quer
 
 ![New API key showing invalidated: false in Elasticsearch Dev Tools](../../resources/RotateApiKey-InfraWatch-DevTools-NewKey.png)
 
-Refer to the [Troubleshooting Guide](../troubleshooting/relativity-server-cli.md) if you encounter any issues.
+If the Audit tab does not load after rotating the DataGrid API key, refer to [Data Grid Audit Troubleshooting](../troubleshooting/datagrid-audit-troubleshooting.md).
