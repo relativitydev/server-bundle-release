@@ -1,38 +1,77 @@
 # Data Grid Audit Troubleshooting
 
-This document provides troubleshooting guidance for common issues encountered with the Data Grid Audit tab in Relativity after initial setup or API key rotation.
+This document provides troubleshooting guidance for common issues that cause the Data Grid Audit tab in Relativity to fail or display errors. These issues can occur after initial setup, following an API key rotation, or when an existing API key has expired.
 
-## Audit Tab Does Not Load After API Key Rotation
+## Audit Tab Shows Authentication Error or No Results
 
 ### Symptoms
 
-After rotating the DataGrid cluster API key using the `rotate-api-key` command, the Audit tab may display one of the following errors:
+The Audit tab may display one of the following errors:
 
-- **"Authentication failed for user to access Elasticsearch. Please check the permissions for the user."** — appears immediately after key rotation, before Relativity services have been restarted.
-- **"This chart did not return any results."** — appears after restarting Relativity services, while Elasticsearch is still applying the new key.
+- **"Authentication failed for user to access Elasticsearch. Please check the permissions for the user."** — Relativity cannot authenticate against Elasticsearch with the current API key.
 
-### Cause
+  ![Relativity Audit tab showing authentication failed error](../../resources/troubleshooting-images/audit-auth-failed.png)
 
-When the API key is rotated, the new key is persisted to the Relativity Secret Store. Relativity services must be restarted to read the updated key from the Secret Store. In some cases, the Elasticsearch service also requires a restart to fully accept connections using the new key.
+- **"This chart did not return any results."** — Relativity can reach Elasticsearch but data has not loaded, typically seen after services have been restarted but Elasticsearch is still initialising.
 
-### Resolution
+  ![Relativity Audit tab showing no results](../../resources/troubleshooting-images/audit-no-results.png)
 
-1. After rotating the DataGrid API key, navigate to **Audit** > **Audit** in Relativity.
+These errors can be caused by:
+- An Elasticsearch API key that has **expired** or been **invalidated**
+- Relativity services not yet restarted after an API key rotation
+- The Elasticsearch service requiring a restart to accept the new key
 
-   If the page shows *"Authentication failed for user to access Elasticsearch. Please check the permissions for the user."*, proceed to step 2.
+---
 
-2. Open **Services** (`services.msc`) and restart the following Relativity services on **all servers** in the Relativity instance:
+## Step 1: Check the Elasticsearch Logs
+
+On the Elasticsearch server, open the log file at:
+
+```
+C:\elastic\elasticsearch\logs\elasticsearch.log
+```
+
+Look for repeated `WARN` entries matching this pattern:
+
+```
+[WARN ][o.e.x.s.a.ApiKeyAuthenticator] [<node>] Authentication using apikey failed - api key [<key_id>] has been invalidated
+```
+
+![Elasticsearch log showing repeated invalidated API key warnings](../../resources/troubleshooting-images/elasticsearch-apikey-invalidated-log.png)
+
+- **If this warning is present** — the API key Relativity uses to connect to the DataGrid Elasticsearch cluster has expired or been invalidated. Proceed to [Step 2: Rotate the Expired API Key](#step-2-rotate-the-expired-api-key).
+- **If this warning is not present** — the key is valid but services may need a restart. Proceed to [Step 3: Restart Services](#step-3-restart-services).
+
+---
+
+## Step 2: Rotate the Expired API Key
+
+When Elasticsearch logs confirm the API key has been invalidated, issue a new key using the Relativity Server CLI.
+
+Follow the [Rotate an Elasticsearch API Key using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md) guide, targeting `rel-cluster-datagrid`.
+
+After the rotation completes, continue with [Step 3: Restart Services](#step-3-restart-services) to restore the Audit tab.
+
+---
+
+## Step 3: Restart Services
+
+Restarting Relativity services forces them to re-read the API key from the Secret Store. In some cases, the Elasticsearch service also requires a restart.
+
+1. Open **Services** (`services.msc`) and restart the following Relativity services on **all servers** in the Relativity instance:
    - `kCura Edds Agent Manager`
    - `kCura Edds Web Processing Manager`
    - `kCura Service Host Manager`
 
-3. Refresh the Audit tab in the browser. The error may change to *"This chart did not return any results."* — this indicates Relativity can now reach Elasticsearch but data has not yet loaded.
+2. Navigate to **Audit** > **Audit** in Relativity and refresh the page.
 
-4. On the Elasticsearch server, open **Services** and restart the **Elasticsearch** service.
+   The error may change to *"This chart did not return any results."* — this indicates Relativity can now reach Elasticsearch but data has not yet loaded.
 
-5. Wait **1–5 minutes** for Elasticsearch to fully restart and for Relativity to re-establish the connection.
+3. On the Elasticsearch server, open **Services** and restart the **Elasticsearch** service.
 
-6. Reload the Relativity UI and navigate back to the **Audit** tab. Audit data should now display correctly.
+4. Wait **1–5 minutes** for Elasticsearch to fully restart and for Relativity to re-establish the connection.
+
+5. Reload the Relativity UI and navigate back to the **Audit** tab. Audit data should now display correctly.
 
 > [!NOTE]
 > If the Audit tab still does not load after following these steps, verify that the new API key was successfully persisted to the Secret Store. See [Rotate an Elasticsearch API Key using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md#verify-the-rotation) for Secret Store and Kibana verification steps.
