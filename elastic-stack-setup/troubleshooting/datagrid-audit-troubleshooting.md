@@ -10,11 +10,11 @@ The Audit tab may display one of the following errors:
 
 - **"Authentication failed for user to access Elasticsearch. Please check the permissions for the user."** — Relativity cannot authenticate against Elasticsearch with the current API key.
 
-  ![Relativity Audit tab showing authentication failed error](../../resources/troubleshooting-images/audit-auth-failed.png)
+  ![Relativity Audit tab showing authentication failed error](../../resources/troubleshooting-images/authentication-error.png)
 
 - **"This chart did not return any results."** — Relativity can reach Elasticsearch but data has not loaded, typically seen after services have been restarted but Elasticsearch is still initialising.
 
-  ![Relativity Audit tab showing no results](../../resources/troubleshooting-images/audit-no-results.png)
+  ![Relativity Audit tab showing no results](../../resources/troubleshooting-images/charts-did-not-return-results.png)
 
 These errors can be caused by:
 - An Elasticsearch API key that has **expired** or been **invalidated**
@@ -37,7 +37,7 @@ Look for repeated `WARN` entries matching this pattern:
 [WARN ][o.e.x.s.a.ApiKeyAuthenticator] [<node>] Authentication using apikey failed - api key [<key_id>] has been invalidated
 ```
 
-![Elasticsearch log showing repeated invalidated API key warnings](../../resources/troubleshooting-images/elasticsearch-apikey-invalidated-log.png)
+![Elasticsearch log showing repeated invalidated API key warnings](../../resources/troubleshooting-images/elasticsearch-errors.png)
 
 - **If this warning is present** — the API key Relativity uses to connect to the DataGrid Elasticsearch cluster has expired or been invalidated. Proceed to [Step 2: Rotate the Expired API Key](#step-2-rotate-the-expired-api-key).
 - **If this warning is not present** — the key is valid but services may need a restart. Proceed to [Step 3: Restart Services](#step-3-restart-services).
