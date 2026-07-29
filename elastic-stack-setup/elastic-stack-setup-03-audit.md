@@ -187,10 +187,7 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 
    In Relativity, go to **Admin** → **Instance Settings** and locate `ESIndexCreationSettings`. Inspect the `number_of_shards` and `number_of_replicas` values in the JSON template:
 
-   - **Single-node environments:** The defaults (`number_of_shards: "1"`, `number_of_replicas: "1"`) are appropriate.
-   - **Multi-node environments:** Confirm these values match your cluster's intended configuration. If they appear to have been reset to `1` and you had previously customized them, restore the correct values before restarting services. New `audit_*` indices are created using these settings, so incorrect values will affect ingest and search performance until corrected.
-
-   For guidance on recommended values for your cluster size, refer to the [Instance Setting Guide](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
+   - **Multi-node environments:** Confirm these values match your cluster's intended configuration. If they appear to have been reset to `1` and you had previously customized them, restore the correct values before restarting services.
 
 > **Warning:** Before restarting services, check whether the `NewDataGridMigratorToggleOverwrite` instance setting exists in your Relativity instance. If it is present, it **must** be set to `True` before running any ARM jobs — otherwise ARM jobs will fail during the Audit Migration stage and may time out and discard all migration progress. If the setting is not present, no action is required.
 
