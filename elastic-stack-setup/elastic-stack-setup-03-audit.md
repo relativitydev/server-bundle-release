@@ -7,7 +7,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 > Please review the following important information before proceeding:
 > * **For Existing Data Grid Audit Customers:** You must be on Elasticsearch 7.17 or later the first time you run the Relativity Server CLI for Data Grid Audit against this cluster — this applies regardless of how long Data Grid Audit has been in use.
-> * Before upgrading to Elasticsearch 8.x or 9.x, the `ESIndexCreationSetting` may need to be updated. For details, refer to the [Instance setting Details](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
+> * Before upgrading Elasticsearch, the `ESIndexCreationSetting` may need to be updated. For details, refer to the [Instance setting Details](https://help.relativity.com/Server2024/Content/System_Guides/Instance_Setting_Guide/Instance_setting_descriptions.htm#ESIndexCreationSettings).
 > * Always verify the minimum required Elasticsearch version in your specific release bundle, as it may differ from the versions mentioned here.
 
 ### Prerequisites
