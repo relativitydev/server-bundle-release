@@ -191,3 +191,17 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
    - Recent audit events are visible and populating (new user actions appear within a few minutes).
    - No error banners or "Elasticsearch connection failed" messages are displayed.
    - Audit search returns results without errors.
+
+## API Key Expiry and Rotation
+
+The Elasticsearch API key created during setup is valid for 180 days by default. Rotate the key before it expires to avoid authentication failures on the Audit tab.
+
+To rotate the DataGrid API key, use the `rotate-api-key` command from the Relativity Server CLI:
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-datagrid
+```
+
+See [Rotate an Elasticsearch API Key using the Relativity Server CLI](./elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md) for full instructions, including quiet mode for scripted rotation and how to verify the new key in Kibana and the Secret Store.
+
+Refer to the [Data Grid Audit Troubleshooting Guide](./troubleshooting/datagrid-audit-troubleshooting.md) if the Audit tab does not load data after rotating the key.

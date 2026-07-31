@@ -234,6 +234,31 @@ If the above steps do not resolve the issue, verify the following access and con
 For service account requirements and troubleshooting, see [Environment_Watch_Installer](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)
 
 
+## Environment Watch Not Working After API Key Rotation
+
+If the InfraWatch cluster API key has been newly created or rotated using the `rotate-api-key` command and Environment Watch dashboards are no longer updating or showing data, follow these steps.
+
+See [Rotate an Elasticsearch API Key using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md) for instructions on rotating the API key.
+
+1. Restart the **Relativity Environment Watch** Windows service on each monitored server:
+    ```powershell
+    Restart-Service -Name "Relativity Environment Watch"
+    ```
+
+2. Wait **2–5 minutes** for the service to reinitialize and begin sending data.
+
+3. Open Kibana and check the **Monitoring Agents** dashboard to confirm hosts are reporting. If data is still not appearing, proceed to step 4.
+
+4. If the issue persists, restart the Elastic Stack services on the Elasticsearch server:
+    1. **Elasticsearch** — open **Services** (`services.msc`) and restart the Elasticsearch service.
+    2. **Kibana** — restart the Kibana service.
+    3. **APM Server** — restart the APM Server service.
+
+5. Wait a few minutes and reload the Kibana dashboards. Environment Watch data should resume populating.
+
+> [!NOTE]
+> If data still does not appear after restarting all services, verify that the rotated API key was successfully persisted to the Secret Store. See the [Verify the rotation](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md#verify-the-rotation) section for Secret Store and Kibana verification steps.
+
 ## Installer and Service Errors
 
 This section covers issues related to the Environment Watch installer and the underlying Windows services it manages.
