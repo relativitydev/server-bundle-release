@@ -183,11 +183,17 @@ Follow these steps to set up Data Grid Audit using the Relativity Server CLI. Al
 
     If the setup completes successfully, Datagrid is now configured for the environment.
 
+4. **Verify `ESIndexCreationSettings` shard and replica values** — Before restarting services, check that the `ESIndexCreationSettings` instance setting reflects the correct shard and replica configuration for your cluster.
+
+   In Relativity, go to **Admin** → **Instance Settings** and locate `ESIndexCreationSettings`. Inspect the `number_of_shards` and `number_of_replicas` values in the JSON template:
+
+   - **Multi-node environments:** Confirm these values match your cluster's intended configuration. If they appear to have been reset to `1` and you had previously customized them, restore the correct values before restarting services.
+
 > **Warning:** Before restarting services, check whether the `NewDataGridMigratorToggleOverwrite` instance setting exists in your Relativity instance. If it is present, it **must** be set to `True` before running any ARM jobs — otherwise ARM jobs will fail during the Audit Migration stage and may time out and discard all migration progress. If the setting is not present, no action is required.
 
-4. Restart the following Relativity services on **all machines** in the Relativity instance: `kCura Edds Agent Manager`, `kCura Edds Web Processing Manager`, and `kCura Service Host Manager`.
+5. Restart the following Relativity services on **all machines** in the Relativity instance: `kCura Edds Agent Manager`, `kCura Edds Web Processing Manager`, and `kCura Service Host Manager`.
 
-5. Verify the Audit setup — navigate to the Audit tab in the Relativity environment and confirm all of the following:
+6. Verify the Audit setup — navigate to the Audit tab in the Relativity environment and confirm all of the following:
    - Recent audit events are visible and populating (new user actions appear within a few minutes).
    - No error banners or "Elasticsearch connection failed" messages are displayed.
    - Audit search returns results without errors.
