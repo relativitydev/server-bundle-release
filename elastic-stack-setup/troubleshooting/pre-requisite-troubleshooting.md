@@ -14,6 +14,7 @@ The following table summarizes the default ports used by the Elastic Stack and E
 | Kibana | 5601 | HTTP/HTTPS | ✅ | | Kibana web interface |
 | APM Server | 8200 | HTTP/HTTPS | ✅ | | APM agent data ingestion |
 | OTEL Collector | 4318 | HTTP | | | OTLP data reception (HTTP) for local traffic (localhost). This deployment uses the agent model, with a collector on each server. See the [OpenTelemetry agent documentation](https://opentelemetry.io/docs/collector/deployment/agent/) for more details. |
+| **Environment Watch Installer** | 389 | LDAP | | ✅ | Outbound connection from the target server to a domain controller, used to validate the Relativity Service Account during install/upgrade only — not required during normal runtime. |
 
 
 
