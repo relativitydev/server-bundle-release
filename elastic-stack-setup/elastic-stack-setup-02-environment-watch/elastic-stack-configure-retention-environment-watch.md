@@ -30,7 +30,7 @@ The `configure-retention` command sets Elasticsearch Index Lifecycle Management 
 
 Running `configure-retention` without `--quiet` launches an interactive session. If `relsvr setup` has been run, credentials are fetched silently from the Secret Store — no prompt for cluster URL, admin username, or password. If setup has not been run, the CLI prompts for those credentials before continuing.
 
-The command then displays the current ILM retention values for all three signals and prompts for each one individually. Press **Enter** at any signal prompt to skip that signal — the policy for that signal is left unchanged.
+The command fetches and displays the current ILM retention values for all three signals, then prompts for each one individually. Press **Enter** at any signal prompt to skip that signal — the policy for that signal is left unchanged. If you press **Enter** at all prompts with no values entered, the command exits immediately with no confirmation prompt and no ILM changes made.
 
 ```
 C:\Server.Bundle.x.y.z\relsvr.exe configure-retention
@@ -38,31 +38,32 @@ C:\Server.Bundle.x.y.z\relsvr.exe configure-retention
 Relativity Server CLI - 102.1.26
 Copyright (c) 2026, Relativity ODA LLC
 
-Current retention policies:
-  Logs    (infrawatch-logs-policy):    90 days
-  Metrics (infrawatch-metrics-policy): 90 days
-  Traces  (infrawatch-traces-policy):  7 days
+Fetching current ILM retention policies...
 
-Logs retention in days [current: 90, Enter to skip]: 30
-Metrics retention in days [current: 90, Enter to skip]:
-Traces retention in days [current: 7, Enter to skip]:
+  Logs    (infrawatch-logs-policy):    30d
+  Metrics (infrawatch-metrics-policy): 30d
+  Traces  (infrawatch-traces-policy):  7d
+
+Configure logs retention in days (current: 30d, press Enter to skip): 60
+Configure metrics retention in days (current: 30d, press Enter to skip):
+Configure traces retention in days (current: 7d, press Enter to skip):
 
 Changes to apply:
-  Logs:    90 days -> 30 days
+  Logs:    30d -> 60d
   Metrics: (no change)
   Traces:  (no change)
 
-Apply retention changes? [yes/N]: yes
+Apply changes? [yes/N]: yes
 
 Updating ILM policies ------------------------------------------------- 100%
 
 Successfully updated 1 ILM retention policy.
 ```
 
-Entering anything other than `yes` at the confirmation prompt aborts with no changes made:
+Entering anything other than `yes` at the confirmation prompt aborts cleanly with no changes made:
 
 ```
-No changes were applied.
+Operation cancelled.
 ```
 
 ### Interactive with a pre-filled default
@@ -70,26 +71,27 @@ No changes were applied.
 Passing a `--*-days` flag in interactive mode pre-fills that signal's prompt with the flag value. The current value is still shown as context and confirmation is still required.
 
 ```
-C:\Server.Bundle.x.y.z\relsvr.exe configure-retention --logs-days 30
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention --logs-days 60
 
 Relativity Server CLI - 102.1.26
 Copyright (c) 2026, Relativity ODA LLC
 
-Current retention policies:
-  Logs    (infrawatch-logs-policy):    90 days
-  Metrics (infrawatch-metrics-policy): 90 days
-  Traces  (infrawatch-traces-policy):  7 days
+Fetching current ILM retention policies...
 
-Logs retention in days [current: 90, default: 30, Enter to accept]: 30
-Metrics retention in days [current: 90, Enter to skip]:
-Traces retention in days [current: 7, Enter to skip]:
+  Logs    (infrawatch-logs-policy):    30d
+  Metrics (infrawatch-metrics-policy): 30d
+  Traces  (infrawatch-traces-policy):  7d
+
+Configure logs retention in days (current: 30d, default: 60, press Enter to accept): 60
+Configure metrics retention in days (current: 30d, press Enter to skip):
+Configure traces retention in days (current: 7d, press Enter to skip):
 
 Changes to apply:
-  Logs:    90 days -> 30 days
+  Logs:    30d -> 60d
   Metrics: (no change)
   Traces:  (no change)
 
-Apply retention changes? [yes/N]: yes
+Apply changes? [yes/N]: yes
 
 Updating ILM policies ------------------------------------------------- 100%
 
@@ -124,8 +126,7 @@ Relativity Server CLI - 102.1.26
 Copyright (c) 2026, Relativity ODA LLC
 
 Dry run mode — no ILM policies will be modified.
-Dry run — ILM policy 'infrawatch-logs-policy' would be submitted with:
-{"policy":{"phases":{"delete":{"min_age":"30d","actions":{"delete":{}}}}}}
+Dry run — ILM policy 'infrawatch-logs-policy' would be submitted with: {"policy":{"phases":{"delete":{"min_age":"30d","actions":{"delete":{}}}}}}
 ```
 
 **Interactive dry run — prompts and confirmation appear, no changes applied after `yes`:**
@@ -136,25 +137,25 @@ C:\Server.Bundle.x.y.z\relsvr.exe configure-retention --dryrun
 Relativity Server CLI - 102.1.26
 Copyright (c) 2026, Relativity ODA LLC
 
-Current retention policies:
-  Logs    (infrawatch-logs-policy):    90 days
-  Metrics (infrawatch-metrics-policy): 90 days
-  Traces  (infrawatch-traces-policy):  7 days
+Fetching current ILM retention policies...
 
-Logs retention in days [current: 90, Enter to skip]: 30
-Metrics retention in days [current: 90, Enter to skip]:
-Traces retention in days [current: 7, Enter to skip]:
+  Logs    (infrawatch-logs-policy):    30d
+  Metrics (infrawatch-metrics-policy): 30d
+  Traces  (infrawatch-traces-policy):  7d
+
+Configure logs retention in days (current: 30d, press Enter to skip): 30
+Configure metrics retention in days (current: 30d, press Enter to skip):
+Configure traces retention in days (current: 7d, press Enter to skip):
 
 Changes to apply:
-  Logs:    90 days -> 30 days
+  Logs:    30d -> 30d
   Metrics: (no change)
   Traces:  (no change)
 
-Apply retention changes? [yes/N]: yes
+Apply changes? [yes/N]: yes
 
 Dry run mode — no ILM policies will be modified.
-Dry run — ILM policy 'infrawatch-logs-policy' would be submitted with:
-{"policy":{"phases":{"delete":{"min_age":"30d","actions":{"delete":{}}}}}}
+Dry run — ILM policy 'infrawatch-logs-policy' would be submitted with: {"policy":{"phases":{"delete":{"min_age":"30d","actions":{"delete":{}}}}}}
 ```
 
 ## Verify the changes
