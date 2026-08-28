@@ -301,7 +301,7 @@ This section covers issues related to the Environment Watch installer and the un
 
 **Troubleshooting Steps:**
 1.  Confirm the service account itself has the correct rights (see [User Not in Local Security Policy](#user-not-in-local-security-policy) above).
-2.  Verify LDAP connectivity from the target server to a domain controller on port 389 (see the [Default Port Reference](pre-requisite-troubleshooting.md#default-port-reference) table, and the [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity) / [Firewall Rules](pre-requisite-troubleshooting.md#firewall-rules) steps) in the Port Configuration Troubleshooting guide.
+2.  Verify LDAP connectivity from the target server to a domain controller on port 389. See the Port Configuration Troubleshooting section in `pre-requisite-troubleshooting.md` — specifically the [Default Port Reference](pre-requisite-troubleshooting.md#default-port-reference) table and the [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity) / [Firewall Rules](pre-requisite-troubleshooting.md#firewall-rules) steps.
 3.  If port 389 is confirmed open and the error persists, also verify port 3268 (Global Catalog LDAP) is not blocked by a firewall.
 4.  Re-run the **Environment Watch Installer** once connectivity is confirmed.
 
