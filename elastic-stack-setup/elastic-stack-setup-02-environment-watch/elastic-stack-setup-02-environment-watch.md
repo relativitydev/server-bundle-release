@@ -83,6 +83,12 @@
 
 Refer to the [Troubleshooting Guide](../troubleshooting/relativity-server-cli.md) if you encounter any issues.
 
+## Managing ILM Retention
+
+By default, Environment Watch uses the retention periods configured in Elasticsearch Index Lifecycle Management (ILM) policies. To view or update the retention period for logs, metrics, or traces data streams after setup, use the `configure-retention` command:
+
+See [Configure Elasticsearch ILM Retention using the Relativity Server CLI](./elastic-stack-configure-retention-environment-watch.md) for full instructions, including interactive mode, quiet mode for scripted updates, and how to verify changes in Kibana Dev Tools.
+
 ## Next Steps
 
 * [Click here to continue Environment Watch Setup](./ew-01-install-monitoring-agents.md)
