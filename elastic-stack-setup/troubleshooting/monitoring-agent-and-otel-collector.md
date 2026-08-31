@@ -293,17 +293,13 @@ This section covers issues related to the Environment Watch installer and the un
 **Symptoms:**
 - The **Environment Watch Installer** fails with an error indicating it could not retrieve user rights for the supplied service account, or that it could not reach a domain controller to validate the service account.
 
-  ![LDAP port error](../../resources/troubleshooting-images/ldap-port-error.png)
-
 **Cause:**
 - During install/upgrade only, the **Environment Watch Installer** validates the Relativity Service Account against a domain controller over LDAP port 389. If port 389 is not reachable from the target server to the domain controller, this validation fails and surfaces as a service-account error, even when the account and its rights are correctly configured. This is not a requirement during normal runtime of the Environment Watch service.
-- If the installer cannot resolve a specific domain controller (for example, due to a transient network or DNS issue), it falls back to a forest-wide lookup that can instead use port 3268 (Global Catalog LDAP). This is why the generic version of this error also mentions port 3268 — it is a secondary fallback path, not a primary requirement.
 
 **Troubleshooting Steps:**
 1.  Confirm the service account itself has the correct rights (see [User Not in Local Security Policy](#user-not-in-local-security-policy) above).
 2.  Verify LDAP connectivity from the target server to a domain controller on port 389. See the Port Configuration Troubleshooting section in `pre-requisite-troubleshooting.md` — specifically the [Default Port Reference](pre-requisite-troubleshooting.md#default-port-reference) table and the [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity) / [Firewall Rules](pre-requisite-troubleshooting.md#firewall-rules) steps.
-3.  If port 389 is confirmed open and the error persists, also verify port 3268 (Global Catalog LDAP) is not blocked by a firewall.
-4.  Re-run the **Environment Watch Installer** once connectivity is confirmed.
+3.  Re-run the **Environment Watch Installer** once connectivity is confirmed.
 
 For additional troubleshooting, refer to the main documentation:  
 [Environment Watch Installer](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)
