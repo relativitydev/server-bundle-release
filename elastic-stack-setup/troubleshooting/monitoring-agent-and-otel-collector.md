@@ -288,6 +288,18 @@ This section covers issues related to the Environment Watch installer and the un
 **Troubleshooting Steps:**
 1.  Verify CLI Setup: Ensure that the one-time setup using the `relsvr.exe setup` command was executed successfully and completed without errors. This step is required to generate the necessary secrets.
 
+### Domain Controller Unreachable
+
+**Symptoms:**
+- The **Environment Watch Installer** fails with an error indicating it could not retrieve user rights for the supplied service account, or that it could not reach a domain controller to validate the service account.
+
+**Cause:**
+During install/upgrade only, the **Environment Watch Installer** validates the Relativity Service Account against a domain controller over LDAP port 389. If port 389 is not reachable from the target server to the domain controller, this validation fails and surfaces as a service-account error, even when the account and its rights are correctly configured. This port is not required during normal runtime of the Environment Watch service.
+
+**Troubleshooting Steps:**
+1.  Confirm the service account itself has the correct rights (see [User Not in Local Security Policy](#user-not-in-local-security-policy) above).
+2.  Verify LDAP connectivity from the target server to a domain controller on port 389 — see the [Default Port Reference](pre-requisite-troubleshooting.md#default-port-reference) table and the [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity) / [Firewall Rules](pre-requisite-troubleshooting.md#firewall-rules) steps.
+3.  Re-run the **Environment Watch Installer** once connectivity is confirmed.
 
 For additional troubleshooting, refer to the main documentation:  
 [Environment Watch Installer](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)

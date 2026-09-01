@@ -13,6 +13,10 @@ This document outlines the steps to install the Environment Watch monitoring age
 - The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
 - Environment Watch has been set up using the Relativity Server CLI 
 - The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
+- LDAP port 389 (TCP) must be open from the target server to the domain controller(s), per the [Default Port Reference](../troubleshooting/pre-requisite-troubleshooting.md#default-port-reference) table. The **Environment Watch Installer** uses this port to validate the Relativity Service Account. If the installer fails on this check, see [Domain Controller Unreachable](../troubleshooting/monitoring-agent-and-otel-collector.md#domain-controller-unreachable).
+
+> [!NOTE]
+> The LDAP port requirement above applies only during install/upgrade of the monitoring agent, to validate the service account against the domain controller. It is not required during normal runtime of the Environment Watch service.
 
 ### Steps
 
