@@ -86,467 +86,309 @@ When determining the appropriate retention period for your environment, consider
 
 ---
 
-## Configuration Steps
+## Configure Elasticsearch ILM Retention using the Relativity Server CLI
 
-### Step 1: Create Component Template with Required Retention Policy
+The `configure-retention` command sets Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long monitoring data is retained in Elasticsearch for the Environment Watch InfraWatch cluster.
 
-Elastic APM provides the `apm-90d@lifecycle` component template by default for 90-day retention. For 30-day retention (recommended for traces), create a custom component template using the Dev Tools Console in Kibana:
+> [!NOTE]
+> It is recommended to run the CLI from the Primary SQL Server.
 
-**Navigate to Dev Tools Console:**
+> This guide assumes the Relativity Server bundle was extracted to `C:\Server.Bundle.x.y.z` or a similar directory chosen by the user.
 
-1. Open Kibana in your web browser
-2. Click on **Dev Tools** in the left navigation menu (or use the search bar at the top to find "Dev Tools")
-3. You'll see the Console interface where you can execute Elasticsearch queries
+### Prerequisites
 
-**Sample Request:**
+- The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
+- Access to the Relativity Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2025/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
+- Elasticsearch is running and reachable. Confirm by browsing to the cluster endpoint, `https://<hostname>:9200` (for example `https://emttest:9200`) — a running cluster returns its version and cluster details.
+- The initial Environment Watch setup has been completed. See [Set up Environment Watch using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch.md)
 
-```
-# Here apm-30d@lifecycle is the name of the component template 
-PUT _component_template/apm-30d@lifecycle 
-{
-  "template": {
-    "lifecycle": {
-      "enabled": true,
-      "data_retention": "30d"
-    }
-  },
-  "_meta": {
-    "managed": true,
-    "description": "Data stream lifecycle for 30 days of retention"
-  }
-}
-```
+### Options
 
-**Sample Output:**
+| Flag | Description | Default |
+|------|-------------|---------|
+| `--logs-days <value>` | Retention period in days for the logs ILM policy (`infrawatch-logs-policy`). Must be greater than 0. | Prompted interactively |
+| `--metrics-days <value>` | Retention period in days for the metrics ILM policy (`infrawatch-metrics-policy`). Must be greater than 0. | Prompted interactively |
+| `--traces-days <value>` | Retention period in days for the traces ILM policy (`infrawatch-traces-policy`). Must be greater than 0. | Prompted interactively |
+| `--quiet` | Suppress all prompts and the confirmation gate. Credentials are read exclusively from the Secret Store. At least one `--*-days` flag must be supplied. Use for automated or scripted execution. | `false` |
+| `--dryrun` | Preview the ILM policy JSON that would be submitted without making any changes to Elasticsearch. Compatible with both interactive and quiet modes. | `false` |
 
-```json
-{
-  "acknowledged": true
-}
-```
+### Usage
 
-### Step 2: Update Index Templates
+#### Interactive
 
-Update the following index templates to use the appropriate component template based on your retention requirements:
+Running `configure-retention` without `--quiet` launches an interactive session. If `relsvr setup` has been run, credentials are fetched silently from the Secret Store — no prompt for cluster URL, admin username, or password. If setup has not been run, the CLI prompts for those credentials before continuing.
 
-| Index Template | Data Type | Default Component | Recommended Component |
-|---------------|-----------|-------------------|----------------------|
-| `logs-apm.app@template` | Logs | `apm-10d@lifecycle` | `apm-90d@lifecycle` |
-| `metrics-apm.app@template` | Metrics | `apm-90d@lifecycle` | `apm-90d@lifecycle` |
-| `traces-apm@template` | Traces | `apm-10d@lifecycle` | `apm-30d@lifecycle` |
+The command fetches and displays the current ILM retention values for all three signals, then prompts for each one individually. Press **Enter** at any signal prompt to skip that signal — the policy for that signal is left unchanged, and the summary below only lists the signals you actually changed.
 
-> [!IMPORTANT]
-> Changes to index templates only affect **new data streams** created after the update. Existing data streams will continue using their original retention policies until they are manually updated or recreated.
+> [!NOTE]
+> On a first run, before the `infrawatch-*-policy` policies have been created, the fetch still succeeds — each signal is reported as `not set` rather than a number, the prompts show `[current: ?d, press Enter to skip]`, and the summary shows the old value as `not set` (for example `not set -> 21d`). This is expected on a new cluster and is not the same as the fetch failure described in [Current retention state can't be fetched](#current-retention-state-cant-be-fetched-interactive-mode) below.
 
-#### a. Update Logs Index Template
-
-First, use the Dev Tools Console in Kibana to retrieve the existing index template settings using a GET request:
-
-**Sample Request:**
+If you press **Enter** at all three prompts, the command prints `Operation cancelled.` and exits immediately — it never shows the "Summary of changes" block or the "Apply these changes?" confirmation, because there is nothing to confirm:
 
 ```
-# Here logs-apm.app@template is the name of the index template
-GET _index_template/logs-apm.app@template
-```
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention
 
-**Sample Output:**
+Relativity Server CLI - 102.1.26
+Copyright (c) 2026, Relativity ODA LLC
 
-```json
-{
-  "index_templates": [
-    {
-      "name": "logs-apm.app@template",
-      "index_template": {
-        "index_patterns": [
-          "logs-apm.app.*-*"
-        ],
-        "template": {
-          "settings": {
-            "index": {
-              "mode": "standard",
-              "default_pipeline": "logs-apm.app@default-pipeline",
-              "final_pipeline": "logs-apm@pipeline"
-            }
-          }
-        },
-        "composed_of": [
-          "logs@mappings",
-          "apm@mappings",
-          "apm@settings",
-          "logs-apm@settings",
-          "logs-apm.app-fallback@ilm",
-          "ecs@mappings",
-          "logs@custom",
-          "logs-apm.app@custom",
-          "apm-10d@lifecycle"
-        ],
-        "priority": 210,
-        "version": 101,
-        "_meta": {
-          "managed": true,
-          "description": "Index template for logs-apm.app.*-*"
-        },
-        "data_stream": {
-          "hidden": false,
-          "allow_custom_routing": false
-        },
-        "allow_auto_create": true,
-        "ignore_missing_component_templates": [
-          "logs@custom",
-          "logs-apm.app@custom",
-          "logs-apm.app-fallback@ilm"
-        ]
-      }
-    }
-  ]
-}
-```
+Configures Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long telemetry data is retained before Elasticsearch automatically deletes it.
 
-Then, copy the `index_template` section from the output above and update it by replacing `apm-10d@lifecycle` with `apm-90d@lifecycle` in the `composed_of` array using a PUT request:
+Current ILM retention state:
+  Logs: 30d
+  Metrics: 30d
+  Traces: 7d
 
-**Sample Request:**
+Enter new retention for Logs in days [current: 30d, press Enter to skip]:
+Enter new retention for Metrics in days [current: 30d, press Enter to skip]:
+Enter new retention for Traces in days [current: 7d, press Enter to skip]:
 
-```
-# Here logs-apm.app@template is the name of the index template
-PUT _index_template/logs-apm.app@template 
-{
-  "index_patterns": [
-    "logs-apm.app.*-*"
-  ],
-  "template": {
-    "settings": {
-      "index": {
-        "mode": "standard",
-        "default_pipeline": "logs-apm.app@default-pipeline",
-        "final_pipeline": "logs-apm@pipeline"
-      }
-    }
-  },
-  "composed_of": [
-    "logs@mappings",
-    "apm@mappings",
-    "apm@settings",
-    "logs-apm@settings",
-    "logs-apm.app-fallback@ilm",
-    "ecs@mappings",
-    "logs@custom",
-    "logs-apm.app@custom",
-    "apm-90d@lifecycle"
-  ],
-  "priority": 210,
-  "version": 101,
-  "_meta": {
-    "managed": true,
-    "description": "Index template for logs-apm.app.*-*"
-  },
-  "data_stream": {
-    "hidden": false,
-    "allow_custom_routing": false
-  },
-  "allow_auto_create": true,
-  "ignore_missing_component_templates": [
-    "logs@custom",
-    "logs-apm.app@custom",
-    "logs-apm.app-fallback@ilm"
-  ]
-}
-```
-
-**Sample Output:**
-
-```json
-{
-  "acknowledged": true
-}
-```
-
-#### b. Update Metrics Index Template (Optional)
-
-The `metrics-apm.app@template` already uses the `apm-90d@lifecycle` component template by default, so it does not require any updates if you are using the recommended 90-day retention period. If you need a different retention period, retrieve the current template configuration using a GET request:
-
-**Sample Request:**
-
-```
-# Get the current template configuration
-GET _index_template/metrics-apm.app@template
-```
-
-**Sample Output:**
-
-```json
-{
-  "index_templates": [
-    {
-      "name": "metrics-apm.app@template",
-      "index_template": {
-        "index_patterns": [
-          "metrics-apm.app.*-*"
-        ],
-        "template": {
-          "settings": {
-            "index": {
-              "mode": "standard",
-              "default_pipeline": "metrics-apm.app@default-pipeline",
-              "final_pipeline": "metrics-apm@pipeline"
-            }
-          }
-        },
-        "composed_of": [
-          "metrics@mappings",
-          "apm@mappings",
-          "apm@settings",
-          "metrics-apm@settings",
-          "metrics-apm.app-fallback@ilm",
-          "ecs@mappings",
-          "metrics@custom",
-          "metrics-apm.app@custom",
-          "apm-90d@lifecycle"
-        ],
-        "priority": 210,
-        "version": 101,
-        "_meta": {
-          "managed": true,
-          "description": "Index template for metrics-apm.app.*-*"
-        },
-        "data_stream": {
-          "hidden": false,
-          "allow_custom_routing": false
-        },
-        "allow_auto_create": true,
-        "ignore_missing_component_templates": [
-          "metrics@custom",
-          "metrics-apm.app@custom",
-          "metrics-apm.app-fallback@ilm"
-        ]
-      }
-    }
-  ]
-}
-```
-
-Then, if you need to change the retention period, copy the `index_template` section from the output above and update it by replacing `apm-90d@lifecycle` with your desired retention component template in the `composed_of` array using a PUT request:
-
-**Sample Request:**
-
-```
-PUT _index_template/metrics-apm.app@template
-{
-  "index_patterns": [
-    "metrics-apm.app.*-*"
-  ],
-  "template": {
-    "settings": {
-      "index": {
-        "mode": "standard",
-        "default_pipeline": "metrics-apm.app@default-pipeline",
-        "final_pipeline": "metrics-apm@pipeline"
-      }
-    }
-  },
-  "composed_of": [
-    "metrics@mappings",
-    "apm@mappings",
-    "apm@settings",
-    "metrics-apm@settings",
-    "metrics-apm.app-fallback@ilm",
-    "ecs@mappings",
-    "metrics@custom",
-    "metrics-apm.app@custom",
-    "apm-90d@lifecycle"
-  ],
-  "priority": 210,
-  "version": 101,
-  "_meta": {
-    "managed": true,
-    "description": "Index template for metrics-apm.app.*-*"
-  },
-  "data_stream": {
-    "hidden": false,
-    "allow_custom_routing": false
-  },
-  "allow_auto_create": true,
-  "ignore_missing_component_templates": [
-    "metrics@custom",
-    "metrics-apm.app@custom",
-    "metrics-apm.app-fallback@ilm"
-  ]
-}
-```
-
-**Sample Output:**
-
-```json
-{
-  "acknowledged": true
-}
-```
-
-#### c. Update Traces Index Template
-
-For traces, retrieve the current template configuration using a GET request:
-
-**Sample Request:**
-
-```
-# Get the current template configuration
-GET _index_template/traces-apm@template
-```
-
-**Sample Output:**
-
-```json
-{
-  "index_templates": [
-    {
-      "name": "traces-apm@template",
-      "index_template": {
-        "index_patterns": [
-          "traces-apm*"
-        ],
-        "template": {
-          "settings": {
-            "index": {
-              "mode": "standard",
-              "default_pipeline": "traces-apm@default-pipeline",
-              "final_pipeline": "traces-apm@pipeline"
-            }
-          }
-        },
-        "composed_of": [
-          "traces@mappings",
-          "apm@mappings",
-          "apm@settings",
-          "traces-apm@settings",
-          "traces-apm-fallback@ilm",
-          "ecs@mappings",
-          "traces@custom",
-          "traces-apm@custom",
-          "apm-10d@lifecycle"
-        ],
-        "priority": 210,
-        "version": 101,
-        "_meta": {
-          "managed": true,
-          "description": "Index template for traces-apm*"
-        },
-        "data_stream": {
-          "hidden": false,
-          "allow_custom_routing": false
-        },
-        "allow_auto_create": true,
-        "ignore_missing_component_templates": [
-          "traces@custom",
-          "traces-apm@custom",
-          "traces-apm-fallback@ilm"
-        ]
-      }
-    }
-  ]
-}
-```
-
-Then, copy the `index_template` section from the output above and update it by replacing `apm-10d@lifecycle` with `apm-30d@lifecycle` (which you created in Step 1) in the `composed_of` array using a PUT request:
-
-**Sample Request:**
-
-```
-PUT _index_template/traces-apm@template
-{
-  "index_patterns": [
-    "traces-apm*"
-  ],
-  "template": {
-    "settings": {
-      "index": {
-        "mode": "standard",
-        "default_pipeline": "traces-apm@default-pipeline",
-        "final_pipeline": "traces-apm@pipeline"
-      }
-    }
-  },
-  "composed_of": [
-    "traces@mappings",
-    "apm@mappings",
-    "apm@settings",
-    "traces-apm@settings",
-    "traces-apm-fallback@ilm",
-    "ecs@mappings",
-    "traces@custom",
-    "traces-apm@custom",
-    "apm-30d@lifecycle"
-  ],
-  "priority": 210,
-  "version": 101,
-  "_meta": {
-    "managed": true,
-    "description": "Index template for traces-apm*"
-  },
-  "data_stream": {
-    "hidden": false,
-    "allow_custom_routing": false
-  },
-  "allow_auto_create": true,
-  "ignore_missing_component_templates": [
-    "traces@custom",
-    "traces-apm@custom",
-    "traces-apm-fallback@ilm"
-  ]
-}
-```
-
-**Sample Output:**
-
-```json
-{
-  "acknowledged": true
-}
-```
-
-### Step 3: Delete Existing Data Streams (Setup Time Only)
-
-> [!CAUTION]
-> **⚠️ DESTRUCTIVE OPERATION – PERMANENT DATA LOSS**
-> 
-> **This step is optional and is not required for most Environment Watch deployments.** It should only be performed during initial setup or in controlled, non-production scenarios.
-> 
-> This step will **permanently delete all data and indices** in the specified data streams. There is no recovery. Only proceed if:
-> - You are in a **development or non-production environment**, OR
-> - You have **backed up all critical data** from these data streams, OR
-> - You are performing **initial setup** and no production data exists yet
-> 
-> **Do NOT run this on production systems with active data.**
-
-
-After updating the index templates with new retention policies, you need to delete the existing data streams so they can be recreated with the updated retention settings. Use the Dev Tools Console in Kibana to run the following commands:
-
-**Delete Logs Data Stream:**
-
-```
-DELETE _data_stream/logs-apm.app* 
-```
-
-**Delete Metrics Data Stream:**
-
-```
-DELETE _data_stream/metrics-apm.app* 
-```
-
-**Delete Traces Data Stream:**
-
-```
-DELETE _data_stream/traces-apm* 
-```
-
-**Sample Output for each command:**
-
-```json
-{
-  "acknowledged": true
-}
+Operation cancelled.
 ```
 
 > [!NOTE]
-> After deleting the data streams, new data streams will be automatically created with the updated retention policies when APM agents begin sending new telemetry data.
+> `Operation cancelled.` is the same message shown when you decline the confirmation prompt below, and when you decline to continue after a failed current-state fetch (see [Current retention state can't be fetched](#current-retention-state-cant-be-fetched-interactive-mode) below). All three cases look identical in the CLI output — none of them make any ILM changes.
+
+Entering at least one value shows an old → new summary before applying anything:
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention
+
+Relativity Server CLI - 102.1.26
+Copyright (c) 2026, Relativity ODA LLC
+
+Configures Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long telemetry data is retained before Elasticsearch automatically deletes it.
+
+Current ILM retention state:
+  Logs: 30d
+  Metrics: 30d
+  Traces: 7d
+
+Enter new retention for Logs in days [current: 30d, press Enter to skip]: 60
+Enter new retention for Metrics in days [current: 30d, press Enter to skip]:
+Enter new retention for Traces in days [current: 7d, press Enter to skip]:
+
+Summary of changes:
+  Logs: 30d -> 60d
+
+Apply these changes? [y/n] (n): y
+
+Configuring ILM retention policies on https://emttest:9200/...
+  Applying Logs retention: 60 days (policy: infrawatch-logs-policy)...
+
+Applying ILM retention policies...
+
+  Logs retention set to 60 days.
+Retention policies applied successfully.
+```
+
+> [!NOTE]
+> `Applying ILM retention policies...` is shown as a spinner while the update is in progress, not a percentage progress bar — it disappears once the update finishes and is replaced by the per-signal success lines shown above. Only signals you changed appear in the summary and success output; unchanged signals are omitted entirely, not listed as "(no change)".
+
+Entering anything other than `y` at the confirmation prompt aborts cleanly with no changes made:
+
+```
+Operation cancelled.
+```
+
+#### Interactive with a pre-filled default
+
+Passing a `--*-days` flag in interactive mode pre-fills that signal's prompt with the flag value. The current value is still shown as context, pressing **Enter** accepts the pre-filled default without retyping it, and confirmation is still required.
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention --logs-days 60
+
+Relativity Server CLI - 102.1.26
+Copyright (c) 2026, Relativity ODA LLC
+
+Configures Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long telemetry data is retained before Elasticsearch automatically deletes it.
+
+Current ILM retention state:
+  Logs: 30d
+  Metrics: 30d
+  Traces: 7d
+
+Enter new retention for Logs in days [current: 30d, default: 60]:
+Enter new retention for Metrics in days [current: 30d, press Enter to skip]:
+Enter new retention for Traces in days [current: 7d, press Enter to skip]:
+
+Summary of changes:
+  Logs: 30d -> 60d
+
+Apply these changes? [y/n] (n): y
+
+Configuring ILM retention policies on https://emttest:9200/...
+  Applying Logs retention: 60 days (policy: infrawatch-logs-policy)...
+
+Applying ILM retention policies...
+
+  Logs retention set to 60 days.
+Retention policies applied successfully.
+```
+
+#### Quiet mode (automated / scripted)
+
+Combining `--quiet` with one or more `--*-days` flags suppresses all prompts and the confirmation gate. Credentials come exclusively from the Secret Store — `relsvr setup` must have been run first. This is suitable for scheduled tasks or unattended automation scripts.
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention --quiet --logs-days 30 --metrics-days 90
+
+Relativity Server CLI - 102.1.26
+Copyright (c) 2026, Relativity ODA LLC
+
+Configures Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long telemetry data is retained before Elasticsearch automatically deletes it.
+
+Configuring ILM retention policies on https://emttest:9200/...
+  Applying Logs retention: 30 days (policy: infrawatch-logs-policy)...
+  Applying Metrics retention: 90 days (policy: infrawatch-metrics-policy)...
+
+Applying ILM retention policies...
+
+  Logs retention set to 30 days.
+  Metrics retention set to 90 days.
+Retention policies applied successfully.
+```
+
+#### Dry run
+
+Use `--dryrun` to preview the ILM policy JSON that would be submitted without writing any changes to Elasticsearch. Dry run works in both interactive and quiet modes.
+
+**Quiet dry run — no prompts, no update step at all:**
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention --quiet --logs-days 30 --dryrun
+
+Relativity Server CLI - 102.1.26
+Copyright (c) 2026, Relativity ODA LLC
+
+Configures Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long telemetry data is retained before Elasticsearch automatically deletes it.
+
+Dry run mode — no ILM policies will be modified.
+Dry run — ILM policy 'infrawatch-logs-policy' would be submitted with: {"policy":{"phases":{"delete":{"min_age":"30d","actions":{"delete":{}}}}}}
+```
+
+**Interactive dry run — prompts and confirmation appear as usual, then a preview instead of an update:**
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention --dryrun
+
+Relativity Server CLI - 102.1.26
+Copyright (c) 2026, Relativity ODA LLC
+
+Configures Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long telemetry data is retained before Elasticsearch automatically deletes it.
+
+Current ILM retention state:
+  Logs: 30d
+  Metrics: 30d
+  Traces: 7d
+
+Enter new retention for Logs in days [current: 30d, press Enter to skip]: 30
+Enter new retention for Metrics in days [current: 30d, press Enter to skip]:
+Enter new retention for Traces in days [current: 7d, press Enter to skip]:
+
+Summary of changes:
+  Logs: 30d -> 30d
+
+Apply these changes? [y/n] (n): y
+
+Dry run mode — no ILM policies will be modified.
+Dry run — ILM policy 'infrawatch-logs-policy' would be submitted with: {"policy":{"phases":{"delete":{"min_age":"30d","actions":{"delete":{}}}}}}
+```
+
+#### Secret Store has no Elasticsearch credentials
+
+If `relsvr setup` has not been run — or the Elasticsearch secret has been removed from the Secret Store — the behavior depends on the mode.
+
+**Interactive mode — the CLI prompts for the credentials:**
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe configure-retention
+
+Relativity Server CLI - 102.1.26
+Copyright (c) 2026, Relativity ODA LLC
+
+Configures Elasticsearch Index Lifecycle Management (ILM) retention policies for logs, metrics, and traces data streams. Use this command to control how long telemetry data is retained before Elasticsearch automatically deletes it.
+
+Enter the Elasticsearch cluster endpoint URL: https://emttest:9200
+Enter the Elasticsearch admin username: elastic
+Enter the Elasticsearch admin password: ********************
+
+Current ILM retention state:
+  Logs: not set
+  Metrics: not set
+  Traces: not set
+
+Enter new retention for Logs in days [current: ?d, press Enter to skip]: 21
+Enter new retention for Metrics in days [current: ?d, press Enter to skip]: 22
+Enter new retention for Traces in days [current: ?d, press Enter to skip]: 23
+
+Summary of changes:
+  Logs: not set -> 21d
+  Metrics: not set -> 22d
+  Traces: not set -> 23d
+
+Apply these changes? [y/n] (n): y
+```
+
+The command then applies the policies as normal. The credentials entered this way are used for that run only — run `relsvr setup` to store them in the Secret Store.
+
+**Quiet mode — no prompt is shown, the command exits with an error:**
+
+Because `--quiet` suppresses all prompts, the credentials cannot be supplied interactively and the run fails immediately:
+
+```
+Elasticsearch credentials are not available in the Secret Store. Run 'relsvr setup' first, or use interactive mode to enter credentials manually.
+```
+
+#### Current retention state can't be fetched (interactive mode)
+
+If the CLI can't reach Elasticsearch to read the existing ILM policies before showing prompts — for example the Elasticsearch service is stopped or the cluster is briefly unreachable — it warns and asks whether to continue anyway. Policies that simply don't exist yet do **not** trigger this warning; they are reported as `not set`.
+
+```
+Could not retrieve current ILM retention state. Proceed with caution.
+Continue? [y/n] (n):
+```
+
+Declining prints `Operation cancelled.` and exits with no changes made, the same message used when all prompts are skipped or the final confirmation is declined. Before re-running, confirm the cluster is up by browsing to `https://<hostname>:9200`.
+
+#### Invalid retention value
+
+Entering a non-numeric or non-positive value at a signal prompt re-prompts inline in place, rather than aborting:
+
+```
+Retention must be a positive number
+```
+
+### Verify the changes
+
+#### Kibana Dev Tools
+
+After running `configure-retention`, confirm the updated retention value in Kibana Dev Tools.
+
+1. In Kibana, navigate to **Dev Tools** > **Console**.
+2. Run the following query for each signal you updated, replacing `<signal>` with `logs`, `metrics`, or `traces`:
+
+    ```
+    GET /_ilm/policy/infrawatch-<signal>-policy
+    ```
+
+3. In the response, locate the `delete` phase and confirm `min_age` matches the value you set:
+
+    ```json
+    {
+      "infrawatch-logs-policy": {
+        "policy": {
+          "phases": {
+            "delete": {
+              "min_age": "30d",
+              "actions": {
+                "delete": {}
+              }
+            }
+          }
+        }
+      }
+    }
+    ```
 
 ---
 
