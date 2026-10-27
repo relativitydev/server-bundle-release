@@ -301,6 +301,69 @@ During install/upgrade only, the **Environment Watch Installer** validates the R
 2.  Verify LDAP connectivity from the target server to a domain controller on port 389 — see the [Default Port Reference](pre-requisite-troubleshooting.md#default-port-reference) table and the [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity) / [Firewall Rules](pre-requisite-troubleshooting.md#firewall-rules) steps.
 3.  Re-run the **Environment Watch Installer** once connectivity is confirmed.
 
+### Elastic Certificate Errors
+
+These errors occur when the **Environment Watch Installer** installs or registers the Elastic certificates. For the available options, see [Elastic certificate setup](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md#elastic-certificate-setup). In every case, the installer log in the `%TEMP%` directory has more detail.
+
+#### Elastic certificate archive not found on the BCP share
+
+**Symptoms:**
+- The installation fails with the message: "The Elastic certificate archive (elastic-certs.zip) was not found on the BCP share. Ensure the Elastic Stack setup has been completed and the BCP share is accessible from this machine."
+
+**Cause:**
+The **Install certificates from the BCP share** option is selected (it is the default), but `elastic-certs.zip` is not at `<BCP share>\EnvironmentWatch\elastic-certs.zip`, or the Relativity Service Account cannot read the share.
+
+**Troubleshooting Steps:**
+1.  Confirm that `elastic-certs.zip` was generated with the Relativity Server CLI (`relsvr.exe generate-certs`, or `relsvr.exe install` for a multi-node Elastic Stack). The default all-in-one installation does not produce this file. See the [Elastic Stack Setup documentation](https://help.relativity.com/Server2025/Content/Elasticstack/Elastic_Stack_Installation_Overview.htm).
+2.  Copy `elastic-certs.zip` to the `EnvironmentWatch` folder on the BCP share, for example `\\<sql-primary>\BCPPath\EnvironmentWatch\elastic-certs.zip`. To find the BCP path for the environment, see [Custom JSON Troubleshooting](custom-json-troubleshooting.md).
+3.  Verify that the Relativity Service Account can access the share. See [BCP Share Access Verification](#bcp-share-access-verification).
+4.  If the Elastic certificates are already installed on this server, re-run the installer and select **Use existing Elastic certificates** on the options page, or pass `ELASTICCERTMODE=2` in silent mode.
+5.  Re-run the **Environment Watch Installer**.
+
+#### Cannot determine the BCP share path
+
+**Symptoms:**
+- The installation fails with the message: "Cannot determine the BCP share path. Ensure the Relativity SQL primary resource server is configured and accessible."
+
+**Cause:**
+To locate `elastic-certs.zip`, the installer reads the BCP share of the SQL Primary resource server from the Relativity database (`EDDS`). If the server record has no BCP path, the installer uses the `BcpShareFolderName` instance setting (section `kCura.Chicago`). The lookup fails when the SQL Primary resource server record is not found, or when it has no BCP path and the `BcpShareFolderName` instance setting is missing or empty.
+
+**Troubleshooting Steps:**
+1.  In Relativity, open the **Server** tab and confirm that a **SQL - Primary** server exists and that its BCP path is set. See [Custom JSON Troubleshooting](custom-json-troubleshooting.md).
+2.  If the server has no BCP path, confirm that the `BcpShareFolderName` instance setting (section `kCura.Chicago`) has a value.
+3.  Re-run the **Environment Watch Installer**.
+
+#### Elastic certificate installation failed
+
+**Symptoms:**
+- The installation fails with the message: "Failed to install the Elastic certificates. Please check the installer logs for more details."
+
+**Cause:**
+The installer could not complete the certificate installation. Common causes are:
+- The archive is damaged, does not contain `ca.crt` at its root, or exceeds the installer limits (50 files, 5 MB per file, 20 MB in total).
+- The installer cannot write to the `C:\elastic` certificate folders or to the **Local Machine** Trusted Root certificate store, or `C:\elastic` or one of its subfolders is a junction or symbolic link.
+- The installer cannot connect to the Relativity SQL Primary server to read the BCP share path.
+
+**Troubleshooting Steps:**
+1.  Open the installer log in the `%TEMP%` directory and find the error that follows "Installing Elastic certificates from BCP share".
+2.  Copy `elastic-certs.zip` again from the Relativity Server CLI output and replace the file on the BCP share.
+3.  Run the installer from an elevated account that can write to `C:\elastic` and to the **Local Machine** certificate store, and verify that `C:\elastic` is a regular folder.
+4.  Verify network connectivity from this server to the SQL Primary server. See [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity).
+5.  Re-run the **Environment Watch Installer**.
+
+#### Elastic certificate registry entry could not be written
+
+**Symptoms:**
+- The installation fails with the message: "Failed to write the Elastic certificate configuration to the registry. Please check the installer logs for more details."
+
+**Cause:**
+The installer could not write `HKLM\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts`. The installer must run with administrator rights, and registry policies or security software can block the write.
+
+**Troubleshooting Steps:**
+1.  Open the installer log in the `%TEMP%` directory and find the registry error.
+2.  Confirm that the installer runs as a local administrator and that no policy or security software blocks writes to `HKLM\SOFTWARE\Relativity`.
+3.  Re-run the **Environment Watch Installer**.
+
 For additional troubleshooting, refer to the main documentation:  
 [Environment Watch Installer](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)
 

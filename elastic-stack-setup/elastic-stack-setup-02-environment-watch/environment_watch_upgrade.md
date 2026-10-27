@@ -89,8 +89,17 @@ This document outlines the steps to upgrade the Environment Watch monitoring age
 1. Install the Upgraded Monitoring Agent
 
     1.  From the new extracted Server Bundle, run `Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe`.
-    2.  Accept the license terms and click **Install**.
+    2.  Select **I accept the license terms and conditions** and click **Install**. The **Install** button is disabled until you accept the license terms.
     3.  Once the installation is complete, click **Close**.
+
+> [!IMPORTANT]
+> The upgrade runs the same Elastic certificate setup as a new installation. Click **Options** before you click **Install** and review **Elastic Certificate Setup**:
+>
+> - If `elastic-certs.zip` is on the BCP share, keep the default option, **Install certificates from the BCP share**.
+> - If the Elastic certificates were installed manually, or `elastic-certs.zip` is not on the BCP share, select **Use existing Elastic certificates**. With the default option the installer stops when it cannot find the archive.
+> - In silent mode, add `ELASTICCERTMODE=2` to the command line. See [Install Environment Watch in silent mode](./ew-01-install-monitoring-agents.md#install-environment-watch-in-silent-mode).
+>
+> If the installer already registered the certificates (the `ElasticCerts` registry key exists), it skips the certificate installation. See [Elastic certificate setup](./ew-01-install-monitoring-agents.md#elastic-certificate-setup).
 
 2. Verify the Installation
 
