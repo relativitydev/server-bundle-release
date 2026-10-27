@@ -301,6 +301,85 @@ During install/upgrade only, the **Environment Watch Installer** validates the R
 2.  Verify LDAP connectivity from the target server to a domain controller on port 389 — see the [Default Port Reference](pre-requisite-troubleshooting.md#default-port-reference) table and the [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity) / [Firewall Rules](pre-requisite-troubleshooting.md#firewall-rules) steps.
 3.  Re-run the **Environment Watch Installer** once connectivity is confirmed.
 
+### Elastic Certificate Errors
+
+These errors occur when the **Environment Watch Installer** installs or registers the Elastic certificates. For the available options, see [Elastic certificate setup](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md#elastic-certificate-setup). In every case, the installer log in the `%TEMP%` directory has more detail.
+
+#### Elastic certificate archive not found on the BCP share
+
+**Symptoms:**
+- The installation fails with the message: "The Elastic certificate archive (elastic-certs.zip) was not found on the BCP share. Ensure the Elastic Stack setup has been completed and the BCP share is accessible from this machine."
+
+**Cause:**
+The **Install certificates from the BCP share** option is selected (it is the default), but `elastic-certs.zip` is not at `<BCP share>\EnvironmentWatch\elastic-certs.zip`, or the computer account of this server cannot read the share. The installer reads the share as the Local System account, so it connects as the computer account (`DOMAIN\<server>$`), not as the Relativity Service Account. When access is denied, the installer reports the archive as not found.
+
+**Troubleshooting Steps:**
+1.  Confirm that `elastic-certs.zip` was generated with the Relativity Server CLI (`relsvr.exe generate-certs`, or `relsvr.exe install` for a multi-node Elastic Stack). The default all-in-one installation does not produce this file. See the [Elastic Stack Setup documentation](https://help.relativity.com/Server2025/Content/Elasticstack/Elastic_Stack_Installation_Overview.htm).
+2.  Copy `elastic-certs.zip` to the `EnvironmentWatch` folder on the BCP share, for example `\\<sql-primary>\BCPPath\EnvironmentWatch\elastic-certs.zip`. To find the BCP path for the environment, see [Custom JSON Troubleshooting](custom-json-troubleshooting.md).
+3.  Verify that the share and NTFS permissions allow the computer account of this server (`DOMAIN\<server>$`) or the **Domain Computers** group to read `elastic-certs.zip`.
+4.  If the Elastic certificates are already installed on this server, re-run the installer and select **Use existing Elastic certificates** on the options page. If a previous installation failed at the Elastic Stack validation, first delete the `HKLM\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts` registry key.
+5.  Re-run the **Environment Watch Installer**.
+
+#### Cannot determine the BCP share path
+
+**Symptoms:**
+- The installation fails with the message: "Cannot determine the BCP share path. Ensure the Relativity SQL primary resource server is configured and accessible."
+
+**Cause:**
+To locate `elastic-certs.zip`, the installer reads the BCP share of the SQL Primary resource server from the Relativity database (`EDDS`). If the server record has no BCP path, the installer uses the `BcpShareFolderName` instance setting (section `kCura.Chicago`). The lookup fails when the SQL Primary resource server record is not found, or when it has no BCP path and the `BcpShareFolderName` instance setting is missing or empty. The installer also reports this message when the SQL Primary server is not a member of a resource pool, or when the SQL login stored in the Secret Store is missing or empty.
+
+**Troubleshooting Steps:**
+1.  In Relativity, open the **Server** tab and confirm that a **SQL - Primary** server exists and that its BCP path is set. See [Custom JSON Troubleshooting](custom-json-troubleshooting.md).
+2.  If the server has no BCP path, confirm that the `BcpShareFolderName` instance setting (section `kCura.Chicago`) has a value.
+3.  Verify that the SQL Primary server is a member of a resource pool.
+4.  Verify that the SQL login for the Relativity SQL Primary server is present in the Secret Store and is not empty.
+5.  Re-run the **Environment Watch Installer**.
+
+#### Elastic certificate installation failed
+
+**Symptoms:**
+- The installation fails with the message: "Failed to install the Elastic certificates. Please check the installer logs for more details."
+
+**Cause:**
+The installer could not complete the certificate installation. Common causes are:
+- The archive is damaged, does not contain `ca.crt` at its root, or exceeds the installer limits (50 files, 5 MB per file, 20 MB in total).
+- The installer cannot write to the `C:\elastic` certificate folders or to the **Local Machine** Trusted Root certificate store, or `C:\elastic` or one of its subfolders is a junction or symbolic link.
+- The installer cannot connect to the Relativity SQL Primary server to read the BCP share path.
+
+**Troubleshooting Steps:**
+1.  Open the installer log in the `%TEMP%` directory and find the error that follows "Installing Elastic certificates from BCP share".
+2.  Copy `elastic-certs.zip` again from the Relativity Server CLI output (for `relsvr.exe generate-certs`, the `--output-path` directory, which is the current directory by default) and replace the file on the BCP share.
+3.  Run the installer as administrator (right-click the installer and select **Run as administrator**) with an account that can write to `C:\elastic` and to the **Local Machine** certificate store, and verify that `C:\elastic` is a regular folder.
+4.  Verify network connectivity from this server to the SQL Primary server. See [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity).
+5.  Re-run the **Environment Watch Installer**.
+
+#### Elastic Stack validation failed after the certificate setup
+
+**Symptoms:**
+- The installation fails after the certificate setup with a message that names the server URL that failed validation, for example: "The HTTP request submitted to the server `https://<hostname>:9200/` failed because of an unexpected error. Verify the server is accessible and URL is correct."
+
+**Cause:**
+The installer validates the Elasticsearch, APM Server, and Kibana connections over TLS after the certificate setup. The validation fails when one of these services is not running or not reachable, or when this server does not trust the Elastic CA certificate, for example when **Use existing Elastic certificates** is selected but the CA certificate is not installed. An untrusted CA does not cause this failure when the Elastic Stack is configured in the Secret Store to skip TLS certificate validation.
+
+**Troubleshooting Steps:**
+1.  Verify that Elasticsearch, APM Server, and Kibana are running and reachable from this server. See [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity).
+2.  Import the Elastic CA certificate (`ca.crt` or `http_ca.crt`) into **Local Machine > Trusted Root Certification Authorities**, or select **Install certificates from the BCP share** on the options page.
+3.  The installer writes the `ElasticCerts` registry key before the validation and does not remove it when the validation fails, so the key remains and the installer skips the certificate installation on the next run, whichever certificate option is selected. To select a different option, delete the key first. In an elevated PowerShell window, run `Remove-Item -Path "HKLM:\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts" -Recurse`.
+4.  Re-run the **Environment Watch Installer**.
+
+#### Elastic certificate registry entry could not be written
+
+**Symptoms:**
+- The installation fails with the message: "Failed to write the Elastic certificate configuration to the registry. Please check the installer logs for more details."
+
+**Cause:**
+The installer could not write `HKLM\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts`. The installer must run with administrator rights, and registry policies or security software can block the write.
+
+**Troubleshooting Steps:**
+1.  Open the installer log in the `%TEMP%` directory and find the registry error.
+2.  Confirm that the installer runs as a local administrator and that no policy or security software blocks writes to `HKLM\SOFTWARE\Relativity`.
+3.  Re-run the **Environment Watch Installer**.
+
 For additional troubleshooting, refer to the main documentation:  
 [Environment Watch Installer](../elastic-stack-setup-02-environment-watch/ew-01-install-monitoring-agents.md)
 

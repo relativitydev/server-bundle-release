@@ -86,11 +86,22 @@ This document outlines the steps to upgrade the Environment Watch monitoring age
 - The Environment Watch CLI upgrade has been completed.
 - The new Server-bundle zip file has been downloaded and extracted.
 
+> [!IMPORTANT]
+> The Elastic certificate setup runs on upgrade only when the `ElasticCerts` registry key does not exist, for example when you upgrade from a build that predates the certificate setup. Click **Options** before you click **Install** and review **Elastic Certificate Setup**:
+>
+> - If `elastic-certs.zip` is on the BCP share, keep the default option, **Install certificates from the BCP share**.
+> - If the Elastic certificates were installed manually, or `elastic-certs.zip` is not on the BCP share, select **Use existing Elastic certificates**. With the default option the installer stops when it cannot find the archive.
+>
+> If the key already exists, the installer ignores the option selected on the Options page, leaves the installed certificates unchanged, and still validates the Elastic Stack connection over TLS. The upgrade then removes the key, so the next upgrade runs the certificate setup again. If the validation fails after an upgrade, see [Elastic Stack validation failed after the certificate setup](../troubleshooting/monitoring-agent-and-otel-collector.md#elastic-stack-validation-failed-after-the-certificate-setup).
+>
+> With the default option, the computer account of the server must be able to read `elastic-certs.zip` on the BCP share. See [Prerequisites](./ew-01-install-monitoring-agents.md#prerequisites) and [Elastic certificate setup](./ew-01-install-monitoring-agents.md#elastic-certificate-setup).
+
 1. Install the Upgraded Monitoring Agent
 
     1.  From the new extracted Server Bundle, run `Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe`.
-    2.  Accept the license terms and click **Install**.
-    3.  Once the installation is complete, click **Close**.
+    2.  Click **Options** and review **Elastic Certificate Setup**. See the note above.
+    3.  Select **I accept the license terms and conditions** and click **Install**. The **Install** button is disabled until the license terms are accepted.
+    4.  Once the installation is complete, click **Close**.
 
 2. Verify the Installation
 
