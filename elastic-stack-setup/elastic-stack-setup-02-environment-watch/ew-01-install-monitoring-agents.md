@@ -15,7 +15,7 @@ This document outlines the steps to install the Environment Watch monitoring age
 - The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
 - Environment Watch has been set up using the Relativity Server CLI
 - LDAP port 389 (TCP) must be open from the target server to the domain controller(s), per the [Default Port Reference](../troubleshooting/pre-requisite-troubleshooting.md#default-port-reference) table. The **Environment Watch Installer** uses this port to validate the Relativity Service Account. If the installer fails on this check, see [Domain Controller Unreachable](../troubleshooting/monitoring-agent-and-otel-collector.md#domain-controller-unreachable).
-- The Relativity Service Account credentials, if Relativity is not installed on the server or if you want to use a different service account (see [Installer options](#installer-options)).
+- The Relativity Service Account credentials, if Relativity is not installed on the server or if you want to use a different service account (see step 2 of [Install the Monitoring Agent](#install-the-monitoring-agent)).
 
 > [!NOTE]
 > The LDAP port requirement above applies only during install/upgrade of the monitoring agent, to validate the service account against the domain controller. It is not required during normal runtime of the Environment Watch service.
@@ -25,7 +25,10 @@ This document outlines the steps to install the Environment Watch monitoring age
 #### Install the Monitoring Agent
 
 1. From the extracted Server Bundle, run `Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe`. The license page opens.
-2. Click **Options** to review or change the installation folder, the service account, or the Elastic certificate setup. See [Installer options](#installer-options) and [Elastic certificate setup](#elastic-certificate-setup). Click **OK** to return to the license page. The selections are kept.
+2. Click **Options** on the license page to open the options page. Click **OK** to save your selections and return to the license page, or **Cancel** to leave the installer. The options page has the following sections:
+   - **Installation Folder:** The folder where Environment Watch is installed. Use **Browse** to choose a different folder.
+   - **Service Account:** By default the installer uses the Relativity Service Account. To use other credentials, select **Use a custom service account**, then enter the **Username** (`domain\Username`) and **Password**. The fields are enabled only when the option is selected. The service account must be provided here when Relativity is not installed on the host.
+   - **Elastic Certificate Setup:** Environment Watch communicates with Elasticsearch, APM Server, and Kibana over TLS, so the server must trust the Elastic CA certificate. This setting controls whether the installer installs the certificate or uses one that is already in place. Choose one of the options described in [Elastic certificate setup](#elastic-certificate-setup).
 3. Select **I accept the license terms and conditions**. The **Install** button is disabled until the license terms are accepted.
 4. Click **Install**. The installer validates the prerequisites and sets up the Elastic certificates before it installs any file. If a check fails, an error message appears and the installation stops. See the [Monitoring Agent Troubleshooting Guide](../troubleshooting/monitoring-agent-and-otel-collector.md).
 5. After the installation completes, click **Close**.
@@ -75,20 +78,6 @@ After verifying the first installation, repeat these steps for the remaining ser
 
 > [!NOTE]
 > For troubleshooting, refer to the installer logs in the `%TEMP%` directory or see the [Monitoring Agent Troubleshooting Guide](../troubleshooting/monitoring-agent-and-otel-collector.md).
-
-### Installer options
-
-Click **Options** on the license page to open the options page. Click **OK** to save your selections and return to the license page, or **Cancel** to leave the installer.
-
-The options page has three sections: **Installation Folder**, **Service Account**, and **Elastic Certificate Setup**. The certificate options are described in [Elastic certificate setup](#elastic-certificate-setup).
-
-#### Installation Folder
-
-The folder where Environment Watch is installed. Use **Browse** to choose a different folder.
-
-#### Service Account
-
-By default the installer uses the Relativity Service Account. To use other credentials, select **Use a custom service account**, then enter the **Username** (`domain\Username`) and **Password**. The fields are enabled only when the option is selected. The service account must be provided here when Relativity is not installed on the host.
 
 ### Elastic certificate setup
 
