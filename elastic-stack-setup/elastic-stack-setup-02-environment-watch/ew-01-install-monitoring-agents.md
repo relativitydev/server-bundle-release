@@ -6,12 +6,11 @@
 
 This document outlines the steps to install the Environment Watch monitoring agent.
 
-### Prerequisites
+## Prerequisites
 
-- Elastic Stack certificates are available on every server. Prepare one of the following before you start (see [Elastic certificate setup](#elastic-certificate-setup)):
-    - **Install certificates from the BCP share (default):** `elastic-certs.zip` is on the BCP share at `<BCP share>\EnvironmentWatch\`, for example `\\<sql-primary>\BCPPath\EnvironmentWatch\elastic-certs.zip`. To find the BCP path, see [Custom JSON Troubleshooting](../troubleshooting/custom-json-troubleshooting.md).
-    - **Use existing Elastic certificates:** the Elastic CA certificate is already installed on the server.
-- Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
+- Elastic Stack certificates when you use the default option, **Install certificates from the BCP share**: `elastic-certs.zip` is on the BCP share at `<BCP share>\EnvironmentWatch\`, for example `\\<sql-primary>\BCPPath\EnvironmentWatch\elastic-certs.zip`. To find the BCP path, see [Custom JSON Troubleshooting](../troubleshooting/custom-json-troubleshooting.md).
+- Elastic Stack certificates when you use **Use existing Elastic certificates**: the Elastic CA certificate is already installed on the server. See [Elastic certificate setup](#elastic-certificate-setup).
+- Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. For information on whitelisting, see [Configuring clients](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients).)
 - The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
 - Environment Watch has been set up using the Relativity Server CLI
 - LDAP port 389 (TCP) must be open from the target server to the domain controller(s), per the [Default Port Reference](../troubleshooting/pre-requisite-troubleshooting.md#default-port-reference) table. The **Environment Watch Installer** uses this port to validate the Relativity Service Account. If the installer fails on this check, see [Domain Controller Unreachable](../troubleshooting/monitoring-agent-and-otel-collector.md#domain-controller-unreachable).
@@ -20,12 +19,12 @@ This document outlines the steps to install the Environment Watch monitoring age
 > [!NOTE]
 > The LDAP port requirement above applies only during install/upgrade of the monitoring agent, to validate the service account against the domain controller. It is not required during normal runtime of the Environment Watch service.
 
-### Steps
+## Steps
 
-#### Install the Monitoring Agent
+### Install the Monitoring Agent
 
 1. From the extracted Server Bundle, run `Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe`. The license page opens.
-2. Click **Options** on the license page to open the options page. Click **OK** to save your selections and return to the license page, or **Cancel** to leave the installer. The options page has the following sections:
+2. Click **Options** on the license page to open the options page. Click **OK** to save your selections and return to the license page, or **Cancel** to leave the installer. The options page has the following settings:
    - **Installation Folder:** The folder where Environment Watch is installed. Use **Browse** to choose a different folder.
    - **Service Account:** By default the installer uses the Relativity Service Account. To use other credentials, select **Use a custom service account**, then enter the **Username** (`domain\Username`) and **Password**. The fields are enabled only when the option is selected. The service account must be provided here when Relativity is not installed on the host.
    - **Elastic Certificate Setup:** Environment Watch communicates with Elasticsearch, APM Server, and Kibana over TLS, so the server must trust the Elastic CA certificate. This setting controls whether the installer installs the certificate or uses one that is already in place. Choose one of the options described in [Elastic certificate setup](#elastic-certificate-setup).
@@ -33,7 +32,7 @@ This document outlines the steps to install the Environment Watch monitoring age
 4. Click **Install**. The installer validates the prerequisites and sets up the Elastic certificates before it installs any file. If a check fails, an error message appears and the installation stops. See the [Monitoring Agent Troubleshooting Guide](../troubleshooting/monitoring-agent-and-otel-collector.md).
 5. After the installation completes, click **Close**.
 
-#### Verify the Installation
+### Verify the Installation
 
 - Open **Services** and verify that the **Relativity Environment Watch** service is running.
 
@@ -55,7 +54,7 @@ This document outlines the steps to install the Environment Watch monitoring age
   C:\ProgramData\Relativity\EnvironmentWatch\Services\InfraWatchAgent\
   ```
 
-#### Verify Metrics in Kibana
+### Verify Metrics in Kibana
 
 1. In Kibana, navigate to **Dashboards** and open the **[Relativity] Host Infrastructure Overview** dashboard.
 2. Verify that CPU, RAM, and Disk metrics are visible for the newly added host.
@@ -67,7 +66,7 @@ This document outlines the steps to install the Environment Watch monitoring age
    - Host information and other important fields are displayed correctly.
    - Agent status and health metrics show current data.
 
-#### Repeat the Installation on Other Servers
+### Repeat the Installation on Other Servers
 
 After verifying the first installation, repeat these steps for the remaining servers in the following order:
 
@@ -79,11 +78,11 @@ After verifying the first installation, repeat these steps for the remaining ser
 > [!NOTE]
 > For troubleshooting, refer to the installer logs in the `%TEMP%` directory or see the [Monitoring Agent Troubleshooting Guide](../troubleshooting/monitoring-agent-and-otel-collector.md).
 
-### Elastic certificate setup
+## Elastic certificate setup
 
-Environment Watch communicates with Elasticsearch, APM Server, and Kibana over TLS. The installer can install the certificate authority (CA) certificate for you, or use certificates that are already in place. Select one of the following options in the **Elastic Certificate Setup** section of the options page.
+The installer can install the certificate authority (CA) certificate for you, or use certificates that are already in place. Select one of the following options in the **Elastic Certificate Setup** section of the options page.
 
-#### Choose an option
+### Choose an option
 
 - `elastic-certs.zip` is on the BCP share (generated with `relsvr.exe generate-certs`, or with `relsvr.exe install` for a multi-node Elastic Stack): keep the default, **Install certificates from the BCP share**.
 - The Elastic CA certificate is already installed on this server (for example, by your own automation), or `elastic-certs.zip` is not available (for example, the Elastic Stack was installed in the default all-in-one mode, which does not produce this file): select **Use existing Elastic certificates**.
@@ -95,7 +94,7 @@ Environment Watch communicates with Elasticsearch, APM Server, and Kibana over T
 | **Use existing Elastic certificates** | Does not install any certificate. Validates the Elastic Stack connection over TLS. | `ConfiguredBy=External` |
 | **Skip certificate setup** (appears only when **Use existing Elastic certificates** is selected) | Skips all certificate setup and the Elastic Stack validation. | No registry entry is written |
 
-#### Install certificates from the BCP share (default)
+### Install certificates from the BCP share (default)
 
 When this option is selected, the installer copies `ca.crt` to:
 
@@ -110,19 +109,19 @@ When this option is selected, the installer copies `ca.crt` to:
 
 ![Options page with Install certificates from the BCP share selected](../../resources/ew-installer-05-cert-bcp-share.png)
 
-#### Use existing Elastic certificates
+### Use existing Elastic certificates
 
 Select this option when the Elastic CA certificate is already installed on the server. The installer does not install any certificate.
 
 ![Options page with Use existing Elastic certificates selected](../../resources/ew-installer-06-cert-existing.png)
 
-#### Skip certificate setup
+### Skip certificate setup
 
 The **Skip certificate setup** check box appears only after you select **Use existing Elastic certificates**. Select it to skip all certificate setup and the Elastic Stack validation. Use it only if TLS is already configured for all Elastic components.
 
 ![Options page with Skip certificate setup selected](../../resources/ew-installer-07-cert-skip.png)
 
-### Install Environment Watch in silent mode
+## Install Environment Watch in silent mode
 
 Run the installer from an elevated command prompt or PowerShell window. In silent mode you select the certificate option with command-line properties instead of the options page.
 
@@ -155,9 +154,9 @@ Skip certificate setup:
 > [!NOTE]
 > With the default `ELASTICCERTMODE=1`, a silent installation fails if `elastic-certs.zip` is not on the BCP share. Provide the service account properties in the same command when needed, for example `RELSERVICEACCOUNTUSERNAME="domain\Username" RELSERVICEACCOUNTPASSWORD="********"`.
 
-### Elastic certificate reference
+## Elastic certificate reference
 
-#### Registry key
+### Registry key
 
 After a successful installation (except when certificate setup is skipped), the installer writes the following values to `HKLM\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts`. Access to the key is restricted to Administrators and SYSTEM.
 
@@ -166,7 +165,7 @@ After a successful installation (except when certificate setup is skipped), the 
 | `CertificatesConfigured` | `1` |
 | `ConfiguredBy` | `ZipInstalled` or `External` |
 
-#### Re-install and uninstall
+### Re-install and uninstall
 
 - **Re-install:** If `CertificatesConfigured=1` is already present when the installer starts, it skips the certificate installation and the registry update, whichever option is selected. It still validates the Elastic Stack connection over TLS unless certificate setup is skipped.
 - **Failed installation:** The registry key is written before the Elastic Stack validation, so it can remain after an installation that fails at the validation step. To select a different certificate option before running the installer again, delete the key:
