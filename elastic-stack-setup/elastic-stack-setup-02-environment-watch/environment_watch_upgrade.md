@@ -91,7 +91,7 @@ This document outlines the steps to upgrade the Environment Watch monitoring age
 >
 > - If `elastic-certs.zip` is on the BCP share, keep the default option, **Install certificates from the BCP share**.
 > - If the Elastic certificates were installed manually, or `elastic-certs.zip` is not on the BCP share, select **Use existing Elastic certificates**. With the default option the installer stops when it cannot find the archive.
-> - In silent mode, add `ELASTICCERTMODE=2` to the command line. See [Install Environment Watch in silent mode](./ew-01-install-monitoring-agents.md#install-environment-watch-in-silent-mode).
+> - In silent mode, add `ELASTICCERTMODE=2` to the command line.
 >
 > If the installer already registered the certificates (the `ElasticCerts` registry key exists), it skips the certificate installation. See [Elastic certificate setup](./ew-01-install-monitoring-agents.md#elastic-certificate-setup).
 

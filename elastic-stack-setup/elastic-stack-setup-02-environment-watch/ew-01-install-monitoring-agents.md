@@ -16,16 +16,13 @@ This document outlines the steps to install the Environment Watch monitoring age
 - LDAP port 389 (TCP) must be open from the target server to the domain controller(s), per the [Default Port Reference](../troubleshooting/pre-requisite-troubleshooting.md#default-port-reference) table. The **Environment Watch Installer** uses this port to validate the Relativity Service Account. If the installer fails on this check, see [Domain Controller Unreachable](../troubleshooting/monitoring-agent-and-otel-collector.md#domain-controller-unreachable).
 - The Relativity Service Account credentials, if Relativity is not installed on the server or if you want to use a different service account (see step 2 of [Install the Monitoring Agent](#install-the-monitoring-agent)).
 
-> [!NOTE]
-> The LDAP port requirement above applies only during install/upgrade of the monitoring agent, to validate the service account against the domain controller. It is not required during normal runtime of the Environment Watch service.
-
 ## Steps
 
 ### Install the Monitoring Agent
 
 1. From the extracted Server Bundle, run `Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe`. The license page opens.
 2. Click **Options** on the license page to open the options page. Click **OK** to save your selections and return to the license page, or **Cancel** to leave the installer. The options page has the following settings:
-   - **Installation Folder:** The folder where Environment Watch is installed. Use **Browse** to choose a different folder.
+   - **Installation Folder (optional):** The folder where Environment Watch is installed. Use **Browse** to choose a different folder.
    - **Service Account:** By default the installer uses the Relativity Service Account. To use other credentials, select **Use a custom service account**, then enter the **Username** (`domain\Username`) and **Password**. The fields are enabled only when the option is selected. The service account must be provided here when Relativity is not installed on the host.
    - **Elastic Certificate Setup:** Environment Watch communicates with Elasticsearch, APM Server, and Kibana over TLS, so the server must trust the Elastic CA certificate. This setting controls whether the installer installs the certificate or uses one that is already in place. Choose one of the options described in [Elastic certificate setup](#elastic-certificate-setup).
 3. Select **I accept the license terms and conditions**. The **Install** button is disabled until the license terms are accepted.
@@ -120,61 +117,6 @@ Select this option when the Elastic CA certificate is already installed on the s
 The **Skip certificate setup** check box appears only after you select **Use existing Elastic certificates**. Select it to skip all certificate setup and the Elastic Stack validation. Use it only if TLS is already configured for all Elastic components.
 
 ![Options page with Skip certificate setup selected](../../resources/ew-installer-07-cert-skip.png)
-
-## Install Environment Watch in silent mode
-
-Run the installer from an elevated command prompt or PowerShell window. In silent mode you select the certificate option with command-line properties instead of the options page.
-
-| Property | Value | Description |
-|---|---|---|
-| `ELASTICCERTMODE` | `1` (default) or `2` | `1` installs the certificates from the BCP share. `2` uses existing Elastic certificates. |
-| `SKIPCERTSETUP` | `1` | Skips certificate setup and validation. Applies only when `ELASTICCERTMODE=2`; it is ignored when `ELASTICCERTMODE=1`. |
-| `ELASTIC_CERTS_PREINSTALLED` | `1` | Same as `ELASTICCERTMODE=2`: use existing Elastic certificates. |
-| `ELASTIC_SKIP_CERT_SETUP` | `1` | Same as `ELASTICCERTMODE=2` with `SKIPCERTSETUP=1`: skip certificate setup and validation. Can be combined with any `ELASTICCERTMODE` value. |
-| `RELSERVICEACCOUNTUSERNAME`, `RELSERVICEACCOUNTPASSWORD` | Account credentials | Relativity Service Account credentials. Required when Relativity is not installed on the host. |
-
-Install certificates from the BCP share (default):
-
-```
-.\Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe /silent /log InstallLog.log
-```
-
-Use existing Elastic certificates:
-
-```
-.\Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe ELASTICCERTMODE=2 /silent /log InstallLog.log
-```
-
-Skip certificate setup:
-
-```
-.\Relativity.EnvironmentWatch.Installer.xx.x.xxxx.exe ELASTICCERTMODE=2 SKIPCERTSETUP=1 /silent /log InstallLog.log
-```
-
-> [!NOTE]
-> With the default `ELASTICCERTMODE=1`, a silent installation fails if `elastic-certs.zip` is not on the BCP share. Provide the service account properties in the same command when needed, for example `RELSERVICEACCOUNTUSERNAME="domain\Username" RELSERVICEACCOUNTPASSWORD="********"`.
-
-## Elastic certificate reference
-
-### Registry key
-
-After a successful installation (except when certificate setup is skipped), the installer writes the following values to `HKLM\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts`. Access to the key is restricted to Administrators and SYSTEM.
-
-| Value | Data |
-|---|---|
-| `CertificatesConfigured` | `1` |
-| `ConfiguredBy` | `ZipInstalled` or `External` |
-
-### Re-install and uninstall
-
-- **Re-install:** If `CertificatesConfigured=1` is already present when the installer starts, it skips the certificate installation and the registry update, whichever option is selected. It still validates the Elastic Stack connection over TLS unless certificate setup is skipped.
-- **Failed installation:** The registry key is written before the Elastic Stack validation, so it can remain after an installation that fails at the validation step. To select a different certificate option before running the installer again, delete the key:
-
-  ```
-  Remove-Item -Path "HKLM:\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts" -Recurse
-  ```
-
-- **Uninstall:** Uninstalling Environment Watch removes the `ElasticCerts` registry key. It does not remove the `ca.crt` files copied to the Elastic folders or the certificate imported into the Trusted Root store.
 
 ## Next Step
 [Click here for the next step](./ew-02-relativity-alerts.md)
