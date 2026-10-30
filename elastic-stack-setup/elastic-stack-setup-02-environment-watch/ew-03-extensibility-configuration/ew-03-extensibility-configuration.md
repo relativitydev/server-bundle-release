@@ -39,7 +39,7 @@ The Manual Elasticsearch Configuration helps to update and optimize essential El
 
 ### Custom-JSON Integration
 
-The Custom-JSON integration enables monitoring of Windows Services, Certificates, Kibana Alerts with Slack Notifications, and SQL Cluster Instances.
+The Custom-JSON integration enables monitoring of Windows Services, Certificates, Kibana Alerts with Slack and Email Notifications, and SQL Cluster Instances.
 
 - [Setting Up Custom-JSON Integration](./ew-extensibility-configuration-06-json-configuration/ew-extensibility-configuration-06-json-configuration.md)
 
