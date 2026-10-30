@@ -7,9 +7,9 @@ This document provides an overview of the custom JSON configuration file used by
 - SQL servers
 - File log receivers
 - Scrapers
-- It also includes configuration options for Slack notifications used for alerting.
+- It also includes configuration options for Slack and email notifications used for alerting.
 
-The shared configuration file enables users to control what is monitored such as specific Windows services, certificate conditions, or custom log file sources and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
+The shared configuration file enables users to control what is monitored such as specific Windows services, certificate conditions, or custom log file sources and how alerts are delivered. Slack and email are the supported notification platforms. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
 ---
 
@@ -30,7 +30,7 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
     - `scrapers`: A list of scrapers with configurable intervals and parameters.
     - `openTelemetryOverrides`: Contains custom OpenTelemetry Collector overrides.
       - `logSources`: A list of custom file log source configurations for the OTEL file log receiver.
-  - `alertNotificationHandlers`: Defines notification handlers (e.g., Slack).
+  - `alertNotificationHandlers`: Defines notification handlers (Slack and email).
 
 ---
 
@@ -123,7 +123,7 @@ An example of the BCPPath and folder structure is shown below:
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, SQL server instances, file log receivers, and scrapers. Each source type has its own configuration structure and properties. Following are the details for each source type:
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack and email notifications, SQL server instances, file log receivers, and scrapers. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 ### Certificates
@@ -137,6 +137,10 @@ For detailed instructions, see [Windows Service Configuration](ew-json-configura
 ### Slack Alert Notifications
 
 For detailed instructions, see [Alert Notification Handlers](ew-json-configuration-03-slack.md).
+
+### Email Alert Notifications
+
+For detailed instructions, see [Email Alert Notifications](ew-json-configuration-07-email.md).
 
 ### SQL Server Instances
 

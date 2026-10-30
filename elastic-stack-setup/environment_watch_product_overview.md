@@ -148,7 +148,7 @@ The Relativity platform has been updated to expose low-level details using the O
 
 Once each Relativity server has been setup with an InfraWatch Agent, metrics/traces/logs are continually exported to the Elastic APM Server (e.g. Open Telemetry backend) where the data is persisted to Elasticsearch indexes. Although Kibana is often considered the front-end for Elasticsearch, it also supports the [Kibana Task Manager](https://www.elastic.co/guide/en/kibana/current/task-manager-production-considerations.html) feature to allocate resources to monitor alerts.
 
-As the metrics are continually submitted to the Open Telemetry backend, Kibana evaluates the conditions to determine whether the alert is active or not. Depending on the Elasticsearch license, each alert can be configured to notify via Slack, Email, or WebHook.
+As the metrics are continually submitted to the Open Telemetry backend, Kibana evaluates the conditions to determine whether the alert is active or not. Depending on the Elasticsearch license, each alert can be configured to notify via Slack, Email, or WebHook. Environment Watch can also send alert emails by using the SMTP settings already configured in Relativity. For details, see [Email Alert Notifications](./elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-07-email.md).
 
 #### Elastic Index Lifecycle Management
 

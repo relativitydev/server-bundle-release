@@ -438,6 +438,34 @@ When troubleshooting Slack notification issues, the first step is to verify whet
 - Set the `messageIntervalSeconds` property in the Slack handler configuration to a value greater than or equal to 180 seconds to avoid rate limiting by Slack.
 - Restart the Environment Watch Windows service to apply the changes.
 
+## Email Notifications
+
+For configuration details, see [Email Alert Notifications](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-07-email.md).
+
+When you troubleshoot email notification issues, search the Environment Watch agent logs in Kibana Discover for the log messages in the following table.
+
+| Log message                                                                                            | Level   | Cause and resolution                                                                                                                                  |
+|--------------------------------------------------------------------------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Email notifications are disabled, skipping.`                                                          | Debug   | The `enabled` property of the `email` handler is `false`. Set it to `true`.                                                                           |
+| `SMTP settings are not configured in Instance Settings, skipping email notifications.`                 | Warning | The `SMTPServer` Instance Setting in the `kCura.Notification` section is empty. Configure the SMTP Instance Settings.                                 |
+| `Email notifications are enabled in the JSON configuration but no enabled recipients were found.`      | Warning | Add at least one recipient with `enabled` set to `true`.                                                                                              |
+| `Sender address '<address>' is not a valid email address. Re-queuing <n> alert(s) for next send window.` | Warning | Correct the `fromAddress` property. The alerts are sent in the next send window after the configuration is fixed.                                   |
+| `Failed to send email notification for <n> alert(s) ... Re-queuing alerts for next send window.`       | Warning | The SMTP send failed. Verify the SMTP credentials, port connectivity, and SSL setting. The alerts are sent in the next send window.                   |
+| `Email notification sent successfully`                                                                 | Info    | The email was sent. If it is not received, check the recipient mailbox and the SMTP server logs.                                                      |
+
+**Emails are not received after an alert fires**
+
+- Verify that the `email` handler is in the `alertNotificationHandlers` section and that `enabled` is `true`.
+- Verify that `notifyOnAlertFired` is not set to `false`.
+- Verify that at least one recipient is enabled and the email addresses are valid.
+- Check the time between emails. Alerts that fire within the `messageIntervalSeconds` window, 180 seconds minimum, are sent together in the next email.
+- Verify that the SMTP Instance Settings in the `kCura.Notification` section are correct and that the SMTP port is reachable from the server that runs the Environment Watch agent.
+- If the **Environment Watch alert notifications are not being sent** alert is active, resolve it by following the steps in [Email Alert Notifications](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-07-email.md#notification-health-alert).
+
+**Configuration changes are not applied**
+
+- Changes to `environment-watch-configuration.json` are applied without restarting the agent. If they are not applied, refer to [Common Issues](#common-issues) section 1.1 to 1.4.
+
 ## File Log Receiver
 
 If RabbitMQ logs do not appear in Kibana after configuring the file log receiver, fix the common issues outlined in [Common Issues](#common-issues) before reviewing the following potential causes:
