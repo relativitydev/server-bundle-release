@@ -134,13 +134,12 @@ For detailed instructions, see [Certificates Configuration](ew-json-configuratio
 
 For detailed instructions, see [Windows Service Configuration](ew-json-configuration-02-windows-services.md).
 
-### Slack Alert Notifications
+### Alert Notifications
 
-For detailed instructions, see [Alert Notification Handlers](ew-json-configuration-03-slack.md).
+Environment Watch can send alert notifications to Slack, by email, or both. For detailed instructions, see:
 
-### Email Alert Notifications
-
-For detailed instructions, see [Email Alert Notifications](ew-json-configuration-07-email.md).
+- [Slack Alert Notifications](ew-json-configuration-03-slack.md)
+- [Email Alert Notifications](ew-json-configuration-07-email.md)
 
 ### SQL Server Instances
 
@@ -367,6 +366,21 @@ For detailed instructions, see [File Log Receiver Configuration](ew-json-configu
 				"channel": "ABC12M3PQR4",
 				"enabled": true,
 				"messageIntervalSeconds": 180
+			},
+			"email": {
+				"enabled": true,
+				"fromAddress": "no-reply@company.com",
+				"fromDisplayName": "Environment Watch",
+				"messageIntervalSeconds": 180,
+				"maxQueueSize": 100,
+				"notifyOnAlertFired": true,
+				"recipients": [
+					{
+						"emailAddress": "admin@company.com",
+						"displayName": "Environment Watch Admin",
+						"enabled": true
+					}
+				]
 			}
 		}
 	}
