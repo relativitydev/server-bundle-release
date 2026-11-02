@@ -45,17 +45,17 @@ Expected Output:
 {
   "name" : "EMTTEST",
   "cluster_name" : "elasticsearch",
-  "cluster_uuid" : "PwBZoINKQjGZ53WH4gFfBg",
+  "cluster_uuid" : "cDjTYvMhQROh26bHJZV8hw",
   "version" : {
-    "number" : "8.17.3",
+    "number" : "9.5.5",
     "build_flavor" : "default",
     "build_type" : "zip",
-    "build_hash" : "a091390de485bd4b127884f7e565c0cad59b10d2",
-    "build_date" : "2025-02-28T10:07:26.089129809Z",
+    "build_hash" : "48acba663b09e70b115dd879329141506c377890",
+    "build_date" : "2026-09-30T22:12:03.984586187Z",
     "build_snapshot" : false,
-    "lucene_version" : "9.12.0",
-    "minimum_wire_compatibility_version" : "7.17.0",
-    "minimum_index_compatibility_version" : "7.0.0"
+    "lucene_version" : "10.5.1",
+    "minimum_wire_compatibility_version" : "8.19.0",
+    "minimum_index_compatibility_version" : "8.0.0"
   },
   "tagline" : "You Know, for Search"
 }
