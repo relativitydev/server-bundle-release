@@ -80,7 +80,7 @@ How many days should the new key be valid? (180): 180
 
 API key rotation completed ----------------------------------------- 100%
 
-Successfully rotated the rel-infrawatch and rel-alerts Elasticsearch API keys and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key.
+Successfully rotated the rel-infrawatch and rel-alerts Elasticsearch API keys and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key, and restart the "Relativity Environment Watch" Windows service on each monitored server so that the monitoring agent uses the new rel-infrawatch key.
 ```
 
 Follow the steps in [After the rotation](#after-the-rotation) to finish.
@@ -117,7 +117,7 @@ How many days should the new key be valid? (180): 180
 
 API key rotation completed ----------------------------------------- 100%
 
-Successfully rotated the rel-infrawatch and rel-alerts Elasticsearch API keys and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key.
+Successfully rotated the rel-infrawatch and rel-alerts Elasticsearch API keys and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key, and restart the "Relativity Environment Watch" Windows service on each monitored server so that the monitoring agent uses the new rel-infrawatch key.
 ```
 
 ```
@@ -159,7 +159,7 @@ Days remaining before expiry: 179
 
 API key rotation completed ----------------------------------------- 100%
 
-Successfully rotated the rel-infrawatch and rel-alerts Elasticsearch API keys and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key.
+Successfully rotated the rel-infrawatch and rel-alerts Elasticsearch API keys and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key, and restart the "Relativity Environment Watch" Windows service on each monitored server so that the monitoring agent uses the new rel-infrawatch key.
 ```
 
 ```
@@ -211,7 +211,7 @@ Rotate the rel-infrawatch API key and create a new rel-alerts API key for cluste
 When the rotation finishes, the message says that the `rel-alerts` key was created:
 
 ```
-Successfully rotated the rel-infrawatch Elasticsearch API key, created the rel-alerts Elasticsearch API key and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key.
+Successfully rotated the rel-infrawatch Elasticsearch API key, created the rel-alerts Elasticsearch API key and persisted the new keys to the Secret Store. Please restart all Relativity services, including "kCura Edds Agent Manager," "kCura Edds Web Processing Manager," and "kCura Service Host Manager" on each server contained within this Relativity instance so that Relativity Alerts uses the new rel-alerts key, and restart the "Relativity Environment Watch" Windows service on each monitored server so that the monitoring agent uses the new rel-infrawatch key.
 ```
 
 ### Invalid cluster value
