@@ -238,7 +238,7 @@ For service account requirements and troubleshooting, see [Environment_Watch_Ins
 
 If the InfraWatch cluster API key has been newly created or rotated using the `rotate-api-key` command and Environment Watch dashboards are no longer updating or showing data, follow these steps.
 
-See [Rotate an Elasticsearch API Key using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md) for instructions on rotating the API key.
+See [Rotate an Elasticsearch API Key using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md) for instructions on rotating the API key. Rotating the InfraWatch cluster also rotates the `rel-alerts` key that Relativity Alerts uses, so the Relativity services must be restarted as well; see [After the rotation](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md#after-the-rotation).
 
 1. Restart the **Relativity Environment Watch** Windows service on each monitored server:
     ```powershell
