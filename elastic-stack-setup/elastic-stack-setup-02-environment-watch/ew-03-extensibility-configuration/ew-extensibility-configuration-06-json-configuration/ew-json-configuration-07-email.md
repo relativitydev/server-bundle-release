@@ -8,7 +8,9 @@ While a Kibana alert is in a non-OK status, the Environment Watch agent sends an
 
 ### Alerts that trigger an email
 
-The agent checks all Kibana alerting rules, including the alerts provided by Relativity and any custom rules, every 3 minutes by default. An email is sent for each alert whose last execution status is not `ok`, for example `active` or `error`. The agent sends the same alerts to the email handler and to the Slack handler.
+Only the Environment Watch agent on the SQL Primary server checks alerts and sends emails. The agents on other servers do not send alert emails.
+
+The agent checks all Kibana alerting rules, including the alerts provided by Relativity and any custom rules, every 3 minutes by default. An email is sent for each alert whose last execution status is not `ok`, for example `active` or `error`. The agent sends the same alerts to the email handler and to the Slack handler. Because the agent checks every 3 minutes, the first email can arrive up to about 3 minutes after an alert changes to a non-OK status.
 
 An alert that stays in a non-OK status is included again each time its rule runs again. Emails therefore repeat about once per send window until the alert returns to the `ok` status.
 
@@ -27,11 +29,13 @@ Each email includes the following details for every alert:
 - Date and time the alert was last executed
 - Duration of the last execution, in milliseconds
 
-> **Note**: Date and time values in the email use the local time of the server that runs the Environment Watch agent.
+> **Note**: Date and time values in the email use the local time of the SQL Primary server.
 
 ## Prerequisites
 
 Email notifications use the SMTP settings that are already configured in Relativity. You do not need to configure a separate SMTP server for Environment Watch.
+
+Alert emails are sent only from the SQL Primary server. Verify that the SQL Primary server can reach the SMTP server on the configured port. Firewall rules and the SMTP server allow list need to include only the SQL Primary server.
 
 Verify that the following Instance Settings are set in the `kCura.Notification` section:
 
@@ -231,7 +235,7 @@ C:\Server.Bundle.x.y.z\relsvr.exe setup
 When the alert is active, check the following:
 
 - Verify the SMTP host, port, user name, and password in the `kCura.Notification` Instance Settings. If the SMTP credentials were changed on the SMTP server, update the Instance Settings.
-- Verify that the SMTP port is open on the firewall and that the SMTP host is reachable from the server that runs the Environment Watch agent.
+- Verify that the SMTP port is open on the firewall and that the SMTP host is reachable from the SQL Primary server.
 - Verify the `email` handler in `environment-watch-configuration.json`. For Slack, verify the access token and channel.
 
 After the cause is fixed, the agent sends the queued alerts the next time it finds an alert in a non-OK status, and the alert returns to a recovered state.
