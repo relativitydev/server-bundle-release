@@ -95,11 +95,7 @@ The installer can install the certificate authority (CA) certificate for you, or
 | **Use existing Elastic certificates** | The Elastic CA certificate is already installed on this server (for example, by your own automation), or `elastic-certs.zip` is not available (for example, the Elastic Stack was installed in the default all-in-one mode, which does not produce this file). | Does not install any certificate. Validates the Elastic Stack connection over TLS. | `ConfiguredBy=External` |
 | **Skip certificate setup** (appears only when **Use existing Elastic certificates** is selected) | TLS is already configured for all Elastic components and you do not want the installer to validate the Elastic Stack. | Skips all certificate setup and the Elastic Stack validation. | No registry entry is written |
 
-If an installation fails at the Elastic Stack validation, the `ElasticCerts` registry key remains, because the installer writes the key before the validation and does not remove it when the validation fails. On the next run the installer skips the certificate installation, whichever certificate option is selected. To select a different option after a failed installation, delete the key first. In an elevated PowerShell window, run:
-
-```
-Remove-Item -Path "HKLM:\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts" -Recurse
-```
+If an installation fails at the Elastic Stack validation, the `ElasticCerts` registry key remains, because the installer writes the key before the validation and does not remove it when the validation fails. On the next run the installer skips the certificate installation, whichever certificate option is selected. To select a different option after a failed installation, delete the key first. For the steps, see [Elastic Stack validation failed after the certificate setup](../troubleshooting/monitoring-agent-and-otel-collector.md#elastic-stack-validation-failed-after-the-certificate-setup).
 
 ### Install certificates from the BCP share (default)
 

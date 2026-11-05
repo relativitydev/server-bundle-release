@@ -317,7 +317,7 @@ The **Install certificates from the BCP share** option is selected (it is the de
 1.  Confirm that `elastic-certs.zip` was generated with the Relativity Server CLI (`relsvr.exe generate-certs`, or `relsvr.exe install` for a multi-node Elastic Stack). The default all-in-one installation does not produce this file. See the [Elastic Stack Setup documentation](https://help.relativity.com/Server2025/Content/Elasticstack/Elastic_Stack_Installation_Overview.htm).
 2.  Copy `elastic-certs.zip` to the `EnvironmentWatch` folder on the BCP share, for example `\\<sql-primary>\BCPPath\EnvironmentWatch\elastic-certs.zip`. To find the BCP path for the environment, see [Custom JSON Troubleshooting](custom-json-troubleshooting.md).
 3.  Verify that the share and NTFS permissions allow the computer account of this server (`DOMAIN\<server>$`) or the **Domain Computers** group to read `elastic-certs.zip`.
-4.  If the Elastic certificates are already installed on this server, re-run the installer and select **Use existing Elastic certificates** on the options page. If a previous installation failed at the Elastic Stack validation, first delete the `HKLM\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts` registry key.
+4.  If the Elastic certificates are already installed on this server, re-run the installer and select **Use existing Elastic certificates** on the options page. If a previous installation failed at the Elastic Stack validation, first delete the registry key. See [Elastic Stack validation failed after the certificate setup](#elastic-stack-validation-failed-after-the-certificate-setup), step 3.
 5.  Re-run the **Environment Watch Installer**.
 
 #### Cannot determine the BCP share path
@@ -364,7 +364,11 @@ The installer validates the Elasticsearch, APM Server, and Kibana connections ov
 **Troubleshooting Steps:**
 1.  Verify that Elasticsearch, APM Server, and Kibana are running and reachable from this server. See [Network Connectivity](pre-requisite-troubleshooting.md#network-connectivity).
 2.  Import the Elastic CA certificate (`ca.crt` or `http_ca.crt`) into **Local Machine > Trusted Root Certification Authorities**, or select **Install certificates from the BCP share** on the options page.
-3.  The installer writes the `ElasticCerts` registry key before the validation and does not remove it when the validation fails, so the key remains and the installer skips the certificate installation on the next run, whichever certificate option is selected. To select a different option, delete the key first. In an elevated PowerShell window, run `Remove-Item -Path "HKLM:\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts" -Recurse`.
+3.  The installer writes the `ElasticCerts` registry key before the validation and does not remove it when the validation fails, so the key remains and the installer skips the certificate installation on the next run, whichever certificate option is selected. To select a different option, delete the key first. In an elevated PowerShell window, run:
+
+    ```
+    Remove-Item -Path "HKLM:\SOFTWARE\Relativity\EnvironmentWatch\ElasticCerts" -Recurse
+    ```
 4.  Re-run the **Environment Watch Installer**.
 
 #### Elastic certificate registry entry could not be written
