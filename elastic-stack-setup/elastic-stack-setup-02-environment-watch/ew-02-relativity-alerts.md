@@ -65,6 +65,18 @@ A list of common install issues and their resolutions are available at the [trou
 
 If any of the previous steps have failed, or any errors were displayed, please see [troubleshooting guide](../troubleshooting/relativity_alerts_troubleshooting.md) for more information.
 
+## API Key Expiry and Rotation
+
+Relativity Alerts connects to Elasticsearch with the `rel-alerts` API key that the Environment Watch setup creates on the InfraWatch cluster. The key is valid for 180 days by default. If it expires or is invalidated, Relativity Alerts loses access to Elasticsearch.
+
+Rotate the key before it expires by running the `rotate-api-key` command for the InfraWatch cluster. This rotates the `rel-alerts` key together with the `rel-infrawatch` key:
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-infrawatch
+```
+
+See [Rotate an Elasticsearch API Key using the Relativity Server CLI](./elastic-stack-rotate-api-key-environment-watch.md) for full instructions, including the services to restart afterwards and how to verify the new key.
+
 # Create Kibana Users and Assign Roles
 
 To access Kibana dashboards and saved searches, a new account must be created for each user and be assigned to the custom Kibana role that was installed during the Environment Watch CLI setup.
