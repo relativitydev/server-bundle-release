@@ -15,13 +15,8 @@ This document outlines the steps to install the Environment Watch monitoring age
 - For **Use existing Elastic certificates**: the Elastic CA certificate is already installed in **Local Machine > Trusted Root Certification Authorities** on the server. See [Elastic certificate setup](#elastic-certificate-setup).
 - Read access to `elastic-certs.zip` for the computer account of the server (`DOMAIN\<server>$`) or the **Domain Computers** group, when you select **Install certificates from the BCP share**. The installer reads the share as the Local System account, not as the Relativity Service Account.
 - Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. For information on whitelisting, see [Configuring clients](https://help.relativity.com/Server2025/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients).)
-- The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
-- Environment Watch has been set up using the Relativity Server CLI
-- Elastic Stack Certificates are installed on all Servers
-- Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for     Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
 - The Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
-- Environment Watch has been set up using the Relativity Server CLI 
-- The Environment Watch monitoring agent must be installed on a supported Windows Server OS including Windows Server 2022, Windows Server 2019, Windows Server 2016. Please see [here](https://help.relativity.com/Server2024/Content/Installing_and_Upgrading/System_requirements/Compatibility_matrix.htm#Relativitysystemrequirementsmatrix) for information on Windows Server compatibility for Relativity Server.
+- Environment Watch has been set up using the Relativity Server CLI
 - LDAP port 389 (TCP) must be open from the target server to the domain controller(s), per the [Default Port Reference](../troubleshooting/pre-requisite-troubleshooting.md#default-port-reference) table. The **Environment Watch Installer** uses this port to validate the Relativity Service Account. If the installer fails on this check, see [Domain Controller Unreachable](../troubleshooting/monitoring-agent-and-otel-collector.md#domain-controller-unreachable).
 - The Relativity Service Account credentials, if Relativity is not installed on the server or if you want to use a different service account (see step 2 of [Install the Monitoring Agent](#install-the-monitoring-agent)).
 
