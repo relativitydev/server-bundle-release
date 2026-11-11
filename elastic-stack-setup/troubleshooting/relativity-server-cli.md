@@ -14,7 +14,7 @@ Before running the CLI, you must have access to all of the following:
 - **APM Server**
 For verification steps for all prerequisites, see [Additional Pre-requisite Access Checks](monitoring-agent-and-otel-collector.md#additional-pre-requisite-access-checks).
 
-> This guide assumes the Relativity Server bundle was extracted to `C:\server-bundle` or a similar directory chosen by the user.
+> This guide assumes the Relativity Server bundle, which contains the Relativity Server CLI (`relsvr.exe`), was [downloaded](https://github.com/relativitydev/server-bundle-release/blob/main/elastic-stack-setup/elastic-stack-setup-01-installation.md) and extracted to `C:\server-bundle` or a similar directory chosen by the user.
 
 ## APM Integration and Data View
 
