@@ -11,7 +11,7 @@ This section guides you through upgrading Environment Watch using the Relativity
 
 ### Prerequisites
 
-- The new Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/blob/main/elastic-stack-setup/elastic-stack-setup-01-installation.md)) and extracted to `C:\Server.Bundle.x.y.z`
+- The new Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
 
 ### Upgrade Instructions
 
