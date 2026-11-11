@@ -118,7 +118,7 @@ The following table summarizes the default ports used by the Elastic Stack and E
       "build_date": "...",
       "build_sha": "...",
       "publish_ready": true,
-      "version": "8.17.3"
+      "version": "9.5.5"
     }
     ```
 
