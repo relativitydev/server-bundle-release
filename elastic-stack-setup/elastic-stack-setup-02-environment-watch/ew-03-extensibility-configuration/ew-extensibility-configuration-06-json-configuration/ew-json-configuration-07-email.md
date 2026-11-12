@@ -224,7 +224,7 @@ The **Environment Watch alert notifications are not being sent** alert fires whe
 
 ### Import the alert
 
-The alert is packaged with the Environment Watch installation. The Environment Watch CLI imports it when you run the setup command:
+The alert is packaged with the Environment Watch installation. The Environment Watch CLI imports it when you run the setup command. For prerequisites and the CLI download, see [Set up Environment Watch using the Relativity Server CLI](../../elastic-stack-setup-02-environment-watch.md):
 
 ```text
 C:\Server.Bundle.x.y.z\relsvr.exe setup

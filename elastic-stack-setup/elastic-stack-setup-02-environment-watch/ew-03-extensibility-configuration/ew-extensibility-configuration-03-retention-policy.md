@@ -97,7 +97,7 @@ The `configure-retention` command sets Elasticsearch Index Lifecycle Management 
 
 ### Prerequisites
 
-- The Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
+- The Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([Server bundle releases page](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
 - Access to the Relativity Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2025/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
 - Elasticsearch is running and reachable. Confirm by browsing to the cluster endpoint, `https://<hostname>:9200` (for example `https://emttest:9200`) — a running cluster returns its version and cluster details.
 - The initial Environment Watch setup has been completed. See [Set up Environment Watch using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch.md)
