@@ -10,7 +10,7 @@
 - Elastic Stack Certificates are installed on all Servers
 - Verify that the Elastic Stack services (Elasticsearch, Kibana, and APM) are    running
 - Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
-- The Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([Server bundle releases page](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
+- The Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
 
 ### Set up instructions
 
