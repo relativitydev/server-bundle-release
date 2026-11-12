@@ -89,6 +89,16 @@ By default, Environment Watch uses the retention periods configured in Elasticse
 
 See [Configure Elasticsearch ILM Retention using the Relativity Server CLI](./ew-03-extensibility-configuration/ew-extensibility-configuration-03-retention-policy.md#configure-elasticsearch-ilm-retention-using-the-relativity-server-cli) for full instructions, including interactive mode, quiet mode for scripted updates, and how to verify changes in Kibana Dev Tools.
 
+## API Key Expiry and Rotation
+
+The setup creates Elasticsearch API keys that are valid for 180 days by default: `rel-infrawatch` (used by the Environment Watch monitoring agents) and `rel-alerts` (used by Relativity Alerts) on the InfraWatch cluster, and `rel-datagrid` on the DataGrid cluster if Data Grid Audit is set up. Rotate the keys before they expire to avoid authentication failures. The `rotate-api-key` command rotates both `rel-infrawatch` and `rel-alerts` when run for the InfraWatch cluster:
+
+```
+C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-infrawatch
+```
+
+See [Rotate an Elasticsearch API Key using the Relativity Server CLI](./elastic-stack-rotate-api-key-environment-watch.md) for full instructions, including quiet mode for scripted rotation, the services to restart afterwards, and how to verify the new keys in Kibana and the Secret Store.
+
 ## Next Steps
 
 * [Click here to continue Environment Watch Setup](./ew-01-install-monitoring-agents.md)
