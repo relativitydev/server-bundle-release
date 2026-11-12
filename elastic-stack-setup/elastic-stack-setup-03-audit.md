@@ -14,7 +14,7 @@ After installing the required Elastic components for Data Grid Audit, the integr
 
 1. Install the mapper-size plugin on all nodes in the Elasticsearch cluster (instructions available [here](https://www.elastic.co/guide/en/elasticsearch/plugins/current/mapper-size.html)). The Elasticsearch service must be restarted on each node after installing the plugin.
 
-2. The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
+2. The Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
 
 3. Verify that the InfraWatch Services application is installed in the Relativity instance (this RAP is delivered as part of the base Relativity Server 2024 installation package). To confirm, open the Relativity **Application Library** and verify that **InfraWatch Services** appears in the installed application list.
 

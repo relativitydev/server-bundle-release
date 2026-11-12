@@ -11,7 +11,7 @@ This section guides you through upgrading Environment Watch using the Relativity
 
 ### Prerequisites
 
-- The new Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z`
+- The new Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
 
 ### Upgrade Instructions
 
@@ -84,7 +84,7 @@ This document outlines the steps to upgrade the Environment Watch monitoring age
 ### Prerequisites
 
 - The Environment Watch CLI upgrade has been completed.
-- The new Server-bundle zip file has been downloaded and extracted.
+- The new Server-bundle zip file has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted.
 
 > [!IMPORTANT]
 > The Elastic certificate setup runs on upgrade only when the `ElasticCerts` registry key does not exist, for example when you upgrade from a build that predates the certificate setup. Click **Options** before you click **Install** and review **Elastic Certificate Setup**:
