@@ -248,8 +248,8 @@ When you have Relativity Alerts installed and Environment Watch is fully configu
 
 - **Alerts tab** **and key fields** - The Alerts tab includes a list of all Alert RDOs that are mapped to a corresponding Kibana alert. Each Alert includes the following key fields:
   - **Alert State** – The current state of the alert. An alert can be in one of the following states:
-    - **OK** – Indicates the monitored condition is within expected thresholds.
     - **Active** – Indicates the alert has been triggered and the monitored condition has exceeded its threshold.
+    - **OK** – Indicates the monitored condition is within expected thresholds.
     - **Recovered** – Indicates the alert was previously triggered and the monitored condition has since returned to expected thresholds.
     - **Untracked** – Indicates the alert is currently disabled in Kibana and is no longer being monitored.
   - **Alert State Updated** – When did the alert state last change?
