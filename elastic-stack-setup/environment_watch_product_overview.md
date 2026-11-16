@@ -247,8 +247,12 @@ The Alert Manager Agent retrieves alert data from Kibana. This agent is automati
 When you have Relativity Alerts installed and Environment Watch is fully configured, you can see all of your alerts and corresponding alert details from the Environment Watch > Alerts tab in Relativity.
 
 - **Alerts tab** **and key fields** - The Alerts tab includes a list of all Alert RDOs that are mapped to a corresponding Kibana alert. Each Alert includes the following key fields:
-  - **Alert State** – is the alert currently active or inactive?
-  - **Alert State Updated** – When did the alert last change from inactive to active or active to inactive?
+  - **Alert State** – The current state of the alert. An alert can be in one of the following states:
+    - **OK** – Indicates the monitored condition is within expected thresholds.
+    - **Active** – Indicates the alert has been triggered and the monitored condition has exceeded its threshold.
+    - **Recovered** – Indicates the alert was previously triggered and the monitored condition has since returned to expected thresholds.
+    - **Untracked** – Indicates the alert is currently disabled in Kibana and is no longer being monitored.
+  - **Alert State Updated** – When did the alert state last change?
   - **Dashboard or Tab Jump Link** – Alerts are "generalized" in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
 	
 > Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.
