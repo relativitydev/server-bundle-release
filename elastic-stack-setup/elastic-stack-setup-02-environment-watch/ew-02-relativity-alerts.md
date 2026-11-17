@@ -1,7 +1,10 @@
 # Install Relativity Alerts
 
 > [!NOTE]
->> From Relativity Server 2026 onwards, the Relativity Alerts application is automatically installed during the installation or upgrade to the latest Relativity Server version.
+> This step is required for Environment Watch.
+
+> [!NOTE]
+> From Relativity Server 2026 onwards, the Relativity Alerts application is installed automatically during the installation or upgrade of Relativity Server. Manual installation is required only for Relativity Server 2024 Patch 2 and Relativity Server 2025.
 
 ## Summary
 The Relativity Alerts application is a new application as part of the Relativity Environment Watch suite. Its main functionality is to alert Relativity System Administrators to a variety of Environmental and Application related issues on a Relativity instance within Relativity web interface. It replaces a previous "Legacy Alerts" functionality with a new Open Telemetry based implementation with Elastic Stack backend. It allows in real time to notify Relativity System Administrators about issues, redirect them to easily readable dashboards with performance and health information, as well as accompanied by a comprehensive resolution guidelines.
@@ -13,8 +16,8 @@ The Relativity Alerts application is a new application as part of the Relativity
 
 ## Installation
 
-[!NOTE]
-> **These steps apply only to Relativity Server 2024 Patch 2 and Relativity Server 2025. From Relativity Server 2026 onwards, the Relativity Alerts application is automatically installed.**
+> [!NOTE]
+> These steps apply only to Relativity Server 2024 Patch 2 and Relativity Server 2025. For Relativity Server 2026 onwards, no manual installation is required. Skip this section and proceed to [Verification](#verification).
 
 To install the Relativity Alerts application on your Relativity instance:
 1. Log in to Relativity as a System Administrator.
