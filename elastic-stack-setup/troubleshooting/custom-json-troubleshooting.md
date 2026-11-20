@@ -436,4 +436,139 @@ When troubleshooting Slack notification issues, the first step is to verify whet
 **If users need to adjust the frequency of Slack messages, follow these steps:**
 
 - Set the `messageIntervalSeconds` property in the Slack handler configuration to a value greater than or equal to 180 seconds to avoid rate limiting by Slack.
+- Save the file. The change is applied without restarting the Environment Watch Windows service. If the change is not applied, refer to [Common Issues](#common-issues) section 1.1 to 1.4.
+
+## Email Notifications
+
+For configuration details, see [Email Alert Notifications](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-07-email.md).
+
+Alert emails are sent only by the Environment Watch agent on the SQL Primary server. When you troubleshoot email notification issues, search the logs of that agent in Kibana Discover for the log messages in the following table.
+
+| Log message                                                                                            | Level   | Cause and resolution                                                                                                                                  |
+|--------------------------------------------------------------------------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Email notifications are disabled, skipping.`                                                          | Debug   | The `enabled` property of the `email` handler is `false`. Set it to `true`.                                                                           |
+| `SMTP settings are not configured in Instance Settings, skipping email notifications.`                 | Warning | The `SMTPServer` Instance Setting in the `kCura.Notification` section is empty. Configure the SMTP Instance Settings.                                 |
+| `Email notifications are enabled in the JSON configuration but no enabled recipients were found.`      | Warning | Add at least one recipient with `enabled` set to `true`.                                                                                              |
+| `No sender address configured (FromAddress in JSON config and SMTPUserName in Instance Settings are both empty). Re-queuing <n> alert(s) for next send window.` | Warning | Set the `fromAddress` property. The alerts are sent again the next time the agent finds an alert in a non-OK status after the configuration is fixed. |
+| `Sender address '<address>' is not a valid email address. Re-queuing <n> alert(s) for next send window.` | Warning | Correct the `fromAddress` property. If `fromAddress` is empty, `SMTPUserName` is used as the sender and must be an email address. The alerts are sent again the next time the agent finds an alert in a non-OK status after the configuration is fixed. |
+| `Skipping a recipient: address is not a valid email format.`                                           | Warning | Correct the `emailAddress` of the recipient. The email is sent to the remaining recipients.                                                           |
+| `All configured recipient addresses are invalid. Re-queuing <n> alert(s) for next send window.`        | Warning | Correct the recipient email addresses. The alerts are sent again the next time the agent finds an alert in a non-OK status after the configuration is fixed. |
+| `Failed to send email notification for <n> alert(s) ... Re-queuing alerts for next send window.`       | Warning | The SMTP send failed, for example because the server cannot be reached or the credentials are rejected. Verify the SMTP credentials, port connectivity, and SSL setting. The agent tries to send the alerts again the next time it finds an alert in a non-OK status. |
+| `Alert notification provider <ProviderType> failed.`                                                   | Warning | Logged together with the error details every time a notification send fails with an error, including permanent errors. `<ProviderType>` is the name of the provider class that is logged. Environment Watch wraps every notification provider, so the name can be `TracingAlertNotificationProvider` for both email and Slack. Use the error details to find the cause, for example an unreachable SMTP server or rejected credentials. |
+| `Failed to send email notification for <n> alert(s) ... with a permanent error. Alerts are not re-queued.` | Warning | The SMTP server rejected a recipient or the message is invalid. The alerts are not sent again. Correct the recipient addresses or the message settings. |
+| `Alert queue exceeded max depth (<n>). Dropped <n> oldest alert(s) ...`                                | Warning | Alerts are waiting longer than the queue allows, for example during a long SMTP outage. The oldest alerts are dropped and are not sent. Resolve the SMTP issue, or increase `maxQueueSize`. |
+| `Email notification sent successfully`                                                                 | Info    | The email was sent. If it is not received, check the recipient mailbox and the SMTP server logs.                                                      |
+
+**Emails are not received after an alert fires**
+
+- Verify that the `email` handler is in the `alertNotificationHandlers` section and that `enabled` is `true`.
+- Verify that `notifyOnAlertFired` is not set to `false`.
+- Verify that at least one recipient is enabled and the email addresses are valid.
+- Check the time between emails. Alerts that arrive within the `messageIntervalSeconds` window, 180 seconds minimum, are sent together in the next email. The agent sends queued alerts only while at least one alert is in a non-OK status, so queued alerts can wait until the next alert is in a non-OK status.
+- Verify that the SMTP Instance Settings in the `kCura.Notification` section are correct and that the SMTP port is reachable from the SQL Primary server.
+- Review the log messages in the table. Configuration problems, such as SMTP not configured, no enabled recipient, or an invalid sender or recipient address, are reported only as log messages. They do not activate the **Environment Watch alert notifications are not being sent** alert.
+- If the **Environment Watch alert notifications are not being sent** alert is active, resolve it by following the steps in [Email Alert Notifications](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-07-email.md#notification-health-alert).
+
+**Configuration changes are not applied**
+
+- Changes to `environment-watch-configuration.json` are applied without restarting the agent. The agent reloads the file when it detects a change, and at the latest 15 minutes after the previous load. If the changes are still not applied, refer to [Common Issues](#common-issues) section 1.1 to 1.4.
+
+## File Log Receiver
+
+If RabbitMQ logs do not appear in Kibana after configuring the file log receiver, fix the common issues outlined in [Common Issues](#common-issues) before reviewing the following potential causes:
+
+After fixing the common issues, if RabbitMQ logs still do not appear in Kibana, review the following potential causes:
+
+**Verify the file log receiver configuration in the custom JSON configuration file.**
+
+- Ensure the custom JSON configuration file contains the `openTelemetryOverrides` section with a valid `logSources` array.
+- Set `enabled` to `true` for the desired log source.
+- Place the configuration under the `openTelemetryOverrides` section.
+
+Example:
+
+```json
+{
+  "environmentWatchConfiguration": {
+    "monitoring": {
+      "instance": {
+        "sources": {
+          "certificates": {},
+          "windowsServices": {}
+        },
+        "otelCollectorYamlFiles": []
+      },
+      "installedProducts": [],
+      "hosts": [],
+      "openTelemetryOverrides": {
+            "logSources": [
+              {
+                "type": "rabbitmq",
+                "enabled": true,
+                "logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
+                "multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
+                "regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
+                "timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
+              }
+            ]
+        }
+    },
+    "alertNotificationHandlers": {}
+  }
+}
+```
+
+**Verify the log file path is accessible.**
+
+- The log file path specified in the configuration must be accessible from the host where the Environment Watch Windows service is running.
+- Verify the RabbitMQ installation path is correct.
+- The file name matches and the path matches the location of the log file on the host machine.
+- The Environment Watch service account has read permissions to the file.
+
+**Verify the OpenTelemetry Collector detected the RabbitMQ configuration.**
+
+- Navigate to **Kibana > Discover**.
+- Select the **logs-\*** data view.
+- Search for:
+
+```text
+"RabbitMQ configuration found in the shared Json configuration."
+```
+
+- If no results appear:
+  - Review the custom JSON configuration file for syntax errors.
+  - Ensure the `enabled` flag is set to `true` in the `logSources` array.
+  - Restart the Environment Watch Windows service.
+  - Check Windows Event Viewer for OpenTelemetry Collector errors.
+
+**Verify the `regexPattern` field names match the required field names.**
+
+- The named capture groups in `regexPattern` must exactly match the default field names defined in the source code. Incorrect field names will cause the OpenTelemetry Collector to throw a fatal error and stop working.
+- Verify the following required field names are used:
+  - `rabbitmq_log_date_time`
+  - `severity`
+  - `rabbitmq_pid_node`
+  - `rabbitmq_pid_process`
+  - `rabbitmq_pid_serial`
+  - `message`
+- Compare the configuration against the example in the [File Log Receiver Configuration](../elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-06-file-log-receiver.md) document.
+- Restart the Environment Watch Windows service after correcting the field names.
+
+**Timestamps are incorrect or missing in Kibana.**
+
+- Verify the `timestampLayout` format matches the log file timestamp format.
+- For RabbitMQ logs, use: `"%Y-%m-%d %H:%M:%S.%f%j"`.
+- The `%j` suffix handles the timezone offset component.
+
+**Multiline log entries are not grouping correctly.**
+
+- Verify the `multilineStartPattern` regex matches the start of each new log entry.
+- Ensure backslashes are properly escaped in JSON (use `\\` instead of `\`).
+
+**No log data in Kibana after configuration detection message appears.**
+
+- Verify the `enabled` flag is set to `true` in the `logSources` array.
+- Confirm the log file contains recent entries.
+- Check that the log file is actively being written to by RabbitMQ.
+- Review the OpenTelemetry Collector logs in Kibana for parsing errors.
 - Restart the Environment Watch Windows service to apply the changes.

@@ -10,7 +10,7 @@
 - Elastic Stack Certificates are installed on all Servers
 - Verify that the Elastic Stack services (Elasticsearch, Kibana, and APM) are    running
 - Access to Elastic Stack, Primary SQL Server, and Secret Store (Whitelisted for Secret Store access. Please see [here](https://help.relativity.com/Server2024/Content/System_Guides/Secret_Store/Secret_Store.htm#Configuringclients) for information on whitelisting.)
-- The Server-bundle zip file has been downloaded and extracted to `C:\Server.Bundle.x.y.z'
+- The Server-bundle zip file, which contains the Relativity Server CLI (`relsvr.exe`), has been downloaded ([download link](https://github.com/relativitydev/server-bundle-release/releases)) and extracted to `C:\Server.Bundle.x.y.z`
 
 ### Set up instructions
 
@@ -82,6 +82,12 @@
 6. Successful completion indicates that Environment Watch is configured. The setup process will automatically retry three times on parameter entry errors before exiting. If it exits, the process must be restarted..
 
 Refer to the [Troubleshooting Guide](../troubleshooting/relativity-server-cli.md) if you encounter any issues.
+
+## Managing ILM Retention
+
+By default, Environment Watch uses the retention periods configured in Elasticsearch Index Lifecycle Management (ILM) policies. To view or update the retention period for logs, metrics, or traces data streams after setup, use the `configure-retention` command:
+
+See [Configure Elasticsearch ILM Retention using the Relativity Server CLI](./ew-03-extensibility-configuration/ew-extensibility-configuration-03-retention-policy.md#configure-elasticsearch-ilm-retention-using-the-relativity-server-cli) for full instructions, including interactive mode, quiet mode for scripted updates, and how to verify changes in Kibana Dev Tools.
 
 ## Next Steps
 

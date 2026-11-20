@@ -115,7 +115,7 @@ Starting with Server 2024, the Environment Watch architecture relies on the Elas
 > [!NOTE]
 > Ensure inbound/outbound ports are open for this Elastic stack component.
 
-[See the port diagram for network requirements.](environment-watch/port-diagram.md)
+[See the port diagram for network requirements.](./elastic-stack-port-diagram.md)
 
 #### Relativity Environment Watch Windows Service
 
@@ -148,7 +148,7 @@ The Relativity platform has been updated to expose low-level details using the O
 
 Once each Relativity server has been setup with an InfraWatch Agent, metrics/traces/logs are continually exported to the Elastic APM Server (e.g. Open Telemetry backend) where the data is persisted to Elasticsearch indexes. Although Kibana is often considered the front-end for Elasticsearch, it also supports the [Kibana Task Manager](https://www.elastic.co/guide/en/kibana/current/task-manager-production-considerations.html) feature to allocate resources to monitor alerts.
 
-As the metrics are continually submitted to the Open Telemetry backend, Kibana evaluates the conditions to determine whether the alert is active or not. Depending on the Elasticsearch license, each alert can be configured to notify via Slack, Email, or WebHook.
+As the metrics are continually submitted to the Open Telemetry backend, Kibana evaluates the conditions to determine whether the alert is active or not. Depending on the Elasticsearch license, each alert can be configured to notify via Slack, Email, or WebHook. Environment Watch can also send alert emails by using the SMTP settings already configured in Relativity. For details, see [Email Alert Notifications](./elastic-stack-setup-02-environment-watch/ew-03-extensibility-configuration/ew-extensibility-configuration-06-json-configuration/ew-json-configuration-07-email.md).
 
 #### Elastic Index Lifecycle Management
 
@@ -247,8 +247,12 @@ The Alert Manager Agent retrieves alert data from Kibana. This agent is automati
 When you have Relativity Alerts installed and Environment Watch is fully configured, you can see all of your alerts and corresponding alert details from the Environment Watch > Alerts tab in Relativity.
 
 - **Alerts tab** **and key fields** - The Alerts tab includes a list of all Alert RDOs that are mapped to a corresponding Kibana alert. Each Alert includes the following key fields:
-  - **Alert State** – is the alert currently active or inactive?
-  - **Alert State Updated** – When did the alert last change from inactive to active or active to inactive?
+  - **Alert State** – The current state of the alert. An alert can be in one of the following states:
+    - **Active** – Indicates the alert has been triggered and the monitored condition has exceeded its threshold.
+    - **OK** – Indicates the monitored condition is within expected thresholds.
+    - **Recovered** – Indicates the alert was previously triggered and the monitored condition has since returned to expected thresholds.
+    - **Untracked** – Indicates the alert is currently disabled in Kibana and is no longer being monitored.
+  - **Alert State Updated** – When did the alert state last change?
   - **Dashboard or Tab Jump Link** – Alerts are "generalized" in order to reduce noise and minimize the number of overall alerts. To see important details about an alert when active, Relativity will guide you to a Relativity tab or Kibana dashboard to further explore the potential issue. For example, when the ‘One ore more agents are disabled’ alert is active, the jump link will take you to the Agents tab to see which agents are actually disabled. Or, if the ‘Memory is exceeding 96% on at least one host’ alert is active, the jump link will take you directly into a Kibana dashboard to see which hosts are currently triggering the memory alert.
 	
 > Users will need Elastic credentials to log in to Kibana to see dashboards. The Elastic installation guide includes information about a Kibana role that is automatically created by the Relativity Server CLI that we recommend using for your Kibana users that need dashboard view-access.

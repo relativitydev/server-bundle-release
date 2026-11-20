@@ -1,8 +1,15 @@
 # Custom JSON Configuration
 
-This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for Windows services, certificates, SQL servers, and scrapers, as well as configure Slack notifications for alerting.
+This document provides an overview of the custom JSON configuration file used by Environment Watch. The configuration allows users to centrally define and customize monitoring for:
 
-The shared configuration file enables users to control what is monitored—such as specific Windows services or certificate conditions—and how alerts are delivered. Currently, Slack is the only supported notification platform. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
+- Windows services
+- Certificates
+- SQL servers
+- File log receivers
+- Scrapers
+- It also includes configuration options for Slack and email notifications used for alerting.
+
+The shared configuration file enables users to control what is monitored such as specific Windows services, certificate conditions, or custom log file sources and how alerts are delivered. Slack and email are the supported notification platforms. The notification configuration is designed to be extensible, allowing additional platforms to be supported in future releases. Because the configuration is external to the application, custom monitoring settings are preserved during Environment Watch upgrades, making the solution both extensible and upgrade-safe.
 
 ---
 
@@ -21,7 +28,9 @@ The configuration is organized in a hierarchical JSON format, with top-level sec
     - `installedProducts`: A list of installed products, where each product defines its own monitoring sources.
     - `hosts`: A list of hosts, where each host defines its own monitoring sources.
     - `scrapers`: A list of scrapers with configurable intervals and parameters.
-  - `alertNotificationHandlers`: Defines notification handlers (e.g., Slack).
+    - `openTelemetryOverrides`: Contains custom OpenTelemetry Collector overrides.
+      - `logSources`: A list of custom file log source configurations for the OTEL file log receiver.
+  - `alertNotificationHandlers`: Defines notification handlers (Slack and email).
 
 ---
 
@@ -55,8 +64,13 @@ The `installedProducts` section contains a list of installed products, where eac
 
 ### Monitoring by Host
 The `hosts` section contains multiple host objects, each specifying its own monitoring sources.
-- **Purpose:** Monitors resources on a per-host basis, such as Services or certificates unique to a particular server.
+- **Purpose:** Monitors resources on a per-host basis, such as services or certificates unique to a particular server.
 - **Use Case:** Enables granular monitoring for individual machines, supporting host-specific checks (e.g., SQL Services on a database server).
+
+### File Log Configuration
+The `openTelemetryOverrides` section defines custom log source configurations for the OpenTelemetry Collector file log receiver. This allows Environment Watch to collect and parse application-specific log files.
+- **Purpose:** Extends log collection to include custom log files (e.g., RabbitMQ logs) with user-defined parsing rules for log file path, multiline handling, regex extraction, and timestamp parsing.
+- **Use Case:** Useful when complex custom regex patterns need to be defined or when specifying log file paths to ingest logs from different sources (e.g., RabbitMQ, IIS).
 
 ### Scrapers Configuration
 The `scrapers` section allows customization of metric collection intervals and parameters for each scraper.
@@ -73,6 +87,8 @@ The `scrapers` section allows customization of metric collection intervals and p
 | `enabled`                  | Boolean flag to enable/disable monitoring for the source.                    |
 | `include`                  | List of specific items to monitor (service names, certificate details, etc.) |
 | `otelCollectorYamlFiles`   | List of OpenTelemetry Collector YAML files (empty in this example).          |
+| `openTelemetryOverrides`   | Contains custom OpenTelemetry Collector overrides.                           |
+| ↳ `logSources`             | List of custom log source configurations for the file log receiver.          |
 | `scrapers`                 | List of scraper configurations with intervals and parameters.                |
 
 ---
@@ -103,11 +119,14 @@ An example of the BCPPath and folder structure is shown below:
 > [!NOTE]
 > EW supports all BCP share configuration options available in Relativity. Primary SQL is just one of several supported configurations.
 
+> [!NOTE]
+> If this is the first custom configuration on this instance, the `EnvironmentWatch` folder and the `environment-watch-configuration.json` file do not exist yet. Create the folder and the file yourself. `BCPPath` is not always a network share. The example above uses a UNC path, which is typical for a multi-server environment. On a single-server test or development environment, `BCPPath` can be a local path, for example `C:\BCPPath`. A remote share is not required.
+
 ---
 
 ## Monitoring Source Types
 
-This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack notifications, SQL server instances, and scrapers. Each source type has its own configuration structure and properties. Following are the details for each source type:
+This section describes the main types of sources that can be monitored using the Environment Watch configuration: Windows services, certificates, Kibana Alerts through Slack and email notifications, SQL server instances, file log receivers, and scrapers. Each source type has its own configuration structure and properties. Following are the details for each source type:
 
 ---
 ### Certificates
@@ -118,9 +137,12 @@ For detailed instructions, see [Certificates Configuration](ew-json-configuratio
 
 For detailed instructions, see [Windows Service Configuration](ew-json-configuration-02-windows-services.md).
 
-### Slack Alert Notifications
+### Alert Notifications
 
-For detailed instructions, see [Alert Notification Handlers](ew-json-configuration-03-slack.md).
+Environment Watch can send alert notifications to Slack, by email, or both. For detailed instructions, see:
+
+- [Alert Notification Handlers (Slack)](ew-json-configuration-03-slack.md)
+- [Email Alert Notifications](ew-json-configuration-07-email.md)
 
 ### SQL Server Instances
 
@@ -129,6 +151,10 @@ For detailed instructions, see [SQL Server Configuration](ew-json-configuration-
 ### Scrapers
 
 For detailed instructions, see [Scrapers Configuration](ew-json-configuration-05-scrapers.md).
+
+### File Log Receiver
+
+For detailed instructions, see [File Log Receiver Configuration](ew-json-configuration-06-file-log-receiver.md).
 
 ## Example Configuration
 
@@ -322,7 +348,19 @@ For detailed instructions, see [Scrapers Configuration](ew-json-configuration-05
 					"expirationWarningDays": "30"
 				}
 				}
-			]
+			],
+			"openTelemetryOverrides": {
+				"logSources": [
+					{
+						"type": "rabbitmq",
+						"enabled": true,
+						"logFilePath": "C:\\rabbitmq\\data\\log\\rabbit@localhost.log",
+						"multilineStartPattern": "^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}",
+						"regexPattern": "^(?P<rabbitmq_log_date_time>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6}[+-]\\d{2}:\\d{2}) \\[(?P<severity>[a-z]*)\\] <(?P<rabbitmq_pid_node>\\d+)\\.(?P<rabbitmq_pid_process>\\d+)\\.(?P<rabbitmq_pid_serial>\\d+)>[ \\t]*(?P<message>[\\s\\S]*)$",
+						"timestampLayout": "%Y-%m-%d %H:%M:%S.%f%j"
+					}
+				]
+			}
 		},
 		"alertNotificationHandlers": {
 			"slack": {
@@ -331,6 +369,21 @@ For detailed instructions, see [Scrapers Configuration](ew-json-configuration-05
 				"channel": "ABC12M3PQR4",
 				"enabled": true,
 				"messageIntervalSeconds": 180
+			},
+			"email": {
+				"enabled": true,
+				"fromAddress": "no-reply@company.com",
+				"fromDisplayName": "Environment Watch",
+				"messageIntervalSeconds": 180,
+				"maxQueueSize": 100,
+				"notifyOnAlertFired": true,
+				"recipients": [
+					{
+						"emailAddress": "admin@company.com",
+						"displayName": "Environment Watch Admin",
+						"enabled": true
+					}
+				]
 			}
 		}
 	}

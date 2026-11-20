@@ -1,7 +1,7 @@
 # Install Relativity Alerts
 
 > [!NOTE]
-> This step is required for Environment Watch.
+> This step is required for Environment Watch. From Relativity Server 2026 onwards, the Relativity Alerts application is installed automatically during the installation or upgrade of Relativity Server. Manual installation is required only for Relativity Server 2024 Patch 2 and Relativity Server 2025.
 
 ## Summary
 The Relativity Alerts application is a new application as part of the Relativity Environment Watch suite. Its main functionality is to alert Relativity System Administrators to a variety of Environmental and Application related issues on a Relativity instance within Relativity web interface. It replaces a previous "Legacy Alerts" functionality with a new Open Telemetry based implementation with Elastic Stack backend. It allows in real time to notify Relativity System Administrators about issues, redirect them to easily readable dashboards with performance and health information, as well as accompanied by a comprehensive resolution guidelines.
@@ -12,6 +12,10 @@ The Relativity Alerts application is a new application as part of the Relativity
 	
 
 ## Installation
+
+> [!NOTE]
+> These steps apply only to Relativity Server 2024 Patch 2 and Relativity Server 2025. For Relativity Server 2026 onwards, no manual installation is required. Skip this section and proceed to [Verification](#verification).
+
 To install the Relativity Alerts application on your Relativity instance:
 1. Log in to Relativity as a System Administrator.
 2. Navigate to the Application Library tab.
@@ -30,7 +34,7 @@ To install the Relativity Alerts application on your Relativity instance:
 	![relativity_alerts_installation_005](../../resources/relativity_alerts_installation_005.png)
 	![relativity_alerts_installation_006](../../resources/relativity_alerts_installation_006.png)
 
-A list of common install issues and their resolutions are available at the [troubleshooting guide](../docs/troubleshooting/relativity_alerts_troubleshooting.md).
+A list of common install issues and their resolutions are available at the [troubleshooting guide](../troubleshooting/relativity_alerts_troubleshooting.md).
 
 ## Verification
 1. Navigate to the **Alerts** tab, you should see all alerts available in Kibana.<br/>
@@ -63,7 +67,7 @@ A list of common install issues and their resolutions are available at the [trou
 	
 	g. While on Agents tab, please remember to enable the **File Deletion Manager** agent.
 
-If any of the previous steps have failed, or any errors were displayed, please see [troubleshooting guide](../docs/troubleshooting/relativity_alerts_troubleshooting.md) for more information.
+If any of the previous steps have failed, or any errors were displayed, please see [troubleshooting guide](../troubleshooting/relativity_alerts_troubleshooting.md) for more information.
 
 # Create Kibana Users and Assign Roles
 
@@ -78,7 +82,7 @@ To create a Kibana user and assign the custom Kibana role:
 	- **Username**: A unique login name (e.g., `alerts_dashboard_user`).<br/>
 	- **Password**: Set a strong password.<br/>
 	- **Full name / Email address**: Optional but recommended.<br/>
-5. Under **Roles**, search for and assign the `relativity_dashboard_user` role.
+5. Under **Roles**, search for and assign the `relativity_dashboard_user` role. Optionally, also assign the `monitoring_user` to enable access to Stack Monitoring.
 6. Click **Create user** to save.  
 ![](../../resources/custom_kibana_role.png)
 

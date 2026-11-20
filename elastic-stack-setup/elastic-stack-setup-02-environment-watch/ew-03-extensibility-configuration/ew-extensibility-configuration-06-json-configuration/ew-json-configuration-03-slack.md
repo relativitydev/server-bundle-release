@@ -1,4 +1,4 @@
-## Alert Notification Handlers [Early Access]
+## Alert Notification Handlers
 
 The "handlers" allow a client to send alert notifications to the specified provider.
 
