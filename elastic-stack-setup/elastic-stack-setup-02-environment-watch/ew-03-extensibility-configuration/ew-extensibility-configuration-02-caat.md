@@ -3,7 +3,16 @@
 
 This guide provides step-by-step instructions for installing/updating Relativity Analytics Engine (CAAT) along with the OpenTelemetry Java Agent. This enables distributed tracing and observability with minimal code changes.
 
-For other Other integrations, refer to the [Environment Watch Install other Integrations Guide](./ew-03-extensibility-configuration.md).
+For other integrations, refer to the [Environment Watch Install other Integrations Guide](./ew-03-extensibility-configuration.md).
+
+## CAAT version by Server version
+
+Use the CAAT version that matches your Relativity Server version.
+
+| Relativity Server version | CAAT version |
+|---|---|
+| Server 2026 | 26.0.46.A1 |
+| Server 2025 & Server 2024 | 5.1.8.A1 |
 
 ## Why use opentelemetry-javaagent?
 
@@ -22,33 +31,31 @@ For other Other integrations, refer to the [Environment Watch Install other Inte
 
 ### Prerequisites
 
-- CAAT (5.1.4.A1) installer package
-- CAAT EW bundle (contains `startup.cmd`)
+- CAAT installer package for your Server version (see the version table above; for Server 2026, use CAAT 26.0.46.A1)
 - Administrative access to the server
 
 ### Installation Steps
 
-1.  Install or upgrade the CAAT 5.1.4.A1 installer. If this has already been completed, skip this step.
+1.  Install or upgrade to the CAAT version listed for your Server version in the version table above (for Server 2026, CAAT 26.0.46.A1). If this has already been completed, skip this step.
 2.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
 3.  Stop the **Relativity Environment Watch** service on the analytics server.
-4.  Copy and replace the following file from the CAAT EW bundle into the `bin` directory of the installed CAAT application (not the `bin` directory inside the extracted CAAT installer package):    
-    - `startup.cmd`
-5.  Once the copying is complete, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
-6.  Open Kibana and search for `service.name: "relsvr.caat"` in the `metrics-*` data view to confirm telemetry is being collected
+4.  Open the `startup.cmd` file in the `bin` directory of the installed CAAT application in a text editor running as administrator.
+5.  Add the following lines directly below the `-Dorg.eclipse.jetty.util.security.algorithm=bcrypt ^` line, as shown in the image below, and save the file. These lines enable the OpenTelemetry Java Agent to collect telemetry data from the CAAT service. The `-javaagent` line references `opentelemetry-javaagent.jar`, which is provided by the CAAT installer package:
 
-
-## What's updated
-
-- The `startup.cmd` file is updated to include the OpenTelemetry Java Agent. It references `opentelemetry-javaagent.jar`, which is provided by the CAAT installer package (not the CAAT EW bundle), to instrument the CAAT service for telemetry data collection.
-- Check for these lines within `startup.cmd`:
     ```
-    -javaagent:..bin\opentelemetry-javaagent.jar 
-    -Dotel.service.name="relsvr.caat" 
-    -Dotel.metrics.exporter=otlp 
-    -Dotel.exporter.otlp.endpoint="http://localhost:4318" 
-    -Dotel.instrumentation.runtime-metrics.enabled=true
-    -Dotel.instrumentation.java-util-logging.enabled=false
+    -javaagent:..\opentelemetry-javaagent.jar ^
+    -Dotel.service.name="relsvr.caat" ^
+    -Dotel.metrics.exporter=otlp ^
+    -Dotel.exporter.otlp.endpoint="http://localhost:4318" ^
+    -Dotel.instrumentation.runtime-metrics.enabled=true ^
+    -Dotel.instrumentation.java-util-logging.enabled=false ^
     ```
+
+    ![Position of the OpenTelemetry Java Agent lines in startup.cmd, below the bcrypt line](../../../resources/CAAT-startup-cmd-otel-lines.png)
+
+6.  Once the file is saved, start the **Relativity Analytics Engine** and **Relativity Environment Watch** services and verify the engine is active
+7.  Open Kibana and search for `service.name: "relsvr.caat"` in the `metrics-*` data view to confirm telemetry is being collected
+
 
 ## How to verify the changes
 
