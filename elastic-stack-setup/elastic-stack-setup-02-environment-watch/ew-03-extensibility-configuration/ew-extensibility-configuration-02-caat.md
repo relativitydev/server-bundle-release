@@ -3,7 +3,7 @@
 
 This guide provides step-by-step instructions for installing/updating Relativity Analytics Engine (CAAT) along with the OpenTelemetry Java Agent. This enables distributed tracing and observability with minimal code changes.
 
-For other Other integrations, refer to the [Environment Watch Install other Integrations Guide](./ew-03-extensibility-configuration.md).
+For other integrations, refer to the [Environment Watch Install other Integrations Guide](./ew-03-extensibility-configuration.md).
 
 ## CAAT version by Server version
 
@@ -39,11 +39,11 @@ Use the CAAT version that matches your Relativity Server version.
 1.  Install or upgrade to the CAAT version listed for your Server version in the version table above (for Server 2026, CAAT 26.0.46.A1). If this has already been completed, skip this step.
 2.  Ensure no analytics jobs are currently running, then stop the **Relativity Analytics Engine** service
 3.  Stop the **Relativity Environment Watch** service on the analytics server.
-4.  Open the `startup.cmd` file in the `bin` directory of the installed CAAT application (not the `bin` directory inside the extracted CAAT installer package) in a text editor running as administrator.
+4.  Open the `startup.cmd` file in the `bin` directory of the installed CAAT application in a text editor running as administrator.
 5.  Add the following lines directly below the `-Dorg.eclipse.jetty.util.security.algorithm=bcrypt ^` line, as shown in the image below, and save the file. These lines enable the OpenTelemetry Java Agent to collect telemetry data from the CAAT service. The `-javaagent` line references `opentelemetry-javaagent.jar`, which is provided by the CAAT installer package:
 
     ```
-    -javaagent:..bin\opentelemetry-javaagent.jar ^
+    -javaagent:..\opentelemetry-javaagent.jar ^
     -Dotel.service.name="relsvr.caat" ^
     -Dotel.metrics.exporter=otlp ^
     -Dotel.exporter.otlp.endpoint="http://localhost:4318" ^
