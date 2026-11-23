@@ -171,3 +171,23 @@ Your "Alert Manager" agent might have exceeded the interval. Please follow below
 
 **Troubleshooting Steps:**
 1. Please execute the Relativity Server CLI first time setup again to resolve this issue.
+
+#### Issue 9: Relativity Alerts stops loading data from Elasticsearch after it was working
+
+**Causes:**
+
+1. The `rel-alerts` Elasticsearch API key that Relativity Alerts uses to connect to Elasticsearch has expired. Keys created by the Relativity Server CLI setup are valid for 180 days by default.
+2. The `rel-alerts` key was rotated or invalidated, and the Relativity services were not restarted afterwards, so Relativity Alerts is still using the old key.
+
+**Troubleshooting Steps:**
+
+1. In Kibana, check whether the **Elasticsearch API Key – Expiring Within 30 Days** alert is active, or open **Stack Management** > **Security** > **API keys** and check the expiry of the `rel-alerts` key.
+2. Rotate the key by running the `rotate-api-key` command for the InfraWatch cluster. This rotates the `rel-alerts` key together with the `rel-infrawatch` key:
+
+    ```
+    C:\Server.Bundle.x.y.z\relsvr.exe rotate-api-key --cluster rel-cluster-infrawatch
+    ```
+
+    See [Rotate an Elasticsearch API Key using the Relativity Server CLI](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md) for full instructions.
+3. Restart all Relativity services, including `kCura Edds Agent Manager`, `kCura Edds Web Processing Manager`, and `kCura Service Host Manager`, on each server in the Relativity instance. See [After the rotation](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md#after-the-rotation).
+4. Verify the new key as described in [Verify the rotation](../elastic-stack-setup-02-environment-watch/elastic-stack-rotate-api-key-environment-watch.md#verify-the-rotation).
