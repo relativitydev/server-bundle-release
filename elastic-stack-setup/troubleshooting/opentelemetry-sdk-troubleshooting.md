@@ -7,6 +7,9 @@ This document explains how to find and work around Open Telemetry SDK bootstrapp
 
 Custom pages, event handlers, and web applications bootstrap the Open Telemetry SDK when they start, so they can send logs, metrics, and traces to Environment Watch. If the bootstrapping fails, the component keeps working but sends no telemetry through the Open Telemetry SDK. In some cases, such as a dependency conflict in an ASP.NET MVC custom page, the page itself can fail to load.
 
+> [!IMPORTANT]
+> Apply the steps in this guide only when a component logs an Open Telemetry SDK bootstrapping error, as described in [Find the Bootstrapping Error](#find-the-bootstrapping-error). The `DefaultBuildExclusions` instance setting is a workaround that keeps the failing component running by skipping its Open Telemetry SDK bootstrapping. It is not a preventive or general configuration step. If no bootstrapping errors are logged, do not create or change this setting, because excluded components stop sending telemetry to Environment Watch.
+
 ## Find the Bootstrapping Error
 
 1. Open Kibana and go to **Discover**.
