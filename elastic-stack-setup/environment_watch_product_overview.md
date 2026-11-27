@@ -90,7 +90,12 @@ The Open Telemetry SDK is used to submit metrics to the Open Telemetry collector
 - Kepler services
 - Custom Pages
 - Invariant Queue Manager/Worker
-	
+- Event Handlers
+
+##### Open Telemetry SDK Bootstrapping Failures
+
+Starting in Relativity Server 2026, if a custom page, event handler, or web application logs an error such as "Failed to build the Open Telemetry providers" while bootstrapping the Open Telemetry SDK, see [Open Telemetry SDK Bootstrapping Troubleshooting](./troubleshooting/opentelemetry-sdk-troubleshooting.md).
+
 #### Visualization Frontend
 
 In a highly distributed environment, millions of JSON records are generated each day. With so much unstructured data, the frontend solution must provide a way to monitor, search, and analyze the metrics.
